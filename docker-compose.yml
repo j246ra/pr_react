@@ -1,5 +1,11 @@
 version: '3.4'
 services:
+  web:
+    image: nginx:1.23-bullseye
+    ports:
+      - "80:80"
+    volumes:
+      - ./build:/usr/share/nginx/html:ro
   react:
     image: node:16.20-buster-slim
     ports:
