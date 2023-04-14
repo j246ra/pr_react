@@ -18,7 +18,7 @@ export default function UserProvider({ children }){
     ...user, email, uid, client, token
   });
 
-  const valid = () => setUser({...user, valid: true});
+  const toValid = () => setUser({...user, valid: true});
 
   const loginHeader = () => {
     return({
@@ -29,7 +29,7 @@ export default function UserProvider({ children }){
   }
 
   return (
-    <UserContext.Provider value={{ user, createUser, updateUser, valid, loginHeader }}>
+    <UserContext.Provider value={{ user, createUser, updateUser, toValid, loginHeader }}>
       {children}
     </UserContext.Provider>
   );

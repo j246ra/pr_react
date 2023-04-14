@@ -7,7 +7,7 @@ import { useUser } from "./providers/UserProvider"
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { user, createUser, updateUser, valid, loginHeader } = useUser();
+  const { user, createUser, updateUser, toValid, loginHeader } = useUser();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -23,7 +23,7 @@ const Login = () => {
 
   const checkToken = (e) => {
     e.preventDefault();
-    validateToken(loginHeader()).then(valid());
+    validateToken(loginHeader()).then(toValid());
   };
 
   return (
