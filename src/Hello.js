@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom"
 import {useUser} from "./providers/UserProvider";
-import {hello} from "./lib/api/test";
+import {hello} from "./lib/api/auth";
 import {useEffect, useState} from "react";
 
 const Hello = () => {

@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom"
 import './App.css';
 import Login from "./Login";
+import SignUp from "./SignUp";
 import Hello from "./Hello";
 
 function App() {
@@ -10,6 +11,10 @@ function App() {
         <Route
           path="/"
           element={<Login />}
+        />
+        <Route
+          path="/sign_up"
+          element={<SignUp />}
         />
         <Route
           path="/hello"

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, FormGroup, InputGroup, Intent, Card, Elevation } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
-import { authSignIn, validateToken } from "./lib/api/test";
+import {deleteUser, signIn, signOut, validateToken} from "./lib/api/auth";
 import { useUser } from "./providers/UserProvider"
 import { useNavigate } from "react-router-dom";
 
@@ -16,7 +16,7 @@ const Login = () => {
     console.log('Email:', email, 'Password:', password);
     if (user.token !== '') return;
     createUser(email);
-    authSignIn(email, password)
+    signIn(email, password)
       .then(r => {
         if (r.status !== 200) return;
         updateUser(email, r.headers['uid'], r.headers['client'], r.headers['access-token']);
@@ -33,7 +33,33 @@ const Login = () => {
       .catch(clearUser());
   };
 
-  const redirectToHello = () => navigate("/hello");
+  const signUp = (e) => {
+    e.preventDefault();
+    navigate('sign_up');
+  };
+
+  const logout = (e) => {
+    e.preventDefault();
+    signOut(requestHeaders())
+      .then(r => {
+        clearUser();
+      })
+      .catch(clearUser());
+  };
+
+  const deleteAccount = (e) => {
+    e.preventDefault();
+    deleteUser(requestHeaders())
+      .then(r => {
+        clearUser();
+      })
+      .catch(clearUser());
+  }
+
+  const redirectToHello = (e) => {
+    e.preventDefault();
+    navigate("/hello")
+  };
 
   return (
     <div className="login-container">
@@ -87,6 +113,30 @@ const Login = () => {
             intent={Intent.PRIMARY}
             icon={IconNames.KEY}
             text="トークン検証"
+          />
+        </form>
+        <form onSubmit={logout}>
+          <Button
+            type="submit"
+            intent={Intent.PRIMARY}
+            icon={IconNames.KEY}
+            text="ログアウト"
+          />
+        </form>
+        <form onSubmit={signUp}>
+          <Button
+            type="submit"
+            intent={Intent.PRIMARY}
+            icon={IconNames.KEY}
+            text="新規登録"
+          />
+        </form>
+        <form onSubmit={deleteAccount}>
+          <Button
+            type="submit"
+            intent={Intent.PRIMARY}
+            icon={IconNames.KEY}
+            text="削除"
           />
         </form>
         <form onSubmit={redirectToHello}>
