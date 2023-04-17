@@ -3,11 +3,13 @@ import { Button, FormGroup, InputGroup, Intent, Card, Elevation } from '@bluepri
 import { IconNames } from '@blueprintjs/icons';
 import { authSignIn, validateToken } from "./lib/api/test";
 import { useUser } from "./providers/UserProvider"
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { user, createUser, updateUser, toValid, loginHeader } = useUser();
+  const { user, createUser, updateUser, updateToken, toValid, clearUser, requestHeaders } = useUser();
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -23,8 +25,15 @@ const Login = () => {
 
   const checkToken = (e) => {
     e.preventDefault();
-    validateToken(loginHeader()).then(toValid());
+    validateToken(requestHeaders())
+      .then(r => {
+        updateToken(r.headers['access-token'])
+        toValid();
+      })
+      .catch(clearUser());
   };
+
+  const redirectToHello = () => navigate("/hello");
 
   return (
     <div className="login-container">
@@ -33,50 +42,59 @@ const Login = () => {
         <p>client:{user.client}</p>
         <p>token:{user.token}</p>
         <p>{user.valid ? "検証済み" : "未検証"}</p>
-        <form onSubmit={handleLogin}>
-          <FormGroup
-            label="メールアドレス"
-            labelFor="email-input"
-            labelInfo="(必須)"
-          >
-            <InputGroup
-              id="email-input"
-              placeholder="メールアドレスを入力"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </FormGroup>
-
-          <FormGroup
-            label="パスワード"
-            labelFor="password-input"
-            labelInfo="(必須)"
-          >
-            <InputGroup
-              id="password-input"
-              placeholder="パスワードを入力"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </FormGroup>
-
-          <Button
-            type="submit"
-            intent={Intent.PRIMARY}
-            icon={IconNames.KEY}
-            text="ログイン"
-          />
-        </form>
+        {
+          (user.email === '') &&
+            <form onSubmit={handleLogin}>
+              <FormGroup
+                label="メールアドレス"
+                labelFor="email-input"
+                labelInfo="(必須)"
+              >
+                <InputGroup
+                  id="email-input"
+                  placeholder="メールアドレスを入力"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </FormGroup>
+              <FormGroup
+                label="パスワード"
+                labelFor="password-input"
+                labelInfo="(必須)"
+              >
+                <InputGroup
+                  id="password-input"
+                  placeholder="パスワードを入力"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </FormGroup>
+              <Button
+                type="submit"
+                intent={Intent.PRIMARY}
+                icon={IconNames.KEY}
+                text="ログイン"
+              />
+            </form>
+        }
         <form onSubmit={checkToken}>
           <Button
             type="submit"
             intent={Intent.PRIMARY}
             icon={IconNames.KEY}
             text="トークン検証"
+          />
+        </form>
+        <form onSubmit={redirectToHello}>
+          <Button
+            type="submit"
+            intent={Intent.PRIMARY}
+            icon={IconNames.KEY}
+            text="ハロー＾＾"
           />
         </form>
       </Card>

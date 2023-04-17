@@ -18,18 +18,32 @@ export default function UserProvider({ children }){
     ...user, email, uid, client, token
   });
 
+  const updateToken = (token) => {
+    if(token !== "") setUser({...user, token})
+  };
+
   const toValid = () => setUser({...user, valid: true});
 
-  const loginHeader = () => {
+  const clearUser = () => {
+    setUser({
+      email: '',
+      uid: '',
+      client: '',
+      token: '',
+      valid: false,
+    })
+  };
+
+  const requestHeaders = () => {
     return({
       "access-token": user.token,
       uid: user.uid,
       client: user.client
     });
-  }
+  };
 
   return (
-    <UserContext.Provider value={{ user, createUser, updateUser, toValid, loginHeader }}>
+    <UserContext.Provider value={{ user, createUser, updateUser, updateToken, toValid, clearUser, requestHeaders }}>
       {children}
     </UserContext.Provider>
   );
