@@ -9,5 +9,5 @@ export const authSignIn = (email, password) => {
 }
 
 export const validateToken = (headers) => {
-  return client.get("/auth/validate_token", headers)
+  return client.get("/auth/validate_token", {headers})
 }
