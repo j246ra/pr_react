@@ -38,6 +38,11 @@ const Login = () => {
     navigate('sign_up');
   };
 
+  const updateAccount = (e) => {
+    e.preventDefault();
+    navigate('update_account');
+  };
+
   const logout = (e) => {
     e.preventDefault();
     signOut(requestHeaders())
@@ -129,6 +134,14 @@ const Login = () => {
             intent={Intent.PRIMARY}
             icon={IconNames.KEY}
             text="新規登録"
+          />
+        </form>
+        <form onSubmit={updateAccount}>
+          <Button
+            type="submit"
+            intent={Intent.PRIMARY}
+            icon={IconNames.KEY}
+            text="アカウント更新"
           />
         </form>
         <form onSubmit={deleteAccount}>

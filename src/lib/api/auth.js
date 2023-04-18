@@ -9,6 +9,10 @@ export const signUp = (email, password) => {
   return client.post('/auth', {email, password})
 }
 
+export const updateAccount = (headers, email, password) => {
+  return client.put('/auth', {email, password},{headers})
+}
+
 export const signIn = (email, password) => {
   return client.post("/auth/sign_in", { email, password })
 }
