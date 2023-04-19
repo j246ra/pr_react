@@ -5,12 +5,15 @@ import './index.css';
 import UserProvider from "./providers/UserProvider";
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {CookiesProvider} from "react-cookie";
 
 render(
   <Router>
-    <UserProvider>
-      <App />
-    </UserProvider>
+    <CookiesProvider>
+      <UserProvider>
+        <App />
+      </UserProvider>
+    </CookiesProvider>
   </Router>,
   document.getElementById('root')
 );
