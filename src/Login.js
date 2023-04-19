@@ -9,7 +9,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [valid, setValid] = useState(false);
-  const { user, createUser, updateUser, updateToken, toValid, clearUser, requestHeaders } = useUser();
+  const { user, createUser, updateUser, updateToken, clearUser, requestHeaders } = useUser();
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
