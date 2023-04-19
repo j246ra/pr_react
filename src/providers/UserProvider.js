@@ -11,7 +11,6 @@ export default function UserProvider({ children }){
     uid: '',
     client: '',
     token: '',
-    valid: false,
     ...cookies.tokens,
   });
 
@@ -31,15 +30,12 @@ export default function UserProvider({ children }){
     }
   };
 
-  const toValid = () => setUser({...user, valid: true});
-
   const clearUser = () => {
     setUser({
       email: '',
       uid: '',
       client: '',
       token: '',
-      valid: false,
     });
     removeCookie('tokens');
   };
@@ -53,7 +49,7 @@ export default function UserProvider({ children }){
   };
 
   return (
-    <UserContext.Provider value={{ user, createUser, updateUser, updateToken, toValid, clearUser, requestHeaders }}>
+    <UserContext.Provider value={{ user, createUser, updateUser, updateToken, clearUser, requestHeaders }}>
       {children}
     </UserContext.Provider>
   );

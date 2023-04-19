@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [valid, setValid] = useState(false);
   const { user, createUser, updateUser, updateToken, toValid, clearUser, requestHeaders } = useUser();
   const navigate = useNavigate();
 
@@ -28,9 +29,9 @@ const Login = () => {
     validateToken(requestHeaders())
       .then(r => {
         updateToken(r.headers['access-token'])
-        toValid();
+        setValid(true);
       })
-      .catch(clearUser());
+      .catch(() => clear());
   };
 
   const signUp = (e) => {
@@ -47,23 +48,28 @@ const Login = () => {
     e.preventDefault();
     signOut(requestHeaders())
       .then(r => {
-        clearUser();
+        clear();
       })
-      .catch(clearUser());
+      .catch(() => clear());
   };
 
   const deleteAccount = (e) => {
     e.preventDefault();
     deleteUser(requestHeaders())
       .then(r => {
-        clearUser();
+        clear();
       })
-      .catch(clearUser());
+      .catch(() => clear());
   }
 
   const redirectToHello = (e) => {
     e.preventDefault();
     navigate("/hello")
+  };
+
+  const clear = () => {
+    clearUser();
+    setValid(false);
   };
 
   return (
@@ -72,7 +78,7 @@ const Login = () => {
         <p>uid:{user.uid}</p>
         <p>client:{user.client}</p>
         <p>token:{user.token}</p>
-        <p>{user.valid ? "検証済み" : "未検証"}</p>
+        <p>{valid ? "検証済み" : "未検証"}</p>
         {
           (user.email === '') &&
             <form onSubmit={handleLogin}>
