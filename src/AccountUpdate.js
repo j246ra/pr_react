@@ -6,9 +6,9 @@ import { useUser } from "./providers/UserProvider"
 import { useNavigate } from "react-router-dom";
 
 const AccountUpdate = () => {
-  const [email, setEmail] = useState('');
+  const {user, updateUser, requestHeaders } = useUser();
+  const [email, setEmail] = useState(user.email);
   const [password, setPassword] = useState('');
-  const { updateUser, requestHeaders } = useUser();
   const navigate = useNavigate();
 
   const handleAccountUpdate = (e) => {
