@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Button, FormGroup, InputGroup, Intent, Card, Elevation } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
-import {deleteUser, signIn, signOut, validateToken} from "./lib/api/auth";
 import { useUser } from "./providers/UserProvider"
 import { useNavigate } from "react-router-dom";
+import session from "./lib/api/session";
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -11,13 +11,13 @@ const Login = () => {
   const [valid, setValid] = useState(false);
   const { user, createUser, updateUser, updateToken, clearUser, requestHeaders } = useUser();
   const navigate = useNavigate();
+  const api = session(requestHeaders());
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log('Email:', email, 'Password:', password);
     if (user.token !== '') return;
     createUser(email);
-    signIn(email, password)
+    api.signIn(email, password)
       .then(r => {
         if (r.status !== 200) return;
         updateUser(email, r.headers['uid'], r.headers['client'], r.headers['access-token']);
@@ -26,7 +26,7 @@ const Login = () => {
 
   const checkToken = (e) => {
     e.preventDefault();
-    validateToken(requestHeaders())
+    api.validate()
       .then(r => {
         updateToken(r.headers['access-token'])
         setValid(true);
@@ -46,7 +46,7 @@ const Login = () => {
 
   const logout = (e) => {
     e.preventDefault();
-    signOut(requestHeaders())
+    api.signOut(requestHeaders())
       .then(r => {
         clear();
       })
@@ -55,7 +55,7 @@ const Login = () => {
 
   const deleteAccount = (e) => {
     e.preventDefault();
-    deleteUser(requestHeaders())
+    api.deleteUser(requestHeaders())
       .then(r => {
         clear();
       })

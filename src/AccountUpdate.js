@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import { Button, FormGroup, InputGroup, Intent, Card, Elevation } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
-import {updateAccount} from "./lib/api/auth";
 import { useUser } from "./providers/UserProvider"
 import { useNavigate } from "react-router-dom";
+import session from "./lib/api/session";
 
 const AccountUpdate = () => {
   const {user, updateUser, requestHeaders } = useUser();
   const [email, setEmail] = useState(user.email);
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const api = session(requestHeaders());
 
   const handleAccountUpdate = (e) => {
     e.preventDefault();
     // TODO 入力チェック
-    updateAccount(requestHeaders(), email, password)
+    api.updateUser(email, password)
       .then(r => {
         if (r.status !== 200) return;
         updateUser(email, r.headers['uid'], r.headers['client'], r.headers['access-token']);

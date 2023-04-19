@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import { Button, FormGroup, InputGroup, Intent, Card, Elevation } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
-import { signUp } from "./lib/api/auth";
 import { useUser } from "./providers/UserProvider"
 import { useNavigate } from "react-router-dom";
+import session from "./lib/api/session";
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { clearUser, updateUser } = useUser();
+  const { clearUser, updateUser, requestHeaders } = useUser();
   const navigate = useNavigate();
+  const api = session(requestHeaders());
 
   const handleSignUp = (e) => {
     e.preventDefault();
     // TODO 入力チェック
-    signUp(email, password)
+    api.signUp(email, password)
       .then(r => {
         if (r.status !== 200) return;
         clearUser();
