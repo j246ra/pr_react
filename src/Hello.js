@@ -26,7 +26,8 @@ const Hello = () => {
         if(r.status === 401) clearUser();
         navigate('/login');
       });
-  },[])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
 
   const handleValidToken = (e) => {
     e.preventDefault();

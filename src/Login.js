@@ -14,7 +14,7 @@ const Login = () => {
 
   useEffect(() => {
     if(isLogin()) return navigate('/')
-  },[]);
+  },[isLogin, navigate]);
 
   const handleLogin = (e) => {
     e.preventDefault();
