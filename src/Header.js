@@ -13,11 +13,11 @@ const Header = () => {
     api.signOut()
       .then(() => {
         clearUser();
-        navigate('/');
+        navigate('/login');
       })
       .catch(() => {
         clearUser();
-        navigate('/');
+        navigate('/login');
       });
   };
 
