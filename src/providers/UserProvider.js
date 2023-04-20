@@ -40,6 +40,10 @@ export default function UserProvider({ children }){
     removeCookie('tokens');
   };
 
+  const isLogin = () => {
+    return user.token !== '';
+  }
+
   const requestHeaders = () => {
     return({
       "access-token": user.token,
@@ -49,7 +53,7 @@ export default function UserProvider({ children }){
   };
 
   return (
-    <UserContext.Provider value={{ user, createUser, updateUser, updateToken, clearUser, requestHeaders }}>
+    <UserContext.Provider value={{ user, createUser, updateUser, updateToken, clearUser, isLogin, requestHeaders }}>
       {children}
     </UserContext.Provider>
   );

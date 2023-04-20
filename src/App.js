@@ -4,10 +4,12 @@ import Login from "./Login";
 import SignUp from "./SignUp";
 import Hello from "./Hello";
 import AccountUpdate from "./AccountUpdate";
+import Header from "./Header";
 
 function App() {
   return (
     <div className="App">
+      <Header />
       <Routes>
         <Route
           path="/"
