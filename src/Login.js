@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import { Link } from "react-router-dom";
 import { Button, FormGroup, InputGroup, Intent, Card, Elevation } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import { useUser } from "./providers/UserProvider"
@@ -28,18 +29,9 @@ const Login = () => {
       });
   };
 
-  // 仮にここへ実装
-  const handleSignUp = (e) => {
-    e.preventDefault();
-    navigate('/sign_up');
-  };
-
   return (
     <div className="login-container">
       <Card elevation={Elevation.TWO} className="login-card">
-        <p>uid:{user.uid}</p>
-        <p>client:{user.client}</p>
-        <p>token:{user.token}</p>
         <form onSubmit={handleLogin}>
           <FormGroup
             label="メールアドレス"
@@ -76,14 +68,7 @@ const Login = () => {
             text="ログイン"
           />
         </form>
-        <form onSubmit={handleSignUp}>
-          <Button className="m-4"
-                  type="submit"
-                  intent={Intent.PRIMARY}
-                  icon={IconNames.ADD}
-                  text="新規登録"
-          />
-        </form>
+        <Link to={'/sign_up'}>新規登録</Link>
       </Card>
     </div>
   );
