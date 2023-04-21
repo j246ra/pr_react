@@ -2,21 +2,7 @@
 @import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 
 .App {
-  text-align: center;
-
-  .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  .m-4 {
+    margin: 4px;
   }
-
-  .login-card {
-    max-width: 500px;
-    padding: 20px;
-  }
-}
-
-.m-4 {
-  margin: 4px;
 }

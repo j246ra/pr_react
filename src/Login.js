@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Link } from "react-router-dom";
 import { Button, FormGroup, InputGroup, Intent, Card, Elevation } from '@blueprintjs/core';
-import { IconNames } from '@blueprintjs/icons';
+import "./Login.scss";
 import { useUser } from "./providers/UserProvider"
 import { useNavigate } from "react-router-dom";
 import session from "./lib/api/session";
@@ -64,11 +64,11 @@ const Login = () => {
           <Button
             type="submit"
             intent={Intent.PRIMARY}
-            icon={IconNames.KEY}
+            icon="log-in"
             text="ログイン"
           />
         </form>
-        <Link to={'/sign_up'}>新規登録</Link>
+        <Link className="sign-up-link" to={'/sign_up'}>新規登録</Link>
       </Card>
     </div>
   );
