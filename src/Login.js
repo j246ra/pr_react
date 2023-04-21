@@ -5,6 +5,9 @@ import "./Login.scss";
 import { useUser } from "./providers/UserProvider"
 import { useNavigate } from "react-router-dom";
 import session from "./lib/api/session";
+import AppToaster from "./lib/toaster";
+
+const toaster = AppToaster();
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -26,6 +29,18 @@ const Login = () => {
         if (r.status !== 200) return;
         updateUser(email, r.headers['uid'], r.headers['client'], r.headers['access-token']);
         navigate('/');
+        toaster.show({message: "ログイン成功"});
+      })
+      .catch((e) => {
+        const props = {
+          icon: "warning-sign",
+          intent: Intent.DANGER,
+          message: "認証に失敗しました。",
+        }
+        if (e.response.status === 401){
+          props.message = "認証に失敗しました。IDとパスワードをご確認ください。";
+        }
+        toaster.show(props);
       });
   };
 
