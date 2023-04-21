@@ -29,11 +29,11 @@ const Login = () => {
         if (r.status !== 200) return;
         updateUser(email, r.headers['uid'], r.headers['client'], r.headers['access-token']);
         navigate('/');
-        toaster.show({message: "ログイン成功"});
+        toaster.show({icon: 'info-sign', intent: Intent.SUCCESS, message: "ログイン成功"});
       })
       .catch((e) => {
         const props = {
-          icon: "warning-sign",
+          icon: "error",
           intent: Intent.DANGER,
           message: "認証に失敗しました。",
         }
