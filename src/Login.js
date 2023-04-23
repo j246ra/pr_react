@@ -83,7 +83,10 @@ const Login = () => {
             text="ログイン"
           />
         </form>
-        <Link className="sign-up-link" to={'/sign_up'}>新規登録</Link>
+        <div className={"links"}>
+          <Link className="password-forget-link" to={'/password_forget'}>パスワードを忘れた方</Link>
+          <Link className="sign-up-link" to={'/sign_up'}>新規登録</Link>
+        </div>
       </Card>
     </div>
   );
