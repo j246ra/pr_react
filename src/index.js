@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router} from "react-router-dom"
 import './index.css';
 import UserProvider from "./providers/UserProvider";
@@ -7,15 +7,17 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {CookiesProvider} from "react-cookie";
 
-render(
+const container = document.getElementById('root');
+const root = createRoot(container);
+
+root.render(
   <Router>
     <CookiesProvider>
       <UserProvider>
         <App />
       </UserProvider>
     </CookiesProvider>
-  </Router>,
-  document.getElementById('root')
+  </Router>
 );
 
 // If you want to start measuring performance in your app, pass a function
