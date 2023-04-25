@@ -3,7 +3,7 @@ import { Alert, Button, FormGroup, InputGroup, Card, Elevation } from '@blueprin
 import { useUser } from "./providers/UserProvider"
 import { useNavigate } from "react-router-dom";
 import session from "./lib/api/session";
-import accountUpdateValidator from "./validators/accountUpdateValidator";
+import accountUpdateValidator from "./validators/accountUpdate";
 
 const AccountUpdate = () => {
   const {user, updateUser, requestHeaders, clearUser } = useUser();

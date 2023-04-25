@@ -4,7 +4,7 @@ import { Button, FormGroup, InputGroup, Card, Elevation } from '@blueprintjs/cor
 import { useUser } from "./providers/UserProvider"
 import { useNavigate } from "react-router-dom";
 import session from "./lib/api/session";
-import signUpValidator from "./validators/signUpValidator";
+import signUpValidator from "./validators/signUp";
 import AppToaster from "./lib/toaster";
 
 const toaster = AppToaster();
