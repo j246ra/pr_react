@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Button, FormGroup, InputGroup, Intent, Card, Elevation } from '@blueprintjs/core';
-import { IconNames } from '@blueprintjs/icons';
+import { Button, FormGroup, InputGroup, Callout, Card, Elevation } from '@blueprintjs/core';
 import AppToaster from "./lib/toaster";
 import session from "./lib/api/session";
 import './PasswordForget.scss';
@@ -15,11 +14,11 @@ const PasswordForget = () => {
   const handlePasswordForget = (e) => {
     e.preventDefault();
     api.passwordForget(email)
-      .then(r => {
+      .then(() => {
         toaster.show({icon: 'info-sign', intent: "success", message: "パスワードリセットメールを送信しました。"});
         setSuccess(true); //todo 成功画面は別途作成する
       })
-      .catch(e => {
+      .catch(() => {
         toaster.show({icon: "error", intent: "danger", message: "送信に失敗しました。"});
       });
   };
@@ -28,6 +27,9 @@ const PasswordForget = () => {
     <div className="mail-send-container">
       { success ? <h3>送信に成功しました。メールをご確認ください。</h3> :
         <Card elevation={Elevation.TWO} className="mail-send-card">
+          <Callout className="mail-send-callout" icon="info-sign" intent="primary">
+            パスワードリセットメールの送信先を入力してください。
+          </Callout>
           <form onSubmit={handlePasswordForget}>
             <FormGroup
               label="メールアドレス"
@@ -45,8 +47,8 @@ const PasswordForget = () => {
             </FormGroup>
             <Button
               type="submit"
-              intent={Intent.PRIMARY}
-              icon={IconNames.KEY}
+              intent="primary"
+              icon="envelope"
               text="送信"
             />
           </form>
