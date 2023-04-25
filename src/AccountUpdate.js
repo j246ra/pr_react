@@ -1,21 +1,25 @@
 import React, { useState } from 'react';
-import { Button, FormGroup, InputGroup, Intent, Card, Elevation } from '@blueprintjs/core';
-import { IconNames } from '@blueprintjs/icons';
+import { Alert, Button, FormGroup, InputGroup, Card, Elevation } from '@blueprintjs/core';
 import { useUser } from "./providers/UserProvider"
 import { useNavigate } from "react-router-dom";
 import session from "./lib/api/session";
+import accountUpdateValidator from "./validators/accountUpdateValidator";
 
 const AccountUpdate = () => {
   const {user, updateUser, requestHeaders, clearUser } = useUser();
   const [email, setEmail] = useState(user.email);
   const [password, setPassword] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const api = session(requestHeaders());
 
   const handleAccountUpdate = (e) => {
     e.preventDefault();
-    // TODO 入力チェック
-    api.updateUser(email, password)
+    if(accountUpdateValidator(email, password).isInvalid) return;
+    let params = { };
+    if(email !== '') params = { ...params, email };
+    if(password !== '') params = { ...params, password };
+    api.updateUser(params)
       .then(r => {
         if (r.status !== 200) return;
         updateUser(email, r.headers['uid'], r.headers['client'], r.headers['access-token']);
@@ -23,11 +27,18 @@ const AccountUpdate = () => {
       });
   };
 
+  const handleOpenAlert = () => {
+    setIsOpen(true);
+  };
+  const handleCloseAlert = () => {
+    setIsOpen(false);
+  };
   const handleAccountDelete = (e) => {
     e.preventDefault();
     api.deleteUser(requestHeaders())
       .finally(()=> {
         clearUser();
+        handleCloseAlert();
         navigate('/login');
       });
   };
@@ -39,7 +50,6 @@ const AccountUpdate = () => {
           <FormGroup
             label="メールアドレス"
             labelFor="email-input"
-            labelInfo="(必須)"
           >
             <InputGroup
               id="email-input"
@@ -47,13 +57,11 @@ const AccountUpdate = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
             />
           </FormGroup>
           <FormGroup
             label="パスワード"
             labelFor="password-input"
-            labelInfo="(必須)"
           >
             <InputGroup
               id="password-input"
@@ -61,25 +69,38 @@ const AccountUpdate = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
             />
           </FormGroup>
           <Button
             type="submit"
-            intent={Intent.PRIMARY}
-            icon={IconNames.KEY}
+            intent="primary"
+            icon="floppy-disk"
             text="更新"
           />
         </form>
-        <form onSubmit={handleAccountDelete}>
-          <Button
-            type="submit"
-            intent={Intent.PRIMARY}
-            icon={IconNames.KEY}
-            text="削除"
-          />
-        </form>
-
+        <a
+          style={{
+            color: 'red',
+            fontWeight: 'bold',
+            textDecoration: 'none'
+          }}
+          href="#"
+          onClick={handleOpenAlert}
+        >
+          アカウント削除
+        </a>
+        <Alert isOpen={isOpen}
+               cancelButtonText="キャンセル"
+               onCancel={handleCloseAlert}
+               confirmButtonText="削除"
+               onConfirm={handleAccountDelete}
+               intent="danger"
+               icon="trash"
+               canEscapeKeyCancel={true}
+               canOutsideClickCancel={true}
+        >
+          本当にアカウントを削除しますか？
+        </Alert>
       </Card>
     </div>
   );
