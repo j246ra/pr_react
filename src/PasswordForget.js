@@ -14,7 +14,7 @@ const PasswordForget = () => {
 
   const handlePasswordForget = (e) => {
     e.preventDefault();
-    api.passwordReset(email)
+    api.passwordForget(email)
       .then(r => {
         toaster.show({icon: 'info-sign', intent: "success", message: "パスワードリセットメールを送信しました。"});
         setSuccess(true); //todo 成功画面は別途作成する
