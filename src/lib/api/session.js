@@ -7,7 +7,8 @@ export default function session(headers){
   const signOut = () => client.delete('/auth/sign_out', {headers})
   const deleteUser = () => client.delete('/auth', {headers})
   const validate = () => client.get("/auth/validate_token", {headers});
-  const passwordForget = (email) => client.post("/auth/password", {email, redirect_url: `${process.env.REACT_APP_HOST_URL}/sign_up`});
+  const passwordForget = (email) => client.post("/auth/password", {email, redirect_url: `${process.env.REACT_APP_HOST_URL}/password_edit`});
+  const passwordReset = (password, passwordConfirmation) => client.put("/auth/password", {password, password_confirmation: passwordConfirmation}, {headers})
 
-  return {signIn, signUp, updateUser, signOut, deleteUser, validate, passwordForget}
+  return {signIn, signUp, updateUser, signOut, deleteUser, validate, passwordForget, passwordReset}
 }

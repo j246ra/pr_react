@@ -6,6 +6,7 @@ import Hello from "./Hello";
 import AccountUpdate from "./AccountUpdate";
 import Header from "./Header";
 import PasswordForget from "./PasswordForget";
+import PasswordEdit from "./PasswordEdit";
 
 function App() {
   return (
@@ -31,6 +32,10 @@ function App() {
         <Route
           path="/password_forget"
           element={<PasswordForget />}
+        />
+        <Route
+          path="/password_edit"
+          element={<PasswordEdit />}
         />
         <Route
           path="/hello"
