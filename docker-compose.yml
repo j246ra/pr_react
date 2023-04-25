@@ -17,5 +17,6 @@ services:
     command: sh -c "yarn install&&yarn start"
     environment:
       WDS_SOCKET_PORT: ${HOST_PORT:-3000}
+      REACT_APP_HOST_URL: ${HOST_URL:-http://localhost:3000}
 volumes:
   node_modules:

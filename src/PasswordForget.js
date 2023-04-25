@@ -1,26 +1,34 @@
 import React, { useState } from 'react';
 import { Button, FormGroup, InputGroup, Intent, Card, Elevation } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
-import { useNavigate } from "react-router-dom";
 import AppToaster from "./lib/toaster";
+import session from "./lib/api/session";
+import './PasswordForget.scss';
 
 const toaster = AppToaster();
 
-const PasswordReset = () => {
+const PasswordForget = () => {
+  const [success, setSuccess] = useState(false);
   const [email, setEmail] = useState('');
-  const navigate = useNavigate();
+  const api = session();
 
-  const handlePasswordReset = (e) => {
+  const handlePasswordForget = (e) => {
     e.preventDefault();
-    toaster.show({icon: 'info-sign', message: "未実装"});
-    navigate('/');
+    api.passwordReset(email)
+      .then(r => {
+        toaster.show({icon: 'info-sign', intent: "success", message: "パスワードリセットメールを送信しました。"});
+        setSuccess(true); //todo 成功画面は別途作成する
+      })
+      .catch(e => {
+        toaster.show({icon: "error", intent: "danger", message: "送信に失敗しました。"});
+      });
   };
 
   return (
-    <div className="login-container">
-      <Card elevation={Elevation.TWO} className="login-card">
-        {
-          <form onSubmit={handlePasswordReset}>
+    <div className="mail-send-container">
+      { success ? <h3>送信に成功しました。メールをご確認ください。</h3> :
+        <Card elevation={Elevation.TWO} className="mail-send-card">
+          <form onSubmit={handlePasswordForget}>
             <FormGroup
               label="メールアドレス"
               labelFor="email-input"
@@ -42,10 +50,10 @@ const PasswordReset = () => {
               text="送信"
             />
           </form>
-        }
-      </Card>
+        </Card>
+      }
     </div>
   );
 };
 
-export default PasswordReset;
+export default PasswordForget;

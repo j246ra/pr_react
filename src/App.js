@@ -5,7 +5,7 @@ import SignUp from "./SignUp";
 import Hello from "./Hello";
 import AccountUpdate from "./AccountUpdate";
 import Header from "./Header";
-import PasswordReset from "./PasswordReset";
+import PasswordForget from "./PasswordForget";
 
 function App() {
   return (
@@ -30,7 +30,7 @@ function App() {
         />
         <Route
           path="/password_forget"
-          element={<PasswordReset />}
+          element={<PasswordForget />}
         />
         <Route
           path="/hello"
