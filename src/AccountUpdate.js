@@ -78,17 +78,14 @@ const AccountUpdate = () => {
             text="更新"
           />
         </form>
-        <a
-          style={{
-            color: 'red',
-            fontWeight: 'bold',
-            textDecoration: 'none'
-          }}
-          href="#"
+        <Button
+          text="アカウント削除"
+          icon="trash"
+          intent="danger"
           onClick={handleOpenAlert}
-        >
-          アカウント削除
-        </a>
+          minimal={true}
+          small={true}
+        />
         <Alert isOpen={isOpen}
                cancelButtonText="キャンセル"
                onCancel={handleCloseAlert}
