@@ -6,6 +6,7 @@ services:
       - "80:80"
     volumes:
       - ./build:/usr/share/nginx/html:ro
+      - ./containers/web/default.conf:/etc/nginx/conf.d/default.conf:ro
   react:
     image: node:16.20-buster-slim
     ports:
