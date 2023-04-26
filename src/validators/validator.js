@@ -1,5 +1,4 @@
-import AppToaster from ".././lib/toaster";
-const toaster = AppToaster();
+import toast from 'react-hot-toast';
 
 export default function validator() {
   const emailRegex = /^[\w+\-.]+@[a-zA-Z\d\-.]+\.[a-zA-Z]+$/
@@ -10,7 +9,7 @@ export default function validator() {
   }
 
   const addError = (message) => {
-    toaster.show({icon: 'error', intent: 'danger', message});
+    toast.error(message, {style: {color: 'red'}});
     result.isInvalid = true;
     result.message.push(message);
   };

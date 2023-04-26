@@ -5,9 +5,7 @@ import { useUser } from "./providers/UserProvider"
 import { useNavigate } from "react-router-dom";
 import session from "./lib/api/session";
 import signUpValidator from "./validators/signUp";
-import AppToaster from "./lib/toaster";
-
-const toaster = AppToaster();
+import toast from 'react-hot-toast';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -24,16 +22,16 @@ const SignUp = () => {
         if (r.status !== 200) return;
         clearUser();
         updateUser(email, r.headers['uid'], r.headers['client'], r.headers['access-token']);
-        toaster.show({icon: 'info-sign', intent: "success", message: "アカウント作成に成功しました"});
+        toast.success('アカウント作成に成功しました')
         navigate('/');
       })
       .catch(e => {
         clearUser();
         if(e.response === undefined){
-          toaster.show({icon: 'error', intent: "danger", message: `想定外のサーバーが発生しました (${e.message})`});
+          toast.error(`想定外のサーバーが発生しました (${e.message})`, {style: {color: 'red'}});
         }else{
           e.response.data.errors.fullMessages.forEach((message)=>{
-            toaster.show({icon: 'error', intent: "danger", message});
+            toast.error(message, {style: {color: 'red'}});
           });
         }
     });

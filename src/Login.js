@@ -5,9 +5,7 @@ import "./Login.scss";
 import { useUser } from "./providers/UserProvider"
 import { useNavigate } from "react-router-dom";
 import session from "./lib/api/session";
-import AppToaster from "./lib/toaster";
-
-const toaster = AppToaster();
+import toast from 'react-hot-toast';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -29,7 +27,7 @@ const Login = () => {
         if (r.status !== 200) return;
         updateUser(email, r.headers['uid'], r.headers['client'], r.headers['access-token']);
         navigate('/');
-        toaster.show({icon: 'info-sign', intent: Intent.SUCCESS, message: "ログイン成功"});
+        toast.success("ログイン成功");
       })
       .catch((e) => {
         const props = {
@@ -40,7 +38,7 @@ const Login = () => {
         if (e.response.status === 401){
           props.message = "認証に失敗しました。IDとパスワードをご確認ください。";
         }
-        toaster.show(props);
+        toast.error(props.message, {style: {color: 'red'}});
       });
   };
 

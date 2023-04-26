@@ -7,10 +7,12 @@ import AccountUpdate from "./AccountUpdate";
 import Header from "./Header";
 import PasswordForget from "./PasswordForget";
 import PasswordEdit from "./PasswordEdit";
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
     <div className="App">
+      <Toaster />
       <Header />
       <Routes>
         <Route

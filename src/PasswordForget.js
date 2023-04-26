@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { Button, FormGroup, InputGroup, Callout, Card, Elevation } from '@blueprintjs/core';
-import AppToaster from "./lib/toaster";
 import session from "./lib/api/session";
 import './PasswordForget.scss';
-
-const toaster = AppToaster();
+import toast from 'react-hot-toast';
 
 const PasswordForget = () => {
   const [success, setSuccess] = useState(false);
@@ -15,11 +13,11 @@ const PasswordForget = () => {
     e.preventDefault();
     api.passwordForget(email)
       .then(() => {
-        toaster.show({icon: 'info-sign', intent: "success", message: "パスワードリセットメールを送信しました。"});
+        toast.success("パスワードリセットメールを送信しました。");
         setSuccess(true); //todo 成功画面は別途作成する
       })
       .catch(() => {
-        toaster.show({icon: "error", intent: "danger", message: "送信に失敗しました。"});
+        toast.error('送信に失敗しました。', {style: {color: 'red'}});
       });
   };
 
