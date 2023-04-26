@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { Button, FormGroup, InputGroup, Intent, Card, Elevation } from '@blueprintjs/core';
-import { IconNames } from '@blueprintjs/icons';
+import { Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
 import session from "./lib/api/session";
-import './PasswordEdit.scss';
 import { useNavigate, useSearchParams } from "react-router-dom";
 import toast from 'react-hot-toast';
 
@@ -35,8 +33,8 @@ const PasswordEdit = () => {
   };
 
   return (
-    <div className="password-edit-container">
-      <Card elevation={Elevation.TWO} className="password-edit-card">
+    <div className='session-container'>
+      <Card elevation='2' className='session-card'>
         <form onSubmit={handlePasswordConfirmation}>
           <FormGroup
             label="パスワード"
@@ -68,8 +66,8 @@ const PasswordEdit = () => {
           </FormGroup>
           <Button
             type="submit"
-            intent={Intent.PRIMARY}
-            icon={IconNames.KEY}
+            intent="primary"
+            icon='key'
             text="パスワード変更"
           />
         </form>

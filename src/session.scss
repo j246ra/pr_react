@@ -1,14 +1,14 @@
-.mail-send-container {
+.session-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: calc(100vh - 50px);
 
-  .mail-send-card {
+  .session-card {
     width: 280px;
     padding: 20px;
 
-    .mail-send-callout {
+    .session-callout {
       margin-bottom: 10px;
     }
 

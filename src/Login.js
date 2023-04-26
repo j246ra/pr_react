@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { Link } from "react-router-dom";
-import { Button, FormGroup, InputGroup, Intent, Card, Elevation } from '@blueprintjs/core';
-import "./Login.scss";
+import { Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
 import { useUser } from "./providers/UserProvider"
 import { useNavigate } from "react-router-dom";
 import session from "./lib/api/session";
@@ -32,7 +31,7 @@ const Login = () => {
       .catch((e) => {
         const props = {
           icon: "error",
-          intent: Intent.DANGER,
+          intent: "danger",
           message: "認証に失敗しました。",
         }
         if (e.response.status === 401){
@@ -43,8 +42,8 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      <Card elevation={Elevation.TWO} className="login-card">
+    <div className="session-container">
+      <Card elevation='2' className="session-card">
         <form onSubmit={handleLogin}>
           <FormGroup
             label="メールアドレス"
@@ -76,7 +75,7 @@ const Login = () => {
           </FormGroup>
           <Button
             type="submit"
-            intent={Intent.PRIMARY}
+            intent="primary"
             icon="log-in"
             text="ログイン"
           />

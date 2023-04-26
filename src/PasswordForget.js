@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Button, FormGroup, InputGroup, Callout, Card, Elevation } from '@blueprintjs/core';
+import { Button, FormGroup, InputGroup, Callout, Card } from '@blueprintjs/core';
 import session from "./lib/api/session";
-import './PasswordForget.scss';
 import toast from 'react-hot-toast';
 
 const PasswordForget = () => {
@@ -22,10 +21,10 @@ const PasswordForget = () => {
   };
 
   return (
-    <div className="mail-send-container">
+    <div className='session-container'>
       { success ? <h3>送信に成功しました。メールをご確認ください。</h3> :
-        <Card elevation={Elevation.TWO} className="mail-send-card">
-          <Callout className="mail-send-callout" icon="info-sign" intent="primary">
+        <Card elevation='2' className='session-card'>
+          <Callout className="session-callout" icon="info-sign" intent="primary">
             パスワードリセットメールの送信先を入力してください。
           </Callout>
           <form onSubmit={handlePasswordForget}>

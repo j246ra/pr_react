@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Button, FormGroup, InputGroup, Card, Elevation } from '@blueprintjs/core';
+import { Alert, Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
 import { useUser } from "./providers/UserProvider"
 import { useNavigate } from "react-router-dom";
 import session from "./lib/api/session";
@@ -44,8 +44,8 @@ const AccountUpdate = () => {
   };
 
   return (
-    <div className="login-container">
-      <Card elevation={Elevation.TWO} className="login-card">
+    <div className='session-container'>
+      <Card elevation='2' className='session-card'>
         <form onSubmit={handleAccountUpdate}>
           <FormGroup
             label="メールアドレス"
