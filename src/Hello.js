@@ -5,15 +5,13 @@ import {useNavigate} from "react-router-dom"
 import {useUser} from "./providers/UserProvider";
 import {useEffect, useState} from "react";
 import test from "./lib/api/test";
-import session from "./lib/api/session";
 
 const Hello = () => {
-  const { user ,requestHeaders, updateToken, clearUser, isLogin } = useUser();
+  const { user ,requestHeaders, updateToken, clearUser, isLogin, api: authApi } = useUser();
   const [ valid, setValid ] = useState(false)
   const navigate = useNavigate();
   const [message, setMessage] = useState('');
   const api = test(requestHeaders());
-  const authApi = session(requestHeaders());
 
   useEffect(() => {
     if(!isLogin()) return navigate('/login');

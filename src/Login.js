@@ -3,15 +3,13 @@ import { Link } from "react-router-dom";
 import { Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
 import { useUser } from "./providers/UserProvider"
 import { useNavigate } from "react-router-dom";
-import session from "./lib/api/session";
 import toast from 'react-hot-toast';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { user, createUser, updateUser, requestHeaders, isLogin } = useUser();
+  const { user, createUser, updateUser, isLogin, api } = useUser();
   const navigate = useNavigate();
-  const api = session(requestHeaders());
 
   useEffect(() => {
     if(isLogin()) return navigate('/')

@@ -3,16 +3,14 @@ import { Link } from "react-router-dom";
 import { Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
 import { useUser } from "./providers/UserProvider"
 import { useNavigate } from "react-router-dom";
-import session from "./lib/api/session";
 import signUpValidator from "./validators/signUp";
 import toast from 'react-hot-toast';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { clearUser, updateUser, requestHeaders } = useUser();
+  const { clearUser, updateUser, api } = useUser();
   const navigate = useNavigate();
-  const api = session(requestHeaders());
 
   const handleSignUp = (e) => {
     e.preventDefault();
