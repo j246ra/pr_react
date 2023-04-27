@@ -3,8 +3,9 @@ import { Button, Intent, Card, Elevation } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import {useNavigate} from "react-router-dom"
 import {useUser} from "./providers/UserProvider";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import test from "./lib/api/test";
+import {useInitialize} from "./hooks/useInitialize";
 
 const Hello = () => {
   const { user ,requestHeaders, updateToken, clearUser, isLogin, api: authApi } = useUser();
@@ -13,19 +14,18 @@ const Hello = () => {
   const [message, setMessage] = useState('');
   const api = test(requestHeaders());
 
-  useEffect(() => {
-    if(!isLogin()) return navigate('/login');
+  useInitialize(() => {
+    if (!isLogin()) return navigate('/login');
     api.hello()
       .then(r => {
         updateToken(r.headers['access-token']); // TODO: トークン更新処理の共通化
         setMessage(r.data.message);
       })
       .catch((r) => {
-        if(r.status === 401) clearUser();
+        if (r.status === 401) clearUser();
         navigate('/login');
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
+    }, [isLogin, navigate, api, updateToken, setMessage, clearUser]);
 
   const handleValidToken = (e) => {
     e.preventDefault();
@@ -44,7 +44,7 @@ const Hello = () => {
 
   return(
     <div className="hello">
-      <h2>{message}</h2>
+      <h2 style={{textAlign: 'center'}}>{message}</h2>
       <div className="hello-container">
         <Card elevation={Elevation.TWO} className="hello-card">
           <p>uid:{user.uid}</p>
