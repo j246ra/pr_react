@@ -1,16 +1,16 @@
 import React from "react";
 import { Button, Navbar, Alignment, Popover, Menu, MenuItem, MenuDivider } from '@blueprintjs/core';
-import session from "./lib/api/session";
 import {useUser} from "./providers/UserProvider";
 import {useNavigate} from "react-router-dom"
+import {useAuth} from "./providers/AuthApiProvider";
 
 const Header = () => {
   const navigate = useNavigate();
-  const {isLogin, requestHeaders, clearUser} = useUser();
-  const api = session(requestHeaders());
+  const { isLogin, clearUser } = useUser();
+  const { authApi } = useAuth();
 
   const handleLogout = () => {
-    api.signOut()
+    authApi.signOut()
       .then(() => {
         clearUser();
         navigate('/login');

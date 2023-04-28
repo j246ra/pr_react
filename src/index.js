@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router} from "react-router-dom"
 import './index.css';
 import UserProvider from "./providers/UserProvider";
+import AuthApiProvider from "./providers/AuthApiProvider";
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {CookiesProvider} from "react-cookie";
@@ -14,7 +15,9 @@ root.render(
   <Router>
     <CookiesProvider>
       <UserProvider>
-        <App />
+        <AuthApiProvider>
+          <App />
+        </AuthApiProvider>
       </UserProvider>
     </CookiesProvider>
   </Router>

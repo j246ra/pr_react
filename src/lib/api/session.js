@@ -1,6 +1,9 @@
 import client from "./client";
 
-export default function session(headers){
+export default function session(headers, responseInterceptor, errorInterceptor){
+  if(responseInterceptor !== undefined && errorInterceptor !== undefined)
+    client.interceptors.response.use(responseInterceptor, errorInterceptor);
+
   const signIn = (email, password) => client.post("/auth/sign_in", { email, password })
   const signUp = (email, password) => client.post('/auth', {email, password})
   const updateUser = (params) => client.put('/auth', params,{headers})

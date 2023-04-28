@@ -7,9 +7,11 @@ import {useState} from "react";
 import {useInitialize} from "./hooks/useInitialize";
 import toast from 'react-hot-toast';
 import {useLifelog} from "./providers/LifelogApiProvider";
+import {useAuth} from "./providers/AuthApiProvider";
 
 const Hello = () => {
-  const { user , updateToken, clearUser, isLogin, api: authApi } = useUser();
+  const { user , clearUser, isLogin } = useUser();
+  const { authApi } = useAuth();
   const { lifelogApi: testApi } = useLifelog();
   const [ valid, setValid ] = useState(false)
   const navigate = useNavigate();
@@ -27,8 +29,7 @@ const Hello = () => {
   const handleValidToken = (e) => {
     e.preventDefault();
     authApi.validate()
-      .then(r => {
-        updateToken(r.headers['access-token'])
+      .then(() => {
         setValid(true);
       })
       .catch(() => clear());

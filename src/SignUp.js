@@ -5,17 +5,18 @@ import { useUser } from "./providers/UserProvider"
 import { useNavigate } from "react-router-dom";
 import signUpValidator from "./validators/signUp";
 import toast from 'react-hot-toast';
+import session from "./lib/api/session";
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { clearUser, updateUser, api } = useUser();
+  const { clearUser, updateUser } = useUser();
   const navigate = useNavigate();
 
   const handleSignUp = (e) => {
     e.preventDefault();
     if(signUpValidator(email, password).isInvalid) return;
-    api.signUp(email, password)
+    session().signUp(email, password)
       .then(r => {
         if (r.status !== 200) return;
         clearUser();

@@ -4,22 +4,23 @@ import { Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
 import { useUser } from "./providers/UserProvider"
 import { useNavigate } from "react-router-dom";
 import toast from 'react-hot-toast';
+import session from "./lib/api/session";
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { user, createUser, updateUser, isLogin, api } = useUser();
+  const { createUser, updateUser, clearUser, isLogin } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(isLogin()) return navigate('/')
+    if(isLogin()) return navigate('/');
   },[isLogin, navigate]);
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (user.token !== '') return;
+    clearUser();
     createUser(email);
-    api.signIn(email, password)
+    session().signIn(email, password)
       .then(r => {
         if (r.status !== 200) return;
         updateUser(email, r.headers['uid'], r.headers['client'], r.headers['access-token']);

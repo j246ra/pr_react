@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { Alert, Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
 import { useUser } from "./providers/UserProvider"
 import { useNavigate } from "react-router-dom";
-import session from "./lib/api/session";
 import accountUpdateValidator from "./validators/accountUpdate";
+import { useAuth } from "./providers/AuthApiProvider";
 
 const AccountUpdate = () => {
-  const {user, updateUser, requestHeaders, clearUser } = useUser();
+  const { user, updateUser, clearUser } = useUser();
+  const { authApi } = useAuth();
   const [email, setEmail] = useState(user.email);
   const [password, setPassword] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-  const api = session(requestHeaders());
 
   const handleAccountUpdate = (e) => {
     e.preventDefault();
@@ -19,7 +19,7 @@ const AccountUpdate = () => {
     let params = { };
     if(email !== '') params = { ...params, email };
     if(password !== '') params = { ...params, password };
-    api.updateUser(params)
+    authApi.updateUser(params)
       .then(r => {
         if (r.status !== 200) return;
         updateUser(email, r.headers['uid'], r.headers['client'], r.headers['access-token']);
@@ -35,7 +35,7 @@ const AccountUpdate = () => {
   };
   const handleAccountDelete = (e) => {
     e.preventDefault();
-    api.deleteUser(requestHeaders())
+    authApi.deleteUser()
       .finally(()=> {
         clearUser();
         handleCloseAlert();

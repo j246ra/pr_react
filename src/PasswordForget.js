@@ -6,11 +6,10 @@ import toast from 'react-hot-toast';
 const PasswordForget = () => {
   const [success, setSuccess] = useState(false);
   const [email, setEmail] = useState('');
-  const api = session();
 
   const handlePasswordForget = (e) => {
     e.preventDefault();
-    api.passwordForget(email)
+    session().passwordForget(email)
       .then(() => {
         toast.success("パスワードリセットメールを送信しました。");
         setSuccess(true); //todo 成功画面は別途作成する

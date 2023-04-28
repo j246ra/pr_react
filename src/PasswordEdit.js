@@ -10,12 +10,11 @@ const PasswordEdit = () => {
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
 
   let [params] = useSearchParams();
-  const headers = {
+  const api = session({
     "access-token": params.get("access-token"),
     client: params.get("client"),
-    uid: params.get("uid"),
-  }
-  const api = session(headers);
+    uid: params.get("uid")
+  });
 
   const handlePasswordConfirmation = (e) => {
     e.preventDefault();

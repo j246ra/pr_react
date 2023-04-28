@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext } from "react";
 import {useCookies} from "react-cookie";
-import session from "../lib/api/session";
 
 const UserContext = createContext();
 export const useUser = () => useContext(UserContext);
@@ -42,7 +41,7 @@ export default function UserProvider({ children }){
   };
 
   const isLogin = () => {
-    return user.token !== '';
+    return (user.email !== '' && user.uid !== '' && user.client !== '' && user.token !== '');
   }
 
   const requestHeaders = () => {
@@ -53,10 +52,8 @@ export default function UserProvider({ children }){
     });
   };
 
-  const api = session(requestHeaders());
-
   return (
-    <UserContext.Provider value={{ user, createUser, updateUser, updateToken, clearUser, isLogin, requestHeaders, api }}>
+    <UserContext.Provider value={{ user, createUser, updateUser, updateToken, clearUser, isLogin, requestHeaders }}>
       {children}
     </UserContext.Provider>
   );
