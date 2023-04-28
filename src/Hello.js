@@ -6,9 +6,11 @@ import {useUser} from "./providers/UserProvider";
 import {useState} from "react";
 import {useInitialize} from "./hooks/useInitialize";
 import toast from 'react-hot-toast';
+import {useLifelog} from "./providers/LifelogApiProvider";
 
 const Hello = () => {
-  const { user , updateToken, clearUser, isLogin, api: authApi, testApi } = useUser();
+  const { user , updateToken, clearUser, isLogin, api: authApi } = useUser();
+  const { lifelogApi: testApi } = useLifelog();
   const [ valid, setValid ] = useState(false)
   const navigate = useNavigate();
   const [message, setMessage] = useState('');
