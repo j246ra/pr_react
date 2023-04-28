@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext } from "react";
 import {useCookies} from "react-cookie";
 import session from "../lib/api/session";
+import test from "../lib/api/test";
 
 const UserContext = createContext();
 export const useUser = () => useContext(UserContext);
@@ -55,8 +56,18 @@ export default function UserProvider({ children }){
 
   const api = session(requestHeaders());
 
+  const responseInterceptor = (response) => {
+    updateToken(response.headers['access-token']);
+    return response;
+  };
+  const errorInterceptor = (error) => {
+    if (error?.status === 401) clearUser();
+    return Promise.reject(error);
+  };
+  const testApi = test(requestHeaders(), responseInterceptor, errorInterceptor)
+
   return (
-    <UserContext.Provider value={{ user, createUser, updateUser, updateToken, clearUser, isLogin, requestHeaders, api }}>
+    <UserContext.Provider value={{ user, createUser, updateUser, updateToken, clearUser, isLogin, requestHeaders, api, testApi }}>
       {children}
     </UserContext.Provider>
   );

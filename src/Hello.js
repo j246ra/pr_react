@@ -4,28 +4,23 @@ import { IconNames } from '@blueprintjs/icons';
 import {useNavigate} from "react-router-dom"
 import {useUser} from "./providers/UserProvider";
 import {useState} from "react";
-import test from "./lib/api/test";
 import {useInitialize} from "./hooks/useInitialize";
+import toast from 'react-hot-toast';
 
 const Hello = () => {
-  const { user ,requestHeaders, updateToken, clearUser, isLogin, api: authApi } = useUser();
+  const { user , updateToken, clearUser, isLogin, api: authApi, testApi } = useUser();
   const [ valid, setValid ] = useState(false)
   const navigate = useNavigate();
   const [message, setMessage] = useState('');
-  const api = test(requestHeaders());
 
   useInitialize(() => {
-    if (!isLogin()) return navigate('/login');
-    api.hello()
-      .then(r => {
-        updateToken(r.headers['access-token']); // TODO: トークン更新処理の共通化
-        setMessage(r.data.message);
-      })
-      .catch((r) => {
-        if (r.status === 401) clearUser();
-        navigate('/login');
-      });
-    }, [isLogin, navigate, api, updateToken, setMessage, clearUser]);
+      if (!isLogin()) return navigate('/login');
+      testApi.hello()
+          .then(r => setMessage(r.data.message))
+          .catch(e => {
+              toast.error(e.message, {style: {color: 'red'}});
+          });
+  }, []);
 
   const handleValidToken = (e) => {
     e.preventDefault();
