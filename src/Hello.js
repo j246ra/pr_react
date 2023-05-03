@@ -1,30 +1,21 @@
 import './Hello.css';
 import { Button, Intent, Card, Elevation } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
-import {useNavigate} from "react-router-dom"
+import {useLoaderData} from "react-router-dom"
 import {useUser} from "./providers/UserProvider";
 import {useEffect, useState} from "react";
-import toast from 'react-hot-toast';
-import {useLifelog} from "./providers/LifelogApiProvider";
 import {useAuth} from "./providers/AuthApiProvider";
 
 const Hello = () => {
-  const { user , clearUser, isLogin } = useUser();
+  const { user , clearUser } = useUser();
   const { authApi } = useAuth();
-  const { lifelogApi: testApi } = useLifelog();
   const [ valid, setValid ] = useState(false)
-  const navigate = useNavigate();
   const [message, setMessage] = useState('');
 
-  useEffect(() => {
-    if (!isLogin()) return navigate('/login');
-    testApi.hello()
-      .then(r => setMessage(r.data.message))
-      .catch(e => {
-        toast.error(e.message, {style: {color: 'red'}});
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+  const response = useLoaderData();
+  useEffect(()=>{
+    setMessage(response.message);
+  },[response.message])
 
   const handleValidToken = (e) => {
     e.preventDefault();
