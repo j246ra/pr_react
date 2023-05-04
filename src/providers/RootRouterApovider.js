@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, redirect } from 'react-router-dom';
 import App from "../App";
 import Hello from "../Hello";
 import Login from "../Login";
@@ -15,7 +15,7 @@ const RootRouterProvider = () => {
       children: [
         {
           index: true,
-          element: <Hello/>
+          loader: () => redirect('/hello')
         },
         {
           path: '/login',
