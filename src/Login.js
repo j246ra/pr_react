@@ -13,7 +13,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(isLogin()) return navigate('/');
+    if(isLogin()) return navigate('/hello');
   },[isLogin, navigate]);
 
   const handleLogin = (e) => {
