@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import { Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
-import { useUser } from "./providers/UserProvider"
-import { useNavigate } from "react-router-dom";
-import signUpValidator from "./validators/signUp";
+import { useUser } from './providers/UserProvider';
+import { useNavigate } from 'react-router-dom';
+import signUpValidator from './validators/signUp';
 import toast from 'react-hot-toast';
-import session from "./lib/api/session";
+import session from './lib/api/session';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -15,30 +15,38 @@ const SignUp = () => {
 
   const handleSignUp = (e) => {
     e.preventDefault();
-    if(signUpValidator(email, password).isInvalid) return;
-    session().signUp(email, password)
-      .then(r => {
+    if (signUpValidator(email, password).isInvalid) return;
+    session()
+      .signUp(email, password)
+      .then((r) => {
         if (r.status !== 200) return;
         clearUser();
-        updateUser(email, r.headers['uid'], r.headers['client'], r.headers['access-token']);
-        toast.success('アカウント作成に成功しました')
+        updateUser(
+          email,
+          r.headers['uid'],
+          r.headers['client'],
+          r.headers['access-token']
+        );
+        toast.success('アカウント作成に成功しました');
         navigate('/');
       })
-      .catch(e => {
+      .catch((e) => {
         clearUser();
-        if(e.response === undefined){
-          toast.error(`想定外のサーバーが発生しました (${e.message})`, {style: {color: 'red'}});
-        }else{
-          e.response.data.errors.fullMessages.forEach((message)=>{
-            toast.error(message, {style: {color: 'red'}});
+        if (e.response === undefined) {
+          toast.error(`想定外のサーバーが発生しました (${e.message})`, {
+            style: { color: 'red' },
+          });
+        } else {
+          e.response.data.errors.fullMessages.forEach((message) => {
+            toast.error(message, { style: { color: 'red' } });
           });
         }
-    });
+      });
   };
 
   return (
-    <div className='session-container'>
-      <Card elevation='2' className='session-card'>
+    <div className="session-container">
+      <Card elevation="2" className="session-card">
         {
           <form onSubmit={handleSignUp}>
             <FormGroup
@@ -77,8 +85,10 @@ const SignUp = () => {
             />
           </form>
         }
-        <div className={"links"}>
-          <Link className="password-forget-link" to={'/password_forget'}>パスワードを忘れた方</Link>
+        <div className={'links'}>
+          <Link className="password-forget-link" to={'/password_forget'}>
+            パスワードを忘れた方
+          </Link>
         </div>
       </Card>
     </div>

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Alert, Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
-import { useUser } from "./providers/UserProvider"
-import { useNavigate } from "react-router-dom";
-import accountUpdateValidator from "./validators/accountUpdate";
-import { useAuth } from "./providers/AuthApiProvider";
+import { useUser } from './providers/UserProvider';
+import { useNavigate } from 'react-router-dom';
+import accountUpdateValidator from './validators/accountUpdate';
+import { useAuth } from './providers/AuthApiProvider';
 
 const AccountUpdate = () => {
   const { user, updateUser, clearUser } = useUser();
@@ -15,16 +15,20 @@ const AccountUpdate = () => {
 
   const handleAccountUpdate = (e) => {
     e.preventDefault();
-    if(accountUpdateValidator(email, password).isInvalid) return;
-    let params = { };
-    if(email !== '') params = { ...params, email };
-    if(password !== '') params = { ...params, password };
-    authApi.updateUser(params)
-      .then(r => {
-        if (r.status !== 200) return;
-        updateUser(email, r.headers['uid'], r.headers['client'], r.headers['access-token']);
-        navigate('/');
-      });
+    if (accountUpdateValidator(email, password).isInvalid) return;
+    let params = {};
+    if (email !== '') params = { ...params, email };
+    if (password !== '') params = { ...params, password };
+    authApi.updateUser(params).then((r) => {
+      if (r.status !== 200) return;
+      updateUser(
+        email,
+        r.headers['uid'],
+        r.headers['client'],
+        r.headers['access-token']
+      );
+      navigate('/');
+    });
   };
 
   const handleOpenAlert = () => {
@@ -35,22 +39,18 @@ const AccountUpdate = () => {
   };
   const handleAccountDelete = (e) => {
     e.preventDefault();
-    authApi.deleteUser()
-      .finally(()=> {
-        clearUser();
-        handleCloseAlert();
-        navigate('/login');
-      });
+    authApi.deleteUser().finally(() => {
+      clearUser();
+      handleCloseAlert();
+      navigate('/login');
+    });
   };
 
   return (
-    <div className='session-container'>
-      <Card elevation='2' className='session-card'>
+    <div className="session-container">
+      <Card elevation="2" className="session-card">
         <form onSubmit={handleAccountUpdate}>
-          <FormGroup
-            label="メールアドレス"
-            labelFor="email-input"
-          >
+          <FormGroup label="メールアドレス" labelFor="email-input">
             <InputGroup
               id="email-input"
               placeholder="メールアドレスを入力"
@@ -59,10 +59,7 @@ const AccountUpdate = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
           </FormGroup>
-          <FormGroup
-            label="パスワード"
-            labelFor="password-input"
-          >
+          <FormGroup label="パスワード" labelFor="password-input">
             <InputGroup
               id="password-input"
               placeholder="パスワードを入力"
@@ -86,15 +83,16 @@ const AccountUpdate = () => {
           minimal={true}
           small={true}
         />
-        <Alert isOpen={isOpen}
-               cancelButtonText="キャンセル"
-               onCancel={handleCloseAlert}
-               confirmButtonText="削除"
-               onConfirm={handleAccountDelete}
-               intent="danger"
-               icon="trash"
-               canEscapeKeyCancel={true}
-               canOutsideClickCancel={true}
+        <Alert
+          isOpen={isOpen}
+          cancelButtonText="キャンセル"
+          onCancel={handleCloseAlert}
+          confirmButtonText="削除"
+          onConfirm={handleAccountDelete}
+          intent="danger"
+          icon="trash"
+          canEscapeKeyCancel={true}
+          canOutsideClickCancel={true}
         >
           本当にアカウントを削除しますか？
         </Alert>
