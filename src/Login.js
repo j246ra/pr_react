@@ -43,6 +43,7 @@ const Login = () => {
           props.message =
             '認証に失敗しました。IDとパスワードをご確認ください。';
         }
+        // eslint-disable-next-line react/prop-types
         toast.error(props.message, { style: { color: 'red' } });
       });
   };

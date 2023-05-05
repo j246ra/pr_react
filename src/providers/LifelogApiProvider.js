@@ -6,6 +6,7 @@ import { useAuth } from './AuthApiProvider';
 const LifelogApiContext = createContext();
 export const useLifelog = () => useContext(LifelogApiContext);
 
+// eslint-disable-next-line react/prop-types
 export default function LifelogApiProvider({ children }) {
   const { updateToken, clearUser } = useUser();
   const { headers } = useAuth();

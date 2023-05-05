@@ -5,6 +5,7 @@ import session from '../lib/api/session';
 const AuthApiContext = createContext();
 export const useAuth = () => useContext(AuthApiContext);
 
+// eslint-disable-next-line react/prop-types
 export default function AuthApiProvider({ children }) {
   const { user, updateToken } = useUser();
   const headers = {

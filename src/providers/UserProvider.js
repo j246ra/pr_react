@@ -4,6 +4,7 @@ import { useCookies } from 'react-cookie';
 const UserContext = createContext();
 export const useUser = () => useContext(UserContext);
 
+// eslint-disable-next-line react/prop-types
 export default function UserProvider({ children }) {
   const [cookies, setCookie, removeCookie] = useCookies(['tokens']);
   const [user, setUser] = useState({
