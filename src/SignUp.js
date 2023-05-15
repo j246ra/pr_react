@@ -21,10 +21,7 @@ const SignUp = () => {
       .then((r) => {
         if (r.status !== 200) return;
         clearUser();
-        updateUser(
-          email,
-          r.headers['uid'],
-        );
+        updateUser(email, r.headers['uid']);
         toast.success('アカウント作成に成功しました');
         navigate('/');
       })

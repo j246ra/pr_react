@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext } from 'react';
-import {useCookies} from "react-cookie/cjs";
+import { useCookies } from 'react-cookie/cjs';
 
 const UserContext = createContext();
 export const useUser = () => useContext(UserContext);
@@ -23,7 +23,7 @@ export default function UserProvider({ children }) {
   };
 
   const clearUser = () => {
-    removeCookie('token')
+    removeCookie('token');
     setUser({
       email: '',
       uid: '',
@@ -31,10 +31,7 @@ export default function UserProvider({ children }) {
   };
 
   const isLogin = () => {
-    return (
-      user.email !== '' &&
-      user.uid !== ''
-    );
+    return user.email !== '' && user.uid !== '';
   };
 
   return (

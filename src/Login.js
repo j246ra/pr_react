@@ -24,10 +24,7 @@ const Login = () => {
       .signIn(email, password)
       .then((r) => {
         if (r.status !== 200) return;
-        updateUser(
-          email,
-          r.headers['uid'],
-        );
+        updateUser(email, r.headers['uid']);
         navigate('/');
         toast.success('ログイン成功');
       })
