@@ -1,11 +1,12 @@
-import React, {createContext, useContext} from 'react';
-import test from "../lib/api/test";
-import {useUser} from "./UserProvider";
-import {useAuth} from "./AuthApiProvider";
+import React, { createContext, useContext } from 'react';
+import test from '../lib/api/test';
+import { useUser } from './UserProvider';
+import { useAuth } from './AuthApiProvider';
 
 const LifelogApiContext = createContext();
 export const useLifelog = () => useContext(LifelogApiContext);
 
+// eslint-disable-next-line react/prop-types
 export default function LifelogApiProvider({ children }) {
   const { updateToken, clearUser } = useUser();
   const { headers } = useAuth();
@@ -17,10 +18,10 @@ export default function LifelogApiProvider({ children }) {
     if (error?.status === 401) clearUser();
     return Promise.reject(error);
   };
-  const lifelogApi = test(headers, responseInterceptor, errorInterceptor)
+  const lifelogApi = test(headers, responseInterceptor, errorInterceptor);
 
   return (
-    <LifelogApiContext.Provider value={{ lifelogApi }} >
+    <LifelogApiContext.Provider value={{ lifelogApi }}>
       {children}
     </LifelogApiContext.Provider>
   );

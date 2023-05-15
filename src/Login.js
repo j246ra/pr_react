@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
-import { useUser } from "./providers/UserProvider"
-import { useNavigate } from "react-router-dom";
+import { useUser } from './providers/UserProvider';
+import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import session from "./lib/api/session";
+import session from './lib/api/session';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -13,36 +13,44 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(isLogin()) return navigate('/hello');
-  },[isLogin, navigate]);
+    if (isLogin()) return navigate('/hello');
+  }, [isLogin, navigate]);
 
   const handleLogin = (e) => {
     e.preventDefault();
     clearUser();
     createUser(email);
-    session().signIn(email, password)
-      .then(r => {
+    session()
+      .signIn(email, password)
+      .then((r) => {
         if (r.status !== 200) return;
-        updateUser(email, r.headers['uid'], r.headers['client'], r.headers['access-token']);
+        updateUser(
+          email,
+          r.headers['uid'],
+          r.headers['client'],
+          r.headers['access-token']
+        );
         navigate('/');
-        toast.success("ログイン成功");
+        toast.success('ログイン成功');
       })
       .catch((e) => {
         const props = {
-          icon: "error",
-          intent: "danger",
-          message: "認証に失敗しました。",
+          icon: 'error',
+          intent: 'danger',
+          message: '認証に失敗しました。',
+        };
+        if (e.response.status === 401) {
+          props.message =
+            '認証に失敗しました。IDとパスワードをご確認ください。';
         }
-        if (e.response.status === 401){
-          props.message = "認証に失敗しました。IDとパスワードをご確認ください。";
-        }
-        toast.error(props.message, {style: {color: 'red'}});
+        // eslint-disable-next-line react/prop-types
+        toast.error(props.message, { style: { color: 'red' } });
       });
   };
 
   return (
     <div className="session-container">
-      <Card elevation='2' className="session-card">
+      <Card elevation="2" className="session-card">
         <form onSubmit={handleLogin}>
           <FormGroup
             label="メールアドレス"
@@ -79,9 +87,13 @@ const Login = () => {
             text="ログイン"
           />
         </form>
-        <div className={"links"}>
-          <Link className="password-forget-link" to={'/password_forget'}>パスワードを忘れた方</Link>
-          <Link className="sign-up-link" to={'/sign_up'}>新規登録</Link>
+        <div className={'links'}>
+          <Link className="password-forget-link" to={'/password_forget'}>
+            パスワードを忘れた方
+          </Link>
+          <Link className="sign-up-link" to={'/sign_up'}>
+            新規登録
+          </Link>
         </div>
       </Card>
     </div>

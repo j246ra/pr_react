@@ -1,10 +1,11 @@
-import React, { createContext, useState, useContext } from "react";
-import {useCookies} from "react-cookie";
+import React, { createContext, useState, useContext } from 'react';
+import { useCookies } from 'react-cookie';
 
 const UserContext = createContext();
 export const useUser = () => useContext(UserContext);
 
-export default function UserProvider({ children }){
+// eslint-disable-next-line react/prop-types
+export default function UserProvider({ children }) {
   const [cookies, setCookie, removeCookie] = useCookies(['tokens']);
   const [user, setUser] = useState({
     email: '',
@@ -14,19 +15,23 @@ export default function UserProvider({ children }){
     ...cookies.tokens,
   });
 
-  const createUser = (email) => setUser({...user, email});
+  const createUser = (email) => setUser({ ...user, email });
 
   const updateUser = (email, uid, client, token) => {
     setUser({
-      ...user, email, uid, client, token
+      ...user,
+      email,
+      uid,
+      client,
+      token,
     });
-    setCookie('tokens', {token, uid, client, email});
+    setCookie('tokens', { token, uid, client, email });
   };
 
   const updateToken = (token) => {
-    if(token !== "") {
-      setUser({...user, token});
-      setCookie('tokens', {...cookies.tokens, token});
+    if (token !== '') {
+      setUser({ ...user, token });
+      setCookie('tokens', { ...cookies.tokens, token });
     }
   };
 
@@ -41,19 +46,34 @@ export default function UserProvider({ children }){
   };
 
   const isLogin = () => {
-    return (user.email !== '' && user.uid !== '' && user.client !== '' && user.token !== '');
-  }
+    return (
+      user.email !== '' &&
+      user.uid !== '' &&
+      user.client !== '' &&
+      user.token !== ''
+    );
+  };
 
   const requestHeaders = () => {
-    return({
-      "access-token": user.token,
+    return {
+      'access-token': user.token,
       uid: user.uid,
-      client: user.client
-    });
+      client: user.client,
+    };
   };
 
   return (
-    <UserContext.Provider value={{ user, createUser, updateUser, updateToken, clearUser, isLogin, requestHeaders }}>
+    <UserContext.Provider
+      value={{
+        user,
+        createUser,
+        updateUser,
+        updateToken,
+        clearUser,
+        isLogin,
+        requestHeaders,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

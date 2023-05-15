@@ -1,15 +1,11 @@
-import React, {useState} from 'react';
-import {FormGroup,InputGroup} from '@blueprintjs/core';
+import React, { useState } from 'react';
+import { FormGroup, InputGroup } from '@blueprintjs/core';
 
 const InputEmail = () => {
   const [email, setEmail] = useState('');
 
-  return(
-    <FormGroup
-      label='メールアドレス'
-      labelFor='email-input'
-      labelInfo='(必須)'
-    >
+  return (
+    <FormGroup label="メールアドレス" labelFor="email-input" labelInfo="(必須)">
       <InputGroup
         id="email-input"
         placeholder="メールアドレスを入力"
@@ -20,5 +16,5 @@ const InputEmail = () => {
       />
     </FormGroup>
   );
-}
+};
 export default InputEmail;

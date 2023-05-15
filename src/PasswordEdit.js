@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
-import session from "./lib/api/session";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import session from './lib/api/session';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 const PasswordEdit = () => {
@@ -11,29 +11,34 @@ const PasswordEdit = () => {
 
   let [params] = useSearchParams();
   const api = session({
-    "access-token": params.get("access-token"),
-    client: params.get("client"),
-    uid: params.get("uid")
+    'access-token': params.get('access-token'),
+    client: params.get('client'),
+    uid: params.get('uid'),
   });
 
   const handlePasswordConfirmation = (e) => {
     e.preventDefault();
-    if(password !== passwordConfirmation){
-      return toast.error('入力したパスワードが一致しません。', {style: {color: 'red'}});
+    if (password !== passwordConfirmation) {
+      return toast.error('入力したパスワードが一致しません。', {
+        style: { color: 'red' },
+      });
     }
-    api.passwordReset(password, passwordConfirmation)
+    api
+      .passwordReset(password, passwordConfirmation)
       .then(() => {
-        toast.success("パスワードリセットが成功しました。");
-        navigate("/");
+        toast.success('パスワードリセットが成功しました。');
+        navigate('/');
       })
       .catch(() => {
-        toast.error('パスワードリセットに失敗しました。', {style: {color: 'red'}});
+        toast.error('パスワードリセットに失敗しました。', {
+          style: { color: 'red' },
+        });
       });
   };
 
   return (
-    <div className='session-container'>
-      <Card elevation='2' className='session-card'>
+    <div className="session-container">
+      <Card elevation="2" className="session-card">
         <form onSubmit={handlePasswordConfirmation}>
           <FormGroup
             label="パスワード"
@@ -66,7 +71,7 @@ const PasswordEdit = () => {
           <Button
             type="submit"
             intent="primary"
-            icon='key'
+            icon="key"
             text="パスワード変更"
           />
         </form>
