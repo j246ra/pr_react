@@ -27,8 +27,6 @@ const Login = () => {
         updateUser(
           email,
           r.headers['uid'],
-          r.headers['client'],
-          r.headers['access-token']
         );
         navigate('/');
         toast.success('ログイン成功');

@@ -24,8 +24,6 @@ const SignUp = () => {
         updateUser(
           email,
           r.headers['uid'],
-          r.headers['client'],
-          r.headers['access-token']
         );
         toast.success('アカウント作成に成功しました');
         navigate('/');
