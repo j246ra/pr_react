@@ -8,17 +8,16 @@ export const useLifelog = () => useContext(LifelogApiContext);
 
 // eslint-disable-next-line react/prop-types
 export default function LifelogApiProvider({ children }) {
-  const { updateToken, clearUser } = useUser();
+  const { clearUser } = useUser();
   const { headers } = useAuth();
   const responseInterceptor = (response) => {
-    updateToken(response.headers['access-token']);
     return response;
   };
   const errorInterceptor = (error) => {
     if (error?.status === 401) clearUser();
     return Promise.reject(error);
   };
-  const lifelogApi = test(headers, responseInterceptor, errorInterceptor);
+  const lifelogApi = test(headers(), responseInterceptor, errorInterceptor);
 
   return (
     <LifelogApiContext.Provider value={{ lifelogApi }}>

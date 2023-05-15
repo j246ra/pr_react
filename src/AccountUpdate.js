@@ -24,8 +24,6 @@ const AccountUpdate = () => {
       updateUser(
         email,
         r.headers['uid'],
-        r.headers['client'],
-        r.headers['access-token']
       );
       navigate('/');
     });

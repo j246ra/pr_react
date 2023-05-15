@@ -1,65 +1,40 @@
 import React, { createContext, useState, useContext } from 'react';
-import { useCookies } from 'react-cookie';
+import {useCookies} from "react-cookie/cjs";
 
 const UserContext = createContext();
 export const useUser = () => useContext(UserContext);
 
 // eslint-disable-next-line react/prop-types
 export default function UserProvider({ children }) {
-  const [cookies, setCookie, removeCookie] = useCookies(['tokens']);
+  const [cookies, , removeCookie] = useCookies(['token']);
   const [user, setUser] = useState({
-    email: '',
-    uid: '',
-    client: '',
-    token: '',
-    ...cookies.tokens,
+    email: cookies.token?.email || '',
+    uid: cookies.token?.uid || '',
   });
 
   const createUser = (email) => setUser({ ...user, email });
 
-  const updateUser = (email, uid, client, token) => {
+  const updateUser = (email, uid) => {
     setUser({
       ...user,
       email,
       uid,
-      client,
-      token,
     });
-    setCookie('tokens', { token, uid, client, email });
-  };
-
-  const updateToken = (token) => {
-    if (token !== '') {
-      setUser({ ...user, token });
-      setCookie('tokens', { ...cookies.tokens, token });
-    }
   };
 
   const clearUser = () => {
+    removeCookie('token')
     setUser({
       email: '',
       uid: '',
-      client: '',
-      token: '',
     });
-    removeCookie('tokens');
   };
 
   const isLogin = () => {
     return (
       user.email !== '' &&
-      user.uid !== '' &&
-      user.client !== '' &&
-      user.token !== ''
+      user.uid !== ''
     );
-  };
-
-  const requestHeaders = () => {
-    return {
-      'access-token': user.token,
-      uid: user.uid,
-      client: user.client,
-    };
   };
 
   return (
@@ -68,10 +43,8 @@ export default function UserProvider({ children }) {
         user,
         createUser,
         updateUser,
-        updateToken,
         clearUser,
         isLogin,
-        requestHeaders,
       }}
     >
       {children}
