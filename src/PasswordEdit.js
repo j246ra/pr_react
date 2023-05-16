@@ -3,6 +3,7 @@ import { Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
 import session from './lib/api/session';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import passwordEditValidator from './validators/passwordEdit';
 
 const PasswordEdit = () => {
   const navigate = useNavigate();
@@ -18,11 +19,7 @@ const PasswordEdit = () => {
 
   const handlePasswordConfirmation = (e) => {
     e.preventDefault();
-    if (password !== passwordConfirmation) {
-      return toast.error('入力したパスワードが一致しません。', {
-        style: { color: 'red' },
-      });
-    }
+    if (passwordEditValidator(password, passwordConfirmation).isInvalid) return;
     api
       .passwordReset(password, passwordConfirmation)
       .then(() => {
