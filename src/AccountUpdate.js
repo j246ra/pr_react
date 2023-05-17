@@ -21,7 +21,7 @@ const AccountUpdate = () => {
     if (password !== '') params = { ...params, password };
     authApi.updateUser(params).then((r) => {
       if (r.status !== 200) return;
-      updateUser(email, r.headers['uid']);
+      updateUser(email);
       navigate('/');
     });
   };

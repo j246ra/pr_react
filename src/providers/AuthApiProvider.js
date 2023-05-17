@@ -16,7 +16,6 @@ export default function AuthApiProvider({ children }) {
       'access-token': cookie['access-token'],
       uid: cookie.uid,
       client: cookie.client,
-      email: cookie.email,
     };
   };
   const responseInterceptor = (response) => {
@@ -24,10 +23,9 @@ export default function AuthApiProvider({ children }) {
       'access-token': response.headers['access-token'],
       uid: response.headers['uid'],
       client: response.headers['client'],
-      email: user.email,
     };
     setCookie('token', cookie);
-    if (user.uid !== cookie.uid) updateUser(cookie.email, cookie.uid);
+    if (user.email !== cookie.uid) updateUser(cookie.uid);
     return response;
   };
   const errorInterceptor = (error) => {

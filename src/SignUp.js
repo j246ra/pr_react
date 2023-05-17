@@ -20,8 +20,7 @@ const SignUp = () => {
       .signUp(email, password)
       .then((r) => {
         if (r.status !== 200) return;
-        clearUser();
-        updateUser(email, r.headers['uid']);
+        updateUser(email);
         toast.success('アカウント作成に成功しました');
         navigate('/');
       })

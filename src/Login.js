@@ -4,12 +4,13 @@ import { Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
 import { useUser } from './providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import session from './lib/api/session';
+import { useAuth } from './providers/AuthApiProvider';
 
 const Login = () => {
+  const { authApi: session } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { createUser, updateUser, clearUser, isLogin } = useUser();
+  const { createUser, isLogin } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,15 +19,13 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    clearUser();
     createUser(email);
-    session()
+    session
       .signIn(email, password)
       .then((r) => {
         if (r.status !== 200) return;
-        updateUser(email, r.headers['uid']);
-        navigate('/');
         toast.success('ログイン成功');
+        navigate('/hello');
       })
       .catch((e) => {
         const props = {

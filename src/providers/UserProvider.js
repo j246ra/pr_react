@@ -6,32 +6,29 @@ export const useUser = () => useContext(UserContext);
 
 // eslint-disable-next-line react/prop-types
 export default function UserProvider({ children }) {
-  const [cookies, , removeCookie] = useCookies(['token']);
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
   const [user, setUser] = useState({
-    email: cookies.token?.email || '',
-    uid: cookies.token?.uid || '',
+    email: cookies.token?.uid || '',
   });
 
-  const createUser = (email) => setUser({ ...user, email });
+  const createUser = (email) => {
+    removeCookie('token');
+    setUser({ ...user, email });
+    setCookie('token', { uid: email });
+  };
 
-  const updateUser = (email, uid) => {
-    setUser({
-      ...user,
-      email,
-      uid,
-    });
+  const updateUser = (email) => {
+    setUser({ ...user, email });
   };
 
   const clearUser = () => {
     removeCookie('token');
-    setUser({
-      email: '',
-      uid: '',
-    });
+    setUser({ email: '' });
   };
 
   const isLogin = () => {
-    return user.email !== '' && user.uid !== '';
+    const client = cookies.token?.client || '';
+    return user.email !== '' && client !== '';
   };
 
   return (
