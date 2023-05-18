@@ -1,4 +1,4 @@
-import toast from 'react-hot-toast';
+import notify from '../lib/toast';
 
 export default function validator() {
   const emailRegex = /^[\w+\-.]+@[a-zA-Z\d\-.]+\.[a-zA-Z]+$/;
@@ -9,7 +9,7 @@ export default function validator() {
   };
 
   const addError = (message) => {
-    toast.error(message, { style: { color: 'red' } });
+    notify.error(message);
     result.isInvalid = true;
     result.message.push(message);
   };

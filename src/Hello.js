@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from './providers/AuthApiProvider';
 import { useLifelog } from './providers/LifelogApiProvider';
 import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
+import notify from './lib/toast';
 import { useCookies } from 'react-cookie/cjs';
 
 const Hello = () => {
@@ -26,14 +26,14 @@ const Hello = () => {
 
   useEffect(() => {
     if (!isLogin()) {
-      toast.error('ログインしてください。', { style: { color: 'red' } });
+      notify.error('ログインしてください。');
       return navigate('/login');
     }
     api
       .hello()
       .then((r) => setMessage(r.data.message))
       .catch((e) => {
-        toast.error(e.message, { style: { color: 'red' } });
+        notify.error(e.message);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

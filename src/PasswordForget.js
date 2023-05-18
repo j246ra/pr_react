@@ -7,7 +7,7 @@ import {
   Card,
 } from '@blueprintjs/core';
 import session from './lib/api/session';
-import toast from 'react-hot-toast';
+import notify from './lib/toast';
 
 const PasswordForget = () => {
   const [success, setSuccess] = useState(false);
@@ -18,11 +18,11 @@ const PasswordForget = () => {
     session()
       .passwordForget(email)
       .then(() => {
-        toast.success('パスワードリセットメールを送信しました。');
+        notify.success('パスワードリセットメールを送信しました。');
         setSuccess(true); //todo 成功画面は別途作成する
       })
       .catch(() => {
-        toast.error('送信に失敗しました。', { style: { color: 'red' } });
+        notify.error('送信に失敗しました。');
       });
   };
 

@@ -4,8 +4,8 @@ import { Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
 import { useUser } from './providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import signUpValidator from './validators/signUp';
-import toast from 'react-hot-toast';
 import session from './lib/api/session';
+import notify from './lib/toast';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -21,18 +21,16 @@ const SignUp = () => {
       .then((r) => {
         if (r.status !== 200) return;
         updateUser(email);
-        toast.success('アカウント作成に成功しました');
+        notify.success('アカウント作成に成功しました');
         navigate('/');
       })
       .catch((e) => {
         clearUser();
         if (e.response === undefined) {
-          toast.error(`想定外のサーバーが発生しました (${e.message})`, {
-            style: { color: 'red' },
-          });
+          notify.error(`想定外のサーバーが発生しました (${e.message})`);
         } else {
           e.response.data.errors.fullMessages.forEach((message) => {
-            toast.error(message, { style: { color: 'red' } });
+            notify.error(message);
           });
         }
       });

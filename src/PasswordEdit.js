@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
 import session from './lib/api/session';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import toast from 'react-hot-toast';
 import passwordEditValidator from './validators/passwordEdit';
+import notify from './lib/toast';
 
 const PasswordEdit = () => {
   const navigate = useNavigate();
@@ -23,13 +23,11 @@ const PasswordEdit = () => {
     api
       .passwordReset(password, passwordConfirmation)
       .then(() => {
-        toast.success('パスワードリセットが成功しました。');
+        notify.success('パスワードリセットが成功しました。');
         navigate('/');
       })
       .catch(() => {
-        toast.error('パスワードリセットに失敗しました。', {
-          style: { color: 'red' },
-        });
+        notify.error('パスワードリセットに失敗しました。');
       });
   };
 

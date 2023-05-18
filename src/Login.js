@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
 import { useUser } from './providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
 import { useAuth } from './providers/AuthApiProvider';
+import notify from './lib/toast';
 
 const Login = () => {
   const { authApi: session } = useAuth();
@@ -24,7 +24,7 @@ const Login = () => {
       .signIn(email, password)
       .then((r) => {
         if (r.status !== 200) return;
-        toast.success('ログイン成功');
+        notify.success('ログイン成功');
         navigate('/hello');
       })
       .catch((e) => {
@@ -38,7 +38,7 @@ const Login = () => {
             '認証に失敗しました。IDとパスワードをご確認ください。';
         }
         // eslint-disable-next-line react/prop-types
-        toast.error(props.message, { style: { color: 'red' } });
+        notify.error(props.message);
       });
   };
 
