@@ -1,20 +1,18 @@
 import React, { createContext, useState, useContext } from 'react';
-import { useCookies } from 'react-cookie/cjs';
+import { useSession } from './SessionProvider';
 
 const UserContext = createContext();
 export const useUser = () => useContext(UserContext);
 
 // eslint-disable-next-line react/prop-types
 export default function UserProvider({ children }) {
-  const [cookies, setCookie, removeCookie] = useCookies(['token']);
+  const { getToken } = useSession();
   const [user, setUser] = useState({
-    email: cookies.token?.uid || '',
+    email: getToken()?.uid || '',
   });
 
   const createUser = (email) => {
-    removeCookie('token');
     setUser({ ...user, email });
-    setCookie('token', { uid: email });
   };
 
   const updateUser = (email) => {
@@ -22,13 +20,11 @@ export default function UserProvider({ children }) {
   };
 
   const clearUser = () => {
-    removeCookie('token');
     setUser({ email: '' });
   };
 
   const isLogin = () => {
-    const client = cookies.token?.client || '';
-    return user.email !== '' && client !== '';
+    return user.email !== '' && user.uid !== '';
   };
 
   return (

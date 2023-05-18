@@ -7,11 +7,26 @@ export const useSession = () => useContext(SessionContext);
 
 // eslint-disable-next-line react/prop-types
 export default function SessionProvider({ children }) {
-  const [cookies, setCookie] = useCookies(['token']);
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
   const headers = () => {
     const cookie = { ...cookies.token };
     return {
       'access-token': cookie['access-token'],
+      uid: cookie.uid,
+      client: cookie.client,
+    };
+  };
+  const hasToken = () => {
+    const cookie = { ...cookies.token };
+    return !(cookie['access-token'] === undefined || cookie['access-token'] === '');
+  };
+  const createToken = (uid) => {
+    setCookie('token', { uid });
+  };
+  const getToken = () => {
+    const cookie = { ...cookies.token };
+    return {
+      token: cookie['access-token'],
       uid: cookie.uid,
       client: cookie.client,
     };
@@ -24,9 +39,19 @@ export default function SessionProvider({ children }) {
     };
     setCookie('token', cookie);
   };
+  const removeToken = () => removeCookie('token');
   return (
     <CookiesProvider>
-      <SessionContext.Provider value={{ headers, setToken }}>
+      <SessionContext.Provider
+        value={{
+          headers,
+          createToken,
+          getToken,
+          hasToken,
+          setToken,
+          removeToken,
+        }}
+      >
         {children}
       </SessionContext.Provider>
     </CookiesProvider>

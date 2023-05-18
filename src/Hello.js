@@ -8,27 +8,24 @@ import { useAuth } from './providers/AuthApiProvider';
 import { useLifelog } from './providers/LifelogApiProvider';
 import { useNavigate } from 'react-router-dom';
 import notify from './lib/toast';
-import { useCookies } from 'react-cookie/cjs';
+import { useSession } from './providers/SessionProvider';
 
 const Hello = () => {
   const { user, clearUser, isLogin } = useUser();
-  const [cookies] = useCookies();
-  const [cookie] = useState({
-    token: cookies.token['access-token'],
-    uid: cookies.token.uid,
-    client: cookies.token.client,
-  });
+  const { hasToken, getToken, removeToken } = useSession();
   const { authApi } = useAuth();
   const { lifelogApi: api } = useLifelog();
   const [valid, setValid] = useState(false);
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
+  const cookie = getToken();
 
   useEffect(() => {
     if (!isLogin()) {
       notify.error('ログインしてください。');
       return navigate('/login');
     }
+    if (!hasToken()) return;
     api
       .hello()
       .then((r) => setMessage(r.data.message))
@@ -36,7 +33,7 @@ const Hello = () => {
         notify.error(e.message);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [hasToken()]);
 
   const handleValidToken = (e) => {
     e.preventDefault();
@@ -50,6 +47,7 @@ const Hello = () => {
 
   const clear = () => {
     clearUser();
+    removeToken();
     setValid(false);
   };
 

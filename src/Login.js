@@ -5,8 +5,10 @@ import { useUser } from './providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './providers/AuthApiProvider';
 import notify from './lib/toast';
+import { useSession } from './providers/SessionProvider';
 
 const Login = () => {
+  const { createToken } = useSession();
   const { authApi: session } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,6 +22,7 @@ const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     createUser(email);
+    createToken(email);
     session
       .signIn(email, password)
       .then((r) => {

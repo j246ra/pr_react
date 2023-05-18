@@ -4,8 +4,10 @@ import { useUser } from './providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import accountUpdateValidator from './validators/accountUpdate';
 import { useAuth } from './providers/AuthApiProvider';
+import { useSession } from './providers/SessionProvider';
 
 const AccountUpdate = () => {
+  const { removeToken } = useSession();
   const { user, updateUser, clearUser } = useUser();
   const { authApi } = useAuth();
   const [email, setEmail] = useState(user.email);
@@ -36,6 +38,7 @@ const AccountUpdate = () => {
     e.preventDefault();
     authApi.deleteUser().finally(() => {
       clearUser();
+      removeToken();
       handleCloseAlert();
       navigate('/login');
     });

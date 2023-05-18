@@ -11,23 +11,20 @@ import {
 import { useUser } from './providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './providers/AuthApiProvider';
+import { useSession } from './providers/SessionProvider';
 
 const Header = () => {
+  const { removeToken } = useSession();
   const navigate = useNavigate();
   const { isLogin, clearUser } = useUser();
   const { authApi } = useAuth();
 
   const handleLogout = () => {
-    authApi
-      .signOut()
-      .then(() => {
-        clearUser();
-        navigate('/login');
-      })
-      .catch(() => {
-        clearUser();
-        navigate('/login');
-      });
+    authApi.signOut().finally(() => {
+      clearUser();
+      removeToken();
+      navigate('/login');
+    });
   };
 
   return (

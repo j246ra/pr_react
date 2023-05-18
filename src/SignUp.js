@@ -6,8 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import signUpValidator from './validators/signUp';
 import session from './lib/api/session';
 import notify from './lib/toast';
+import { useSession } from './providers/SessionProvider';
 
 const SignUp = () => {
+  const { removeToken } = useSession();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { clearUser, updateUser } = useUser();
@@ -26,6 +28,7 @@ const SignUp = () => {
       })
       .catch((e) => {
         clearUser();
+        removeToken();
         if (e.response === undefined) {
           notify.error(`想定外のサーバーが発生しました (${e.message})`);
         } else {
