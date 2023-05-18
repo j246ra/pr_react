@@ -1,16 +1,17 @@
 import React, { createContext, useContext } from 'react';
 import test from '../lib/api/test';
 import { useUser } from './UserProvider';
-import { useAuth } from './AuthApiProvider';
+import { useSession } from './SessionProvider';
 
 const LifelogApiContext = createContext();
 export const useLifelog = () => useContext(LifelogApiContext);
 
 // eslint-disable-next-line react/prop-types
 export default function LifelogApiProvider({ children }) {
+  const { headers, setToken } = useSession();
   const { clearUser } = useUser();
-  const { headers } = useAuth();
   const responseInterceptor = (response) => {
+    setToken(response);
     return response;
   };
   const errorInterceptor = (error) => {

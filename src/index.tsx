@@ -5,16 +5,16 @@ import { BrowserRouter } from 'react-router-dom';
 import UserProvider from './providers/UserProvider';
 import AuthApiProvider from './providers/AuthApiProvider';
 import reportWebVitals from './reportWebVitals';
-import { CookiesProvider } from 'react-cookie';
 import LifelogApiProvider from './providers/LifelogApiProvider';
 import RootRouterProvider from './providers/RootRouterProvider';
+import SessionProvider from './providers/SessionProvider';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
 
 root.render(
   <BrowserRouter>
-    <CookiesProvider>
+    <SessionProvider>
       <UserProvider>
         <AuthApiProvider>
           <LifelogApiProvider>
@@ -22,7 +22,7 @@ root.render(
           </LifelogApiProvider>
         </AuthApiProvider>
       </UserProvider>
-    </CookiesProvider>
+    </SessionProvider>
   </BrowserRouter>
 );
 
