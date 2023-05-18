@@ -20,7 +20,7 @@ export default function AuthApiProvider({ children }) {
     return Promise.reject(error);
   };
 
-  const authApi = session(headers(), responseInterceptor, errorInterceptor);
+  const authApi = session(headers, responseInterceptor, errorInterceptor);
 
   return (
     <AuthApiContext.Provider value={{ authApi, headers }}>

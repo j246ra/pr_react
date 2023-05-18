@@ -18,7 +18,7 @@ export default function LifelogApiProvider({ children }) {
     if (error?.status === 401) clearUser();
     return Promise.reject(error);
   };
-  const lifelogApi = test(headers(), responseInterceptor, errorInterceptor);
+  const lifelogApi = test(headers, responseInterceptor, errorInterceptor);
 
   return (
     <LifelogApiContext.Provider value={{ lifelogApi }}>

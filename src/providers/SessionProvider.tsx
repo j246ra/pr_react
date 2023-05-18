@@ -3,49 +3,67 @@ import { useCookies } from 'react-cookie/cjs';
 import { CookiesProvider } from 'react-cookie';
 import { AxiosResponse } from 'axios';
 
-const SessionContext = createContext(undefined);
-export const useSession = () => useContext(SessionContext);
+type SessionContextType = {
+  headers: Headers;
+  createToken: (uid: string) => void;
+  getToken: () => Token;
+  hasToken: () => boolean;
+  setToken: (r: AxiosResponse<Headers>) => void;
+  removeToken: () => void;
+};
 
-type props = {
+const SessionContext = createContext<SessionContextType | undefined>(undefined);
+export const useSession = (): SessionContextType => {
+  const context = useContext(SessionContext);
+  if (!context) {
+    throw new Error('useSession must be used within a SessionProvider');
+  }
+  return context;
+};
+
+type Props = {
   children: ReactNode;
 };
 
-type headers = {
+type Headers = {
   'access-token'?: string;
   uid?: string;
   client?: string;
 };
 
-type token = {
+type Token = {
   token?: string;
   uid?: string;
   client?: string;
 };
 
-const SessionProvider: FC<props> = ({ children }) => {
+const SessionProvider: FC<Props> = ({ children }) => {
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
-  const headers = (): headers => {
-    return { ...(cookies.token as headers) };
-  };
-  const hasToken = () => {
-    const cookie = { ...cookies.token };
+
+  const headers: Headers = { ...(cookies.token as Headers) };
+
+  const hasToken = (): boolean => {
+    const cookie = { ...(cookies.token as Headers) };
     return !(
       cookie['access-token'] === undefined || cookie['access-token'] === ''
     );
   };
-  const createToken = (uid: string) => {
-    const token: headers = { uid };
+
+  const createToken = (uid: string): void => {
+    const token: Headers = { uid };
     setCookie('token', token);
   };
-  const getToken = (): token => {
-    const cookie = { ...(cookies.token as headers) };
+
+  const getToken = (): Token => {
+    const cookie = { ...(cookies.token as Headers) };
     return {
       token: cookie['access-token'],
       uid: cookie.uid,
       client: cookie.client,
     };
   };
-  const setToken = (r: AxiosResponse<headers>) => {
+
+  const setToken = (r: AxiosResponse<Headers>): void => {
     const cookie = {
       'access-token': r.headers['access-token'],
       uid: r.headers['uid'],
@@ -53,7 +71,9 @@ const SessionProvider: FC<props> = ({ children }) => {
     };
     setCookie('token', cookie);
   };
-  const removeToken = () => removeCookie('token');
+
+  const removeToken = (): void => removeCookie('token');
+
   return (
     <CookiesProvider>
       <SessionContext.Provider
