@@ -6,16 +6,17 @@ import {
   Callout,
   Card,
 } from '@blueprintjs/core';
-import session from './lib/api/session';
 import notify from './lib/toast';
+import { useAuth } from './providers/AuthApiProvider';
 
 const PasswordForget = () => {
+  const { authApi: session } = useAuth();
   const [success, setSuccess] = useState(false);
   const [email, setEmail] = useState('');
 
   const handlePasswordForget = (e) => {
     e.preventDefault();
-    session()
+    session
       .passwordForget(email)
       .then(() => {
         notify.success('パスワードリセットメールを送信しました。');
