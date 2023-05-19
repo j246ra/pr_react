@@ -4,12 +4,13 @@ import { Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
 import { useUser } from './providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import signUpValidator from './validators/signUp';
-import session from './lib/api/session';
 import notify from './lib/toast';
 import { useSession } from './providers/SessionProvider';
+import { useAuth } from './providers/AuthApiProvider';
 
 const SignUp = () => {
   const { removeToken } = useSession();
+  const { authApi: session } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { clearUser, updateUser } = useUser();
@@ -18,7 +19,7 @@ const SignUp = () => {
   const handleSignUp = (e) => {
     e.preventDefault();
     if (signUpValidator(email, password).isInvalid) return;
-    session()
+    session
       .signUp(email, password)
       .then((r) => {
         if (r.status !== 200) return;
