@@ -31,17 +31,10 @@ const Login = () => {
         navigate('/hello');
       })
       .catch((e) => {
-        const props = {
-          icon: 'error',
-          intent: 'danger',
-          message: '認証に失敗しました。',
-        };
-        if (e.response.status === 401) {
-          props.message =
-            '認証に失敗しました。IDとパスワードをご確認ください。';
-        }
-        // eslint-disable-next-line react/prop-types
-        notify.error(props.message);
+        let message = '認証に失敗しました。';
+        if (e.response.status === 401)
+          message = '認証に失敗しました。IDとパスワードをご確認ください。';
+        notify.error(message);
       });
   };
 
