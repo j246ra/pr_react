@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
 import { useUser } from './providers/UserProvider';
@@ -11,12 +11,12 @@ import { useAuth } from './providers/AuthApiProvider';
 const SignUp = () => {
   const { removeToken } = useSession();
   const { authApi: session } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const { clearUser, updateUser } = useUser();
   const navigate = useNavigate();
 
-  const handleSignUp = (e) => {
+  const handleSignUp = (e: FormEvent) => {
     e.preventDefault();
     if (signUpValidator(email, password).isInvalid) return;
     session
@@ -33,7 +33,7 @@ const SignUp = () => {
         if (e.response === undefined) {
           notify.error(`想定外のサーバーが発生しました (${e.message})`);
         } else {
-          e.response.data.errors.fullMessages.forEach((message) => {
+          e.response.data.errors.fullMessages.forEach((message: string) => {
             notify.error(message);
           });
         }
@@ -42,7 +42,7 @@ const SignUp = () => {
 
   return (
     <div className="session-container">
-      <Card elevation="2" className="session-card">
+      <Card elevation={2} className="session-card">
         {
           <form onSubmit={handleSignUp}>
             <FormGroup
@@ -76,7 +76,7 @@ const SignUp = () => {
             <Button
               type="submit"
               intent="primary"
-              icon="new_person"
+              icon="new-person"
               text="登録"
             />
           </form>
