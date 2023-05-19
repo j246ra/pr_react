@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, FormEvent } from 'react';
 import {
   Button,
   FormGroup,
@@ -9,12 +9,12 @@ import {
 import notify from './lib/toast';
 import { useAuth } from './providers/AuthApiProvider';
 
-const PasswordForget = () => {
+const PasswordForget: React.FC = () => {
   const { authApi: session } = useAuth();
-  const [success, setSuccess] = useState(false);
-  const [email, setEmail] = useState('');
+  const [success, setSuccess] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>('');
 
-  const handlePasswordForget = (e) => {
+  const handlePasswordForget = (e: FormEvent) => {
     e.preventDefault();
     session
       .passwordForget(email)
@@ -32,7 +32,7 @@ const PasswordForget = () => {
       {success ? (
         <h3>送信に成功しました。メールをご確認ください。</h3>
       ) : (
-        <Card elevation="2" className="session-card">
+        <Card elevation={2} className="session-card">
           <Callout
             className="session-callout"
             icon="info-sign"
