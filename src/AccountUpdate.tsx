@@ -1,24 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { Alert, Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
-import { useUser } from './providers/UserProvider';
+import { useUser, User } from './providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import accountUpdateValidator from './validators/accountUpdate';
 import { useAuth } from './providers/AuthApiProvider';
 import { useSession } from './providers/SessionProvider';
+import { UserParams } from './lib/api/session';
 
-const AccountUpdate = () => {
+const AccountUpdate: React.FC = () => {
   const { removeToken } = useSession();
   const { user, updateUser, clearUser } = useUser();
   const { authApi } = useAuth();
-  const [email, setEmail] = useState(user.email);
+  const [email, setEmail] = useState((user as User).email);
   const [password, setPassword] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleAccountUpdate = (e) => {
+  const handleAccountUpdate = (e: FormEvent) => {
     e.preventDefault();
     if (accountUpdateValidator(email, password).isInvalid) return;
-    let params = {};
+    let params: UserParams = {};
     if (email !== '') params = { ...params, email };
     if (password !== '') params = { ...params, password };
     authApi.updateUser(params).then((r) => {
@@ -31,10 +32,12 @@ const AccountUpdate = () => {
   const handleOpenAlert = () => {
     setIsOpen(true);
   };
+
   const handleCloseAlert = () => {
     setIsOpen(false);
   };
-  const handleAccountDelete = (e) => {
+
+  const handleAccountDelete = (e: FormEvent) => {
     e.preventDefault();
     authApi.deleteUser().finally(() => {
       clearUser();
@@ -46,7 +49,7 @@ const AccountUpdate = () => {
 
   return (
     <div className="session-container">
-      <Card elevation="2" className="session-card">
+      <Card elevation={2} className="session-card">
         <form onSubmit={handleAccountUpdate}>
           <FormGroup label="メールアドレス" labelFor="email-input">
             <InputGroup
@@ -54,7 +57,9 @@ const AccountUpdate = () => {
               placeholder="メールアドレスを入力"
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setEmail(e.target.value)
+              }
             />
           </FormGroup>
           <FormGroup label="パスワード" labelFor="password-input">
@@ -63,7 +68,9 @@ const AccountUpdate = () => {
               placeholder="パスワードを入力"
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setPassword(e.target.value)
+              }
             />
           </FormGroup>
           <Button

@@ -5,9 +5,9 @@ import { Headers } from '../../providers/SessionProvider';
 type ResponseInterceptor = (response: AxiosResponse) => AxiosResponse;
 type ErrorInterceptor = (error: AxiosError) => Promise<never>;
 
-interface UserParams {
-  email: string;
-  password: string;
+export interface UserParams {
+  email?: string;
+  password?: string;
 }
 
 export default function session(

@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 import { useSession } from './SessionProvider';
 
-type User = {
+export type User = {
   email: string;
 };
 
