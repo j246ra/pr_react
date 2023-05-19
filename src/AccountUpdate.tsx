@@ -37,8 +37,8 @@ const AccountUpdate: React.FC = () => {
     setIsOpen(false);
   };
 
-  const handleAccountDelete = (e: FormEvent) => {
-    e.preventDefault();
+  const handleAccountDelete: React.MouseEventHandler<HTMLElement> = (e) => {
+    e?.preventDefault();
     authApi.deleteUser().finally(() => {
       clearUser();
       removeToken();
