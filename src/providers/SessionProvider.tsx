@@ -25,7 +25,7 @@ type Props = {
   children: ReactNode;
 };
 
-type Headers = {
+export type Headers = {
   'access-token'?: string;
   uid?: string;
   client?: string;
