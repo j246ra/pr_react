@@ -6,6 +6,7 @@ import accountUpdateValidator from './validators/accountUpdate';
 import { useAuth } from './providers/AuthApiProvider';
 import { useSession } from './providers/SessionProvider';
 import { UserParams } from './lib/api/session';
+import notify from './lib/toast';
 
 const AccountUpdate: React.FC = () => {
   const { removeToken } = useSession();
@@ -39,12 +40,15 @@ const AccountUpdate: React.FC = () => {
 
   const handleAccountDelete: React.MouseEventHandler<HTMLElement> = (e) => {
     e?.preventDefault();
-    authApi.deleteUser().finally(() => {
-      clearUser();
-      removeToken();
-      handleCloseAlert();
-      navigate('/login');
-    });
+    authApi
+      .deleteUser()
+      .then(() => notify.success('アカウントを削除しました。'))
+      .finally(() => {
+        clearUser();
+        removeToken();
+        handleCloseAlert();
+        navigate('/login');
+      });
   };
 
   return (
