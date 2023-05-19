@@ -8,7 +8,7 @@ type SessionContextType = {
   createToken: (uid: string) => void;
   getToken: () => Token;
   hasToken: () => boolean;
-  setToken: (r: AxiosResponse<Headers>) => void;
+  setToken: (r: AxiosResponse<Headers> | Headers) => void;
   removeToken: () => void;
 };
 
@@ -63,13 +63,18 @@ const SessionProvider: FC<Props> = ({ children }) => {
     };
   };
 
-  const setToken = (r: AxiosResponse<Headers>): void => {
-    const cookie = {
-      'access-token': r.headers['access-token'],
-      uid: r.headers['uid'],
-      client: r.headers['client'],
-    };
-    setCookie('token', cookie);
+  const setToken = (r: AxiosResponse<Headers> | Headers): void => {
+    let headersToSet: Headers;
+    if ('headers' in r) {
+      headersToSet = {
+        'access-token': r.headers['access-token'],
+        uid: r.headers['uid'],
+        client: r.headers['client'],
+      };
+    } else {
+      headersToSet = r;
+    }
+    setCookie('token', headersToSet);
   };
 
   const removeToken = (): void => removeCookie('token');

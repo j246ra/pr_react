@@ -1,23 +1,30 @@
-import React, { useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
-import session from './lib/api/session';
+import { Headers } from './providers/SessionProvider';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import passwordEditValidator from './validators/passwordEdit';
 import notify from './lib/toast';
+import { useSession } from './providers/SessionProvider';
+import { useAuth } from './providers/AuthApiProvider';
 
-const PasswordEdit = () => {
+const PasswordEdit: React.FC = () => {
   const navigate = useNavigate();
+  const { setToken } = useSession();
+  const { authApi: api } = useAuth();
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
 
-  let [params] = useSearchParams();
-  const api = session({
-    'access-token': params.get('access-token'),
-    client: params.get('client'),
-    uid: params.get('uid'),
-  });
+  const [params] = useSearchParams();
+  useEffect(() => {
+    const headers: Headers = {
+      'access-token': params.get('access-token') || undefined,
+      client: params.get('client') || undefined,
+      uid: params.get('uid') || undefined,
+    };
+    setToken(headers);
+  }, [params]);
 
-  const handlePasswordConfirmation = (e) => {
+  const handlePasswordConfirmation = (e: FormEvent) => {
     e.preventDefault();
     if (passwordEditValidator(password, passwordConfirmation).isInvalid) return;
     api
@@ -33,7 +40,7 @@ const PasswordEdit = () => {
 
   return (
     <div className="session-container">
-      <Card elevation="2" className="session-card">
+      <Card elevation={2} className="session-card">
         <form onSubmit={handlePasswordConfirmation}>
           <FormGroup
             label="パスワード"
