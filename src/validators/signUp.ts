@@ -1,6 +1,8 @@
-import validator from './validator';
+import validator, { Result } from './validator';
 
-export default function signUpValidator(email, password) {
+type SignUpValidator = (email: string, password: string) => Result;
+
+const signUpValidator: SignUpValidator = (email, password) => {
   const {
     result,
     textPresenceValidator,
@@ -11,4 +13,6 @@ export default function signUpValidator(email, password) {
   emailFormatValidator(email);
   passwordLengthValidator(password);
   return result;
-}
+};
+
+export default signUpValidator;
