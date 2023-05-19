@@ -59,7 +59,7 @@ const Header = () => {
           }
           placement="bottom"
         >
-          <Button icon="menu" minimal="true" />
+          <Button icon="menu" minimal={true} />
         </Popover>
       </Navbar.Group>
     </Navbar>
