@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
 import { useUser } from './providers/UserProvider';
@@ -7,11 +7,11 @@ import { useAuth } from './providers/AuthApiProvider';
 import notify from './lib/toast';
 import { useSession } from './providers/SessionProvider';
 
-const Login = () => {
+const Login: React.FC = () => {
   const { createToken } = useSession();
   const { authApi: session } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const { createUser, isLogin } = useUser();
   const navigate = useNavigate();
 
@@ -19,7 +19,7 @@ const Login = () => {
     if (isLogin()) return navigate('/hello');
   }, [isLogin, navigate]);
 
-  const handleLogin = (e) => {
+  const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     createUser(email);
     createToken(email);
@@ -38,9 +38,17 @@ const Login = () => {
       });
   };
 
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+
   return (
     <div className="session-container">
-      <Card elevation="2" className="session-card">
+      <Card elevation={2} className="session-card">
         <form onSubmit={handleLogin}>
           <FormGroup
             label="メールアドレス"
@@ -52,7 +60,7 @@ const Login = () => {
               placeholder="メールアドレスを入力"
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleEmailChange}
               required
             />
           </FormGroup>
@@ -66,7 +74,7 @@ const Login = () => {
               placeholder="パスワードを入力"
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handlePasswordChange}
               required
             />
           </FormGroup>
