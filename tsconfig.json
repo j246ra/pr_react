@@ -20,6 +20,9 @@
       ],
       "@presentational/*": [
         "./src/components/presentational/*"
+      ],
+      "@container/*": [
+        "./src/components/container/*"
       ]}
     },
   "include": [
