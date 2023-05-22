@@ -1,22 +1,19 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { Alert, Button, Card } from '@blueprintjs/core';
+import { Button, Card } from '@blueprintjs/core';
 import { useUser, User } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import accountUpdateValidator from '@validators/accountUpdate';
 import { useAuth } from '@providers/AuthApiProvider';
-import { useSession } from '@providers/SessionProvider';
 import { UserParams } from '@lib/api/session';
-import notify from '@lib/toast';
 import { EmailInput } from '@presentational/EmailInput';
 import { PasswordInput } from '@presentational/PasswordInput';
+import AccountDelete from '@container/AccountDelete';
 
 const AccountUpdate: React.FC = () => {
-  const { removeToken } = useSession();
-  const { user, updateUser, clearUser } = useUser();
+  const { user, updateUser } = useUser();
   const { authApi } = useAuth();
   const [email, setEmail] = useState((user as User).email);
   const [password, setPassword] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleAccountUpdate = (e: FormEvent) => {
@@ -30,27 +27,6 @@ const AccountUpdate: React.FC = () => {
       updateUser(email);
       navigate('/');
     });
-  };
-
-  const handleOpenAlert = () => {
-    setIsOpen(true);
-  };
-
-  const handleCloseAlert = () => {
-    setIsOpen(false);
-  };
-
-  const handleAccountDelete: React.MouseEventHandler<HTMLElement> = (e) => {
-    e?.preventDefault();
-    authApi
-      .deleteUser()
-      .then(() => notify.success('アカウントを削除しました。'))
-      .finally(() => {
-        clearUser();
-        removeToken();
-        handleCloseAlert();
-        navigate('/login');
-      });
   };
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -74,27 +50,7 @@ const AccountUpdate: React.FC = () => {
             text="更新"
           />
         </form>
-        <Button
-          text="アカウント削除"
-          icon="trash"
-          intent="danger"
-          onClick={handleOpenAlert}
-          minimal={true}
-          small={true}
-        />
-        <Alert
-          isOpen={isOpen}
-          cancelButtonText="キャンセル"
-          onCancel={handleCloseAlert}
-          confirmButtonText="削除"
-          onConfirm={handleAccountDelete}
-          intent="danger"
-          icon="trash"
-          canEscapeKeyCancel={true}
-          canOutsideClickCancel={true}
-        >
-          本当にアカウントを削除しますか？
-        </Alert>
+        <AccountDelete />
       </Card>
     </div>
   );
