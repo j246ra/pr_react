@@ -4,7 +4,7 @@ import App from '../App';
 import Hello from '../Hello';
 import Login from '@container/Login';
 import SignUp from '@container/SignUp';
-import AccountUpdate from '../AccountUpdate';
+import AccountUpdate from '@container/AccountUpdate';
 import PasswordForget from '../PasswordForget';
 import PasswordEdit from '../PasswordEdit';
 

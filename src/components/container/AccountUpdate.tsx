@@ -1,12 +1,14 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { Alert, Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
-import { useUser, User } from './providers/UserProvider';
+import { Alert, Button, Card } from '@blueprintjs/core';
+import { useUser, User } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
-import accountUpdateValidator from './validators/accountUpdate';
-import { useAuth } from './providers/AuthApiProvider';
-import { useSession } from './providers/SessionProvider';
-import { UserParams } from './lib/api/session';
-import notify from './lib/toast';
+import accountUpdateValidator from '@validators/accountUpdate';
+import { useAuth } from '@providers/AuthApiProvider';
+import { useSession } from '@providers/SessionProvider';
+import { UserParams } from '@lib/api/session';
+import notify from '@lib/toast';
+import { EmailInput } from '@presentational/EmailInput';
+import { PasswordInput } from '@presentational/PasswordInput';
 
 const AccountUpdate: React.FC = () => {
   const { removeToken } = useSession();
@@ -55,28 +57,22 @@ const AccountUpdate: React.FC = () => {
     <div className="session-container">
       <Card elevation={2} className="session-card">
         <form onSubmit={handleAccountUpdate}>
-          <FormGroup label="メールアドレス" labelFor="email-input">
-            <InputGroup
-              id="email-input"
-              placeholder="メールアドレスを入力"
-              type="email"
-              value={email}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setEmail(e.target.value)
-              }
-            />
-          </FormGroup>
-          <FormGroup label="パスワード" labelFor="password-input">
-            <InputGroup
-              id="password-input"
-              placeholder="パスワードを入力"
-              type="password"
-              value={password}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setPassword(e.target.value)
-              }
-            />
-          </FormGroup>
+          <EmailInput
+            id={'email-input'}
+            placeholder={'メールアドレスを入力'}
+            value={email}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setEmail(e.target.value)
+            }
+          />
+          <PasswordInput
+            id={'password-input'}
+            placeholder={'パスワードを入力'}
+            value={password}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setPassword(e.target.value)
+            }
+          />
           <Button
             type="submit"
             intent="primary"
