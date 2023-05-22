@@ -6,8 +6,22 @@
     "sourceMap": true,
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true
-  },
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@lib/*": [
+        "./src/lib/*"
+      ],
+      "@validators/*": [
+        "./src/validators/*"
+      ],
+      "@providers/*": [
+        "./src/providers/*"
+      ],
+      "@presentational/*": [
+        "./src/components/presentational/*"
+      ]}
+    },
   "include": [
     "./src/**/*"
   ],
