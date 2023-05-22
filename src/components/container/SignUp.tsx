@@ -1,12 +1,14 @@
 import React, { useState, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
-import { useUser } from './providers/UserProvider';
+import { Button, Card } from '@blueprintjs/core';
+import { useUser } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
-import signUpValidator from './validators/signUp';
-import notify from './lib/toast';
-import { useSession } from './providers/SessionProvider';
-import { useAuth } from './providers/AuthApiProvider';
+import signUpValidator from '@validators/signUp';
+import notify from '@lib/toast';
+import { useSession } from '@providers/SessionProvider';
+import { useAuth } from '@providers/AuthApiProvider';
+import { EmailInput } from '@presentational/EmailInput';
+import { PasswordInput } from '@presentational/PasswordInput';
 
 const SignUp = () => {
   const { removeToken } = useSession();
@@ -45,34 +47,18 @@ const SignUp = () => {
       <Card elevation={2} className="session-card">
         {
           <form onSubmit={handleSignUp}>
-            <FormGroup
-              label="メールアドレス"
-              labelFor="email-input"
-              labelInfo="(必須)"
-            >
-              <InputGroup
-                id="email-input"
-                placeholder="メールアドレスを入力"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </FormGroup>
-            <FormGroup
-              label="パスワード"
-              labelFor="password-input"
-              labelInfo="(必須)"
-            >
-              <InputGroup
-                id="password-input"
-                placeholder="パスワードを入力"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </FormGroup>
+            <EmailInput
+              id={'email-input'}
+              placeholder={'メールアドレスを入力'}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <PasswordInput
+              id={'password-input'}
+              placeholder={'パスワードを入力'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
             <Button
               type="submit"
               intent="primary"

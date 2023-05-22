@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import App from '../App';
 import Hello from '../Hello';
 import Login from '@container/Login';
-import SignUp from '../SignUp';
+import SignUp from '@container/SignUp';
 import AccountUpdate from '../AccountUpdate';
 import PasswordForget from '../PasswordForget';
 import PasswordEdit from '../PasswordEdit';
