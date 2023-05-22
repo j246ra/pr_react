@@ -52,18 +52,8 @@ const Login: React.FC = () => {
     <div className="session-container">
       <Card elevation={2} className="session-card">
         <form onSubmit={handleLogin}>
-          <EmailInput
-            id={'email-input'}
-            placeholder={'メールアドレスを入力'}
-            value={email}
-            onChange={handleEmailChange}
-          />
-          <PasswordInput
-            id={'password-input'}
-            placeholder={'パスワードを入力'}
-            value={password}
-            onChange={handlePasswordChange}
-          />
+          <EmailInput value={email} onChange={handleEmailChange} />
+          <PasswordInput value={password} onChange={handlePasswordChange} />
           <Button
             type="submit"
             intent="primary"

@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, FormEvent, ChangeEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Card } from '@blueprintjs/core';
 import { useUser } from '@providers/UserProvider';
@@ -42,23 +42,19 @@ const SignUp = () => {
       });
   };
 
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) =>
+    setEmail(e.target.value);
+
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) =>
+    setPassword(e.target.value);
+
   return (
     <div className="session-container">
       <Card elevation={2} className="session-card">
         {
           <form onSubmit={handleSignUp}>
-            <EmailInput
-              id={'email-input'}
-              placeholder={'メールアドレスを入力'}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <PasswordInput
-              id={'password-input'}
-              placeholder={'パスワードを入力'}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <EmailInput value={email} onChange={handleEmailChange} />
+            <PasswordInput value={password} onChange={handlePasswordChange} />
             <Button
               type="submit"
               intent="primary"

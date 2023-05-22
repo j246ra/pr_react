@@ -2,17 +2,17 @@ import React, { ChangeEvent } from 'react';
 import { FormGroup, InputGroup } from '@blueprintjs/core';
 
 interface PasswordInputProps {
-  id: string;
-  placeholder: string;
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  id?: string;
+  placeholder?: string;
 }
 
 export const PasswordInput: React.FC<PasswordInputProps> = ({
-  id,
-  placeholder,
   value,
   onChange,
+  id = 'password-input',
+  placeholder = 'パスワードを入力',
 }) => (
   <FormGroup label="パスワード" labelFor={id} labelInfo="(必須)">
     <InputGroup
