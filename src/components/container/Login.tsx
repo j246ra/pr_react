@@ -1,11 +1,13 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, FormGroup, InputGroup, Card } from '@blueprintjs/core';
-import { useUser } from './providers/UserProvider';
+import { Button, Card } from '@blueprintjs/core';
+import { useUser } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from './providers/AuthApiProvider';
-import notify from './lib/toast';
-import { useSession } from './providers/SessionProvider';
+import { useAuth } from '@providers/AuthApiProvider';
+import notify from '@lib/toast';
+import { useSession } from '@providers/SessionProvider';
+import { EmailInput } from '@presentational/EmailInput';
+import { PasswordInput } from '@presentational/PasswordInput';
 
 const Login: React.FC = () => {
   const { createToken } = useSession();
@@ -50,34 +52,18 @@ const Login: React.FC = () => {
     <div className="session-container">
       <Card elevation={2} className="session-card">
         <form onSubmit={handleLogin}>
-          <FormGroup
-            label="メールアドレス"
-            labelFor="email-input"
-            labelInfo="(必須)"
-          >
-            <InputGroup
-              id="email-input"
-              placeholder="メールアドレスを入力"
-              type="email"
-              value={email}
-              onChange={handleEmailChange}
-              required
-            />
-          </FormGroup>
-          <FormGroup
-            label="パスワード"
-            labelFor="password-input"
-            labelInfo="(必須)"
-          >
-            <InputGroup
-              id="password-input"
-              placeholder="パスワードを入力"
-              type="password"
-              value={password}
-              onChange={handlePasswordChange}
-              required
-            />
-          </FormGroup>
+          <EmailInput
+            id={'email-input'}
+            placeholder={'メールアドレスを入力'}
+            value={email}
+            onChange={handleEmailChange}
+          />
+          <PasswordInput
+            id={'password-input'}
+            placeholder={'パスワードを入力'}
+            value={password}
+            onChange={handlePasswordChange}
+          />
           <Button
             type="submit"
             intent="primary"
