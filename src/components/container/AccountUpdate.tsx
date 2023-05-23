@@ -16,11 +16,13 @@ const AccountUpdate: React.FC = () => {
   const { authApi } = useAuth();
   const [email, setEmail] = useState((user as User).email);
   const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const navigate = useNavigate();
 
   const handleAccountUpdate = (e: FormEvent) => {
     e.preventDefault();
-    if (accountUpdateValidator(email, password).isInvalid) return;
+    if (accountUpdateValidator(email, password, passwordConfirmation).isInvalid)
+      return;
     let params: UserParams = {};
     if (email !== '') params = { ...params, email };
     if (password !== '') params = { ...params, password };
@@ -44,6 +46,9 @@ const AccountUpdate: React.FC = () => {
     setPassword(e.target.value);
   };
 
+  const handlePasswordConfirmationChange = (e: ChangeEvent<HTMLInputElement>) =>
+    setPasswordConfirmation(e.target.value);
+
   return (
     <SessionCard>
       <form onSubmit={handleAccountUpdate}>
@@ -55,6 +60,14 @@ const AccountUpdate: React.FC = () => {
         <PasswordInput
           value={password}
           onChange={handlePasswordChange}
+          required={false}
+        />
+        <PasswordInput
+          value={passwordConfirmation}
+          onChange={handlePasswordConfirmationChange}
+          id={'password-input-confirmation'}
+          label={'パスワード（確認用）'}
+          placeholder={'新しいパスワードを入力'}
           required={false}
         />
         <Button type="submit" intent="primary" icon="floppy-disk" text="更新" />
