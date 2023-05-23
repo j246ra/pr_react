@@ -5,6 +5,8 @@ interface PasswordInputProps {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   id?: string;
+  required?: boolean;
+  label?: string;
   placeholder?: string;
 }
 
@@ -12,16 +14,18 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
   value,
   onChange,
   id = 'password-input',
+  required = true,
+  label = 'パスワード',
   placeholder = 'パスワードを入力',
 }) => (
-  <FormGroup label="パスワード" labelFor={id} labelInfo="(必須)">
+  <FormGroup label={label} labelFor={id} labelInfo={required ? '(必須)' : ''}>
     <InputGroup
       id={id}
       placeholder={placeholder}
       type="password"
       value={value}
       onChange={onChange}
-      required
+      required={required}
     />
   </FormGroup>
 );

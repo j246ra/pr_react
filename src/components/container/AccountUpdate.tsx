@@ -42,7 +42,11 @@ const AccountUpdate: React.FC = () => {
     <SessionCard>
       <form onSubmit={handleAccountUpdate}>
         <EmailInput value={email} onChange={handleEmailChange} />
-        <PasswordInput value={password} onChange={handlePasswordChange} />
+        <PasswordInput
+          value={password}
+          onChange={handlePasswordChange}
+          required={false}
+        />
         <Button type="submit" intent="primary" icon="floppy-disk" text="更新" />
       </form>
       <AccountDelete />
