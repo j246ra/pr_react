@@ -5,8 +5,9 @@ import Hello from '../Hello';
 import Login from '@container/Login';
 import SignUp from '@container/SignUp';
 import AccountUpdate from '@container/AccountUpdate';
-import PasswordForget from '../PasswordForget';
+import PasswordForget from '@container/PasswordForget';
 import PasswordEdit from '../PasswordEdit';
+import ResetMailSendSuccess from '@container/ResetMailSendSuccess';
 
 const RootRouterProvider = () => {
   return (
@@ -17,6 +18,7 @@ const RootRouterProvider = () => {
         <Route path="/sign_up" element={<SignUp />} />
         <Route path="/update_account" element={<AccountUpdate />} />
         <Route path="/password_forget" element={<PasswordForget />} />
+        <Route path="/send_success" element={<ResetMailSendSuccess />} />
         <Route path="/password_edit" element={<PasswordEdit />} />
         <Route path="/hello" element={<Hello />} />
       </Route>
