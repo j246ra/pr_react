@@ -25,7 +25,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
       type="password"
       value={value}
       onChange={onChange}
-      required
+      required={required}
     />
   </FormGroup>
 );

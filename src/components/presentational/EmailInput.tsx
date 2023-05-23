@@ -27,7 +27,7 @@ export const EmailInput: React.FC<EmailInputProps> = ({
       type="email"
       value={value}
       onChange={onChange}
-      required
+      required={required}
     />
   </FormGroup>
 );
