@@ -6,7 +6,7 @@ import Login from '@container/Login';
 import SignUp from '@container/SignUp';
 import AccountUpdate from '@container/AccountUpdate';
 import PasswordForget from '@container/PasswordForget';
-import PasswordEdit from '../PasswordEdit';
+import PasswordEdit from '@container/PasswordEdit';
 import ResetMailSendSuccess from '@container/ResetMailSendSuccess';
 
 const RootRouterProvider = () => {
