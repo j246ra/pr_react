@@ -6,6 +6,7 @@
     "@babel/core": "^7.16.0",
     "@blueprintjs/core": "^4.17.8",
     "@blueprintjs/icons": "^4.14.5",
+    "@blueprintjs/popover2": "^1.14.4",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@svgr/webpack": "^5.5.0",
     "@testing-library/jest-dom": "^5.14.1",

@@ -3,15 +3,15 @@ import {
   Button,
   Navbar,
   Alignment,
-  Popover,
   Menu,
   MenuItem,
   MenuDivider,
 } from '@blueprintjs/core';
-import { useUser } from './providers/UserProvider';
+import { Popover2 } from '@blueprintjs/popover2';
+import { useUser } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from './providers/AuthApiProvider';
-import { useSession } from './providers/SessionProvider';
+import { useAuth } from '@providers/AuthApiProvider';
+import { useSession } from '@providers/SessionProvider';
 
 const Header = () => {
   const { removeToken } = useSession();
@@ -35,7 +35,7 @@ const Header = () => {
         </Navbar.Heading>
       </Navbar.Group>
       <Navbar.Group align={Alignment.RIGHT}>
-        <Popover
+        <Popover2
           content={
             <Menu>
               <MenuItem icon="plus" text="新規作成" />
@@ -60,7 +60,7 @@ const Header = () => {
           placement="bottom"
         >
           <Button icon="menu" minimal={true} />
-        </Popover>
+        </Popover2>
       </Navbar.Group>
     </Navbar>
   );
