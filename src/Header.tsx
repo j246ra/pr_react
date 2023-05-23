@@ -57,7 +57,7 @@ const Header = () => {
               </MenuItem>
             </Menu>
           }
-          placement="bottom"
+          placement="bottom-end"
         >
           <Button icon="menu" minimal={true} />
         </Popover2>
