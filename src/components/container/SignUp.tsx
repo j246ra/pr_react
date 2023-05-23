@@ -1,6 +1,6 @@
 import React, { useState, FormEvent, ChangeEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Card } from '@blueprintjs/core';
+import { Button } from '@blueprintjs/core';
 import { useUser } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import signUpValidator from '@validators/signUp';
@@ -9,6 +9,7 @@ import { useSession } from '@providers/SessionProvider';
 import { useAuth } from '@providers/AuthApiProvider';
 import { EmailInput } from '@presentational/EmailInput';
 import { PasswordInput } from '@presentational/PasswordInput';
+import SessionCard from '@presentational/SessionCard';
 
 const SignUp = () => {
   const { removeToken } = useSession();
@@ -49,27 +50,18 @@ const SignUp = () => {
     setPassword(e.target.value);
 
   return (
-    <div className="session-container">
-      <Card elevation={2} className="session-card">
-        {
-          <form onSubmit={handleSignUp}>
-            <EmailInput value={email} onChange={handleEmailChange} />
-            <PasswordInput value={password} onChange={handlePasswordChange} />
-            <Button
-              type="submit"
-              intent="primary"
-              icon="new-person"
-              text="登録"
-            />
-          </form>
-        }
-        <div className={'links'}>
-          <Link className="password-forget-link" to={'/password_forget'}>
-            パスワードを忘れた方
-          </Link>
-        </div>
-      </Card>
-    </div>
+    <SessionCard>
+      <form onSubmit={handleSignUp}>
+        <EmailInput value={email} onChange={handleEmailChange} />
+        <PasswordInput value={password} onChange={handlePasswordChange} />
+        <Button type="submit" intent="primary" icon="new-person" text="登録" />
+      </form>
+      <div className={'links'}>
+        <Link className="password-forget-link" to={'/password_forget'}>
+          パスワードを忘れた方
+        </Link>
+      </div>
+    </SessionCard>
   );
 };
 

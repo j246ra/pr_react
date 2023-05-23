@@ -1,6 +1,6 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Card } from '@blueprintjs/core';
+import { Button } from '@blueprintjs/core';
 import { useUser } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@providers/AuthApiProvider';
@@ -8,6 +8,7 @@ import notify from '@lib/toast';
 import { useSession } from '@providers/SessionProvider';
 import { EmailInput } from '@presentational/EmailInput';
 import { PasswordInput } from '@presentational/PasswordInput';
+import SessionCard from '@presentational/SessionCard';
 
 const Login: React.FC = () => {
   const { createToken } = useSession();
@@ -49,28 +50,21 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="session-container">
-      <Card elevation={2} className="session-card">
-        <form onSubmit={handleLogin}>
-          <EmailInput value={email} onChange={handleEmailChange} />
-          <PasswordInput value={password} onChange={handlePasswordChange} />
-          <Button
-            type="submit"
-            intent="primary"
-            icon="log-in"
-            text="ログイン"
-          />
-        </form>
-        <div className={'links'}>
-          <Link className="password-forget-link" to={'/password_forget'}>
-            パスワードを忘れた方
-          </Link>
-          <Link className="sign-up-link" to={'/sign_up'}>
-            新規登録
-          </Link>
-        </div>
-      </Card>
-    </div>
+    <SessionCard>
+      <form onSubmit={handleLogin}>
+        <EmailInput value={email} onChange={handleEmailChange} />
+        <PasswordInput value={password} onChange={handlePasswordChange} />
+        <Button type="submit" intent="primary" icon="log-in" text="ログイン" />
+      </form>
+      <div className={'links'}>
+        <Link className="password-forget-link" to={'/password_forget'}>
+          パスワードを忘れた方
+        </Link>
+        <Link className="sign-up-link" to={'/sign_up'}>
+          新規登録
+        </Link>
+      </div>
+    </SessionCard>
   );
 };
 

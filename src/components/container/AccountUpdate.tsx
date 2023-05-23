@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { Button, Card } from '@blueprintjs/core';
+import { Button } from '@blueprintjs/core';
 import { useUser, User } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import accountUpdateValidator from '@validators/accountUpdate';
@@ -8,6 +8,7 @@ import { UserParams } from '@lib/api/session';
 import { EmailInput } from '@presentational/EmailInput';
 import { PasswordInput } from '@presentational/PasswordInput';
 import AccountDelete from '@container/AccountDelete';
+import SessionCard from '@presentational/SessionCard';
 
 const AccountUpdate: React.FC = () => {
   const { user, updateUser } = useUser();
@@ -38,21 +39,14 @@ const AccountUpdate: React.FC = () => {
   };
 
   return (
-    <div className="session-container">
-      <Card elevation={2} className="session-card">
-        <form onSubmit={handleAccountUpdate}>
-          <EmailInput value={email} onChange={handleEmailChange} />
-          <PasswordInput value={password} onChange={handlePasswordChange} />
-          <Button
-            type="submit"
-            intent="primary"
-            icon="floppy-disk"
-            text="更新"
-          />
-        </form>
-        <AccountDelete />
-      </Card>
-    </div>
+    <SessionCard>
+      <form onSubmit={handleAccountUpdate}>
+        <EmailInput value={email} onChange={handleEmailChange} />
+        <PasswordInput value={password} onChange={handlePasswordChange} />
+        <Button type="submit" intent="primary" icon="floppy-disk" text="更新" />
+      </form>
+      <AccountDelete />
+    </SessionCard>
   );
 };
 
