@@ -19,8 +19,12 @@ const PasswordForget: React.FC = () => {
         notify.success('パスワードリセットメールを送信しました。');
         navigate('/send_success');
       })
-      .catch(() => {
-        notify.error('送信に失敗しました。');
+      .catch((e) => {
+        if (e?.response.status === 404) {
+          notify.success('パスワードリセットメールを送信しました。');
+        } else {
+          notify.error('送信に失敗しました。');
+        }
       });
   };
 

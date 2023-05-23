@@ -42,14 +42,15 @@ export default function AuthApiProvider({ children }: AuthApiProviderProps) {
   };
   const errorInterceptor = (error: AxiosError): Promise<never> => {
     if (error.response === undefined) {
-      notify.error(`想定外のサーバーが発生しました (${error.message})`);
+      notify.error(`想定外のエラーが発生しました (${error.message})`);
     } else {
       const data = error.response.data as Data;
-      data.errors.fullMessages.forEach((message: string) => {
-        notify.error(message);
-      });
+      if (data?.errors.fullMessages !== undefined) {
+        data.errors.fullMessages.forEach((message: string) => {
+          notify.error(message);
+        });
+      }
     }
-
     return Promise.reject(error);
   };
 
