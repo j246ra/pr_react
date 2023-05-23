@@ -30,16 +30,9 @@ const SignUp = () => {
         notify.success('アカウント作成に成功しました');
         navigate('/');
       })
-      .catch((e) => {
+      .catch(() => {
         clearUser();
         removeToken();
-        if (e.response === undefined) {
-          notify.error(`想定外のサーバーが発生しました (${e.message})`);
-        } else {
-          e.response.data.errors.fullMessages.forEach((message: string) => {
-            notify.error(message);
-          });
-        }
       });
   };
 

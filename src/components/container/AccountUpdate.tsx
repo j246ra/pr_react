@@ -9,6 +9,7 @@ import { EmailInput } from '@presentational/EmailInput';
 import { PasswordInput } from '@presentational/PasswordInput';
 import AccountDelete from '@container/AccountDelete';
 import SessionCard from '@presentational/SessionCard';
+import notify from '@lib/toast';
 
 const AccountUpdate: React.FC = () => {
   const { user, updateUser } = useUser();
@@ -23,11 +24,16 @@ const AccountUpdate: React.FC = () => {
     let params: UserParams = {};
     if (email !== '') params = { ...params, email };
     if (password !== '') params = { ...params, password };
-    authApi.updateUser(params).then((r) => {
-      if (r.status !== 200) return;
-      updateUser(email);
-      navigate('/');
-    });
+    authApi
+      .updateUser(params)
+      .then((r) => {
+        if (r.status !== 200) return;
+        updateUser(email);
+        navigate('/');
+      })
+      .catch(() => {
+        notify.error('アカウントの更新に失敗しました。');
+      });
   };
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
