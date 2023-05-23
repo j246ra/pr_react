@@ -41,7 +41,11 @@ const AccountUpdate: React.FC = () => {
   return (
     <SessionCard>
       <form onSubmit={handleAccountUpdate}>
-        <EmailInput value={email} onChange={handleEmailChange} />
+        <EmailInput
+          value={email}
+          onChange={handleEmailChange}
+          required={false}
+        />
         <PasswordInput
           value={password}
           onChange={handlePasswordChange}
