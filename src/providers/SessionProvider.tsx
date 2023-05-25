@@ -74,7 +74,7 @@ const SessionProvider: FC<Props> = ({ children }) => {
     } else {
       headersToSet = r;
     }
-    setCookie('token', headersToSet);
+    if (headersToSet['access-token']) setCookie('token', headersToSet);
   };
 
   const removeToken = (): void => removeCookie('token');
