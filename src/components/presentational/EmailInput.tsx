@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react';
 import { FormGroup, InputGroup } from '@blueprintjs/core';
 
-interface EmailInputProps {
+export interface EmailInputProps {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   id?: string;
