@@ -22,10 +22,10 @@ export const WithPlaceholder = {
   },
 };
 
-export const Required = {
+export const Optional = {
   args: {
     value: '',
     onChange: (e: ChangeEvent<HTMLInputElement>) => {},
-    required: true,
+    required: false,
   },
 };
