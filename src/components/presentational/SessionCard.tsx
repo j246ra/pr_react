@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Card } from '@blueprintjs/core';
+import './session.scss';
 
 interface SessionCardProps {
   children: ReactNode;
