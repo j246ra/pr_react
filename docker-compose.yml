@@ -19,5 +19,14 @@ services:
     environment:
       WDS_SOCKET_PORT: ${HOST_PORT:-3000}
       REACT_APP_HOST_URL: ${HOST_URL:-http://localhost:3000}
+  storybook:
+    image: node:16.20-buster-slim
+    ports:
+      - "${STORYBOOK_PORT:-6006}:6006"
+    volumes:
+      - ./:/app
+      - node_modules:/app/node_modules
+    working_dir: /app
+    command: sh -c "yarn install && yarn storybook"
 volumes:
   node_modules:

@@ -1,13 +1,24 @@
 import React, { ReactNode } from 'react';
-import { Card } from '@blueprintjs/core';
+import { Card, Elevation } from '@blueprintjs/core';
+import './session.scss';
 
-interface SessionCardProps {
+export interface SessionCardProps {
   children: ReactNode;
+  interactive?: boolean;
+  elevation?: Elevation;
 }
-const SessionCard: React.FC<SessionCardProps> = ({ children }) => {
+const SessionCard: React.FC<SessionCardProps> = ({
+  children,
+  interactive = false,
+  elevation = Elevation.TWO,
+}) => {
   return (
     <div className="session-container">
-      <Card elevation={2} className="session-card">
+      <Card
+        elevation={elevation}
+        interactive={interactive}
+        className="session-card"
+      >
         {children}
       </Card>
     </div>
