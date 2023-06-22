@@ -2,13 +2,13 @@ import React from 'react';
 import './Hello.css';
 import { Button, Intent, Card, Elevation } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
-import { useUser } from './providers/UserProvider';
+import { useUser } from '@providers/UserProvider';
 import { useEffect, useState } from 'react';
-import { useAuth } from './providers/AuthApiProvider';
-import { useLifelog } from './providers/LifelogApiProvider';
+import { useAuth } from '@providers/AuthApiProvider';
+import { useLifelog } from '@providers/LifelogApiProvider';
 import { useNavigate } from 'react-router-dom';
 import notify from './lib/toast';
-import { useSession } from './providers/SessionProvider';
+import { useSession } from '@providers/SessionProvider';
 
 const Hello = () => {
   const { user, clearUser, isLogin } = useUser();
@@ -27,8 +27,13 @@ const Hello = () => {
     }
     if (!hasToken()) return;
     api
-      .hello()
-      .then((r) => setMessage(r.data.message))
+      .index()
+      .then((r) => {
+        for (let item of r.data) {
+          console.log(`${item.action}:${item.detail}`);
+        }
+        setMessage('ライフログAPIリクエスト成功！！');
+      })
       .catch((e) => {
         notify.error(e.message);
       });
