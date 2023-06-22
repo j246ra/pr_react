@@ -23,6 +23,9 @@
       ],
       "@container/*": [
         "./src/components/container/*"
+      ],
+      "@lifelog/*": [
+        "./src/components/lifelog/*"
       ]}
     },
   "include": [

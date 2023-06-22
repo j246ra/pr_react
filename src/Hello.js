@@ -9,6 +9,7 @@ import { useLifelog } from '@providers/LifelogApiProvider';
 import { useNavigate } from 'react-router-dom';
 import notify from './lib/toast';
 import { useSession } from '@providers/SessionProvider';
+import LifelogList from '@lifelog/container/LifelogList';
 
 const Hello = () => {
   const { user, clearUser, isLogin } = useUser();
@@ -17,6 +18,7 @@ const Hello = () => {
   const { lifelogApi: api } = useLifelog();
   const [valid, setValid] = useState(false);
   const [message, setMessage] = useState('');
+  const [logs, setLogs] = useState([]);
   const navigate = useNavigate();
   const cookie = getToken();
 
@@ -29,9 +31,7 @@ const Hello = () => {
     api
       .index()
       .then((r) => {
-        for (let item of r.data) {
-          console.log(`${item.action}:${item.detail}`);
-        }
+        setLogs(r.data);
         setMessage('ライフログAPIリクエスト成功！！');
       })
       .catch((e) => {
@@ -76,6 +76,7 @@ const Hello = () => {
           </form>
         </Card>
       </div>
+      <LifelogList logs={logs} />
     </div>
   );
 };

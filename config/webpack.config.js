@@ -328,6 +328,7 @@ module.exports = function (webpackEnv) {
           'components/presentational'
         ),
         '@container': path.resolve(paths.appSrc, 'components/container'),
+        '@lifelog': path.resolve(paths.appSrc, 'components/lifelog'),
       },
       plugins: [
         // Prevents users from importing files from outside of src/ (or node_modules/).
