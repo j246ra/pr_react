@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import notify from './lib/toast';
 import { useSession } from '@providers/SessionProvider';
 import LifelogList from '@lifelog/container/LifelogList';
+import ContextInput from '@lifelog/presentational/ContextInput';
 
 const Hello = () => {
   const { user, clearUser, isLogin } = useUser();
@@ -18,6 +19,7 @@ const Hello = () => {
   const { lifelogApi: api } = useLifelog();
   const [valid, setValid] = useState(false);
   const [message, setMessage] = useState('');
+  const [context, setContext] = useState('');
   const [logs, setLogs] = useState([]);
   const navigate = useNavigate();
   const cookie = getToken();
@@ -50,6 +52,17 @@ const Hello = () => {
       .catch(() => clear());
   };
 
+  const handleCreateLifelog = (e) => {
+    e.preventDefault();
+    api
+      .create({ context: context })
+      .then((r) => {
+        setContext('');
+        setMessage(`ログ保存成功！！(${r.status})`);
+      })
+      .catch((e) => notify.error(e.message));
+  };
+
   const clear = () => {
     clearUser();
     removeToken();
@@ -74,6 +87,11 @@ const Hello = () => {
               text="トークン検証"
             />
           </form>
+          <ContextInput
+            onSubmit={handleCreateLifelog}
+            value={context}
+            onChange={(e) => setContext(e.target.value)}
+          />
         </Card>
       </div>
       <LifelogList logs={logs} />
