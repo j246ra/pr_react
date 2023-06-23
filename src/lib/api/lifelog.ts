@@ -5,6 +5,13 @@ import { Headers } from '@providers/SessionProvider';
 type ResponseInterceptor = (response: AxiosResponse) => AxiosResponse;
 type ErrorInterceptor = (error: AxiosError) => Promise<never>;
 
+type CreatParams = {
+  action: string;
+  detail?: string;
+  startedAt?: string;
+  finishedAt?: string;
+};
+
 export default function lifelog(
   headers: Headers,
   responseInterceptor?: ResponseInterceptor,
@@ -15,7 +22,11 @@ export default function lifelog(
 
   const index = () => client.get('/lifelogs', { headers });
 
+  const create = (params: CreatParams) =>
+    client.post('/lifelogs', { data: params }, { headers });
+
   return {
     index,
+    create,
   };
 }
