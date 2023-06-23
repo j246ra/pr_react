@@ -6,7 +6,8 @@ type ResponseInterceptor = (response: AxiosResponse) => AxiosResponse;
 type ErrorInterceptor = (error: AxiosError) => Promise<never>;
 
 type CreatParams = {
-  action: string;
+  context?: string;
+  action?: string;
   detail?: string;
   startedAt?: string;
   finishedAt?: string;
