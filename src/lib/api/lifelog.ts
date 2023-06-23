@@ -26,8 +26,11 @@ export default function lifelog(
   const create = (params: CreatParams) =>
     client.post('/lifelogs', { data: params }, { headers });
 
+  const destroy = (id: number) => client.delete('/lifelogs/' + id, { headers });
+
   return {
     index,
     create,
+    destroy,
   };
 }

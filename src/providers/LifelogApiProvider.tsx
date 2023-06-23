@@ -4,7 +4,7 @@ import { useSession } from './SessionProvider';
 import { AxiosError, AxiosResponse } from 'axios';
 import lifelog from '@lib/api/lifelog';
 
-interface LifelogApiContextProps {
+export interface LifelogApiContextProps {
   lifelogApi: ReturnType<typeof lifelog>;
 }
 
@@ -12,7 +12,13 @@ const LifelogApiContext = createContext<LifelogApiContextProps | undefined>(
   undefined
 );
 
-export const useLifelog = () => useContext(LifelogApiContext);
+export const useLifelog = (): LifelogApiContextProps => {
+  const context = useContext(LifelogApiContext);
+  if (!context) {
+    throw new Error('useAuth must be used within a AuthApiProvider');
+  }
+  return context;
+};
 
 interface LifelogApiProviderProps {
   children: ReactNode;
