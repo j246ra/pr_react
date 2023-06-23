@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroller';
 import { Button, HTMLTable } from '@blueprintjs/core';
 import dayjs from 'dayjs';
 import { IconNames } from '@blueprintjs/icons';
@@ -16,17 +17,16 @@ const LifelogList = () => {
   const { lifelogApi: api } = useLifelog();
   const [logs, setLogs] = useState([] as Lifelog[]);
 
-  useEffect(() => {
+  const lifelogLoader = (page: number) => {
     api
-      .index()
+      .index(page)
       .then((r) => {
-        setLogs(r.data);
+        setLogs([...logs, ...r.data]);
       })
       .catch((e) => {
         notify.error(e.message);
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
   const handleDeleteLifelog = (logId: number) => {
     api
       .destroy(logId)
@@ -38,7 +38,16 @@ const LifelogList = () => {
 
   return (
     <HTMLTable>
-      <tbody>
+      <InfiniteScroll
+        element={'tbody'}
+        loadMore={lifelogLoader}
+        hasMore={true}
+        loader={
+          <tr key={0}>
+            <td>Loading ...</td>
+          </tr>
+        }
+      >
         {logs.map((log) => {
           return (
             <tr key={log.id}>
@@ -54,7 +63,7 @@ const LifelogList = () => {
             </tr>
           );
         })}
-      </tbody>
+      </InfiniteScroll>
     </HTMLTable>
   );
 };
