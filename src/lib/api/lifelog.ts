@@ -21,7 +21,8 @@ export default function lifelog(
   if (responseInterceptor !== undefined && errorInterceptor !== undefined)
     client.interceptors.response.use(responseInterceptor, errorInterceptor);
 
-  const index = () => client.get('/lifelogs', { headers });
+  const index = (page = 0) =>
+    client.get('/lifelogs', { headers, params: { page: page } });
 
   const create = (params: CreatParams) =>
     client.post('/lifelogs', { data: params }, { headers });
