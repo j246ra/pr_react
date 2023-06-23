@@ -14,13 +14,12 @@ import ContextInput from '@lifelog/presentational/ContextInput';
 
 const Hello = () => {
   const { user, clearUser, isLogin } = useUser();
-  const { hasToken, getToken, removeToken } = useSession();
+  const { getToken, removeToken } = useSession();
   const { authApi } = useAuth();
   const { lifelogApi: api } = useLifelog();
   const [valid, setValid] = useState(false);
   const [message, setMessage] = useState('');
   const [context, setContext] = useState('');
-  const [logs, setLogs] = useState([]);
   const navigate = useNavigate();
   const cookie = getToken();
 
@@ -29,18 +28,8 @@ const Hello = () => {
       notify.error('ログインしてください。');
       return navigate('/login');
     }
-    if (!hasToken()) return;
-    api
-      .index()
-      .then((r) => {
-        setLogs(r.data);
-        setMessage('ライフログAPIリクエスト成功！！');
-      })
-      .catch((e) => {
-        notify.error(e.message);
-      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasToken()]);
+  }, []);
 
   const handleValidToken = (e) => {
     e.preventDefault();
@@ -94,7 +83,7 @@ const Hello = () => {
           />
         </Card>
       </div>
-      <LifelogList logs={logs} />
+      <LifelogList />
     </div>
   );
 };
