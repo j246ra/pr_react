@@ -51,7 +51,7 @@ const LifelogList = () => {
         {logs.map((log) => {
           return (
             <tr key={log.id}>
-              <td>{dayjs(log.startedAt).format('YY/MM/DD hh:mm')}</td>
+              <td>{dayjs(log.startedAt).format('YY/MM/DD HH:mm')}</td>
               <td>{log.action}</td>
               <td>{log.detail}</td>
               <td>
