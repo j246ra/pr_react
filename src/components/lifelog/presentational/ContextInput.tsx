@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent } from 'react';
-import { Button, ControlGroup, InputGroup } from '@blueprintjs/core';
+import { Button, ControlGroup, InputGroup, Intent } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 
 export interface ContextInputProps {
@@ -28,7 +28,12 @@ export const ContextInput: React.FC<ContextInputProps> = ({
         onChange={onChange}
         required={required}
       />
-      <Button icon={IconNames.ADD} />
+      <Button
+        type={'submit'}
+        minimal={true}
+        intent={Intent.PRIMARY}
+        icon={IconNames.ADD}
+      />
     </ControlGroup>
   </form>
 );
