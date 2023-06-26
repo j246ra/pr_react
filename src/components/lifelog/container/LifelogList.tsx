@@ -30,7 +30,14 @@ const LifelogList = () => {
   const handleDeleteLifelog = (logId: number) => {
     api
       .destroy(logId)
-      .then(() => notify.success('削除成功'))
+      .then(() => {
+        notify.success('削除成功');
+        setLogs(
+          logs.filter((log) => {
+            if (log.id !== logId) return log;
+          })
+        );
+      })
       .catch((e: any) => {
         notify.error(e?.message);
       });
