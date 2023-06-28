@@ -3,6 +3,7 @@ import { useSession } from '@providers/SessionProvider';
 import { useUser } from '@providers/UserProvider';
 import { AxiosError, AxiosResponse } from 'axios';
 import lifelog from '@lib/api/lifelog';
+import dayjs from 'dayjs';
 
 export type Lifelog = {
   id: number;
@@ -62,7 +63,11 @@ export default function LifelogProvider({ children }: Props) {
 
   const createLogByContext = (context: string) => {
     return api.create({ context: context }).then((r) => {
-      setLogs([r.data, ...logs]);
+      setLogs(
+        [r.data, ...logs].sort((a, b) => {
+          return dayjs(b.startedAt).diff(dayjs(a.startedAt));
+        })
+      );
       return r;
     });
   };
