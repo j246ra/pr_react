@@ -1,27 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { Button, HTMLTable } from '@blueprintjs/core';
 import dayjs from 'dayjs';
 import { IconNames } from '@blueprintjs/icons';
 import { useLifelog } from '@providers/LifelogApiProvider';
 import notify from '@lib/toast';
-
-export type Lifelog = {
-  id: number;
-  action: string;
-  detail?: string;
-  startedAt: string;
-};
+import { useLifelogs } from '@providers/LifelogProvider';
 
 const LifelogList = () => {
   const { lifelogApi: api } = useLifelog();
-  const [logs, setLogs] = useState([] as Lifelog[]);
+  const { logs, addLogs, deleteLog } = useLifelogs();
 
   const lifelogLoader = (page: number) => {
     api
       .index(page)
       .then((r) => {
-        setLogs([...logs, ...r.data]);
+        addLogs(r.data);
       })
       .catch((e) => {
         notify.error(e.message);
@@ -32,11 +26,7 @@ const LifelogList = () => {
       .destroy(logId)
       .then(() => {
         notify.success('削除成功');
-        setLogs(
-          logs.filter((log) => {
-            if (log.id !== logId) return log;
-          })
-        );
+        deleteLog(logId);
       })
       .catch((e) => {
         notify.error(e?.message);

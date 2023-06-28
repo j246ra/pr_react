@@ -7,6 +7,7 @@ import AuthApiProvider from './providers/AuthApiProvider';
 import LifelogApiProvider from '@providers/LifelogApiProvider';
 import RootRouterProvider from './providers/RootRouterProvider';
 import SessionProvider from './providers/SessionProvider';
+import LifelogProvider from '@providers/LifelogProvider';
 
 const container = document.getElementById('root');
 if (!container) {
@@ -19,9 +20,11 @@ root.render(
     <SessionProvider>
       <UserProvider>
         <AuthApiProvider>
-          <LifelogApiProvider>
-            <RootRouterProvider />
-          </LifelogApiProvider>
+          <LifelogProvider>
+            <LifelogApiProvider>
+              <RootRouterProvider />
+            </LifelogApiProvider>
+          </LifelogProvider>
         </AuthApiProvider>
       </UserProvider>
     </SessionProvider>
