@@ -4,7 +4,6 @@ import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import UserProvider from './providers/UserProvider';
 import AuthApiProvider from './providers/AuthApiProvider';
-import LifelogApiProvider from '@providers/LifelogApiProvider';
 import RootRouterProvider from './providers/RootRouterProvider';
 import SessionProvider from './providers/SessionProvider';
 import LifelogProvider from '@providers/LifelogProvider';
@@ -21,9 +20,7 @@ root.render(
       <UserProvider>
         <AuthApiProvider>
           <LifelogProvider>
-            <LifelogApiProvider>
-              <RootRouterProvider />
-            </LifelogApiProvider>
+            <RootRouterProvider />
           </LifelogProvider>
         </AuthApiProvider>
       </UserProvider>

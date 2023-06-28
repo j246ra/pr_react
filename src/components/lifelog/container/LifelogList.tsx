@@ -3,30 +3,21 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { Button, HTMLTable } from '@blueprintjs/core';
 import dayjs from 'dayjs';
 import { IconNames } from '@blueprintjs/icons';
-import { useLifelog } from '@providers/LifelogApiProvider';
+import { useLifelog } from '@providers/LifelogProvider';
 import notify from '@lib/toast';
-import { useLifelogs } from '@providers/LifelogProvider';
 
 const LifelogList = () => {
-  const { lifelogApi: api } = useLifelog();
-  const { logs, addLogs, deleteLog } = useLifelogs();
+  const { logs, loadLogs, deleteLog } = useLifelog();
 
   const lifelogLoader = (page: number) => {
-    api
-      .index(page)
-      .then((r) => {
-        addLogs(r.data);
-      })
-      .catch((e) => {
-        notify.error(e.message);
-      });
+    loadLogs(page).catch((e) => {
+      notify.error(e.message);
+    });
   };
   const handleDeleteLifelog = (logId: number) => {
-    api
-      .destroy(logId)
+    deleteLog(logId)
       .then(() => {
         notify.success('削除成功');
-        deleteLog(logId);
       })
       .catch((e) => {
         notify.error(e?.message);

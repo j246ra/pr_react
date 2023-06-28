@@ -5,20 +5,18 @@ import { IconNames } from '@blueprintjs/icons';
 import { useUser } from '@providers/UserProvider';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@providers/AuthApiProvider';
-import { useLifelog } from '@providers/LifelogApiProvider';
 import { useNavigate } from 'react-router-dom';
 import notify from './lib/toast';
 import { useSession } from '@providers/SessionProvider';
 import LifelogList from '@lifelog/container/LifelogList';
 import ContextInput from '@lifelog/presentational/ContextInput';
-import { useLifelogs } from '@providers/LifelogProvider';
+import { useLifelog } from '@providers/LifelogProvider';
 
 const Hello = () => {
   const { user, clearUser, isLogin } = useUser();
   const { getToken, removeToken } = useSession();
   const { authApi } = useAuth();
-  const { lifelogApi: api } = useLifelog();
-  const { createLog } = useLifelogs();
+  const { createLogByContext } = useLifelog();
   const [valid, setValid] = useState(false);
   const [message, setMessage] = useState('');
   const [context, setContext] = useState('');
@@ -45,12 +43,10 @@ const Hello = () => {
 
   const handleCreateLifelog = (e) => {
     e.preventDefault();
-    api
-      .create({ context: context })
+    createLogByContext(context)
       .then((r) => {
         setContext('');
         setMessage(`ログ保存成功！！(${r.status})`);
-        createLog(r.data);
       })
       .catch((e) => notify.error(e.message));
   };

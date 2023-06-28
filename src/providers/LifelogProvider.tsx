@@ -1,4 +1,8 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
+import { useSession } from '@providers/SessionProvider';
+import { useUser } from '@providers/UserProvider';
+import { AxiosError, AxiosResponse } from 'axios';
+import lifelog from '@lib/api/lifelog';
 
 export type Lifelog = {
   id: number;
@@ -13,14 +17,14 @@ export type Lifelog = {
 
 type LifelogContextType = {
   logs: Lifelog[];
-  createLog: (lifelog: Lifelog) => void;
-  addLogs: (lifelogs: Lifelog[]) => void;
-  deleteLog: (id: number) => void;
+  loadLogs: (page: number) => Promise<AxiosResponse>;
+  createLogByContext: (context: string) => Promise<AxiosResponse>;
+  deleteLog: (id: number) => Promise<AxiosResponse>;
 };
 
 const LifelogContext = createContext<LifelogContextType | undefined>(undefined);
 
-export const useLifelogs = (): LifelogContextType => {
+export const useLifelog = (): LifelogContextType => {
   const context = useContext(LifelogContext);
   if (!context) {
     throw new Error('useUser must be used within a UserProvider');
@@ -33,23 +37,56 @@ type Props = {
 };
 export default function LifelogProvider({ children }: Props) {
   const [logs, setLogs] = useState<Lifelog[]>([]);
-  const addLogs = (lifelogs: Lifelog[]) => {
+  const { headers, setToken } = useSession();
+  const { clearUser } = useUser();
+  const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
+    setToken(response);
+    return response;
+  };
+  const errorInterceptor = (error: AxiosError): Promise<never> => {
+    if (error?.status === 401) clearUser();
+    return Promise.reject(error);
+  };
+  const api = lifelog(headers, responseInterceptor, errorInterceptor);
+
+  const loadLogs = (page: number) => {
+    return api.index(page).then((r) => {
+      appendLogs(r.data);
+      return r;
+    });
+  };
+
+  const appendLogs = (lifelogs: Lifelog[]) => {
     setLogs([...logs, ...lifelogs]);
   };
 
-  const createLog = (lifelog: Lifelog) => {
-    setLogs([lifelog, ...logs]);
+  const createLogByContext = (context: string) => {
+    return api.create({ context: context }).then((r) => {
+      setLogs([r.data, ...logs]);
+      return r;
+    });
   };
 
   const deleteLog = (id: number) => {
-    setLogs(
-      logs.filter((log) => {
-        if (log.id !== id) return log;
-      })
-    );
+    return api.destroy(id).then((r) => {
+      setLogs(
+        logs.filter((log) => {
+          if (log.id !== id) return log;
+        })
+      );
+      return r;
+    });
   };
+
   return (
-    <LifelogContext.Provider value={{ logs, createLog, addLogs, deleteLog }}>
+    <LifelogContext.Provider
+      value={{
+        logs,
+        loadLogs,
+        createLogByContext,
+        deleteLog,
+      }}
+    >
       {children}
     </LifelogContext.Provider>
   );
