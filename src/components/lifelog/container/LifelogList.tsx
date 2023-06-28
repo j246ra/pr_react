@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { Button, HTMLTable } from '@blueprintjs/core';
 import dayjs from 'dayjs';
@@ -8,11 +8,16 @@ import notify from '@lib/toast';
 
 const LifelogList = () => {
   const { logs, loadLogs, deleteLog } = useLifelog();
+  const [hasMore, setHasMore] = useState(true);
 
   const lifelogLoader = (page: number) => {
-    loadLogs(page).catch((e) => {
-      notify.error(e.message);
-    });
+    loadLogs(page)
+      .then((r) => {
+        if (r.data.length === 0) setHasMore(false);
+      })
+      .catch((e) => {
+        notify.error(e.message);
+      });
   };
   const handleDeleteLifelog = (logId: number) => {
     deleteLog(logId)
@@ -29,7 +34,7 @@ const LifelogList = () => {
       <InfiniteScroll
         element={'tbody'}
         loadMore={lifelogLoader}
-        hasMore={true}
+        hasMore={hasMore}
         loader={
           <tr key={0}>
             <td>Loading ...</td>

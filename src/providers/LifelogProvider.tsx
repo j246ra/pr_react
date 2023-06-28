@@ -52,7 +52,7 @@ export default function LifelogProvider({ children }: Props) {
 
   const loadLogs = (page: number) => {
     return api.index(page).then((r) => {
-      appendLogs(r.data);
+      if (r.data.length > 0) appendLogs(r.data);
       return r;
     });
   };
