@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState } from 'react';
+import React, { createContext, ReactNode, useContext, useState } from 'react';
 
 export type Lifelog = {
   id: number;
@@ -13,6 +13,7 @@ export type Lifelog = {
 
 type LifelogContextType = {
   logs: Lifelog[];
+  createLog: (lifelog: Lifelog) => void;
   addLogs: (lifelogs: Lifelog[]) => void;
   deleteLog: (id: number) => void;
 };
@@ -36,6 +37,10 @@ export default function LifelogProvider({ children }: Props) {
     setLogs([...logs, ...lifelogs]);
   };
 
+  const createLog = (lifelog: Lifelog) => {
+    setLogs([lifelog, ...logs]);
+  };
+
   const deleteLog = (id: number) => {
     setLogs(
       logs.filter((log) => {
@@ -44,7 +49,7 @@ export default function LifelogProvider({ children }: Props) {
     );
   };
   return (
-    <LifelogContext.Provider value={{ logs, addLogs, deleteLog }}>
+    <LifelogContext.Provider value={{ logs, createLog, addLogs, deleteLog }}>
       {children}
     </LifelogContext.Provider>
   );

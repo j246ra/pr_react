@@ -11,12 +11,14 @@ import notify from './lib/toast';
 import { useSession } from '@providers/SessionProvider';
 import LifelogList from '@lifelog/container/LifelogList';
 import ContextInput from '@lifelog/presentational/ContextInput';
+import { useLifelogs } from '@providers/LifelogProvider';
 
 const Hello = () => {
   const { user, clearUser, isLogin } = useUser();
   const { getToken, removeToken } = useSession();
   const { authApi } = useAuth();
   const { lifelogApi: api } = useLifelog();
+  const { createLog } = useLifelogs();
   const [valid, setValid] = useState(false);
   const [message, setMessage] = useState('');
   const [context, setContext] = useState('');
@@ -48,6 +50,7 @@ const Hello = () => {
       .then((r) => {
         setContext('');
         setMessage(`ログ保存成功！！(${r.status})`);
+        createLog(r.data);
       })
       .catch((e) => notify.error(e.message));
   };
