@@ -38,7 +38,7 @@ const LifelogList = () => {
           })
         );
       })
-      .catch((e: any) => {
+      .catch((e) => {
         notify.error(e?.message);
       });
   };
