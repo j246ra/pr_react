@@ -5,8 +5,12 @@ import { BrowserRouter } from 'react-router-dom';
 import SessionProvider from '../src/providers/SessionProvider';
 import UserProvider from '../src/providers/UserProvider';
 import AuthApiProvider from '../src/providers/AuthApiProvider';
+import { initialize, mswDecorator } from 'msw-storybook-addon';
 
+// Initialize MSW
+initialize();
 export const decorators = [
+  mswDecorator,
   (Story) => (
     <BrowserRouter>
       <SessionProvider>
