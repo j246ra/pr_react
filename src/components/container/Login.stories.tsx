@@ -2,12 +2,13 @@ import React from 'react';
 import { Meta } from '@storybook/react';
 import Login from '@container/Login';
 import { rest } from 'msw';
+import { apiHost } from '@lib/storybook/util';
 
 export const SuccessBehavior: Meta<typeof Login> = () => <Login />;
 SuccessBehavior.parameters = {
   msw: {
     handlers: [
-      rest.post('http://localhost:3000/v1/auth/sign_in', (req, res, ctx) => {
+      rest.post(apiHost('/auth/sign_in'), (req, res, ctx) => {
         return res(ctx.status(200));
       }),
     ],

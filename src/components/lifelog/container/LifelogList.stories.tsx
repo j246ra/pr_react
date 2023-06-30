@@ -3,6 +3,7 @@ import LifelogList from './LifelogList';
 import { Lifelog } from '@providers/LifelogProvider';
 import { rest } from 'msw';
 import dayjs from 'dayjs';
+import { apiHost } from '@lib/storybook/util';
 
 const lifelogs = (page = 1) => {
   const list: Lifelog[] = [];
@@ -25,12 +26,9 @@ const lifelogs = (page = 1) => {
 };
 
 const deleteHandler = () => {
-  return rest.delete(
-    'http://localhost:3000/v1/lifelogs/:id',
-    (req, res, ctx) => {
-      return res(ctx.status(200));
-    }
-  );
+  return rest.delete(apiHost('/lifelogs/:id'), (req, res, ctx) => {
+    return res(ctx.status(200));
+  });
 };
 
 export default {
@@ -42,7 +40,7 @@ export const Default: Meta<typeof LifelogList> = () => <LifelogList />;
 Default.parameters = {
   msw: {
     handlers: [
-      rest.get('http://localhost:3000/v1/lifelogs', (req, res, ctx) => {
+      rest.get(apiHost('/lifelogs'), (req, res, ctx) => {
         const page = req.url.searchParams.get('page');
         if (page !== '3')
           return res(ctx.status(200), ctx.json(lifelogs(Number(page))));
@@ -57,7 +55,7 @@ export const Loading: Meta<typeof LifelogList> = () => <LifelogList />;
 Loading.parameters = {
   msw: {
     handlers: [
-      rest.get('http://localhost:3000/v1/lifelogs', (req, res, ctx) => {
+      rest.get(apiHost('/lifelogs'), (req, res, ctx) => {
         return res(ctx.delay(1000 * 60 * 60 * 24), ctx.status(200));
       }),
     ],
