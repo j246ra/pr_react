@@ -24,6 +24,15 @@ const lifelogs = (page = 1) => {
   return list;
 };
 
+const deleteHandler = () => {
+  return rest.delete(
+    'http://localhost:3000/v1/lifelogs/:id',
+    (req, res, ctx) => {
+      return res(ctx.status(200));
+    }
+  );
+};
+
 export default {
   title: 'Components/Lifelog/LifelogList',
   component: LifelogList,
@@ -39,6 +48,7 @@ Default.parameters = {
           return res(ctx.status(200), ctx.json(lifelogs(Number(page))));
         else return res(ctx.status(200));
       }),
+      deleteHandler(),
     ],
   },
 };
