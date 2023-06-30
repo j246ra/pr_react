@@ -52,3 +52,14 @@ Default.parameters = {
     ],
   },
 };
+
+export const Loading: Meta<typeof LifelogList> = () => <LifelogList />;
+Loading.parameters = {
+  msw: {
+    handlers: [
+      rest.get('http://localhost:3000/v1/lifelogs', (req, res, ctx) => {
+        return res(ctx.delay(1000 * 60 * 60 * 24), ctx.status(200));
+      }),
+    ],
+  },
+};
