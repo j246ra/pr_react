@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
-import { HTMLTable } from '@blueprintjs/core';
+import { HTMLTable, Intent, Spinner, SpinnerSize } from '@blueprintjs/core';
 import { useLifelog } from '@providers/LifelogProvider';
 import notify from '@lib/toast';
 import LifelogListItem from '../presentational/LifelogListItem';
@@ -36,7 +36,9 @@ const LifelogList = () => {
         hasMore={hasMore}
         loader={
           <tr key={0}>
-            <td>Loading ...</td>
+            <td>
+              <Spinner intent={Intent.PRIMARY} size={SpinnerSize.SMALL} />
+            </td>
           </tr>
         }
       >
