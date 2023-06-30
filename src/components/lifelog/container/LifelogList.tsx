@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
-import { Button, HTMLTable } from '@blueprintjs/core';
-import dayjs from 'dayjs';
-import { IconNames } from '@blueprintjs/icons';
+import { HTMLTable } from '@blueprintjs/core';
 import { useLifelog } from '@providers/LifelogProvider';
 import notify from '@lib/toast';
+import LifelogListItem from '../presentational/LifelogListItem';
 
 const LifelogList = () => {
   const { logs, loadLogs, deleteLog } = useLifelog();
@@ -43,17 +42,11 @@ const LifelogList = () => {
       >
         {logs.map((log) => {
           return (
-            <tr key={log.id}>
-              <td>{dayjs(log.startedAt).format('YY/MM/DD HH:mm')}</td>
-              <td>{log.action}</td>
-              <td>{log.detail}</td>
-              <td>
-                <Button
-                  icon={IconNames.DELETE}
-                  onClick={() => handleDeleteLifelog(log.id)}
-                />
-              </td>
-            </tr>
+            <LifelogListItem
+              key={log.id}
+              log={log}
+              onDeleteButtonClick={() => handleDeleteLifelog(log.id)}
+            />
           );
         })}
       </InfiniteScroll>
