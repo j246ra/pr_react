@@ -1,5 +1,6 @@
 import type { Preview } from '@storybook/react';
 import '@blueprintjs/core/lib/css/blueprint.css';
+import '../src/index.css';
 import '../src/App.scss';
 import { BrowserRouter } from 'react-router-dom';
 import SessionProvider from '../src/providers/SessionProvider';
