@@ -1,0 +1,13 @@
+import { Meta } from '@storybook/react';
+import SearchInput from './SearchInput';
+
+export default {
+  title: 'Components/Lifelog/SearchInput',
+  component: SearchInput,
+} as Meta;
+
+export const Default = {
+  args: {
+    isLogin: true,
+  },
+};
