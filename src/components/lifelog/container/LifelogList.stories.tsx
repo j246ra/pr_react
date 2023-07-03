@@ -4,6 +4,9 @@ import { Lifelog } from '@providers/LifelogProvider';
 import { rest } from 'msw';
 import dayjs from 'dayjs';
 import { apiHost } from '@lib/storybook/util';
+import Header from '../../../Header';
+import { Toaster } from 'react-hot-toast';
+import BaseLayout from '../../BaseLayout';
 
 const lifelogs = (page = 1) => {
   const list: Lifelog[] = [];
@@ -34,6 +37,17 @@ const deleteHandler = () => {
 export default {
   title: 'Components/Lifelog/LifelogList',
   component: LifelogList,
+  decorators: [
+    (Story) => (
+      <>
+        <Toaster />
+        <Header />
+        <BaseLayout>
+          <Story />
+        </BaseLayout>
+      </>
+    ),
+  ],
 } as Meta;
 
 export const Default: Meta<typeof LifelogList> = () => <LifelogList />;
