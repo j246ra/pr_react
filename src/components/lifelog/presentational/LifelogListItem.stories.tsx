@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import BaseLayout from '../../BaseLayout';
 import { Toaster } from 'react-hot-toast';
 import Header from '../../Header';
+import LifelogListHeader from './LifelogListHeader';
 
 const log: Lifelog = {
   id: 1,
@@ -27,6 +28,7 @@ export default {
         <Header />
         <BaseLayout>
           <table style={{ width: '100%', margin: '0 auto' }}>
+            <LifelogListHeader />
             <tbody>
               <Story />
             </tbody>
