@@ -6,6 +6,8 @@ import BaseLayout from '../../BaseLayout';
 import { Toaster } from 'react-hot-toast';
 import Header from '../../Header';
 import LifelogListHeader from './LifelogListHeader';
+import notify from '@lib/toast';
+import { HTMLTable } from '@blueprintjs/core';
 
 const log: Lifelog = {
   id: 1,
@@ -27,12 +29,15 @@ export default {
         <Toaster />
         <Header />
         <BaseLayout>
-          <table style={{ width: '100%', margin: '0 auto' }}>
+          <HTMLTable
+            bordered={false}
+            style={{ width: '100%', margin: '0 auto' }}
+          >
             <LifelogListHeader />
             <tbody>
               <Story />
             </tbody>
-          </table>
+          </HTMLTable>
         </BaseLayout>
       </div>
     ),
@@ -42,7 +47,11 @@ export default {
 export const Default = {
   args: {
     log: log,
-    onChange: () => {},
-    onSubmit: () => {},
+    onEditButtonClick: () => {
+      notify.success('Edit Button Clicked.');
+    },
+    onDeleteButtonClick: () => {
+      notify.success('Delete Button Clicked.');
+    },
   },
 };
