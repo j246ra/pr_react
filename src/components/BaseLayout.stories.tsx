@@ -7,10 +7,10 @@ export default {
   component: BaseLayout,
   decorators: [
     (Story) => (
-      <>
+      <div className={'App'}>
         <Header />
         <Story />
-      </>
+      </div>
     ),
   ],
 } as Meta;
