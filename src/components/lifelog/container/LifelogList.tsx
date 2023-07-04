@@ -30,13 +30,21 @@ const LifelogList = () => {
 
   return (
     <HTMLTable bordered={false} style={{ width: '100%', margin: '0 auto' }}>
+      <thead>
+        <tr>
+          <th>開始時間</th>
+          <th>行動内容</th>
+          <th>詳細</th>
+          <th>操作</th>
+        </tr>
+      </thead>
       <InfiniteScroll
         element={'tbody'}
         loadMore={lifelogLoader}
         hasMore={hasMore}
         loader={
           <tr key={0}>
-            <td style={{ boxShadow: 'none' }}>
+            <td colSpan={4} style={{ boxShadow: 'none' }}>
               <Spinner intent={Intent.PRIMARY} size={SpinnerSize.SMALL} />
             </td>
           </tr>
