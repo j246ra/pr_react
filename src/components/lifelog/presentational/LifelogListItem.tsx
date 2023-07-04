@@ -1,15 +1,17 @@
 import React from 'react';
 import dayjs from 'dayjs';
-import { Button } from '@blueprintjs/core';
+import { Button, Intent } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import { Lifelog } from '@providers/LifelogProvider';
 
 export interface LifelogListItemProps {
   log: Lifelog;
   onDeleteButtonClick: () => void;
+  onEditButtonClick: () => void;
 }
 const LifelogListItem: React.FC<LifelogListItemProps> = ({
   log,
+  onEditButtonClick,
   onDeleteButtonClick,
 }) => {
   return (
@@ -19,8 +21,18 @@ const LifelogListItem: React.FC<LifelogListItemProps> = ({
       </td>
       <td>{log.action}</td>
       <td>{log.detail}</td>
-      <td align={'center'} style={{ width: '150px' }}>
-        <Button icon={IconNames.DELETE} onClick={onDeleteButtonClick} />
+      <td style={{ width: '150px', textAlign: 'center' }}>
+        <Button
+          intent={Intent.SUCCESS}
+          icon={IconNames.EDIT}
+          onClick={onEditButtonClick}
+        />
+        <Button
+          intent={Intent.DANGER}
+          style={{ marginLeft: '3px' }}
+          icon={IconNames.DELETE}
+          onClick={onDeleteButtonClick}
+        />
       </td>
     </tr>
   );

@@ -49,6 +49,7 @@ const LifelogList = () => {
             <LifelogListItem
               key={log.id}
               log={log}
+              onEditButtonClick={() => notify.success('絶賛実装中！！！')}
               onDeleteButtonClick={() => handleDeleteLifelog(log.id)}
             />
           );
