@@ -9,7 +9,7 @@ const log: Lifelog = {
   action: `行動`,
   detail: `詳細（行動内容）`,
   startedAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-  finishedAt: undefined,
+  finishedAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
   createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
   updatedAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
 };
