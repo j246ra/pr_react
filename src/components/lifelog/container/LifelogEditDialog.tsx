@@ -10,6 +10,7 @@ import {
   TextArea,
 } from '@blueprintjs/core';
 import { Lifelog } from '@providers/LifelogProvider';
+import DatetimeInput from '../presentational/DatetimeInput';
 
 export interface LifelogEditDialogProps {
   isOpen: boolean;
@@ -38,20 +39,18 @@ const LifelogEditDialog: React.FC<LifelogEditDialogProps> = ({
             value={log.detail}
           />
         </FormGroup>
-        <FormGroup label={'開始時間'} labelFor={'lifelog-edit-started-at'}>
-          <InputGroup
-            id={'lifelog-edit-started-at'}
-            placeholder={'開始日時'}
-            value={log.startedAt}
-          />
-        </FormGroup>
-        <FormGroup label={'終了時間'} labelFor={'lifelog-edit-finished-at'}>
-          <InputGroup
-            id={'lifelog-edit-finished-at'}
-            placeholder={'終了日時'}
-            value={log.finishedAt}
-          />
-        </FormGroup>
+        <DatetimeInput
+          id={'lifelog-edit-started-at'}
+          label={'開始日時'}
+          placeholder={'開始日時'}
+          value={log.startedAt}
+        />
+        <DatetimeInput
+          id={'lifelog-edit-finished-at'}
+          label={'終了日時'}
+          placeholder={'終了日時'}
+          value={log.finishedAt}
+        />
       </DialogBody>
       <DialogFooter
         actions={<Button intent={Intent.PRIMARY} text={'保存'} />}
