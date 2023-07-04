@@ -17,7 +17,7 @@ initialize();
 export const decorators = [
   mswDecorator,
   (Story) => (
-    <body>
+    <div className={'navbar-height'}>
       <BrowserRouter>
         <SessionProvider>
           <UserProvider>
@@ -29,7 +29,7 @@ export const decorators = [
           </UserProvider>
         </SessionProvider>
       </BrowserRouter>
-    </body>
+    </div>
   ),
 ];
 

@@ -20,3 +20,8 @@ code {
 *, *::before, *::after {
   box-sizing: inherit;
 }
+
+// for storybook
+.navbar-height {
+  padding: $pt-navbar-height 0 0;
+}
