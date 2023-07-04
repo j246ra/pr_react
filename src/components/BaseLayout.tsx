@@ -11,7 +11,7 @@ const BaseLayout: React.FC<BaseLayoutProps> = ({ children }) => {
       style={{
         display: 'flex',
         height: '100vh',
-        padding: 20,
+        padding: '20px',
         margin: '0 auto',
       }}
     >

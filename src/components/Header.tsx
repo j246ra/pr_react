@@ -28,7 +28,7 @@ const Header = () => {
   };
 
   return (
-    <Navbar>
+    <Navbar fixedToTop={true}>
       <Navbar.Group align={Alignment.LEFT}>
         <Navbar.Heading>
           <a href="/">Lifelog</a>

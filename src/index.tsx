@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import './index.css';
+import './index.scss';
 import { BrowserRouter } from 'react-router-dom';
 import UserProvider from './providers/UserProvider';
 import AuthApiProvider from './providers/AuthApiProvider';
