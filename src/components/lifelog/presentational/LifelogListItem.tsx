@@ -14,10 +14,12 @@ const LifelogListItem: React.FC<LifelogListItemProps> = ({
 }) => {
   return (
     <tr>
-      <td>{dayjs(log.startedAt).format('YY/MM/DD HH:mm')}</td>
+      <td style={{ width: '150px' }}>
+        {dayjs(log.startedAt).format('YY/MM/DD HH:mm')}
+      </td>
       <td>{log.action}</td>
       <td>{log.detail}</td>
-      <td>
+      <td align={'center'} style={{ width: '150px' }}>
         <Button icon={IconNames.DELETE} onClick={onDeleteButtonClick} />
       </td>
     </tr>
