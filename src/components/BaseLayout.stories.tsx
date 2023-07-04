@@ -3,7 +3,7 @@ import BaseLayout from './BaseLayout';
 import Header from './Header';
 
 export default {
-  title: 'Components/BaseLayout',
+  title: 'Layout/BaseLayout',
   component: BaseLayout,
   decorators: [
     (Story) => (
