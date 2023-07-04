@@ -29,6 +29,7 @@ const LifelogEditDialog: React.FC<LifelogEditDialogProps> = ({
             id={'lifelog-edit-action'}
             placeholder={'行動内容を入力してください。'}
             value={log.action}
+            onChange={() => console.log('change action.')}
           />
         </FormGroup>
         <FormGroup label={'詳細'} labelFor={'lifelog-edit-detail'}>
@@ -40,13 +41,11 @@ const LifelogEditDialog: React.FC<LifelogEditDialogProps> = ({
           />
         </FormGroup>
         <DatetimeInput
-          id={'lifelog-edit-started-at'}
           label={'開始日時'}
           placeholder={'開始日時'}
           value={log.startedAt}
         />
         <DatetimeInput
-          id={'lifelog-edit-finished-at'}
           label={'終了日時'}
           placeholder={'終了日時'}
           value={log.finishedAt}
