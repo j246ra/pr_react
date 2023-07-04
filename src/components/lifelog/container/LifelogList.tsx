@@ -4,6 +4,7 @@ import { HTMLTable, Intent, Spinner, SpinnerSize } from '@blueprintjs/core';
 import { useLifelog } from '@providers/LifelogProvider';
 import notify from '@lib/toast';
 import LifelogListItem from '../presentational/LifelogListItem';
+import LifelogListHeader from '../presentational/LifelogListHeader';
 
 const LifelogList = () => {
   const { logs, loadLogs, deleteLog } = useLifelog();
@@ -30,14 +31,7 @@ const LifelogList = () => {
 
   return (
     <HTMLTable bordered={false} style={{ width: '100%', margin: '0 auto' }}>
-      <thead>
-        <tr>
-          <th>開始時間</th>
-          <th>行動内容</th>
-          <th>詳細</th>
-          <th>操作</th>
-        </tr>
-      </thead>
+      <LifelogListHeader />
       <InfiniteScroll
         element={'tbody'}
         loadMore={lifelogLoader}

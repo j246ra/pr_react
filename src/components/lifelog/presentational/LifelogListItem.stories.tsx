@@ -2,6 +2,9 @@ import { Meta } from '@storybook/react';
 import LifelogListItem from './LifelogListItem';
 import { Lifelog } from '@providers/LifelogProvider';
 import dayjs from 'dayjs';
+import BaseLayout from '../../BaseLayout';
+import { Toaster } from 'react-hot-toast';
+import Header from '../../Header';
 
 const log: Lifelog = {
   id: 1,
@@ -19,11 +22,17 @@ export default {
   component: LifelogListItem,
   decorators: [
     (Story) => (
-      <table>
-        <tbody>
-          <Story />
-        </tbody>
-      </table>
+      <div className={'App'}>
+        <Toaster />
+        <Header />
+        <BaseLayout>
+          <table style={{ width: '100%', margin: '0 auto' }}>
+            <tbody>
+              <Story />
+            </tbody>
+          </table>
+        </BaseLayout>
+      </div>
     ),
   ],
 } as Meta;
