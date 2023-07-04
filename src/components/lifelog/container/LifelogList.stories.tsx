@@ -39,13 +39,13 @@ export default {
   component: LifelogList,
   decorators: [
     (Story) => (
-      <>
+      <div className={'App'}>
         <Toaster />
         <Header />
         <BaseLayout>
           <Story />
         </BaseLayout>
-      </>
+      </div>
     ),
   ],
 } as Meta;
