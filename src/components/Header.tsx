@@ -6,6 +6,8 @@ import {
   Menu,
   MenuItem,
   MenuDivider,
+  NavbarGroup,
+  NavbarHeading,
 } from '@blueprintjs/core';
 import { Popover2 } from '@blueprintjs/popover2';
 import { useUser } from '@providers/UserProvider';
@@ -29,39 +31,41 @@ const Header = () => {
 
   return (
     <Navbar fixedToTop={true}>
-      <Navbar.Group align={Alignment.LEFT}>
-        <Navbar.Heading>
-          <a href="/">Lifelog</a>
-        </Navbar.Heading>
-      </Navbar.Group>
-      <Navbar.Group align={Alignment.RIGHT}>
-        <Popover2
-          content={
-            <Menu>
-              <MenuItem icon="plus" text="新規作成" />
-              <MenuItem icon="search" text="詳細検索" />
-              <MenuDivider />
-              <MenuItem text="設定" icon="cog" intent="primary">
-                <MenuItem
-                  icon="edit"
-                  text="アカウント編集"
-                  href={'/update_account'}
-                  disabled={!isLogin()}
-                />
-                <MenuItem
-                  icon="log-out"
-                  text="ログアウト"
-                  onClick={handleLogout}
-                  disabled={!isLogin()}
-                />
-              </MenuItem>
-            </Menu>
-          }
-          placement="bottom-end"
-        >
-          <Button icon="menu" minimal={true} />
-        </Popover2>
-      </Navbar.Group>
+      <div className={'app-max-width m-w-auto p-w-20'}>
+        <NavbarGroup align={Alignment.LEFT}>
+          <NavbarHeading>
+            <a href="/">Lifelog</a>
+          </NavbarHeading>
+        </NavbarGroup>
+        <NavbarGroup align={Alignment.RIGHT}>
+          <Popover2
+            content={
+              <Menu>
+                <MenuItem icon="plus" text="新規作成" />
+                <MenuItem icon="search" text="詳細検索" />
+                <MenuDivider />
+                <MenuItem text="設定" icon="cog" intent="primary">
+                  <MenuItem
+                    icon="edit"
+                    text="アカウント編集"
+                    href={'/update_account'}
+                    disabled={!isLogin()}
+                  />
+                  <MenuItem
+                    icon="log-out"
+                    text="ログアウト"
+                    onClick={handleLogout}
+                    disabled={!isLogin()}
+                  />
+                </MenuItem>
+              </Menu>
+            }
+            placement="bottom-end"
+          >
+            <Button icon="menu" minimal={true} />
+          </Popover2>
+        </NavbarGroup>
+      </div>
     </Navbar>
   );
 };

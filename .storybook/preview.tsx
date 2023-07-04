@@ -14,17 +14,19 @@ initialize();
 export const decorators = [
   mswDecorator,
   (Story) => (
-    <BrowserRouter>
-      <SessionProvider>
-        <UserProvider>
-          <AuthApiProvider>
-            <LifelogProvider>
-              <Story />
-            </LifelogProvider>
-          </AuthApiProvider>
-        </UserProvider>
-      </SessionProvider>
-    </BrowserRouter>
+    <body>
+      <BrowserRouter>
+        <SessionProvider>
+          <UserProvider>
+            <AuthApiProvider>
+              <LifelogProvider>
+                <Story />
+              </LifelogProvider>
+            </AuthApiProvider>
+          </UserProvider>
+        </SessionProvider>
+      </BrowserRouter>
+    </body>
   ),
 ];
 

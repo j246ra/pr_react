@@ -8,7 +8,13 @@ $AppMaxWidth: 1280px;
   .app-max-width {
     max-width: $AppMaxWidth;
   }
+  .m-w-auto {
+    margin: 0 auto;
+  }
   .m-4 {
     margin: 4px;
+  }
+  .p-w-20 {
+    padding: 0 20px;
   }
 }
