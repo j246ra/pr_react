@@ -9,10 +9,10 @@ export const LifelogListHeader: React.FC<LifelogListHeaderProps> = ({
   return (
     <thead style={enabled ? {} : { display: 'none' }}>
       <tr>
-        <th align={'left'}>開始時間</th>
-        <th align={'left'}>行動内容</th>
-        <th align={'left'}>詳細</th>
-        <th align={'center'}>操作</th>
+        <th>開始時間</th>
+        <th>行動内容</th>
+        <th>詳細</th>
+        <th style={{ textAlign: 'center' }}>操作</th>
       </tr>
     </thead>
   );

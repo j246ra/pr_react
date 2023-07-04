@@ -3,6 +3,7 @@ import LifelogListHeader from './LifelogListHeader';
 import BaseLayout from '../../BaseLayout';
 import { Toaster } from 'react-hot-toast';
 import Header from '../../Header';
+import { HTMLTable } from '@blueprintjs/core';
 
 export default {
   title: 'Components/Lifelog/LifelogListHeader',
@@ -13,14 +14,17 @@ export default {
         <Toaster />
         <Header />
         <BaseLayout>
-          <table style={{ width: '100%', margin: '0 auto' }}>
+          <HTMLTable
+            bordered={false}
+            style={{ width: '100%', margin: '0 auto' }}
+          >
             <Story />
             <tbody>
               <tr>
                 <td colSpan={4}></td>
               </tr>
             </tbody>
-          </table>
+          </HTMLTable>
         </BaseLayout>
       </div>
     ),
