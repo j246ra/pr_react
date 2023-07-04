@@ -4,7 +4,7 @@ import { Lifelog } from '@providers/LifelogProvider';
 import { rest } from 'msw';
 import dayjs from 'dayjs';
 import { apiHost } from '@lib/storybook/util';
-import Header from '../../../Header';
+import Header from '../../Header';
 import { Toaster } from 'react-hot-toast';
 import BaseLayout from '../../BaseLayout';
 

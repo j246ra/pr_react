@@ -1,6 +1,6 @@
 import { Meta } from '@storybook/react';
 import BaseLayout from './BaseLayout';
-import Header from '../Header';
+import Header from './Header';
 
 export default {
   title: 'Components/BaseLayout',
