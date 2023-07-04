@@ -21,7 +21,7 @@ export const Default: () => JSX.Element = () => (
       className={'main-content'}
       style={{
         width: '100%',
-        height: '100%',
+        height: '100vh',
         backgroundColor: 'lightgray',
       }}
     />
