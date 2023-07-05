@@ -4,6 +4,7 @@ import { Story } from '@storybook/blocks';
 import { Toaster } from 'react-hot-toast';
 import Header from '../Header';
 import BaseLayout from '../BaseLayout';
+import { lifelogMocks } from '@lib/storybook/lifelog';
 
 export default {
   title: 'Components/Lifelog/index',
@@ -21,4 +22,8 @@ export default {
   ],
 } as Meta;
 
-export const Default = {};
+const { index } = lifelogMocks();
+export const Default: Meta<typeof Lifelogs> = () => <Lifelogs />;
+Default.parameters = {
+  msw: index(),
+};
