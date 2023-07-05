@@ -1,24 +1,12 @@
 import { Meta } from '@storybook/react';
 import LifelogListItem from './LifelogListItem';
-import { Lifelog } from '@providers/LifelogProvider';
-import dayjs from 'dayjs';
 import BaseLayout from '../../BaseLayout';
 import { Toaster } from 'react-hot-toast';
 import Header from '../../Header';
 import LifelogListHeader from './LifelogListHeader';
 import notify from '@lib/toast';
 import { HTMLTable } from '@blueprintjs/core';
-
-const log: Lifelog = {
-  id: 1,
-  user_id: 1,
-  action: `行動`,
-  detail: `詳細（行動内容）`,
-  startedAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-  finishedAt: undefined,
-  createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-  updatedAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-};
+import { lifelog } from '@lib/faker/lifelog';
 
 export default {
   title: 'Components/Lifelog/LifelogListItem',
@@ -46,7 +34,7 @@ export default {
 
 export const Default = {
   args: {
-    log: log,
+    log: lifelog(),
     onEditButtonClick: () => {
       notify.success('Edit Button Clicked.');
     },

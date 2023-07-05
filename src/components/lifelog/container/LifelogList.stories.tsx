@@ -2,28 +2,24 @@ import { Meta } from '@storybook/react';
 import LifelogList from './LifelogList';
 import { Lifelog } from '@providers/LifelogProvider';
 import { rest } from 'msw';
-import dayjs from 'dayjs';
 import { apiHost } from '@lib/storybook/util';
 import Header from '../../Header';
 import { Toaster } from 'react-hot-toast';
 import BaseLayout from '../../BaseLayout';
+import { lifelog } from '@lib/faker/lifelog';
+import { DATETIME_FULL, now } from '@lib/dateUtil';
 
 const lifelogs = (page = 1) => {
   const list: Lifelog[] = [];
   const offset = 20 * (page - 1);
-  const now = dayjs();
   for (let i = 1 + offset; i <= 20 + offset; i++) {
-    const datetime = now.subtract(i, 'h').format('YYYY-MM-DD HH:mm:ss');
-    list.push({
-      id: i,
-      user_id: 1,
-      action: `Action---${i}`,
-      detail: `Detail----${i} Detail----${i} Detail----${i} Detail----${i} Detail----${i} Detail----${i} Detail----${i} Detail----${i} Detail----${i}`,
+    const datetime = now.subtract(i, 'h').format(DATETIME_FULL);
+    const log = {
+      ...lifelog(),
       startedAt: datetime,
       finishedAt: undefined,
-      createdAt: datetime,
-      updatedAt: datetime,
-    });
+    };
+    list.push(log);
   }
   return list;
 };
