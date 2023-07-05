@@ -1,7 +1,7 @@
 import React from 'react';
 
 export interface LifelogListHeaderProps {
-  enabled?: false;
+  enabled?: boolean;
 }
 export const LifelogListHeader: React.FC<LifelogListHeaderProps> = ({
   enabled = true,
