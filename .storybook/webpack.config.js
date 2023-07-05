@@ -12,6 +12,7 @@ module.exports = async ({ config }) => {
     '@validators': path.resolve(paths.appSrc, 'validators'),
     '@presentational': path.resolve(paths.appSrc, 'components/presentational'),
     '@container': path.resolve(paths.appSrc, 'components/container'),
+    '@lifelog': path.resolve(paths.appSrc, 'components/lifelog'),
     // 他のエイリアス設定がある場合はここに追加します
   };
 
