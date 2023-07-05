@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/react';
+import Lifelogs from './Lifelogs';
+import { Story } from '@storybook/blocks';
+import { Toaster } from 'react-hot-toast';
+import Header from '../Header';
+import BaseLayout from '../BaseLayout';
+
+export default {
+  title: 'Components/Lifelog/index',
+  component: Lifelogs,
+  decorators: [
+    (Story) => (
+      <div className={'App'}>
+        <Toaster />
+        <Header />
+        <BaseLayout>
+          <Story />
+        </BaseLayout>
+      </div>
+    ),
+  ],
+} as Meta;
+
+export const Default = {};

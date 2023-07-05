@@ -10,6 +10,8 @@ import { EmailInput } from '@presentational/EmailInput';
 import { PasswordInput } from '@presentational/PasswordInput';
 import SessionCard from '@presentational/SessionCard';
 
+const DEFAULT_PATH = '/lifelogs';
+
 const Login: React.FC = () => {
   const { createToken } = useSession();
   const { authApi: session } = useAuth();
@@ -19,7 +21,7 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isLogin()) return navigate('/hello');
+    if (isLogin()) return navigate(DEFAULT_PATH);
   }, [isLogin, navigate]);
 
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
@@ -31,7 +33,7 @@ const Login: React.FC = () => {
       .then((r) => {
         if (r.status !== 200) return;
         notify.success('ログイン成功');
-        navigate('/hello');
+        navigate(DEFAULT_PATH);
       })
       .catch((e) => {
         let message = '認証に失敗しました。';
