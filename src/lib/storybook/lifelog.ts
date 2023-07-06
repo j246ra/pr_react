@@ -11,6 +11,7 @@ const lifelogs = (page = 1) => {
     const datetime = now.subtract(i, 'h').format(DATETIME_FULL);
     const log = {
       ...lifelog(),
+      id: i,
       startedAt: datetime,
       finishedAt: undefined,
     };
