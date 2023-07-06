@@ -13,6 +13,15 @@ type CreatParams = {
   finishedAt?: string;
 };
 
+export type UpdateParams = {
+  id: number;
+  user_id: number;
+  action: string;
+  detail?: string;
+  startedAt?: string;
+  finishedAt?: string;
+};
+
 export default function lifelog(
   headers: Headers,
   responseInterceptor?: ResponseInterceptor,
@@ -27,11 +36,15 @@ export default function lifelog(
   const create = (params: CreatParams) =>
     client.post('/lifelogs', { data: params }, { headers });
 
+  const update = (params: UpdateParams) =>
+    client.put('/lifelogs/' + params.id, { data: params }, { headers });
+
   const destroy = (id: number) => client.delete('/lifelogs/' + id, { headers });
 
   return {
     index,
     create,
+    update,
     destroy,
   };
 }
