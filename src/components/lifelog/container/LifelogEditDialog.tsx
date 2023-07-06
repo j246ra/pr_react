@@ -10,7 +10,7 @@ import {
   TextArea,
 } from '@blueprintjs/core';
 import { Lifelog } from '@providers/LifelogProvider';
-import DatetimeInput from '../presentational/DatetimeInput';
+import DatetimeInput from '@lifelog/presentational/DatetimeInput';
 
 export interface LifelogEditDialogProps {
   isOpen: boolean;

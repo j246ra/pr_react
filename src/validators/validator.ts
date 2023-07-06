@@ -1,4 +1,4 @@
-import notify from '../lib/toast';
+import notify from '@lib/toast';
 
 export interface Result {
   isInvalid: boolean;

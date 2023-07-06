@@ -1,6 +1,6 @@
 import { AxiosResponse, AxiosError } from 'axios';
 import client from './client';
-import { Headers } from '../../providers/SessionProvider';
+import { Headers } from '@providers/SessionProvider';
 
 type ResponseInterceptor = (response: AxiosResponse) => AxiosResponse;
 type ErrorInterceptor = (error: AxiosError) => Promise<never>;

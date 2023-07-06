@@ -3,8 +3,8 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { HTMLTable, Intent, Spinner, SpinnerSize } from '@blueprintjs/core';
 import { useLifelog } from '@providers/LifelogProvider';
 import notify from '@lib/toast';
-import LifelogListItem from '../presentational/LifelogListItem';
-import LifelogListHeader from '../presentational/LifelogListHeader';
+import LifelogListItem from '@lifelog/presentational/LifelogListItem';
+import LifelogListHeader from '@lifelog/presentational/LifelogListHeader';
 
 const LifelogList = () => {
   const { logs, loadLogs, deleteLog } = useLifelog();

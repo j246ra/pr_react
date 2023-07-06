@@ -1,6 +1,6 @@
 import React, { createContext, useContext, ReactNode } from 'react';
 import { useUser } from './UserProvider';
-import session from '../lib/api/session';
+import session from '@lib/api/session';
 import { useSession } from './SessionProvider';
 import { AxiosResponse, AxiosError } from 'axios';
 import notify from '@lib/toast';
