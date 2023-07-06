@@ -8,16 +8,18 @@ export interface LifelogListItemProps {
   log: Lifelog;
   onDeleteButtonClick: () => void;
   onEditButtonClick: () => void;
+  onActionClick: () => void;
 }
 const LifelogListItem: React.FC<LifelogListItemProps> = ({
   log,
   onEditButtonClick,
   onDeleteButtonClick,
+  onActionClick,
 }) => {
   return (
     <tr>
       <td>{dayjs(log.startedAt).format('YY/MM/DD HH:mm')}</td>
-      <td>{log.action}</td>
+      <td onClick={onActionClick}>{log.action}</td>
       <td>{log.detail}</td>
       <td style={{ textAlign: 'center' }}>
         <Button

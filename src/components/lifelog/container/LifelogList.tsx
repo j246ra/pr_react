@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { HTMLTable, Intent, Spinner, SpinnerSize } from '@blueprintjs/core';
-import { useLifelog } from '@providers/LifelogProvider';
+import { Lifelog, useLifelog } from '@providers/LifelogProvider';
 import notify from '@lib/toast';
 import LifelogListItem from '@lifelog/presentational/LifelogListItem';
 import LifelogListHeader from '@lifelog/presentational/LifelogListHeader';
+import LifelogDetailDialog from '@lifelog/container/LifelogDetailDialog';
 
 const LifelogList = () => {
   const { logs, loadLogs, deleteLog } = useLifelog();
   const [hasMore, setHasMore] = useState(true);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [detailLog, setDetailLog] = useState<undefined | Lifelog>(undefined);
 
   const lifelogLoader = (page: number) => {
     loadLogs(page)
@@ -29,8 +33,23 @@ const LifelogList = () => {
       });
   };
 
+  const handleOpenDetailDialog = (lifelog: Lifelog) => {
+    setIsOpen(true);
+    setDetailLog(lifelog);
+  };
+
+  const handleCloseDetailDialog = () => {
+    setIsOpen(false);
+    setDetailLog(undefined);
+  };
+
   return (
     <div style={{ width: '100%' }}>
+      <LifelogDetailDialog
+        isOpen={isOpen}
+        handleCloseDialog={handleCloseDetailDialog}
+        log={detailLog}
+      />
       <HTMLTable bordered={false}>
         <LifelogListHeader />
         <InfiniteScroll
@@ -52,6 +71,7 @@ const LifelogList = () => {
                 log={log}
                 onEditButtonClick={() => notify.success('絶賛実装中！！！')}
                 onDeleteButtonClick={() => handleDeleteLifelog(log.id)}
+                onActionClick={() => handleOpenDetailDialog(log)}
               />
             );
           })}
