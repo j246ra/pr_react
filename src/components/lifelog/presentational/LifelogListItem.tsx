@@ -16,12 +16,10 @@ const LifelogListItem: React.FC<LifelogListItemProps> = ({
 }) => {
   return (
     <tr>
-      <td style={{ width: '150px' }}>
-        {dayjs(log.startedAt).format('YY/MM/DD HH:mm')}
-      </td>
+      <td>{dayjs(log.startedAt).format('YY/MM/DD HH:mm')}</td>
       <td>{log.action}</td>
       <td>{log.detail}</td>
-      <td style={{ width: '150px', textAlign: 'center' }}>
+      <td style={{ textAlign: 'center' }}>
         <Button
           intent={Intent.SUCCESS}
           icon={IconNames.EDIT}
