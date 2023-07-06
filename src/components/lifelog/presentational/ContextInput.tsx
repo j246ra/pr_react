@@ -4,7 +4,7 @@ import { IconNames } from '@blueprintjs/icons';
 
 export interface ContextInputProps {
   onSubmit: (e: FormEvent) => void;
-  value: string;
+  value?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   id?: string;
   required?: boolean;
@@ -21,24 +21,26 @@ export const ContextInput: React.FC<ContextInputProps> = ({
 }) => {
   const style = { width: 300 };
   return (
-    <form onSubmit={onSubmit}>
-      <ControlGroup>
-        <InputGroup
-          style={style}
-          id={id}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-          required={required}
-        />
-        <Button
-          type={'submit'}
-          minimal={true}
-          intent={Intent.PRIMARY}
-          icon={IconNames.ADD}
-        />
-      </ControlGroup>
-    </form>
+    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <form onSubmit={onSubmit}>
+        <ControlGroup>
+          <InputGroup
+            style={style}
+            id={id}
+            placeholder={placeholder}
+            value={value}
+            onChange={onChange}
+            required={required}
+          />
+          <Button
+            type={'submit'}
+            minimal={true}
+            intent={Intent.PRIMARY}
+            icon={IconNames.ADD}
+          />
+        </ControlGroup>
+      </form>
+    </div>
   );
 };
 

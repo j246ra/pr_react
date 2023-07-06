@@ -9,7 +9,6 @@ const BaseLayout: React.FC<BaseLayoutProps> = ({ children }) => {
     <div
       className={'base-container app-max-width'}
       style={{
-        display: 'flex',
         padding: '0 20px',
         margin: '0 auto',
       }}

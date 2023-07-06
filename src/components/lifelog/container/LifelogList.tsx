@@ -30,32 +30,34 @@ const LifelogList = () => {
   };
 
   return (
-    <HTMLTable bordered={false} style={{ width: '100%', margin: '0 auto' }}>
-      <LifelogListHeader />
-      <InfiniteScroll
-        element={'tbody'}
-        loadMore={lifelogLoader}
-        hasMore={hasMore}
-        loader={
-          <tr key={0}>
-            <td colSpan={4} style={{ boxShadow: 'none' }}>
-              <Spinner intent={Intent.PRIMARY} size={SpinnerSize.SMALL} />
-            </td>
-          </tr>
-        }
-      >
-        {logs.map((log) => {
-          return (
-            <LifelogListItem
-              key={log.id}
-              log={log}
-              onEditButtonClick={() => notify.success('絶賛実装中！！！')}
-              onDeleteButtonClick={() => handleDeleteLifelog(log.id)}
-            />
-          );
-        })}
-      </InfiniteScroll>
-    </HTMLTable>
+    <div style={{ width: '100%' }}>
+      <HTMLTable bordered={false}>
+        <LifelogListHeader />
+        <InfiniteScroll
+          element={'tbody'}
+          loadMore={lifelogLoader}
+          hasMore={hasMore}
+          loader={
+            <tr key={0}>
+              <td colSpan={4} style={{ boxShadow: 'none' }}>
+                <Spinner intent={Intent.PRIMARY} size={SpinnerSize.SMALL} />
+              </td>
+            </tr>
+          }
+        >
+          {logs.map((log) => {
+            return (
+              <LifelogListItem
+                key={log.id}
+                log={log}
+                onEditButtonClick={() => notify.success('絶賛実装中！！！')}
+                onDeleteButtonClick={() => handleDeleteLifelog(log.id)}
+              />
+            );
+          })}
+        </InfiniteScroll>
+      </HTMLTable>
+    </div>
   );
 };
 
