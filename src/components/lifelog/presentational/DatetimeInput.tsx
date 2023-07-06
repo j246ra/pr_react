@@ -7,6 +7,7 @@ export interface DatetimeInputProps {
   label: string;
   placeholder?: string;
   value?: string;
+  onChange: (newDate: string | null) => void;
 }
 
 const MONTHS = [
@@ -40,11 +41,13 @@ const DatetimeInput: React.FC<DatetimeInputProps> = ({
   label,
   placeholder,
   value,
+  onChange,
 }) => {
   return (
     <FormGroup label={label}>
       <DateInput
         defaultValue={value}
+        value={value}
         placeholder={placeholder}
         formatDate={useCallback(
           (date: Date) => dayjs(date).format('YYYY-MM-DD HH:mm:ss'),
@@ -59,6 +62,7 @@ const DatetimeInput: React.FC<DatetimeInputProps> = ({
         }}
         timePrecision={TimePrecision.MINUTE}
         showTimezoneSelect={false}
+        onChange={(newDate) => onChange(newDate)}
       />
     </FormGroup>
   );
