@@ -23,11 +23,13 @@ const LifelogListItem: React.FC<LifelogListItemProps> = ({
       <td>{log.detail}</td>
       <td style={{ textAlign: 'center' }}>
         <Button
+          data-testid="edit-button"
           intent={Intent.SUCCESS}
           icon={IconNames.EDIT}
           onClick={onEditButtonClick}
         />
         <Button
+          data-testid="delete-button"
           intent={Intent.DANGER}
           style={{ marginLeft: '3px' }}
           icon={IconNames.DELETE}
