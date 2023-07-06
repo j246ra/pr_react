@@ -6,7 +6,7 @@ import BaseLayout from '@src/components/BaseLayout';
 import { lifelogMocks } from '@lib/storybook/lifelog';
 
 export default {
-  title: 'Components/Lifelog/LifelogList',
+  title: 'Lifelog/Container/LifelogList',
   component: LifelogList,
   decorators: [
     (Story) => (

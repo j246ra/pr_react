@@ -2,7 +2,7 @@ import { Meta } from '@storybook/react';
 import DatetimeInput from './DatetimeInput';
 
 export default {
-  title: 'components/Lifelog/DatetimeInput',
+  title: 'Lifelog/Presentational/DatetimeInput',
   component: DatetimeInput,
 } as Meta;
 

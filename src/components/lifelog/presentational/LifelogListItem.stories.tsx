@@ -9,7 +9,7 @@ import { HTMLTable } from '@blueprintjs/core';
 import { lifelog } from '@lib/faker/lifelog';
 
 export default {
-  title: 'Components/Lifelog/LifelogListItem',
+  title: 'Lifelog/Presentational/LifelogListItem',
   component: LifelogListItem,
   decorators: [
     (Story) => (

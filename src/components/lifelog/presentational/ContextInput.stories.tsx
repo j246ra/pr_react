@@ -2,7 +2,7 @@ import { Meta } from '@storybook/react';
 import ContextInput from './ContextInput';
 
 export default {
-  title: 'Components/Lifelog/ContextInput',
+  title: 'Lifelog/Presentational/ContextInput',
   component: ContextInput,
 } as Meta;
 

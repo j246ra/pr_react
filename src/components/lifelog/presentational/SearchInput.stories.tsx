@@ -2,7 +2,7 @@ import { Meta } from '@storybook/react';
 import SearchInput from './SearchInput';
 
 export default {
-  title: 'Components/Lifelog/SearchInput',
+  title: 'Lifelog/Presentational/SearchInput',
   component: SearchInput,
 } as Meta;
 

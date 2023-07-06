@@ -6,7 +6,7 @@ import Header from '@src/components/Header';
 import { HTMLTable } from '@blueprintjs/core';
 
 export default {
-  title: 'Components/Lifelog/LifelogListHeader',
+  title: 'Lifelog/Presentational/LifelogListHeader',
   component: LifelogListHeader,
   decorators: [
     (Story) => (

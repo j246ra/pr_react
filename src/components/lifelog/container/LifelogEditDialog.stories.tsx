@@ -3,7 +3,7 @@ import LifelogEditDialog from './LifelogEditDialog';
 import { lifelog } from '@lib/faker/lifelog';
 
 export default {
-  title: 'Components/Lifelog/LifelogEditDialog',
+  title: 'Lifelog/Container/LifelogEditDialog',
   component: LifelogEditDialog,
 } as Meta;
 
