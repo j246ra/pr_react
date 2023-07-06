@@ -7,6 +7,7 @@ module.exports = async ({ config }) => {
   // resolve.alias の設定を追加
   config.resolve.alias = {
     ...config.resolve.alias,
+    '@src': paths.appSrc,
     '@lib': path.resolve(paths.appSrc, 'lib'),
     '@providers': path.resolve(paths.appSrc, 'providers'),
     '@validators': path.resolve(paths.appSrc, 'validators'),

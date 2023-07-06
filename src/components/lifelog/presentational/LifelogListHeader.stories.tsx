@@ -1,8 +1,8 @@
 import { Meta } from '@storybook/react';
 import LifelogListHeader from './LifelogListHeader';
-import BaseLayout from '../../BaseLayout';
+import BaseLayout from '@src/components/BaseLayout';
 import { Toaster } from 'react-hot-toast';
-import Header from '../../Header';
+import Header from '@src/components/Header';
 import { HTMLTable } from '@blueprintjs/core';
 
 export default {

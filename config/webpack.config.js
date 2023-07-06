@@ -320,6 +320,7 @@ module.exports = function (webpackEnv) {
           'scheduler/tracing': 'scheduler/tracing-profiling',
         }),
         ...(modules.webpackAliases || {}),
+        '@src': paths.appSrc,
         '@lib': path.resolve(paths.appSrc, 'lib'),
         '@providers': path.resolve(paths.appSrc, 'providers'),
         '@validators': path.resolve(paths.appSrc, 'validators'),

@@ -2,8 +2,8 @@ import { Meta } from '@storybook/react';
 import Lifelogs from './Lifelogs';
 import { Story } from '@storybook/blocks';
 import { Toaster } from 'react-hot-toast';
-import Header from '../Header';
-import BaseLayout from '../BaseLayout';
+import Header from '@src/components/Header';
+import BaseLayout from '@src/components/BaseLayout';
 import { lifelogMocks } from '@lib/storybook/lifelog';
 
 export default {

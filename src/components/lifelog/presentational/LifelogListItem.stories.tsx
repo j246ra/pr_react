@@ -1,8 +1,8 @@
 import { Meta } from '@storybook/react';
 import LifelogListItem from './LifelogListItem';
-import BaseLayout from '../../BaseLayout';
+import BaseLayout from '@src/components/BaseLayout';
 import { Toaster } from 'react-hot-toast';
-import Header from '../../Header';
+import Header from '@src/components/Header';
 import LifelogListHeader from './LifelogListHeader';
 import notify from '@lib/toast';
 import { HTMLTable } from '@blueprintjs/core';
