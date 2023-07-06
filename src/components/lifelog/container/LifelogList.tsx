@@ -11,7 +11,7 @@ const LifelogList = () => {
   const { logs, loadLogs, deleteLog } = useLifelog();
   const [hasMore, setHasMore] = useState(true);
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
   const [detailLog, setDetailLog] = useState<undefined | Lifelog>(undefined);
 
   const lifelogLoader = (page: number) => {
@@ -34,19 +34,19 @@ const LifelogList = () => {
   };
 
   const handleOpenDetailDialog = (lifelog: Lifelog) => {
-    setIsOpen(true);
+    setIsDetailDialogOpen(true);
     setDetailLog(lifelog);
   };
 
   const handleCloseDetailDialog = () => {
-    setIsOpen(false);
+    setIsDetailDialogOpen(false);
     setDetailLog(undefined);
   };
 
   return (
     <div style={{ width: '100%' }}>
       <LifelogDetailDialog
-        isOpen={isOpen}
+        isOpen={isDetailDialogOpen}
         handleCloseDialog={handleCloseDetailDialog}
         log={detailLog}
       />
