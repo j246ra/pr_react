@@ -6,6 +6,7 @@ import notify from '@lib/toast';
 import LifelogListItem from '@lifelog/presentational/LifelogListItem';
 import LifelogListHeader from '@lifelog/presentational/LifelogListHeader';
 import LifelogDetailDialog from '@lifelog/container/LifelogDetailDialog';
+import LifelogEditDialog from '@lifelog/container/LifelogEditDialog';
 
 const LifelogList = () => {
   const { logs, loadLogs, deleteLog } = useLifelog();
@@ -13,6 +14,9 @@ const LifelogList = () => {
 
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
   const [detailLog, setDetailLog] = useState<undefined | Lifelog>(undefined);
+
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [editLog, setEditLog] = useState<undefined | Lifelog>(undefined);
 
   const lifelogLoader = (page: number) => {
     loadLogs(page)
@@ -23,6 +27,17 @@ const LifelogList = () => {
         notify.error(e.message);
       });
   };
+
+  const handleOpenEditDialog = (lifelog: Lifelog) => {
+    setIsEditDialogOpen(true);
+    setEditLog(lifelog);
+  };
+
+  const handleCloseEditDialog = () => {
+    setIsEditDialogOpen(false);
+    setEditLog(undefined);
+  };
+
   const handleDeleteLifelog = (logId: number) => {
     deleteLog(logId)
       .then(() => {
@@ -50,6 +65,11 @@ const LifelogList = () => {
         handleCloseDialog={handleCloseDetailDialog}
         log={detailLog}
       />
+      <LifelogEditDialog
+        isOpen={isEditDialogOpen}
+        handleCloseDialog={handleCloseEditDialog}
+        log={editLog}
+      />
       <HTMLTable bordered={false}>
         <LifelogListHeader />
         <InfiniteScroll
@@ -69,7 +89,7 @@ const LifelogList = () => {
               <LifelogListItem
                 key={log.id}
                 log={log}
-                onEditButtonClick={() => notify.success('絶賛実装中！！！')}
+                onEditButtonClick={() => handleOpenEditDialog(log)}
                 onDeleteButtonClick={() => handleDeleteLifelog(log.id)}
                 onActionClick={() => handleOpenDetailDialog(log)}
               />
