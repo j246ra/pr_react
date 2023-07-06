@@ -6,14 +6,13 @@ import {
   Menu,
   MenuItem,
   MenuDivider,
-  NavbarGroup,
-  NavbarHeading,
 } from '@blueprintjs/core';
 import { Popover2 } from '@blueprintjs/popover2';
 import { useUser } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@providers/AuthApiProvider';
 import { useSession } from '@providers/SessionProvider';
+import SearchInput from '@lifelog/presentational/SearchInput';
 
 const Header = () => {
   const { removeToken } = useSession();
@@ -32,12 +31,14 @@ const Header = () => {
   return (
     <Navbar fixedToTop={true}>
       <div className={'app-max-width m-w-auto p-w-20'}>
-        <NavbarGroup align={Alignment.LEFT}>
-          <NavbarHeading>
+        <Navbar.Group align={Alignment.LEFT}>
+          <Navbar.Heading>
             <a href="/">Lifelog</a>
-          </NavbarHeading>
-        </NavbarGroup>
-        <NavbarGroup align={Alignment.RIGHT}>
+          </Navbar.Heading>
+        </Navbar.Group>
+        <Navbar.Group align={Alignment.RIGHT}>
+          <SearchInput isLogin={isLogin()} />
+          <Navbar.Divider />
           <Popover2
             content={
               <Menu>
@@ -64,7 +65,7 @@ const Header = () => {
           >
             <Button icon="menu" minimal={true} />
           </Popover2>
-        </NavbarGroup>
+        </Navbar.Group>
       </div>
     </Navbar>
   );

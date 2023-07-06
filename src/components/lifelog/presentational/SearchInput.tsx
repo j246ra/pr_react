@@ -3,7 +3,7 @@ import { Button, InputGroup } from '@blueprintjs/core';
 
 export interface SearchInputProps {
   isLogin: boolean;
-  width: number;
+  width?: number;
 }
 
 const SearchInput: React.FC<SearchInputProps> = ({ isLogin, width = 260 }) => {
