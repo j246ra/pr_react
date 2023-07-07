@@ -24,6 +24,7 @@ type LifelogContextType = {
   createLogByContext: (context: string) => Promise<AxiosResponse>;
   updateLog: (params: UpdateParams) => Promise<AxiosResponse>;
   deleteLog: (id: number) => Promise<AxiosResponse>;
+  clear: () => void;
 };
 
 const LifelogContext = createContext<LifelogContextType | undefined>(undefined);
@@ -131,6 +132,12 @@ export default function LifelogProvider({ children }: Props) {
     });
   };
 
+  const clear = () => {
+    setLogs([]);
+    setPage(0);
+    setSearchWord('');
+  };
+
   return (
     <LifelogContext.Provider
       value={{
@@ -141,6 +148,7 @@ export default function LifelogProvider({ children }: Props) {
         createLogByContext,
         updateLog,
         deleteLog,
+        clear,
       }}
     >
       {children}

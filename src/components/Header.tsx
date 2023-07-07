@@ -13,16 +13,19 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@providers/AuthApiProvider';
 import { useSession } from '@providers/SessionProvider';
 import SearchInput from '@lifelog/presentational/SearchInput';
+import { useLifelog } from '@providers/LifelogProvider';
 
 const Header = () => {
   const { removeToken } = useSession();
   const navigate = useNavigate();
   const { isLogin, clearUser } = useUser();
   const { authApi } = useAuth();
+  const { clear: clearLifelog } = useLifelog();
 
   const handleLogout = () => {
     authApi.signOut().finally(() => {
       clearUser();
+      clearLifelog();
       removeToken();
       navigate('/login');
     });
