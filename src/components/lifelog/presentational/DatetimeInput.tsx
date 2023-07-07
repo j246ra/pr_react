@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { FormGroup } from '@blueprintjs/core';
 import { DateInput, TimePrecision } from '@blueprintjs/datetime';
 import dayjs from 'dayjs';
+import { DATETIME_FULL } from '@lib/dateUtil';
 
 export interface DatetimeInputProps {
   label: string;
@@ -50,10 +51,10 @@ const DatetimeInput: React.FC<DatetimeInputProps> = ({
         value={value}
         placeholder={placeholder}
         formatDate={useCallback(
-          (date: Date) => dayjs(date).format('YYYY-MM-DD HH:mm:ss'),
+          (date: Date) => dayjs(date).format(DATETIME_FULL),
           []
         )}
-        parseDate={useCallback((str: string) => new Date(str), [])}
+        parseDate={useCallback((date: string) => dayjs(date).toDate(), [])}
         locale={'ja'}
         dayPickerProps={{
           months: MONTHS,
