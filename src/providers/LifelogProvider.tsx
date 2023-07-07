@@ -2,7 +2,7 @@ import React, { createContext, ReactNode, useContext, useState } from 'react';
 import { useSession } from '@providers/SessionProvider';
 import { useUser } from '@providers/UserProvider';
 import { AxiosError, AxiosResponse } from 'axios';
-import lifelog from '@lib/api/lifelog';
+import lifelog, { UpdateParams } from '@lib/api/lifelog';
 import dayjs from 'dayjs';
 
 export type Lifelog = {
@@ -19,7 +19,9 @@ export type Lifelog = {
 type LifelogContextType = {
   logs: Lifelog[];
   loadLogs: (page: number) => Promise<AxiosResponse>;
+  newLog: () => Lifelog;
   createLogByContext: (context: string) => Promise<AxiosResponse>;
+  updateLog: (params: UpdateParams) => Promise<AxiosResponse>;
   deleteLog: (id: number) => Promise<AxiosResponse>;
 };
 
@@ -61,13 +63,43 @@ export default function LifelogProvider({ children }: Props) {
     setLogs([...logs, ...lifelogs]);
   };
 
+  const sortLog = (lifelogs: Lifelog[]) => {
+    return lifelogs.sort((a, b) => {
+      return dayjs(b.startedAt).diff(dayjs(a.startedAt));
+    });
+  };
+
+  const newLog = (): Lifelog => {
+    return {
+      id: -1,
+      user_id: -1,
+      action: '',
+      detail: undefined,
+      startedAt: '',
+      finishedAt: undefined,
+      createdAt: '',
+      updatedAt: '',
+    };
+  };
+
   const createLogByContext = (context: string) => {
     return api.create({ context: context }).then((r) => {
-      setLogs(
-        [r.data, ...logs].sort((a, b) => {
-          return dayjs(b.startedAt).diff(dayjs(a.startedAt));
-        })
-      );
+      setLogs(sortLog([r.data, ...logs]));
+      return r;
+    });
+  };
+
+  const updateLog = (params: UpdateParams) => {
+    return api.update(params).then((r) => {
+      const i = logs.findIndex((log) => {
+        return log.id === r.data.id;
+      });
+      if (i >= 0) {
+        logs[i] = r.data;
+        setLogs(sortLog(logs));
+      } else {
+        setLogs(sortLog([r.data, ...logs]));
+      }
       return r;
     });
   };
@@ -88,7 +120,9 @@ export default function LifelogProvider({ children }: Props) {
       value={{
         logs,
         loadLogs,
+        newLog,
         createLogByContext,
+        updateLog,
         deleteLog,
       }}
     >

@@ -9,14 +9,14 @@ import LifelogDetailDialog from '@lifelog/container/LifelogDetailDialog';
 import LifelogEditDialog from '@lifelog/container/LifelogEditDialog';
 
 const LifelogList = () => {
-  const { logs, loadLogs, deleteLog } = useLifelog();
+  const { logs, loadLogs, newLog, deleteLog } = useLifelog();
   const [hasMore, setHasMore] = useState(true);
 
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
   const [detailLog, setDetailLog] = useState<undefined | Lifelog>(undefined);
 
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [editLog, setEditLog] = useState<undefined | Lifelog>(undefined);
+  const [editLog, setEditLog] = useState<Lifelog>(newLog());
 
   const lifelogLoader = (page: number) => {
     loadLogs(page)
@@ -35,7 +35,7 @@ const LifelogList = () => {
 
   const handleCloseEditDialog = () => {
     setIsEditDialogOpen(false);
-    setEditLog(undefined);
+    setEditLog(newLog());
   };
 
   const handleDeleteLifelog = (logId: number) => {
