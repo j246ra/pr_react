@@ -6,8 +6,8 @@ import {
   Menu,
   MenuItem,
   MenuDivider,
+  Popover,
 } from '@blueprintjs/core';
-import { Popover2 } from '@blueprintjs/popover2';
 import { useUser } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@providers/AuthApiProvider';
@@ -42,7 +42,7 @@ const Header = () => {
         <Navbar.Group align={Alignment.RIGHT}>
           <SearchInput isShow={isLogin()} />
           <Navbar.Divider />
-          <Popover2
+          <Popover
             content={
               <Menu>
                 <MenuItem icon="plus" text="新規作成" />
@@ -67,7 +67,7 @@ const Header = () => {
             placement="bottom-end"
           >
             <Button icon="menu" minimal={true} />
-          </Popover2>
+          </Popover>
         </Navbar.Group>
       </div>
     </Navbar>
