@@ -37,7 +37,7 @@ const Header = () => {
           </Navbar.Heading>
         </Navbar.Group>
         <Navbar.Group align={Alignment.RIGHT}>
-          <SearchInput isLogin={isLogin()} />
+          <SearchInput isShow={isLogin()} />
           <Navbar.Divider />
           <Popover2
             content={
