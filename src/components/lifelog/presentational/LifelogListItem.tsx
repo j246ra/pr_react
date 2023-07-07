@@ -19,7 +19,9 @@ const LifelogListItem: React.FC<LifelogListItemProps> = ({
   return (
     <tr>
       <td>{dayjs(log.startedAt).format('YY/MM/DD HH:mm')}</td>
-      <td onClick={onActionClick}>{log.action}</td>
+      <td className={'app-link-text'} onClick={onActionClick}>
+        {log.action}
+      </td>
       <td>{log.detail}</td>
       <td style={{ textAlign: 'center' }}>
         <Button

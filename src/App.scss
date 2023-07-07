@@ -2,6 +2,8 @@
 @import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 @import '@blueprintjs/datetime/lib/css/blueprint-datetime.css';
 @import '@blueprintjs/select/lib/css/blueprint-select.css';
+@import "@blueprintjs/core/lib/scss/variables";
+
 
 $AppMaxWidth: 1280px;
 
@@ -17,5 +19,14 @@ $AppMaxWidth: 1280px;
   }
   .p-w-20 {
     padding: 0 20px;
+  }
+  .app-link-text {
+    cursor: pointer;
+    color: $pt-link-color;
+    font-weight: bold;
+    text-decoration-line: none;
+  }
+  .app-link-text:hover {
+    text-decoration-line: underline;
   }
 }
