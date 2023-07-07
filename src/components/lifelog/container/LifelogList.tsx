@@ -59,7 +59,7 @@ const LifelogList = () => {
   };
 
   return (
-    <div style={{ width: '100%' }}>
+    <>
       <LifelogDetailDialog
         isOpen={isDetailDialogOpen}
         handleCloseDialog={handleCloseDetailDialog}
@@ -70,7 +70,7 @@ const LifelogList = () => {
         handleCloseDialog={handleCloseEditDialog}
         log={editLog}
       />
-      <HTMLTable bordered={false}>
+      <HTMLTable bordered={false} style={{ width: '100%' }}>
         <LifelogListHeader />
         <InfiniteScroll
           element={'tbody'}
@@ -97,7 +97,7 @@ const LifelogList = () => {
           })}
         </InfiniteScroll>
       </HTMLTable>
-    </div>
+    </>
   );
 };
 
