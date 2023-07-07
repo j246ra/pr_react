@@ -18,7 +18,8 @@ export type Lifelog = {
 
 type LifelogContextType = {
   logs: Lifelog[];
-  loadLogs: (page: number) => Promise<AxiosResponse>;
+  loadLogs: () => Promise<AxiosResponse>;
+  searchLogs: (word: string) => Promise<AxiosResponse>;
   newLog: () => Lifelog;
   createLogByContext: (context: string) => Promise<AxiosResponse>;
   updateLog: (params: UpdateParams) => Promise<AxiosResponse>;
@@ -40,6 +41,8 @@ type Props = {
 };
 export default function LifelogProvider({ children }: Props) {
   const [logs, setLogs] = useState<Lifelog[]>([]);
+  const [searchWord, setSearchWord] = useState('');
+  const [page, setPage] = useState(0);
   const { headers, setToken } = useSession();
   const { clearUser } = useUser();
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
@@ -52,9 +55,22 @@ export default function LifelogProvider({ children }: Props) {
   };
   const api = lifelog(headers, responseInterceptor, errorInterceptor);
 
-  const loadLogs = (page: number) => {
-    return api.index(page).then((r) => {
-      if (r.data.length > 0) appendLogs(r.data);
+  const loadLogs = () => {
+    const nextPage = page + 1;
+    return api.index(nextPage, searchWord).then((r) => {
+      if (r.data.length > 0) {
+        appendLogs(r.data);
+        setPage(nextPage);
+      }
+      return r;
+    });
+  };
+
+  const searchLogs = (word: string) => {
+    setSearchWord(word);
+    return api.index(1, word).then((r) => {
+      setLogs(r.data);
+      setPage(1);
       return r;
     });
   };
@@ -120,6 +136,7 @@ export default function LifelogProvider({ children }: Props) {
       value={{
         logs,
         loadLogs,
+        searchLogs,
         newLog,
         createLogByContext,
         updateLog,

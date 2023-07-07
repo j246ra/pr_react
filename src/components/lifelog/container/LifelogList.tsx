@@ -18,8 +18,8 @@ const LifelogList = () => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editLog, setEditLog] = useState<Lifelog>(newLog());
 
-  const lifelogLoader = (page: number) => {
-    loadLogs(page)
+  const lifelogLoader = () => {
+    loadLogs()
       .then((r) => {
         if (r.data.length === 0) setHasMore(false);
       })

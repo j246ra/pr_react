@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Button, InputGroup } from '@blueprintjs/core';
+import { useLifelog } from '@providers/LifelogProvider';
+import notify from '@lib/toast';
 
 export interface SearchInputProps {
   isShow: boolean;
@@ -9,11 +11,14 @@ export interface SearchInputProps {
 const SearchInput: React.FC<SearchInputProps> = ({ isShow, width = 260 }) => {
   if (!isShow) return null;
 
+  const { searchLogs } = useLifelog();
   const [word, setWord] = useState('');
   const [isComposing, setIsComposing] = useState(false);
 
   const handleSearch = () => {
-    console.log(`Search for: ${word}`); // ここで検索APIリクエスト処理を行う
+    searchLogs(word).catch((e) => {
+      notify.error(e.message);
+    });
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
