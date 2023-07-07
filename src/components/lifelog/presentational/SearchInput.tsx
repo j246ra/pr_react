@@ -8,9 +8,23 @@ export interface SearchInputProps {
 
 const SearchInput: React.FC<SearchInputProps> = ({ isShow, width = 260 }) => {
   if (!isShow) return null;
-  const [word, setWord] = useState('');
 
-  const searchButton = <Button icon={'search'} minimal={true}></Button>;
+  const [word, setWord] = useState('');
+  const [isComposing, setIsComposing] = useState(false);
+
+  const handleSearch = () => {
+    console.log(`Search for: ${word}`); // ここで検索APIリクエスト処理を行う
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && !isComposing) {
+      handleSearch();
+    }
+  };
+
+  const searchButton = (
+    <Button icon={'search'} minimal={true} onClick={handleSearch}></Button>
+  );
 
   return (
     <div style={{ width }}>
@@ -20,6 +34,9 @@ const SearchInput: React.FC<SearchInputProps> = ({ isShow, width = 260 }) => {
         rightElement={searchButton}
         value={word}
         onChange={(e) => setWord(e.target.value)}
+        onKeyDown={handleKeyDown}
+        onCompositionStart={() => setIsComposing(true)}
+        onCompositionEnd={() => setIsComposing(false)}
       />
     </div>
   );
