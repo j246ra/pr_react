@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, InputGroup } from '@blueprintjs/core';
 
 export interface SearchInputProps {
@@ -7,9 +7,8 @@ export interface SearchInputProps {
 }
 
 const SearchInput: React.FC<SearchInputProps> = ({ isShow, width = 260 }) => {
-  if (!isShow) {
-    return null;
-  }
+  if (!isShow) return null;
+  const [word, setWord] = useState('');
 
   const searchButton = <Button icon={'search'} minimal={true}></Button>;
 
@@ -19,6 +18,8 @@ const SearchInput: React.FC<SearchInputProps> = ({ isShow, width = 260 }) => {
         type={'search'}
         placeholder={'検索（行動、詳細）'}
         rightElement={searchButton}
+        value={word}
+        onChange={(e) => setWord(e.target.value)}
       />
     </div>
   );
