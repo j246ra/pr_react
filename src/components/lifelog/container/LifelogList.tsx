@@ -39,6 +39,7 @@ const LifelogList = () => {
   };
 
   const handleDeleteLifelog = (logId: number) => {
+    if (!confirm('本当に削除しますか？')) return;
     deleteLog(logId)
       .then(() => {
         notify.success('削除成功');
