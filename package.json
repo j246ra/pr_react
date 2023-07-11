@@ -131,7 +131,8 @@
       "^@providers/(.*)$": "<rootDir>/src/providers/$1",
       "^@validators/(.*)$": "<rootDir>/src/validators/$1",
       "^@lib/(.*)$": "<rootDir>/src/lib/$1",
-      "^@presentational/(.*)$": "<rootDir>/src/components/presentational/$1"
+      "^@presentational/(.*)$": "<rootDir>/src/components/presentational/$1",
+      "^@container/(.*)$": "<rootDir>/src/components/container/$1"
     },
     "moduleFileExtensions": [
       "web.js",
