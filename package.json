@@ -121,13 +121,17 @@
       "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
     },
     "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$",
+      "/node_modules/(?!axios).+\\.(js|jsx|mjs|cjs|ts|tsx)$",
       "^.+\\.module\\.(css|sass|scss)$"
     ],
     "modulePaths": [],
     "moduleNameMapper": {
       "^react-native$": "react-native-web",
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
+      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
+      "^@providers/(.*)$": "<rootDir>/src/providers/$1",
+      "^@validators/(.*)$": "<rootDir>/src/validators/$1",
+      "^@lib/(.*)$": "<rootDir>/src/lib/$1",
+      "^@presentational/(.*)$": "<rootDir>/src/components/presentational/$1"
     },
     "moduleFileExtensions": [
       "web.js",
