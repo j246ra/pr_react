@@ -13,6 +13,7 @@ describe('ContextInput', () => {
     const input = container.getElementsByTagName('input')[0];
     userEvent.type(input, 'テスト文字列');
     expect(mockOnChange).toHaveBeenCalled();
+    expect(input.getAttribute('type')).toEqual('password');
     expect(input.id).toEqual('password-input');
     expect(input.required).toEqual(true);
     expect(input.placeholder).toEqual('パスワードを入力');
@@ -34,6 +35,7 @@ describe('ContextInput', () => {
     const input = container.getElementsByTagName('input')[0];
     userEvent.type(input, 'テスト文字列');
     expect(mockOnChange).toHaveBeenCalled();
+    expect(input.getAttribute('type')).toEqual('password');
     expect(input.id).toEqual('input-test');
     expect(input.required).toEqual(true);
     expect(input.placeholder).toEqual('パスワードを入力してください。');
