@@ -5,7 +5,7 @@ export type User = {
   email: string;
 };
 
-type UserContextType = {
+export type UserContextType = {
   user: User;
   createUser: (email: string) => void;
   updateUser: (email: string) => void;
