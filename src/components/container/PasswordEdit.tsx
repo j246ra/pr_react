@@ -58,7 +58,7 @@ const PasswordEdit: React.FC = () => {
           onChange={handlePasswordConfirmationChange}
           id={'password-input-confirmation'}
           label={'パスワード（確認用）'}
-          placeholder={'新しいパスワードを入力'}
+          placeholder={'新しいパスワードを入力（確認用）'}
         />
         <Button
           type="submit"
