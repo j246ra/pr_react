@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import SignUp from './SignUp';
 import { useUser, UserContextType } from '@providers/UserProvider';
@@ -63,9 +63,11 @@ describe('SignUp component', () => {
     });
     fireEvent.click(submitButton);
 
-    expect(mockUseAuth().authApi.signUp).toHaveBeenCalledWith(
-      'test@example.com',
-      'password'
-    );
+    await waitFor(() => {
+      expect(mockUseAuth().authApi.signUp).toHaveBeenCalledWith(
+        'test@example.com',
+        'password'
+      );
+    });
   });
 });
