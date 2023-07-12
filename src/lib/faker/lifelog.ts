@@ -14,3 +14,17 @@ export const lifelog = (): Lifelog => {
     updatedAt: now.format(DATETIME_FULL),
   };
 };
+
+export const lifelogs = (length = 1) => {
+  let logs: Lifelog[] = [];
+  for (let i = 0; i < length; i++) {
+    const datetime = now.subtract(i, 'h').format(DATETIME_FULL);
+    logs.push({
+      ...lifelog(),
+      id: i + 1,
+      startedAt: datetime,
+      finishedAt: undefined,
+    });
+  }
+  return logs;
+};
