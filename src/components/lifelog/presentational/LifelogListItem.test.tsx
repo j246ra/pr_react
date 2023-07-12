@@ -3,17 +3,17 @@ import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import LifelogListItem from './LifelogListItem';
 import userEvent from '@testing-library/user-event';
+import {lifelog} from "@lib/faker/lifelog";
 
 describe('LifelogListItem', () => {
-  const mockLog = {
-    id: 1,
-    user_id: 1,
+  const mockLog = { ...lifelog(),
+    startedAt: new Date(2023, 6, 5, 12, 34).toISOString(),
     action: 'Test action',
     detail: 'Test detail',
-    startedAt: new Date(2023, 6, 5, 12, 34).toISOString(),
-    createdAt: new Date(2023, 6, 5, 12, 34).toISOString(),
-    updatedAt: new Date(2023, 6, 5, 12, 34).toISOString(),
   };
+  const mockOnEdit = jest.fn();
+  const mockOnDelete = jest.fn();
+  const mockOnAction = jest.fn();
 
   it('プロパティが正しくレンダリングされる', () => {
     const { getByText } = render(
@@ -21,9 +21,9 @@ describe('LifelogListItem', () => {
         <tbody>
           <LifelogListItem
             log={mockLog}
-            onEditButtonClick={() => {}}
-            onDeleteButtonClick={() => {}}
-            onActionClick={() => {}}
+            onEditButtonClick={mockOnEdit}
+            onDeleteButtonClick={mockOnDelete}
+            onActionClick={mockOnAction}
           />
         </tbody>
       </table>
@@ -35,9 +35,6 @@ describe('LifelogListItem', () => {
   });
 
   it('イベントハンドラが正しく呼び出される', () => {
-    const mockOnEdit = jest.fn();
-    const mockOnDelete = jest.fn();
-    const mockOnAction = jest.fn();
 
     const { getByText, getByTestId } = render(
       <table>
