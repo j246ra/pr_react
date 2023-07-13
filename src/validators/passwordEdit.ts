@@ -1,4 +1,4 @@
-import validator, { Result } from './validator';
+import validator, { INVALID_MESSAGES, Result } from './validator';
 
 type PasswordEditValidator = (password: string, passwordConfirmation: string) => Result;
 
@@ -7,7 +7,7 @@ const passwordEditValidator: PasswordEditValidator = (password, passwordConfirma
   if (password !== undefined && password !== '')
     passwordLengthValidator(password);
   if (password !== passwordConfirmation)
-    addError('入力したパスワードが一致しません。');
+    addError(INVALID_MESSAGES.PASSWORD_NO_MATCH);
   return result;
 };
 

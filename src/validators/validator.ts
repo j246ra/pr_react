@@ -9,6 +9,7 @@ export const INVALID_MESSAGES = {
   TEXT_PRESENCE: (name: string) => `${name}を入力してください`,
   EMAIL_FORMAT: 'メールアドレスのフォーマットエラー',
   PASSWORD_LENGTH: 'パスワードは６文字以上１２８文字以下にしてください。',
+  PASSWORD_NO_MATCH: '入力したパスワードが一致しません。',
 };
 
 export default function validator() {
