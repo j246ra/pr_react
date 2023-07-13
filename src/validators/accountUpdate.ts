@@ -1,13 +1,17 @@
 import validator, { INVALID_MESSAGES, Result } from './validator';
 
+export interface accountUpdateParams {
+  email?: string;
+  password?: string;
+  passwordConfirmation?: string;
+}
+
 export default function accountUpdateValidator(
-  email?: string,
-  password?: string,
-  passwordConfirmation?: string
+  params: accountUpdateParams
 ): Result {
   const { result, addError, emailFormatValidator, passwordLengthValidator } =
     validator();
-
+  const { email, password, passwordConfirmation } = params;
   if (email) emailFormatValidator(email);
 
   if (password !== passwordConfirmation)
