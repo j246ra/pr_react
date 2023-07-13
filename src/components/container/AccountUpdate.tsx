@@ -21,11 +21,9 @@ const AccountUpdate: React.FC = () => {
 
   const handleAccountUpdate = (e: FormEvent) => {
     e.preventDefault();
-    if (
-      accountUpdateValidator({ email, password, passwordConfirmation })
-        .isInvalid
-    )
-      return;
+    const columns = { email, password, passwordConfirmation };
+    if (accountUpdateValidator(columns).isInvalid) return;
+
     let params: UserParams = {};
     if (email !== '') params = { ...params, email };
     if (password !== '') params = { ...params, password };
