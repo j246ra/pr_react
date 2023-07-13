@@ -10,7 +10,7 @@ const signUpValidator: SignUpValidator = (email, password) => {
     passwordLengthValidator,
   } = validator();
   textPresenceValidator(email, 'メールアドレス');
-  emailFormatValidator(email);
+  if (!result.isInvalid) emailFormatValidator(email);
   passwordLengthValidator(password);
   return result;
 };
