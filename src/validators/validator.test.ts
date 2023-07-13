@@ -84,9 +84,11 @@ describe('Validators', () => {
         expect(result.isInvalid).toBe(true);
         expect(result.message).toContain(errorMessage);
       };
-      ['pass', '1234567890'.repeat(12) + '123456789'].forEach((password) => {
-        inValidLengthChecker(password);
-      });
+      ['', 'pass', '1234567890'.repeat(12) + '123456789'].forEach(
+        (password) => {
+          inValidLengthChecker(password);
+        }
+      );
     });
   });
 });
