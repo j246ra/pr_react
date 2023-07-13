@@ -1,9 +1,9 @@
-import validator from '@validators/validator';
+import validator, { INVALID_MESSAGES } from '@validators/validator';
 
 describe('Validators', () => {
   describe('textPresenceValidator', () => {
     const name = 'Test';
-    const errorMessage = `${name}を入力してください`;
+    const errorMessage = INVALID_MESSAGES.TEXT_PRESENCE(name);
     it('正常系', () => {
       const { result, textPresenceValidator } = validator();
       textPresenceValidator('正常系テスト', name);
@@ -26,7 +26,7 @@ describe('Validators', () => {
 
   describe('emailFormatValidator', () => {
     // const emailRegex = /^[\w+\-.]+@[a-zA-Z\d\-.]+\.[a-zA-Z]+$/;
-    const errorMessage = 'メールアドレスのフォーマットエラー';
+    const errorMessage = INVALID_MESSAGES.EMAIL_FORMAT;
     describe('正常系', () => {
       const validFormatChecker = (emailAddress: string) => {
         it(emailAddress, () => {
@@ -70,6 +70,7 @@ describe('Validators', () => {
   });
 
   describe('passwordLengthValidator', () => {
+    const errorMessage = INVALID_MESSAGES.PASSWORD_LENGTH;
     it('正常系', () => {
       const { result, passwordLengthValidator } = validator();
       passwordLengthValidator('pAssw0rd!');
@@ -81,9 +82,7 @@ describe('Validators', () => {
         const { result, passwordLengthValidator } = validator();
         passwordLengthValidator(password);
         expect(result.isInvalid).toBe(true);
-        expect(result.message).toContain(
-          'パスワードは６文字以上１２８文字以下にしてください。'
-        );
+        expect(result.message).toContain(errorMessage);
       };
       ['pass', '1234567890'.repeat(12) + '123456789'].forEach((password) => {
         inValidLengthChecker(password);
