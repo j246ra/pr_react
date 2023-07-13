@@ -6,7 +6,7 @@ interface Options {
 }
 
 const options: Options = {
-  ignoreHeaders: true,
+  ignoreHeaders: false,
 };
 
 const client: AxiosInstance = applyCaseMiddleware(
