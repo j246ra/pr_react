@@ -1,4 +1,4 @@
-import validator, { Result } from './validator';
+import validator, { INVALID_MESSAGES, Result } from './validator';
 
 export default function accountUpdateValidator(
   email?: string,
@@ -7,10 +7,12 @@ export default function accountUpdateValidator(
 ): Result {
   const { result, addError, emailFormatValidator, passwordLengthValidator } =
     validator();
+
   if (email) emailFormatValidator(email);
-  if (password) passwordLengthValidator(password);
-  if (passwordConfirmation) passwordLengthValidator(passwordConfirmation);
-  if ((password || passwordConfirmation) && password !== passwordConfirmation)
-    addError('入力したパスワードが一致しません。');
+
+  if (password !== passwordConfirmation)
+    addError(INVALID_MESSAGES.PASSWORD_NO_MATCH);
+  else if (password) passwordLengthValidator(password);
+
   return result;
 }
