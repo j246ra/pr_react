@@ -17,21 +17,32 @@ describe('PasswordForget コンポーネント', () => {
     });
   });
 
-  it('メールアドレス入力フォームを表示する', () => {
-    const { getByPlaceholderText } = render(<PasswordForget />);
-    expect(getByPlaceholderText('メールアドレスを入力')).toBeInTheDocument();
+  it('入力フォームのレンダリング', () => {
+    const { getByTestId } = render(<PasswordForget />);
+
+    const emailInput = getByTestId('password-forget-email-input');
+    expect(emailInput).toBeInTheDocument();
+    expect(emailInput.tagName).toEqual('INPUT');
+    expect(emailInput).toHaveAttribute(
+      'placeholder',
+      '送信先のメールドレスを入力'
+    );
+
+    const submitButton = getByTestId('password-forget-submit-button');
+    expect(submitButton).toBeInTheDocument();
+    expect(submitButton.tagName).toEqual('BUTTON');
+    expect(submitButton).toHaveTextContent('送信');
   });
 
   it('ユーザーがパスワードを忘れたときにパスワードリセットメールを送信できる', async () => {
-    const { getByPlaceholderText, getByText } = render(<PasswordForget />);
+    const { getByTestId } = render(<PasswordForget />);
 
-    const emailInput = getByPlaceholderText('メールアドレスを入力');
-    const submitButton = getByText('送信');
+    const emailInput = getByTestId('password-forget-email-input');
+    const submitButton = getByTestId('password-forget-submit-button');
 
     fireEvent.change(emailInput, {
       target: { value: 'test@example.com' },
     });
-
     fireEvent.click(submitButton);
 
     await waitFor(() => {
