@@ -16,6 +16,11 @@ const mockUseUser = useUser as jest.MockedFunction<() => UserContextType>;
 const mockUseSession = useSession as jest.MockedFunction<any>;
 const mockUseAuth = useAuth as jest.MockedFunction<any>;
 const mockNotify = jest.mocked(notify);
+const mockNavigator = jest.fn();
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockNavigator,
+}));
 
 describe('Login component', () => {
   beforeEach(() => {
@@ -72,6 +77,8 @@ describe('Login component', () => {
       );
       expect(mockNotify.success).toHaveBeenCalledTimes(1);
       expect(mockNotify.success).toHaveBeenCalledWith('ログイン成功');
+      expect(mockNavigator).toHaveBeenCalledTimes(1);
+      expect(mockNavigator).toHaveBeenCalledWith('/lifelogs');
     });
   });
 });
