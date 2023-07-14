@@ -5,14 +5,17 @@ import Login from './Login';
 import { useUser, UserContextType } from '@providers/UserProvider';
 import { useSession } from '@providers/SessionProvider';
 import { useAuth } from '@providers/AuthApiProvider';
+import toast from 'react-hot-toast';
 
 jest.mock('@providers/UserProvider');
 jest.mock('@providers/SessionProvider');
 jest.mock('@providers/AuthApiProvider');
+jest.mock('react-hot-toast');
 
 const mockUseUser = useUser as jest.MockedFunction<() => UserContextType>;
 const mockUseSession = useSession as jest.MockedFunction<any>;
 const mockUseAuth = useAuth as jest.MockedFunction<any>;
+const mockToast = toast as jest.MockedObject<any>;
 
 describe('Login component', () => {
   beforeEach(() => {
@@ -30,6 +33,10 @@ describe('Login component', () => {
       authApi: {
         signIn: jest.fn().mockResolvedValue({ status: 200 }),
       },
+    });
+    mockToast.mockReturnValue({
+      error: jest.fn(() => 'toast-error'),
+      success: jest.fn(() => 'toast-success'),
     });
   });
 
@@ -67,6 +74,8 @@ describe('Login component', () => {
         'test@example.com',
         'password'
       );
+      expect(toast.success).toHaveBeenCalled();
+      expect(toast.success).toHaveBeenCalledWith('ログイン成功');
     });
   });
 });
