@@ -109,7 +109,8 @@
     ],
     "setupFilesAfterEnv": [
       "<rootDir>/src/setupTests.js",
-      "<rootDir>/src/tests/common.ts"
+      "<rootDir>/src/tests/common.ts",
+      "<rootDir>/src/tests/baseProviders.ts"
     ],
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
