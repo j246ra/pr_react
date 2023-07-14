@@ -4,6 +4,7 @@ import AccountUpdate from './AccountUpdate';
 import { useUser, UserContextType } from '@providers/UserProvider';
 import { useAuth } from '@providers/AuthApiProvider';
 import { useSession } from '@providers/SessionProvider';
+import { mockNavigator } from '@src/tests/common';
 
 jest.mock('@providers/UserProvider');
 jest.mock('@providers/AuthApiProvider');
@@ -12,11 +13,6 @@ jest.mock('@providers/SessionProvider');
 const mockUseUser = useUser as jest.MockedFunction<() => UserContextType>;
 const mockUseAuth = useAuth as jest.MockedFunction<any>;
 const mockUseSession = useSession as jest.MockedFunction<any>;
-const mockNavigator = jest.fn();
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: () => mockNavigator,
-}));
 
 describe('AccountUpdate component', () => {
   beforeEach(() => {
