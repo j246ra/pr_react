@@ -1,18 +1,12 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { useAuth } from '@providers/AuthApiProvider';
-import { useUser } from '@providers/UserProvider';
-import { useSession } from '@providers/SessionProvider';
 import AccountDelete from './AccountDelete';
-
-jest.mock('@providers/AuthApiProvider');
-jest.mock('@providers/UserProvider');
-jest.mock('@providers/SessionProvider');
-
-const mockUseAuth = useAuth as jest.MockedFunction<any>;
-const mockUseUser = useUser as jest.MockedFunction<any>;
-const mockUseSession = useSession as jest.MockedFunction<any>;
+import {
+  mockUseAuth,
+  mockUseSession,
+  mockUseUser,
+} from '@src/tests/baseProviders';
 
 describe('AccountDelete component', () => {
   beforeEach(() => {
@@ -22,7 +16,11 @@ describe('AccountDelete component', () => {
       },
     });
     mockUseUser.mockReturnValue({
+      user: { email: '' },
+      createUser: jest.fn(),
+      updateUser: jest.fn(),
       clearUser: jest.fn(),
+      isLogin: jest.fn(),
     });
     mockUseSession.mockReturnValue({
       removeToken: jest.fn(),

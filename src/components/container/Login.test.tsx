@@ -2,20 +2,15 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Login from './Login';
-import { useUser, UserContextType } from '@providers/UserProvider';
-import { useSession } from '@providers/SessionProvider';
-import { useAuth } from '@providers/AuthApiProvider';
 import notify from '@lib/toast';
 import { mockNavigator } from '@src/tests/common';
+import {
+  mockUseUser,
+  mockUseSession,
+  mockUseAuth,
+} from '@src/tests/baseProviders';
 
-jest.mock('@providers/UserProvider');
-jest.mock('@providers/SessionProvider');
-jest.mock('@providers/AuthApiProvider');
 jest.mock('@lib/toast');
-
-const mockUseUser = useUser as jest.MockedFunction<() => UserContextType>;
-const mockUseSession = useSession as jest.MockedFunction<any>;
-const mockUseAuth = useAuth as jest.MockedFunction<any>;
 const mockNotify = jest.mocked(notify);
 
 describe('Login component', () => {
