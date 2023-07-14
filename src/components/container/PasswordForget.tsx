@@ -37,8 +37,19 @@ const PasswordForget: React.FC = () => {
         パスワードリセットメールの送信先を入力してください。
       </Callout>
       <form onSubmit={handlePasswordForget}>
-        <EmailInput value={email} onChange={handleEmailChange} />
-        <Button type="submit" intent="primary" icon="envelope" text="送信" />
+        <EmailInput
+          id={'password-forget-email-input'}
+          value={email}
+          placeholder={'送信先のメールドレスを入力'}
+          onChange={handleEmailChange}
+        />
+        <Button
+          data-testid={'password-forget-submit-button'}
+          type="submit"
+          intent="primary"
+          icon="envelope"
+          text="送信"
+        />
       </form>
     </SessionCard>
   );
