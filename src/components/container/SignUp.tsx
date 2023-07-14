@@ -45,9 +45,23 @@ const SignUp = () => {
   return (
     <SessionCard>
       <form onSubmit={handleSignUp}>
-        <EmailInput value={email} onChange={handleEmailChange} />
-        <PasswordInput value={password} onChange={handlePasswordChange} />
-        <Button type="submit" intent="primary" icon="new-person" text="登録" />
+        <EmailInput
+          id={'sign-up-email-input'}
+          value={email}
+          onChange={handleEmailChange}
+        />
+        <PasswordInput
+          id={'sign-up-password-input'}
+          value={password}
+          onChange={handlePasswordChange}
+        />
+        <Button
+          data-testid={'sign-up-button'}
+          type="submit"
+          intent="primary"
+          icon="new-person"
+          text="登録"
+        />
       </form>
       <div className={'links'}>
         <Link className="password-forget-link" to={'/password_forget'}>
