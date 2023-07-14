@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
-import { BrowserRouter as Router } from 'react-router-dom';
 import AccountUpdate from './AccountUpdate';
 import { useUser, UserContextType } from '@providers/UserProvider';
 import { useAuth } from '@providers/AuthApiProvider';
@@ -41,27 +40,33 @@ describe('AccountUpdate component', () => {
   });
 
   it('アカウント更新フォームが表示されている', () => {
-    const { getByPlaceholderText } = render(
-      <Router>
-        <AccountUpdate />
-      </Router>
+    const { getByTestId, getByText } = render(<AccountUpdate />);
+    expect(getByTestId('account-update-email-input')).toBeInTheDocument();
+
+    const passwordInput = getByTestId('account-update-password-input');
+    expect(passwordInput).toBeInTheDocument();
+    expect(passwordInput).toHaveAttribute('placeholder', 'パスワードを入力');
+
+    const passwordConfirmInput = getByTestId(
+      'account-update-password-confirm-input'
     );
-    expect(getByPlaceholderText('メールアドレスを入力')).toBeInTheDocument();
-    expect(getByPlaceholderText('新しいパスワードを入力')).toBeInTheDocument();
+    expect(passwordConfirmInput).toBeInTheDocument();
+    expect(passwordConfirmInput).toHaveAttribute(
+      'placeholder',
+      '新しいパスワードを入力'
+    );
+    expect(getByText('パスワード（確認用）')).toBeInTheDocument();
   });
 
   it('ユーザーがフォームに情報を入力し、アカウントを更新する', async () => {
-    const { getByPlaceholderText, getByText } = render(
-      <Router>
-        <AccountUpdate />
-      </Router>
-    );
+    const { getByTestId } = render(<AccountUpdate />);
 
-    const emailInput = getByPlaceholderText('メールアドレスを入力');
-    const passwordInput = getByPlaceholderText('パスワードを入力');
-    const passwordConfirmationInput =
-      getByPlaceholderText('新しいパスワードを入力');
-    const updateButton = getByText('更新');
+    const emailInput = getByTestId('account-update-email-input');
+    const passwordInput = getByTestId('account-update-password-input');
+    const passwordConfirmationInput = getByTestId(
+      'account-update-password-confirm-input'
+    );
+    const updateButton = getByTestId('account-update-submit-button');
 
     fireEvent.change(emailInput, {
       target: { value: 'newemail@example.com' },
