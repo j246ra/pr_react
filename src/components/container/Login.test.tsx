@@ -38,25 +38,35 @@ describe('Login component', () => {
   });
 
   it('ログインフォームが表示されている', () => {
-    const { getByPlaceholderText } = render(
+    const { getByTestId } = render(
       <Router>
         <Login />
       </Router>
     );
-    expect(getByPlaceholderText('メールアドレスを入力')).toBeInTheDocument();
-    expect(getByPlaceholderText('パスワードを入力')).toBeInTheDocument();
+
+    const emailInput = getByTestId('login-email-input');
+    expect(emailInput).toBeInTheDocument();
+    expect(emailInput).toHaveAttribute('placeholder', 'メールアドレスを入力');
+
+    const passwordInput = getByTestId('login-password-input');
+    expect(passwordInput).toBeInTheDocument();
+    expect(passwordInput).toHaveAttribute('placeholder', 'パスワードを入力');
+
+    const loginButton = getByTestId('login-button');
+    expect(loginButton).toBeInTheDocument();
+    expect(loginButton).toHaveTextContent('ログイン');
   });
 
   it('ユーザーがフォームに情報を入力し、ログインする', async () => {
-    const { getByPlaceholderText, getByText } = render(
+    const { getByTestId } = render(
       <Router>
         <Login />
       </Router>
     );
 
-    const emailInput = getByPlaceholderText('メールアドレスを入力');
-    const passwordInput = getByPlaceholderText('パスワードを入力');
-    const loginButton = getByText('ログイン');
+    const emailInput = getByTestId('login-email-input');
+    const passwordInput = getByTestId('login-password-input');
+    const loginButton = getByTestId('login-button');
 
     fireEvent.change(emailInput, {
       target: { value: 'test@example.com' },
@@ -67,6 +77,8 @@ describe('Login component', () => {
     fireEvent.click(loginButton);
 
     await waitFor(() => {
+      expect(emailInput).toHaveValue('test@example.com');
+      expect(passwordInput).toHaveValue('password');
       expect(mockUseAuth().authApi.signIn).toHaveBeenCalledWith(
         'test@example.com',
         'password'

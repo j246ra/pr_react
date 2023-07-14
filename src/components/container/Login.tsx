@@ -54,9 +54,23 @@ const Login: React.FC = () => {
   return (
     <SessionCard>
       <form onSubmit={handleLogin}>
-        <EmailInput value={email} onChange={handleEmailChange} />
-        <PasswordInput value={password} onChange={handlePasswordChange} />
-        <Button type="submit" intent="primary" icon="log-in" text="ログイン" />
+        <EmailInput
+          id={'login-email-input'}
+          value={email}
+          onChange={handleEmailChange}
+        />
+        <PasswordInput
+          id={'login-password-input'}
+          value={password}
+          onChange={handlePasswordChange}
+        />
+        <Button
+          data-testid={'login-button'}
+          type="submit"
+          intent="primary"
+          icon="log-in"
+          text="ログイン"
+        />
       </form>
       <div className={'links'}>
         <Link className="password-forget-link" to={'/password_forget'}>
