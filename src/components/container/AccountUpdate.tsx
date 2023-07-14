@@ -54,24 +54,32 @@ const AccountUpdate: React.FC = () => {
     <SessionCard>
       <form onSubmit={handleAccountUpdate}>
         <EmailInput
+          id={'account-update-email-input'}
           value={email}
           onChange={handleEmailChange}
           required={false}
         />
         <PasswordInput
+          id={'account-update-password-input'}
           value={password}
           onChange={handlePasswordChange}
           required={false}
         />
         <PasswordInput
+          id={'account-update-password-confirm-input'}
           value={passwordConfirmation}
           onChange={handlePasswordConfirmationChange}
-          id={'password-input-confirmation'}
           label={'パスワード（確認用）'}
           placeholder={'新しいパスワードを入力'}
           required={false}
         />
-        <Button type="submit" intent="primary" icon="floppy-disk" text="更新" />
+        <Button
+          data-testid={'account-update-submit-button'}
+          type="submit"
+          intent="primary"
+          icon="floppy-disk"
+          text="更新"
+        />
       </form>
       <AccountDelete />
     </SessionCard>
