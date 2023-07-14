@@ -21,6 +21,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
   <FormGroup label={label} labelFor={id} labelInfo={required ? '(必須)' : ''}>
     <InputGroup
       id={id}
+      data-testid={id}
       placeholder={placeholder}
       type="password"
       value={value}
