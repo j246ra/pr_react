@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import { EmailInput } from './EmailInput';
@@ -11,8 +11,7 @@ describe('ContextInput', () => {
       <EmailInput value={''} onChange={mockOnChange} />
     );
     const input = container.getElementsByTagName('input')[0];
-    userEvent.type(input, 'テスト文字列');
-    expect(mockOnChange).toHaveBeenCalled();
+    expect(mockOnChange).not.toHaveBeenCalled();
     expect(input.getAttribute('type')).toEqual('email');
     expect(input.id).toEqual('email-input');
     expect(input.required).toEqual(true);
@@ -21,7 +20,7 @@ describe('ContextInput', () => {
     const label = container.getElementsByTagName('label')[0];
     expect(label.textContent).toMatch('必須');
   });
-  it('任意項目指定時の各属性の確認', () => {
+  it('任意項目指定時の各属性の確認', async () => {
     const { container } = render(
       <EmailInput
         value={'SecretPassw0rd'}
@@ -32,8 +31,6 @@ describe('ContextInput', () => {
       />
     );
     const input = container.getElementsByTagName('input')[0];
-    userEvent.type(input, 'テスト文字列');
-    expect(mockOnChange).toHaveBeenCalled();
     expect(input.getAttribute('type')).toEqual('email');
     expect(input.id).toEqual('input-test');
     expect(input.required).toEqual(true);
@@ -41,6 +38,11 @@ describe('ContextInput', () => {
     expect(input.value).toEqual('SecretPassw0rd');
     const label = container.getElementsByTagName('label')[0];
     expect(label.textContent).toMatch('必須');
+    userEvent.type(input, 'テスト文字列');
+    await waitFor(() => {
+      expect(mockOnChange).toHaveBeenCalledTimes(6);
+      // 入力値の検証は親コンポーネントで行う
+    });
   });
   it('required が false の時必須ではない', () => {
     const { container } = render(
