@@ -23,6 +23,7 @@ export const EmailInput: React.FC<EmailInputProps> = ({
   >
     <InputGroup
       id={id}
+      data-testid={id}
       placeholder={placeholder}
       type="email"
       value={value}
