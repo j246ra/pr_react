@@ -108,7 +108,8 @@
       "react-app-polyfill/jsdom"
     ],
     "setupFilesAfterEnv": [
-      "<rootDir>/src/setupTests.js"
+      "<rootDir>/src/setupTests.js",
+      "<rootDir>/src/tests/common.ts"
     ],
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
@@ -128,6 +129,7 @@
     "moduleNameMapper": {
       "^react-native$": "react-native-web",
       "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
+      "^@src/(.*)$": "<rootDir>/src/$1",
       "^@providers/(.*)$": "<rootDir>/src/providers/$1",
       "^@validators/(.*)$": "<rootDir>/src/validators/$1",
       "^@lib/(.*)$": "<rootDir>/src/lib/$1",
