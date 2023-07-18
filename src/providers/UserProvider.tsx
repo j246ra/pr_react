@@ -27,9 +27,9 @@ type Props = {
 };
 
 export default function UserProvider({ children }: Props) {
-  const { getToken, hasToken } = useSession();
+  const { getHeaders, hasToken } = useSession();
   const [user, setUser] = useState<User>({
-    email: getToken()?.uid || '',
+    email: getHeaders()?.uid || '',
   });
 
   const createUser = (email: string) => {

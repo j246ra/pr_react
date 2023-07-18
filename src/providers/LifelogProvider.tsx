@@ -44,7 +44,7 @@ export default function LifelogProvider({ children }: Props) {
   const [logs, setLogs] = useState<Lifelog[]>([]);
   const [searchWord, setSearchWord] = useState('');
   const [page, setPage] = useState(0);
-  const { headers, setToken } = useSession();
+  const { getHeaders, setToken } = useSession();
   const { clearUser } = useUser();
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
     setToken(response);
@@ -54,7 +54,7 @@ export default function LifelogProvider({ children }: Props) {
     if (error?.status === 401) clearUser();
     return Promise.reject(error);
   };
-  const api = lifelog(headers, responseInterceptor, errorInterceptor);
+  const api = lifelog(getHeaders(), responseInterceptor, errorInterceptor);
 
   const loadLogs = () => {
     const nextPage = page + 1;

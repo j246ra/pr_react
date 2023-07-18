@@ -32,7 +32,7 @@ type Data = {
 };
 
 export default function AuthApiProvider({ children }: AuthApiProviderProps) {
-  const { headers, setToken } = useSession();
+  const { getHeaders, setToken } = useSession();
   const { user, updateUser } = useUser();
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
     setToken(response);
@@ -54,7 +54,7 @@ export default function AuthApiProvider({ children }: AuthApiProviderProps) {
     return Promise.reject(error);
   };
 
-  const authApi = session(headers, responseInterceptor, errorInterceptor);
+  const authApi = session(getHeaders(), responseInterceptor, errorInterceptor);
 
   return (
     <AuthApiContext.Provider value={{ authApi }}>

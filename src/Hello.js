@@ -14,14 +14,14 @@ import { useLifelog } from '@providers/LifelogProvider';
 
 const Hello = () => {
   const { user, clearUser, isLogin } = useUser();
-  const { getToken, removeToken } = useSession();
+  const { getHeaders, removeToken } = useSession();
   const { authApi } = useAuth();
   const { createLogByContext } = useLifelog();
   const [valid, setValid] = useState(false);
   const [message, setMessage] = useState('');
   const [context, setContext] = useState('');
   const navigate = useNavigate();
-  const cookie = getToken();
+  const cookie = getHeaders();
 
   useEffect(() => {
     if (!isLogin()) {
@@ -64,7 +64,7 @@ const Hello = () => {
         <Card elevation={Elevation.TWO} className="hello-card">
           <p>email: {user.email}</p>
           <p>client: {cookie.client}</p>
-          <p>token: {cookie.token}</p>
+          <p>token: {cookie['access-token']}</p>
           <p>{valid ? '検証済み' : '未検証'}</p>
           <form onSubmit={handleValidToken}>
             <Button
