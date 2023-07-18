@@ -23,7 +23,7 @@ describe('Login component', () => {
       isLogin: jest.fn(),
     });
     mockUseSession.mockReturnValue({
-      createToken: jest.fn(),
+      initCookieByUid: jest.fn(),
     });
     mockUseAuth.mockReturnValue({
       authApi: {

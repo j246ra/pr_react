@@ -4,7 +4,7 @@ import { CookiesProvider } from 'react-cookie';
 import { AxiosResponse } from 'axios';
 
 type SessionContextType = {
-  createToken: (uid: string) => void;
+  initCookieByUid: (uid: string) => void;
   getHeaders: () => Headers;
   hasToken: () => boolean;
   setToken: (r: AxiosResponse<Headers> | Headers) => void;
@@ -40,7 +40,7 @@ const SessionProvider: FC<Props> = ({ children }) => {
     );
   };
 
-  const createToken = (uid: string): void => {
+  const initCookieByUid = (uid: string): void => {
     const token: Headers = { uid };
     setCookie('token', token);
   };
@@ -74,7 +74,7 @@ const SessionProvider: FC<Props> = ({ children }) => {
     <CookiesProvider>
       <SessionContext.Provider
         value={{
-          createToken,
+          initCookieByUid,
           getHeaders,
           hasToken,
           setToken,

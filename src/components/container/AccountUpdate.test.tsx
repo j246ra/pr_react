@@ -24,7 +24,7 @@ describe('AccountUpdate component', () => {
       },
     });
     mockUseSession.mockReturnValue({
-      createToken: jest.fn(),
+      initCookieByUid: jest.fn(),
       removeToken: jest.fn(),
     });
   });

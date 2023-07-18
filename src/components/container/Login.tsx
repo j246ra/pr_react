@@ -13,7 +13,7 @@ import SessionCard from '@presentational/SessionCard';
 const DEFAULT_PATH = '/lifelogs';
 
 const Login: React.FC = () => {
-  const { createToken } = useSession();
+  const { initCookieByUid } = useSession();
   const { authApi: session } = useAuth();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -27,7 +27,7 @@ const Login: React.FC = () => {
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     createUser(email);
-    createToken(email);
+    initCookieByUid(email);
     session
       .signIn(email, password)
       .then((r) => {
