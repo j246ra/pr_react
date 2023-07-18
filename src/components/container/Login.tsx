@@ -5,7 +5,6 @@ import { useUser } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@providers/AuthApiProvider';
 import notify from '@lib/toast';
-import { useSession } from '@providers/SessionProvider';
 import { EmailInput } from '@presentational/EmailInput';
 import { PasswordInput } from '@presentational/PasswordInput';
 import SessionCard from '@presentational/SessionCard';
@@ -13,7 +12,6 @@ import SessionCard from '@presentational/SessionCard';
 const DEFAULT_PATH = '/lifelogs';
 
 const Login: React.FC = () => {
-  const { initCookieByUid } = useSession();
   const { authApi: session } = useAuth();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -27,7 +25,6 @@ const Login: React.FC = () => {
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     createUser(email);
-    initCookieByUid(email);
     session
       .signIn(email, password)
       .then((r) => {

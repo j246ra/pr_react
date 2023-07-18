@@ -27,13 +27,14 @@ type Props = {
 };
 
 export default function UserProvider({ children }: Props) {
-  const { getHeaders, hasToken } = useSession();
+  const { initCookieByUid, getHeaders, hasToken } = useSession();
   const [user, setUser] = useState<User>({
     email: getHeaders()?.uid || '',
   });
 
   const createUser = (email: string) => {
     setUser({ ...user, email });
+    initCookieByUid(email);
   };
 
   const updateUser = (email: string) => {
