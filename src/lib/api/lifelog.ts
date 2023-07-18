@@ -5,7 +5,7 @@ import { Headers } from '@providers/SessionProvider';
 type ResponseInterceptor = (response: AxiosResponse) => AxiosResponse;
 type ErrorInterceptor = (error: AxiosError) => Promise<never>;
 
-type CreatParams = {
+export type CreatParams = {
   context?: string;
   action?: string;
   detail?: string;
