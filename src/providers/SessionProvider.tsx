@@ -26,7 +26,7 @@ type Props = {
 };
 
 export type Headers = {
-  accessToken?: string;
+  'access-token'?: string;
   uid?: string;
   client?: string;
 };
@@ -45,7 +45,7 @@ const SessionProvider: FC<Props> = ({ children }) => {
   const hasToken = (): boolean => {
     const cookie = { ...(cookies.token as Headers) };
     return !(
-      cookie.accessToken === undefined || cookie.accessToken === ''
+      cookie['access-token'] === undefined || cookie['access-token'] === ''
     );
   };
 
@@ -57,7 +57,7 @@ const SessionProvider: FC<Props> = ({ children }) => {
   const getToken = (): Token => {
     const cookie = { ...(cookies.token as Headers) };
     return {
-      token: cookie.accessToken,
+      token: cookie['access-token'],
       uid: cookie.uid,
       client: cookie.client,
     };
@@ -67,14 +67,14 @@ const SessionProvider: FC<Props> = ({ children }) => {
     let headersToSet: Headers;
     if ('headers' in r) {
       headersToSet = {
-        accessToken: r.headers.accessToken,
+        'access-token': r.headers['access-token'],
         uid: r.headers.uid,
         client: r.headers.client,
       };
     } else {
       headersToSet = r;
     }
-    if (headersToSet.accessToken) setCookie('token', headersToSet);
+    if (headersToSet['access-token']) setCookie('token', headersToSet);
   };
 
   const removeToken = (): void => removeCookie('token');

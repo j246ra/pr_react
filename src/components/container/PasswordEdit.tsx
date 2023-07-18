@@ -19,7 +19,7 @@ const PasswordEdit: React.FC = () => {
   const [params] = useSearchParams();
   useEffect(() => {
     const headers: Headers = {
-      accessToken: params.get('accessToken') || undefined,
+      'access-token': params.get('access-token') || undefined,
       client: params.get('client') || undefined,
       uid: params.get('uid') || undefined,
     };
