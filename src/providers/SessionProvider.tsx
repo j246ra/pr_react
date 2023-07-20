@@ -1,4 +1,4 @@
-import React, { createContext, FC, ReactNode, useContext } from 'react';
+import React, { createContext, ReactNode, useContext } from 'react';
 import { useCookies } from 'react-cookie/cjs';
 import { CookiesProvider } from 'react-cookie';
 import { AxiosResponse } from 'axios';
@@ -30,7 +30,7 @@ export type Headers = {
   client?: string;
 };
 
-const SessionProvider: FC<Props> = ({ children }) => {
+const SessionProvider: React.FC<Props> = ({ children }) => {
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
 
   const hasToken = (): boolean => {
@@ -65,7 +65,19 @@ const SessionProvider: FC<Props> = ({ children }) => {
     } else {
       headersToSet = r;
     }
-    if (headersToSet['access-token']) setCookie('token', headersToSet);
+    if (
+      headersToSet['access-token'] === undefined ||
+      headersToSet['access-token'] === ''
+    )
+      return;
+    else if (typeof headersToSet['access-token'] === 'string') {
+      setCookie('token', headersToSet);
+    } else {
+      const error = new TypeError();
+      error.name = 'SessionProvider';
+      error.message = 'Invalid access-token type error.';
+      throw error;
+    }
   };
 
   const removeToken = (): void => removeCookie('token');
