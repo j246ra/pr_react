@@ -244,11 +244,3 @@ describe('SessionProvider', () => {
     expect(mockRemoveCookie).toHaveBeenCalledTimes(1);
   });
 });
-
-describe('useSession', () => {
-  it('SessionProvider の外で useSession を呼び出すとエラー', () => {
-    expect(() => render(<ChildComponent />)).toThrow(
-      'useSession must be used within a SessionProvider'
-    );
-  });
-});

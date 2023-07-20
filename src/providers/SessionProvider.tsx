@@ -11,14 +11,8 @@ type SessionContextType = {
   removeToken: () => void;
 };
 
-const SessionContext = createContext<SessionContextType | undefined>(undefined);
-export const useSession = (): SessionContextType => {
-  const context = useContext(SessionContext);
-  if (!context) {
-    throw new Error('useSession must be used within a SessionProvider');
-  }
-  return context;
-};
+const SessionContext = createContext({} as SessionContextType);
+export const useSession = () => useContext(SessionContext);
 
 type Props = {
   children: ReactNode;
