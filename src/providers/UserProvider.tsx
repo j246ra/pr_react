@@ -13,20 +13,14 @@ export type UserContextType = {
   isLogin: () => boolean;
 };
 
-const UserContext = createContext<UserContextType | undefined>(undefined);
-export const useUser = (): UserContextType => {
-  const context = useContext(UserContext);
-  if (!context) {
-    throw new Error('useUser must be used within a UserProvider');
-  }
-  return context;
-};
+const UserContext = createContext({} as UserContextType);
+export const useUser = () => useContext(UserContext);
 
 type Props = {
   children: ReactNode;
 };
 
-export default function UserProvider({ children }: Props) {
+const UserProvider: React.FC<Props> = ({ children }) => {
   const { initCookieByUid, getHeaders, hasToken } = useSession();
   const [user, setUser] = useState<User>({
     email: getHeaders()?.uid || '',
@@ -62,4 +56,6 @@ export default function UserProvider({ children }: Props) {
       {children}
     </UserContext.Provider>
   );
-}
+};
+
+export default UserProvider;
