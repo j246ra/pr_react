@@ -51,7 +51,7 @@ export default function LifelogProvider({ children }: Props) {
     return response;
   };
   const errorInterceptor = (error: AxiosError): Promise<never> => {
-    if (error?.status === 401) clearUser();
+    if (error.response?.status === 401) clearUser();
     return Promise.reject(error);
   };
   const api = lifelog(getHeaders(), responseInterceptor, errorInterceptor);
