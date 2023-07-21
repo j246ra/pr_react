@@ -3,7 +3,13 @@ import { render, waitFor } from '@testing-library/react';
 import AuthApiProvider, { useAuth } from '@providers/AuthApiProvider';
 import { mockUseSession, mockUseUser } from '@src/tests/baseProviders';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
+import {
+  compose,
+  context,
+  DefaultBodyType,
+  ResponseTransformer,
+  rest,
+} from 'msw';
 import notify from '@lib/toast';
 
 jest.unmock('@providers/AuthApiProvider');
@@ -21,9 +27,6 @@ describe('AuthApiProvider', () => {
     });
     mockUseUser.mockReturnValue({
       user: mockUser,
-      clearUser: jest.fn(),
-      createUser: jest.fn(),
-      isLogin: jest.fn(),
       updateUser: mockUpdateUser,
     });
     notifySpy = jest.spyOn(notify, 'error');
@@ -40,7 +43,16 @@ describe('AuthApiProvider', () => {
     );
     expect(getByTestId('child')).toBeInTheDocument();
   });
+
   describe('authApi 検証', () => {
+    const createServer = (r: ResponseTransformer<DefaultBodyType, any>) => {
+      return setupServer(
+        rest.post('http://localhost:3000/v1/auth/sign_in', (req, res, ) => {
+          return res(r);
+        })
+      );
+    };
+
     const ChildComponent: React.FC = () => {
       const { authApi: api } = useAuth();
       const [message, setMessage] = useState('');
@@ -51,18 +63,18 @@ describe('AuthApiProvider', () => {
       }, []);
       return <div data-testid={'sign-in'}>{message}</div>;
     };
+
     describe('正常系 (responseInterceptor)', () => {
       const responseUid = 'test1@example.com';
-      const server = setupServer(
-        rest.post('http://localhost:3000/v1/auth/sign_in', (req, res, ctx) => {
-          return res(
-            ctx.status(200),
-            ctx.set('access-token', 'token'),
-            ctx.set('uid', responseUid),
-            ctx.set('client', 'client')
-          );
-        })
-      );
+      const response = (): ResponseTransformer<DefaultBodyType, any> => {
+        return compose(
+          context.status(200),
+          context.set('access-token', 'token'),
+          context.set('uid', responseUid),
+          context.set('client', 'client')
+        );
+      };
+      const server = createServer(response());
       beforeAll(() => server.listen());
       afterEach(() => server.resetHandlers());
       afterAll(() => server.close());
@@ -81,6 +93,7 @@ describe('AuthApiProvider', () => {
           expect(mockUpdateUser).toBeCalledWith(responseUid);
         });
       });
+
       it('updateUser 呼び出されない', async () => {
         mockUser.email = responseUid;
         const { getByTestId } = render(
@@ -95,17 +108,17 @@ describe('AuthApiProvider', () => {
         });
       });
     });
+
     describe('異常系 (errorInterceptor)', () => {
-      const server = setupServer(
-        rest.post('http://localhost:3000/v1/auth/sign_in', (req, res, ctx) => {
-          return res(
-            ctx.status(400),
-            ctx.json({
-              errors: { fullMessages: ['error message 1', 'error message 2'] },
-            })
-          );
-        })
-      );
+      const response = (): ResponseTransformer<DefaultBodyType, any> => {
+        return compose(
+          context.status(400),
+          context.json({
+            errors: { fullMessages: ['error message 1', 'error message 2'] },
+          })
+        );
+      };
+      const server = createServer(response());
       beforeAll(() => server.listen());
       afterEach(() => server.resetHandlers());
       afterAll(() => server.close());
