@@ -57,7 +57,8 @@ describe('LifelogProvider', () => {
       })
     );
     beforeAll(() => server.listen());
-    afterEach(() => server.close());
+    beforeEach(() => server.resetHandlers());
+    afterAll(() => server.close());
 
     describe('Axios interceptor', () => {
       it('responseInterceptor', async () => {
