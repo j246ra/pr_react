@@ -4,6 +4,7 @@ import BaseLayout from '@src/components/BaseLayout';
 import { Toaster } from 'react-hot-toast';
 import Header from '@src/components/Header';
 import { HTMLTable } from '@blueprintjs/core';
+import { lifelogMocks } from '../../../lib/storybook/lifelog';
 
 export default {
   title: 'Lifelog/Presentational/LifelogListHeader',
@@ -31,8 +32,13 @@ export default {
   ],
 } as Meta;
 
+const { all } = lifelogMocks();
+
 export const Default = {
   args: {
     enabled: true,
+  },
+  parameters: {
+    msw: all(),
   },
 };

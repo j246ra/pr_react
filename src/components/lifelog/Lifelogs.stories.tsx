@@ -22,8 +22,8 @@ export default {
   ],
 } as Meta;
 
-const { index } = lifelogMocks();
+const { all } = lifelogMocks();
 export const Default: Meta<typeof Lifelogs> = () => <Lifelogs />;
 Default.parameters = {
-  msw: index(),
+  msw: all(),
 };

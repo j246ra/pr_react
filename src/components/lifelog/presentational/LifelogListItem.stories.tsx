@@ -7,6 +7,7 @@ import LifelogListHeader from './LifelogListHeader';
 import notify from '@lib/toast';
 import { HTMLTable } from '@blueprintjs/core';
 import { lifelog } from '@lib/faker/lifelog';
+import { lifelogMocks } from '../../../lib/storybook/lifelog';
 
 export default {
   title: 'Lifelog/Presentational/LifelogListItem',
@@ -32,6 +33,8 @@ export default {
   ],
 } as Meta;
 
+const { all } = lifelogMocks();
+
 export const Default = {
   args: {
     log: lifelog(),
@@ -41,5 +44,8 @@ export const Default = {
     onDeleteButtonClick: () => {
       notify.success('Delete Button Clicked.');
     },
+  },
+  parameters: {
+    msw: all(),
   },
 };

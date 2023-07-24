@@ -20,6 +20,29 @@ const lifelogs = (page = 1) => {
   return list;
 };
 
+const indexHandler = () => {
+  return rest.get(apiHost('/lifelogs'), (req, res, ctx) => {
+    const page = req.url.searchParams.get('page');
+    if (page !== '3')
+      return res(ctx.status(200), ctx.json(lifelogs(Number(page))));
+    else return res(ctx.status(200));
+  });
+};
+
+const createHandler = () => {
+  return rest.post(apiHost('/lifelogs'), async (req, res, ctx) => {
+    const data = await req.json().then((body) => body.data);
+    return res(ctx.status(200), ctx.json(data));
+  });
+};
+
+const updateHandler = () => {
+  return rest.put(apiHost('/lifelogs/:id'), async (req, res, ctx) => {
+    const data = await req.json().then((body) => body.data);
+    return res(ctx.status(200), ctx.json(data));
+  });
+};
+
 const deleteHandler = () => {
   return rest.delete(apiHost('/lifelogs/:id'), (req, res, ctx) => {
     return res(ctx.status(200));
@@ -27,15 +50,12 @@ const deleteHandler = () => {
 };
 
 export const lifelogMocks = () => {
-  const index = () => {
+  const all = () => {
     return {
       handlers: [
-        rest.get(apiHost('/lifelogs'), (req, res, ctx) => {
-          const page = req.url.searchParams.get('page');
-          if (page !== '3')
-            return res(ctx.status(200), ctx.json(lifelogs(Number(page))));
-          else return res(ctx.status(200));
-        }),
+        indexHandler(),
+        createHandler(),
+        updateHandler(),
         deleteHandler(),
       ],
     };
@@ -51,5 +71,5 @@ export const lifelogMocks = () => {
     };
   };
 
-  return { index, loading };
+  return { all, loading };
 };

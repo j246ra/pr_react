@@ -21,11 +21,11 @@ export default {
   ],
 } as Meta;
 
-const { index, loading } = lifelogMocks();
+const { all, loading } = lifelogMocks();
 
 export const Default: Meta<typeof LifelogList> = () => <LifelogList />;
 Default.parameters = {
-  msw: index(),
+  msw: all(),
 };
 
 export const Loading: Meta<typeof LifelogList> = () => <LifelogList />;
