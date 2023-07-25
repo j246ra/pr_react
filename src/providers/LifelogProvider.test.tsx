@@ -359,9 +359,81 @@ describe('LifelogProvider', () => {
     });
 
     describe('deleteLog 検証', () => {
-      it.todo('データ削除成功時に該当 log も削除している');
-      it.todo('データ削除成功時に該当 log が ない場合も正常にレンダリングする');
-      it.todo('認証エラー以外で失敗時は logs に変化はない');
+      it('データ削除成功時に該当 log も削除している', async () => {
+        const { result } = renderHook(() => useLifelog(), { wrapper });
+        server.use(restIndex());
+        act(() => {
+          result.current.loadLogs();
+        });
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(10);
+        });
+        server.use(
+          rest.delete(apiHost('/lifelogs/:id'), (req, res, ctx) => {
+            return res(ctx.status(200));
+          })
+        );
+        const afterLog = result.current.logs[5];
+        act(() => {
+          result.current.deleteLog(afterLog.id);
+        });
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(9);
+          expect(
+            result.current.logs.find((log) => {
+              return log.id === afterLog.id;
+            })
+          ).toBeUndefined();
+        });
+      });
+      it('データ削除成功時に該当 log が ない場合も正常にレンダリングする', async () => {
+        const { result } = renderHook(() => useLifelog(), { wrapper });
+        server.use(restIndex());
+        act(() => {
+          result.current.loadLogs();
+        });
+        server.use(
+          rest.delete(apiHost('/lifelogs/:id'), (req, res, ctx) => {
+            return res(ctx.status(200));
+          })
+        );
+        const deletedLog = lifelog({ id: 999 });
+        act(() => {
+          result.current.deleteLog(deletedLog.id);
+        });
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(10);
+          expect(
+            result.current.logs.find((log) => {
+              return log.id === deletedLog.id;
+            })
+          ).toBeUndefined();
+        });
+      });
+      it('認証エラー以外で失敗時は logs に変化はない', async () => {
+        const { result } = renderHook(() => useLifelog(), { wrapper });
+        server.use(restIndex());
+        act(() => {
+          result.current.loadLogs();
+        });
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(10);
+        });
+        server.use(
+          rest.delete(apiHost('/lifelogs/:id'), (req, res, ctx) => {
+            return res(ctx.status(500));
+          })
+        );
+        const deletedLog = result.current.logs[4];
+        await expect(
+          result.current.deleteLog(deletedLog.id)
+        ).rejects.toBeInstanceOf(AxiosError);
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(10);
+          const afterLog = result.current.logs[4];
+          expect(afterLog).toEqual(deletedLog);
+        });
+      });
     });
 
     describe('clear 検証', () => {
