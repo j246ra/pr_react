@@ -8,7 +8,7 @@ import LifelogProvider, {
 import { mockUseSession, mockUseUser } from '@src/tests/baseProviders';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import { lifelog, lifelogs } from '@lib/faker/lifelog';
+import { lifelog, lifelogs, OptionalLifelog } from '@lib/faker/lifelog';
 import { AxiosError } from 'axios';
 import { apiHost } from '@lib/storybook/util';
 import dayjs from 'dayjs';
@@ -18,6 +18,59 @@ let mockSetToken: jest.SpyInstance<unknown>;
 let mockClearUser: jest.SpyInstance<unknown>;
 
 const hostURL = 'http://localhost:3000/v1';
+
+type RestIndexOptions = {
+  maxPage?: number;
+  length?: number;
+  status?: number;
+};
+const restIndex = ({
+  maxPage = 2,
+  length = 10,
+  status = 200,
+}: RestIndexOptions = {}) => {
+  return rest.get(hostURL + '/lifelogs', (req, res, ctx) => {
+    switch (status) {
+      case 200:
+        const page = Number(req.url.searchParams.get('page'));
+        const offset = length * (page - 1);
+        let logs: Lifelog[] = [];
+        if (page <= maxPage) {
+          logs = lifelogs(length, offset);
+        }
+        return res(ctx.status(status), ctx.json(logs));
+      default:
+        return res(ctx.status(status));
+    }
+  });
+};
+
+type RestCreateOptions = {
+  log?: OptionalLifelog;
+  status?: number;
+};
+const restCreate = ({
+  log = lifelog(),
+  status = 200,
+}: RestCreateOptions = {}) => {
+  return rest.post(apiHost('/lifelogs'), async (req, res, ctx) => {
+    return res(ctx.status(status), ctx.json(log));
+  });
+};
+
+const restUpdate = (status = 200) => {
+  return rest.put(apiHost('/lifelogs/:id'), async (req, res, ctx) => {
+    const data = await req.json().then((body) => body.data);
+    return res(ctx.status(status), ctx.json(data));
+  });
+};
+
+const restDelete = (status = 200) => {
+  return rest.delete(apiHost('/lifelogs/:id'), (req, res, ctx) => {
+    return res(ctx.status(status));
+  });
+};
+
 describe('LifelogProvider', () => {
   beforeEach(() => {
     mockSetToken = jest.fn();
@@ -48,19 +101,12 @@ describe('LifelogProvider', () => {
       <LifelogProvider>{children}</LifelogProvider>
     );
 
-    const restIndex = (maxPage = 2, length = 10) => {
-      return rest.get(hostURL + '/lifelogs', (req, res, ctx) => {
-        const page = Number(req.url.searchParams.get('page'));
-        const offset = length * (page - 1);
-        let logs: Lifelog[] = [];
-        if (page <= maxPage) {
-          logs = lifelogs(length, offset);
-        }
-        return res(ctx.status(200), ctx.json(logs));
-      });
-    };
-
-    const server = setupServer(restIndex());
+    const server = setupServer(
+      restIndex(),
+      restCreate(),
+      restUpdate(),
+      restDelete()
+    );
     beforeAll(() => server.listen());
     beforeEach(() => server.resetHandlers());
     afterAll(() => server.close());
@@ -80,11 +126,7 @@ describe('LifelogProvider', () => {
       });
 
       it('status 401 の場合、clearUser() にてセッションを初期化する', async () => {
-        server.use(
-          rest.get(hostURL + '/lifelogs', (req, res, ctx) => {
-            return res(ctx.status(401));
-          })
-        );
+        server.use(restIndex({ status: 401 }));
         const { result } = renderHook(() => useLifelog(), { wrapper });
 
         expect(result.current.logs).toHaveLength(0);
@@ -99,11 +141,7 @@ describe('LifelogProvider', () => {
       });
 
       it('status 401 以外のエラーの場合、AxiosError を返却する', async () => {
-        server.use(
-          rest.get(hostURL + '/lifelogs', (req, res, ctx) => {
-            return res(ctx.status(500));
-          })
-        );
+        server.use(restIndex({ status: 500 }));
         const { result } = renderHook(() => useLifelog(), { wrapper });
 
         expect(result.current.logs).toHaveLength(0);
@@ -143,7 +181,7 @@ describe('LifelogProvider', () => {
       });
 
       it('データが 0 件の場合でも正常にレンダリングする', async () => {
-        server.use(restIndex(1, 0));
+        server.use(restIndex({ maxPage: 1, length: 0 }));
         const { result } = renderHook(() => useLifelog(), { wrapper });
         expect(result.current.logs).toHaveLength(0);
         act(() => {
@@ -157,7 +195,6 @@ describe('LifelogProvider', () => {
 
     describe('searchLogs 検証', () => {
       it('呼び出されるごとに logs が上書きされる', async () => {
-        server.use(restIndex(2, 10));
         const { result } = renderHook(() => useLifelog(), { wrapper });
         act(() => {
           result.current.searchLogs('TEST1');
@@ -179,7 +216,7 @@ describe('LifelogProvider', () => {
         });
       });
       it('loadLogs で続きのデータを取得できる', async () => {
-        server.use(restIndex(3, 10));
+        server.use(restIndex({ maxPage: 3 }));
         const { result } = renderHook(() => useLifelog(), { wrapper });
         act(() => {
           result.current.searchLogs('TEST1');
@@ -201,7 +238,7 @@ describe('LifelogProvider', () => {
         });
       });
       it('データが 0 件でも正常にレンダリングする', async () => {
-        server.use(restIndex(1, 0));
+        server.use(restIndex({ maxPage: 1, length: 0 }));
         const { result } = renderHook(() => useLifelog(), { wrapper });
         expect(result.current.logs).toHaveLength(0);
         act(() => {
@@ -232,11 +269,10 @@ describe('LifelogProvider', () => {
     describe('createLogByContext 検証', () => {
       it('データ作成成功時に log を追記する', async () => {
         server.use(
-          rest.post(apiHost('/lifelogs'), async (req, res, ctx) => {
-            return res(
-              ctx.status(200),
-              ctx.json(lifelog({ action: 'My', detail: 'name is ELITE.' }))
-            );
+          restIndex(),
+          restCreate({
+            log: lifelog({ action: 'My', detail: 'name is ELITE.' }), // TODO action, detail 振り分け処理を Mock に実装する
+            status: 200,
           })
         );
         const { result } = renderHook(() => useLifelog(), { wrapper });
@@ -250,19 +286,13 @@ describe('LifelogProvider', () => {
       });
       it('認証エラー以外で失敗時は logs に変化はない', async () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });
-        server.use(restIndex());
+        server.use(restIndex(), restCreate({ status: 500 }));
         act(() => {
           result.current.loadLogs();
         });
         await waitFor(() => {
           expect(result.current.logs).toHaveLength(10);
         });
-
-        server.use(
-          rest.post(apiHost('/lifelogs'), async (req, res, ctx) => {
-            return res(ctx.status(500));
-          })
-        );
         await expect(
           result.current.createLogByContext('STELLAR STELLAR.')
         ).rejects.toBeInstanceOf(AxiosError);
@@ -275,7 +305,6 @@ describe('LifelogProvider', () => {
     describe('updateLog 検証', () => {
       it('データ更新成功時に該当 log も更新されている', async () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });
-        server.use(restIndex());
         act(() => {
           result.current.loadLogs();
         });
@@ -284,13 +313,6 @@ describe('LifelogProvider', () => {
           expect(result.current.logs).toHaveLength(10);
           beforeLog = result.current.logs[5];
         });
-
-        server.use(
-          rest.put(apiHost('/lifelogs/:id'), async (req, res, ctx) => {
-            const data = await req.json().then((body) => body.data);
-            return res(ctx.status(200), ctx.json(data));
-          })
-        );
         act(() => {
           result.current.updateLog(
             lifelog({ ...beforeLog, action: 'ACTION', detail: 'DETAIL' })
@@ -306,20 +328,12 @@ describe('LifelogProvider', () => {
       });
       it('開始日時変更時に該当 log が正しくソートされている', async () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });
-        server.use(restIndex());
         act(() => {
           result.current.loadLogs();
         });
         await waitFor(() => {
           expect(result.current.logs).toHaveLength(10);
         });
-
-        server.use(
-          rest.put(apiHost('/lifelogs/:id'), async (req, res, ctx) => {
-            const data = await req.json().then((body) => body.data);
-            return res(ctx.status(200), ctx.json(data));
-          })
-        );
         const logs = result.current.logs;
         const pastOneYear = dayjs(logs[9].startedAt)
           .subtract(1, 'year')
@@ -348,7 +362,6 @@ describe('LifelogProvider', () => {
       });
       it('データ更新成功時に該当 log が存在しない場合は追記する', async () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });
-        server.use(restIndex());
         act(() => {
           result.current.loadLogs();
         });
@@ -356,12 +369,6 @@ describe('LifelogProvider', () => {
           expect(result.current.logs).toHaveLength(10);
         });
 
-        server.use(
-          rest.put(apiHost('/lifelogs/:id'), async (req, res, ctx) => {
-            const data = await req.json().then((body) => body.data);
-            return res(ctx.status(200), ctx.json(data));
-          })
-        );
         const log = lifelog({ id: 99 });
         act(() => {
           result.current.updateLog(log);
@@ -376,7 +383,7 @@ describe('LifelogProvider', () => {
 
       it('認証エラー以外で失敗時は logs に変化はない', async () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });
-        server.use(restIndex(5, 9));
+        server.use(restIndex({ maxPage: 5, length: 9 }), restUpdate(500));
         act(() => {
           result.current.loadLogs();
         });
@@ -385,12 +392,6 @@ describe('LifelogProvider', () => {
           expect(result.current.logs).toHaveLength(9);
           beforeLog = result.current.logs[5];
         });
-
-        server.use(
-          rest.put(apiHost('/lifelogs/:id'), async (req, res, ctx) => {
-            return res(ctx.status(500));
-          })
-        );
         await expect(
           result.current.updateLog(lifelog())
         ).rejects.toBeInstanceOf(AxiosError);
@@ -405,18 +406,12 @@ describe('LifelogProvider', () => {
     describe('deleteLog 検証', () => {
       it('データ削除成功時に該当 log も削除している', async () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });
-        server.use(restIndex());
         act(() => {
           result.current.loadLogs();
         });
         await waitFor(() => {
           expect(result.current.logs).toHaveLength(10);
         });
-        server.use(
-          rest.delete(apiHost('/lifelogs/:id'), (req, res, ctx) => {
-            return res(ctx.status(200));
-          })
-        );
         const afterLog = result.current.logs[5];
         act(() => {
           result.current.deleteLog(afterLog.id);
@@ -432,15 +427,12 @@ describe('LifelogProvider', () => {
       });
       it('データ削除成功時に該当 log が ない場合も正常にレンダリングする', async () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });
-        server.use(restIndex());
         act(() => {
           result.current.loadLogs();
         });
-        server.use(
-          rest.delete(apiHost('/lifelogs/:id'), (req, res, ctx) => {
-            return res(ctx.status(200));
-          })
-        );
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(10);
+        });
         const deletedLog = lifelog({ id: 999 });
         act(() => {
           result.current.deleteLog(deletedLog.id);
@@ -456,18 +448,13 @@ describe('LifelogProvider', () => {
       });
       it('認証エラー以外で失敗時は logs に変化はない', async () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });
-        server.use(restIndex());
+        server.use(restIndex(), restDelete(500));
         act(() => {
           result.current.loadLogs();
         });
         await waitFor(() => {
           expect(result.current.logs).toHaveLength(10);
         });
-        server.use(
-          rest.delete(apiHost('/lifelogs/:id'), (req, res, ctx) => {
-            return res(ctx.status(500));
-          })
-        );
         const deletedLog = result.current.logs[4];
         await expect(
           result.current.deleteLog(deletedLog.id)
@@ -483,7 +470,6 @@ describe('LifelogProvider', () => {
     describe('clear 検証', () => {
       it('logs が初期化されている', async () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });
-        server.use(restIndex());
         act(() => {
           result.current.loadLogs();
         });
