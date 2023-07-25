@@ -15,7 +15,7 @@ export type CreatParams = {
 
 export type UpdateParams = {
   id: number;
-  user_id: number;
+  userId: number;
   action: string;
   detail?: string;
   startedAt?: string;

@@ -7,7 +7,7 @@ export type OptionalLifelog = Partial<Lifelog>;
 export const lifelog = (log?: OptionalLifelog): Lifelog => {
   return {
     id: log?.id || 1,
-    user_id: log?.user_id || 1,
+    userId: log?.userId || 1,
     action: log?.action || fakerJA.lorem.word(),
     detail: log?.detail || fakerJA.lorem.paragraph({ min: 2, max: 8 }),
     startedAt: log?.startedAt || now.subtract(30, 'm').format(DATETIME_FULL),

@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 
 export type Lifelog = {
   id: number;
-  user_id: number;
+  userId: number;
   action: string;
   detail?: string;
   startedAt: string;
@@ -89,7 +89,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   const newLog = (): Lifelog => {
     return {
       id: -1,
-      user_id: -1,
+      userId: -1,
       action: '',
       detail: undefined,
       startedAt: '',

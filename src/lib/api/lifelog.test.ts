@@ -53,7 +53,7 @@ describe('lifelog APIの呼び出し検証', () => {
   it('update', async () => {
     const params: UpdateParams = {
       id: 99,
-      user_id: 1,
+      userId: 1,
       action: 'action',
       detail: 'detail',
       startedAt: now.format(DATETIME_FULL),
