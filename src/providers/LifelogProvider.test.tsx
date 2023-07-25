@@ -437,7 +437,22 @@ describe('LifelogProvider', () => {
     });
 
     describe('clear 検証', () => {
-      it.todo('logs が初期化されている');
+      it('logs が初期化されている', async () => {
+        const { result } = renderHook(() => useLifelog(), { wrapper });
+        server.use(restIndex());
+        act(() => {
+          result.current.loadLogs();
+        });
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(10);
+        });
+        act(() => {
+          result.current.clear();
+        });
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(0);
+        });
+      });
     });
   });
 });
