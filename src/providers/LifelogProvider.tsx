@@ -57,24 +57,22 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   };
   const api = lifelog(getHeaders(), responseInterceptor, errorInterceptor);
 
-  const loadLogs = () => {
+  const loadLogs = async () => {
     const nextPage = page + 1;
-    return api.index(nextPage, searchWord).then((r) => {
-      if (r.data.length > 0) {
-        appendLogs(r.data);
-        setPage(nextPage);
-      }
-      return r;
-    });
+    const r = await api.index(nextPage, searchWord);
+    if (r.data.length > 0) {
+      appendLogs(r.data);
+      setPage(nextPage);
+    }
+    return r;
   };
 
-  const searchLogs = (word: string) => {
+  const searchLogs = async (word: string) => {
     setSearchWord(word);
-    return api.index(1, word).then((r) => {
-      setLogs(r.data);
-      setPage(1);
-      return r;
-    });
+    const r = await api.index(1, word);
+    setLogs(r.data);
+    setPage(1);
+    return r;
   };
 
   const appendLogs = (lifelogs: Lifelog[]) => {
@@ -94,37 +92,34 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     };
   };
 
-  const createLogByContext = (context: string) => {
-    return api.create({ context: context }).then((r) => {
+  const createLogByContext = async (context: string) => {
+    const r = await api.create({ context: context });
+    setLogs(sortLog([r.data, ...logs]));
+    return r;
+  };
+
+  const updateLog = async (params: UpdateParams) => {
+    const r = await api.update(params);
+    const i = logs.findIndex((log) => {
+      return log.id === r.data.id;
+    });
+    if (i >= 0) {
+      logs[i] = r.data;
+      setLogs(sortLog(logs));
+    } else {
       setLogs(sortLog([r.data, ...logs]));
-      return r;
-    });
+    }
+    return r;
   };
 
-  const updateLog = (params: UpdateParams) => {
-    return api.update(params).then((r) => {
-      const i = logs.findIndex((log) => {
-        return log.id === r.data.id;
-      });
-      if (i >= 0) {
-        logs[i] = r.data;
-        setLogs(sortLog(logs));
-      } else {
-        setLogs(sortLog([r.data, ...logs]));
-      }
-      return r;
-    });
-  };
-
-  const deleteLog = (id: number) => {
-    return api.destroy(id).then((r) => {
-      setLogs(
-        logs.filter((log) => {
-          if (log.id !== id) return log;
-        })
-      );
-      return r;
-    });
+  const deleteLog = async (id: number) => {
+    const r = await api.destroy(id);
+    setLogs(
+      logs.filter((log) => {
+        if (log.id !== id) return log;
+      })
+    );
+    return r;
   };
 
   const clear = () => {

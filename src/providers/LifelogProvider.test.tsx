@@ -73,7 +73,7 @@ const restUpdate = (status = 200) => {
 };
 
 const restDelete = (status = 200) => {
-  return rest.delete(apiHost('/lifelogs/:id'), (req, res, ctx) => {
+  return rest.delete(apiHost('/lifelogs/:id'), (_req, res, ctx) => {
     return res(ctx.status(status));
   });
 };
