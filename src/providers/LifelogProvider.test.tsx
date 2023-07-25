@@ -242,7 +242,7 @@ describe('LifelogProvider', () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });
         expect(result.current.logs).toHaveLength(0);
         act(() => {
-          result.current.loadLogs();
+          result.current.searchLogs('TEST999');
         });
         await waitFor(() => {
           expect(result.current.logs).toHaveLength(0);
