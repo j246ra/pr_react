@@ -57,19 +57,10 @@ describe('LifelogProvider', () => {
       });
     };
 
-    const server = setupServer(
-      rest.get(hostURL + '/lifelogs', (req, res, ctx) => {
-        return res(ctx.status(200), ctx.json(lifelogs(2)));
-      })
-    );
+    const server = setupServer(restIndex());
     beforeAll(() => server.listen());
     beforeEach(() => server.resetHandlers());
     afterAll(() => server.close());
-
-    const getUseLifelog = () => {
-      const { result } = renderHook(() => useLifelog(), { wrapper });
-      return result.current;
-    };
 
     describe('Axios Interceptor with loadLogs().', () => {
       it('status 200 の場合、setToken() にてセッション情報を更新する', async () => {
@@ -80,7 +71,7 @@ describe('LifelogProvider', () => {
           result.current.loadLogs();
         });
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(2);
+          expect(result.current.logs).toHaveLength(10);
           expect(mockSetToken).toBeCalled();
         });
       });
@@ -126,26 +117,6 @@ describe('LifelogProvider', () => {
 
     describe('loadLogs 検証', () => {
       it('複数回呼び出すごとに logs にデータが追記されている', async () => {
-        server.use(
-          rest.get(hostURL + '/lifelogs', (req, res, ctx) => {
-            const page = req.url.searchParams.get('page');
-            let logs: Lifelog[];
-            switch (page) {
-              case null:
-              case '0':
-              case '1':
-                logs = lifelogs(10, 0);
-                break;
-              case '2':
-                logs = lifelogs(10, 10);
-                break;
-              default:
-                logs = [];
-                break;
-            }
-            return res(ctx.status(200), ctx.json(logs));
-          })
-        );
         const { result } = renderHook(() => useLifelog(), { wrapper });
         expect(result.current.logs).toHaveLength(0);
         act(() => {
@@ -169,11 +140,7 @@ describe('LifelogProvider', () => {
       });
 
       it('データが 0 件の場合でも正常にレンダリングする', async () => {
-        server.use(
-          rest.get(hostURL + '/lifelogs', (req, res, ctx) => {
-            return res(ctx.status(200), ctx.json(lifelogs(0)));
-          })
-        );
+        server.use(restIndex(1, 0));
         const { result } = renderHook(() => useLifelog(), { wrapper });
         expect(result.current.logs).toHaveLength(0);
         act(() => {
@@ -245,8 +212,8 @@ describe('LifelogProvider', () => {
 
     describe('newLog 検証', () => {
       it('空の Lifelog が取得できる', () => {
-        const { newLog } = getUseLifelog();
-        expect(newLog()).toEqual({
+        const { result } = renderHook(() => useLifelog(), { wrapper });
+        expect(result.current.newLog()).toEqual({
           id: -1,
           user_id: -1,
           action: '',
