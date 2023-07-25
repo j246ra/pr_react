@@ -54,14 +54,14 @@ describe('LifelogProvider', () => {
     afterAll(() => server.close());
 
     describe('Axios Interceptor with loadLogs().', () => {
-      it('status 200 の場合、setToken() にてセッション情報を更新する', () => {
+      it('status 200 の場合、setToken() にてセッション情報を更新する', async () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });
 
         expect(result.current.logs).toHaveLength(0);
         act(() => {
           result.current.loadLogs();
         });
-        waitFor(() => {
+        await waitFor(() => {
           expect(result.current.logs).toHaveLength(2);
           expect(mockSetToken).toBeCalled();
         });
