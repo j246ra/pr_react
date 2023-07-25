@@ -54,6 +54,13 @@ const restCreate = ({
   status = 200,
 }: RestCreateOptions = {}) => {
   return rest.post(apiHost('/lifelogs'), async (req, res, ctx) => {
+    const words = await req.json().then((body) => {
+      if (typeof body.data.context === 'string')
+        return body.data.context.split(' ');
+      return [];
+    });
+    log.action = words[0] || '';
+    log.detail = words[1] || '';
     return res(ctx.status(status), ctx.json(log));
   });
 };
@@ -268,20 +275,13 @@ describe('LifelogProvider', () => {
 
     describe('createLogByContext 検証', () => {
       it('データ作成成功時に log を追記する', async () => {
-        server.use(
-          restIndex(),
-          restCreate({
-            log: lifelog({ action: 'My', detail: 'name is ELITE.' }), // TODO action, detail 振り分け処理を Mock に実装する
-            status: 200,
-          })
-        );
         const { result } = renderHook(() => useLifelog(), { wrapper });
         act(() => {
           result.current.createLogByContext('My name is ELITE.');
         });
         await waitFor(() => {
           expect(result.current.logs[0].action).toEqual('My');
-          expect(result.current.logs[0].detail).toEqual('name is ELITE.');
+          expect(result.current.logs[0].detail).toEqual('name');
         });
       });
       it('認証エラー以外で失敗時は logs に変化はない', async () => {
