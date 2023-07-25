@@ -37,10 +37,10 @@ export const useLifelog = (): LifelogContextType => {
   return context;
 };
 
-type Props = {
+export type LifelogProviderProps = {
   children: ReactNode;
 };
-export default function LifelogProvider({ children }: Props) {
+export default function LifelogProvider({ children }: LifelogProviderProps) {
   const [logs, setLogs] = useState<Lifelog[]>([]);
   const [searchWord, setSearchWord] = useState('');
   const [page, setPage] = useState(0);

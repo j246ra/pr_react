@@ -1,16 +1,19 @@
-import { render, waitFor } from '@testing-library/react';
+import React from 'react';
+import { render, renderHook, waitFor, act } from '@testing-library/react';
 import LifelogProvider, {
-  Lifelog,
+  LifelogProviderProps,
   useLifelog,
 } from '@providers/LifelogProvider';
 import { mockUseSession, mockUseUser } from '@src/tests/baseProviders';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import React, { useEffect, useState } from 'react';
 import { lifelogs } from '@lib/faker/lifelog';
+import { AxiosError } from 'axios';
 
 let mockSetToken: jest.SpyInstance<unknown>;
 let mockClearUser: jest.SpyInstance<unknown>;
+
+const hostURL = 'http://localhost:3000/v1';
 describe('LifelogProvider', () => {
   beforeEach(() => {
     mockSetToken = jest.fn();
@@ -37,19 +40,9 @@ describe('LifelogProvider', () => {
   });
 
   describe('Api検証', () => {
-    const hostURL = 'http://localhost:3000/v1';
-    const ChildComponent: React.FC = () => {
-      const { loadLogs, newLog } = useLifelog();
-      const [logs, setLogs] = useState<Lifelog[]>([newLog()]);
-      useEffect(() => {
-        loadLogs()
-          .then((r) => setLogs(r.data))
-          .catch(() => {
-            setLogs(logs);
-          });
-      }, []);
-      return <div data-testid={'api'}>{logs[0].id}</div>;
-    };
+    const wrapper = ({ children }: LifelogProviderProps) => (
+      <LifelogProvider>{children}</LifelogProvider>
+    );
 
     const server = setupServer(
       rest.get(hostURL + '/lifelogs', (req, res, ctx) => {
@@ -60,51 +53,55 @@ describe('LifelogProvider', () => {
     beforeEach(() => server.resetHandlers());
     afterAll(() => server.close());
 
-    describe('Axios interceptor', () => {
-      it('responseInterceptor', async () => {
-        const { getByTestId } = render(
-          <LifelogProvider>
-            <ChildComponent />
-          </LifelogProvider>
-        );
-        await waitFor(() => {
-          expect(getByTestId('api').textContent).toEqual('1');
+    describe('Axios Interceptor with loadLogs().', () => {
+      it('status 200 の場合、setToken() にてセッション情報を更新する', () => {
+        const { result } = renderHook(() => useLifelog(), { wrapper });
+
+        expect(result.current.logs).toHaveLength(0);
+        act(() => {
+          result.current.loadLogs();
+        });
+        waitFor(() => {
+          expect(result.current.logs).toHaveLength(2);
           expect(mockSetToken).toBeCalled();
         });
       });
 
-      describe('errorInterceptor', () => {
-        it('status 401 認証エラーの場合', async () => {
-          server.use(
-            rest.get(hostURL + '/lifelogs', (req, res, ctx) => {
-              return res(ctx.status(401));
-            })
-          );
-          const { getByTestId } = render(
-            <LifelogProvider>
-              <ChildComponent />
-            </LifelogProvider>
-          );
-          await waitFor(() => {
-            expect(getByTestId('api').textContent).toEqual('-1');
-            expect(mockClearUser).toBeCalled();
-          });
+      it('status 401 の場合、clearUser() にてセッションを初期化する', async () => {
+        server.use(
+          rest.get(hostURL + '/lifelogs', (req, res, ctx) => {
+            return res(ctx.status(401));
+          })
+        );
+        const { result } = renderHook(() => useLifelog(), { wrapper });
+
+        expect(result.current.logs).toHaveLength(0);
+        act(() => {
+          expect(result.current.loadLogs()).rejects.toBeInstanceOf(AxiosError);
         });
-        it('status 500 の場合', async () => {
-          server.use(
-            rest.get(hostURL + '/lifelogs', (req, res, ctx) => {
-              return res(ctx.status(500));
-            })
-          );
-          const { getByTestId } = render(
-            <LifelogProvider>
-              <ChildComponent />
-            </LifelogProvider>
-          );
-          await waitFor(() => {
-            expect(getByTestId('api').textContent).toEqual('-1');
-            expect(mockClearUser).not.toBeCalled();
-          });
+
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(0);
+          expect(mockClearUser).toBeCalled();
+        });
+      });
+
+      it('status 401 以外のエラーの場合、AxiosError を返却する', async () => {
+        server.use(
+          rest.get(hostURL + '/lifelogs', (req, res, ctx) => {
+            return res(ctx.status(500));
+          })
+        );
+        const { result } = renderHook(() => useLifelog(), { wrapper });
+
+        expect(result.current.logs).toHaveLength(0);
+        act(() => {
+          expect(result.current.loadLogs()).rejects.toBeInstanceOf(AxiosError);
+        });
+
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(0);
+          expect(mockClearUser).not.toBeCalled();
         });
       });
     });
