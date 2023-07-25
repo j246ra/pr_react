@@ -45,6 +45,18 @@ describe('LifelogProvider', () => {
       <LifelogProvider>{children}</LifelogProvider>
     );
 
+    const restIndex = (maxPage = 2, length = 10) => {
+      return rest.get(hostURL + '/lifelogs', (req, res, ctx) => {
+        const page = Number(req.url.searchParams.get('page'));
+        const offset = length * (page - 1);
+        let logs: Lifelog[] = [];
+        if (page <= maxPage) {
+          logs = lifelogs(length, offset);
+        }
+        return res(ctx.status(200), ctx.json(logs));
+      });
+    };
+
     const server = setupServer(
       rest.get(hostURL + '/lifelogs', (req, res, ctx) => {
         return res(ctx.status(200), ctx.json(lifelogs(2)));
@@ -53,6 +65,11 @@ describe('LifelogProvider', () => {
     beforeAll(() => server.listen());
     beforeEach(() => server.resetHandlers());
     afterAll(() => server.close());
+
+    const getUseLifelog = () => {
+      const { result } = renderHook(() => useLifelog(), { wrapper });
+      return result.current;
+    };
 
     describe('Axios Interceptor with loadLogs().', () => {
       it('status 200 の場合、setToken() にてセッション情報を更新する', async () => {
@@ -169,13 +186,77 @@ describe('LifelogProvider', () => {
     });
 
     describe('searchLogs 検証', () => {
-      it.todo('呼び出されるごとに logs が上書きされる');
-      it.todo('loadLogs で続きのデータを取得できる');
-      it.todo('データが 0 件でも正常にレンダリングする');
+      it('呼び出されるごとに logs が上書きされる', async () => {
+        server.use(restIndex(2, 10));
+        const { result } = renderHook(() => useLifelog(), { wrapper });
+        act(() => {
+          result.current.searchLogs('TEST1');
+        });
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(10);
+        });
+        act(() => {
+          result.current.searchLogs('TEST2');
+        });
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(10);
+        });
+        act(() => {
+          result.current.searchLogs('TEST3');
+        });
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(10);
+        });
+      });
+      it('loadLogs で続きのデータを取得できる', async () => {
+        server.use(restIndex(3, 10));
+        const { result } = renderHook(() => useLifelog(), { wrapper });
+        act(() => {
+          result.current.searchLogs('TEST1');
+        });
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(10);
+        });
+        act(() => {
+          result.current.loadLogs();
+        });
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(20);
+        });
+        act(() => {
+          result.current.loadLogs();
+        });
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(30);
+        });
+      });
+      it('データが 0 件でも正常にレンダリングする', async () => {
+        server.use(restIndex(1, 0));
+        const { result } = renderHook(() => useLifelog(), { wrapper });
+        expect(result.current.logs).toHaveLength(0);
+        act(() => {
+          result.current.loadLogs();
+        });
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(0);
+        });
+      });
     });
 
     describe('newLog 検証', () => {
-      it.todo('空の Lifelog が取得できる');
+      it('空の Lifelog が取得できる', () => {
+        const { newLog } = getUseLifelog();
+        expect(newLog()).toEqual({
+          id: -1,
+          user_id: -1,
+          action: '',
+          detail: undefined,
+          startedAt: '',
+          finishedAt: undefined,
+          createdAt: '',
+          updatedAt: '',
+        });
+      });
     });
 
     describe('createLogByContext 検証', () => {
