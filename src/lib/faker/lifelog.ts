@@ -2,16 +2,18 @@ import { Lifelog } from '@providers/LifelogProvider';
 import { fakerJA } from '@faker-js/faker';
 import { DATETIME_FULL, now } from '@lib/dateUtil';
 
-export const lifelog = (): Lifelog => {
+export type OptionalLifelog = Partial<Lifelog>;
+
+export const lifelog = (log?: OptionalLifelog): Lifelog => {
   return {
-    id: 1,
-    user_id: 1,
-    action: fakerJA.lorem.word(),
-    detail: fakerJA.lorem.paragraph({ min: 2, max: 8 }),
-    startedAt: now.subtract(30, 'm').format(DATETIME_FULL),
-    finishedAt: now.format(DATETIME_FULL),
-    createdAt: now.format(DATETIME_FULL),
-    updatedAt: now.format(DATETIME_FULL),
+    id: log?.id || 1,
+    user_id: log?.user_id || 1,
+    action: log?.action || fakerJA.lorem.word(),
+    detail: log?.detail || fakerJA.lorem.paragraph({ min: 2, max: 8 }),
+    startedAt: log?.startedAt || now.subtract(30, 'm').format(DATETIME_FULL),
+    finishedAt: log?.finishedAt || now.format(DATETIME_FULL),
+    createdAt: log?.createdAt || now.format(DATETIME_FULL),
+    updatedAt: log?.updatedAt || now.format(DATETIME_FULL),
   };
 };
 
