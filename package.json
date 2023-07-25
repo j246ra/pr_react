@@ -104,6 +104,10 @@
       "src/**/*.{js,jsx,ts,tsx}",
       "!src/**/*.d.ts"
     ],
+    "coveragePathIgnorePatterns": [
+      "./*.stories.tsx",
+      "./src/lib/storybook/*"
+    ],
     "setupFiles": [
       "react-app-polyfill/jsdom"
     ],
