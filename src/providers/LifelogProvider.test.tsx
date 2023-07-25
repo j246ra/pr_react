@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, renderHook, waitFor, act } from '@testing-library/react';
 import LifelogProvider, {
+  Lifelog,
   LifelogProviderProps,
   useLifelog,
 } from '@providers/LifelogProvider';
@@ -104,6 +105,98 @@ describe('LifelogProvider', () => {
           expect(mockClearUser).not.toBeCalled();
         });
       });
+    });
+
+    describe('loadLogs 検証', () => {
+      it('複数回呼び出すごとに logs にデータが追記されている', async () => {
+        server.use(
+          rest.get(hostURL + '/lifelogs', (req, res, ctx) => {
+            const page = req.url.searchParams.get('page');
+            let logs: Lifelog[];
+            switch (page) {
+              case null:
+              case '0':
+              case '1':
+                logs = lifelogs(10, 0);
+                break;
+              case '2':
+                logs = lifelogs(10, 10);
+                break;
+              default:
+                logs = [];
+                break;
+            }
+            return res(ctx.status(200), ctx.json(logs));
+          })
+        );
+        const { result } = renderHook(() => useLifelog(), { wrapper });
+        expect(result.current.logs).toHaveLength(0);
+        act(() => {
+          result.current.loadLogs();
+        });
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(10);
+        });
+        act(() => {
+          result.current.loadLogs();
+        });
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(20);
+        });
+        act(() => {
+          result.current.loadLogs();
+        });
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(20);
+        });
+      });
+
+      it('データが 0 件の場合でも正常にレンダリングする', async () => {
+        server.use(
+          rest.get(hostURL + '/lifelogs', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(lifelogs(0)));
+          })
+        );
+        const { result } = renderHook(() => useLifelog(), { wrapper });
+        expect(result.current.logs).toHaveLength(0);
+        act(() => {
+          result.current.loadLogs();
+        });
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(0);
+        });
+      });
+    });
+
+    describe('searchLogs 検証', () => {
+      it.todo('呼び出されるごとに logs が上書きされる');
+      it.todo('loadLogs で続きのデータを取得できる');
+      it.todo('データが 0 件でも正常にレンダリングする');
+    });
+
+    describe('newLog 検証', () => {
+      it.todo('空の Lifelog が取得できる');
+    });
+
+    describe('createLogByContext 検証', () => {
+      it.todo('データ作成成功時に log を追記する');
+      it.todo('認証エラー以外で失敗時は logs に変化はない');
+    });
+
+    describe('updateLog 検証', () => {
+      it.todo('データ更新成功時に該当 log も更新されている');
+      it.todo('データ更新成功時に該当 log が存在しない場合は追記する');
+      it.todo('認証エラー以外で失敗時は logs に変化はない');
+    });
+
+    describe('deleteLog 検証', () => {
+      it.todo('データ削除成功時に該当 log も削除している');
+      it.todo('データ削除成功時に該当 log が ない場合も正常にレンダリングする');
+      it.todo('認証エラー以外で失敗時は logs に変化はない');
+    });
+
+    describe('clear 検証', () => {
+      it.todo('logs が初期化されている');
     });
   });
 });
