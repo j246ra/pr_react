@@ -8,8 +8,9 @@ import LifelogProvider, {
 import { mockUseSession, mockUseUser } from '@src/tests/baseProviders';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import { lifelogs } from '@lib/faker/lifelog';
+import { lifelog, lifelogs } from '@lib/faker/lifelog';
 import { AxiosError } from 'axios';
+import { apiHost } from '@lib/storybook/util';
 
 let mockSetToken: jest.SpyInstance<unknown>;
 let mockClearUser: jest.SpyInstance<unknown>;
@@ -227,8 +228,46 @@ describe('LifelogProvider', () => {
     });
 
     describe('createLogByContext 検証', () => {
-      it.todo('データ作成成功時に log を追記する');
-      it.todo('認証エラー以外で失敗時は logs に変化はない');
+      it('データ作成成功時に log を追記する', async () => {
+        server.use(
+          rest.post(apiHost('/lifelogs'), async (req, res, ctx) => {
+            return res(
+              ctx.status(200),
+              ctx.json(lifelog({ action: 'My', detail: 'name is ELITE.' }))
+            );
+          })
+        );
+        const { result } = renderHook(() => useLifelog(), { wrapper });
+        act(() => {
+          result.current.createLogByContext('My name is ELITE.');
+        });
+        await waitFor(() => {
+          expect(result.current.logs[0].action).toEqual('My');
+          expect(result.current.logs[0].detail).toEqual('name is ELITE.');
+        });
+      });
+      it('認証エラー以外で失敗時は logs に変化はない', async () => {
+        const { result } = renderHook(() => useLifelog(), { wrapper });
+        server.use(restIndex());
+        act(() => {
+          result.current.loadLogs();
+        });
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(10);
+        });
+
+        server.use(
+          rest.post(apiHost('/lifelogs'), async (req, res, ctx) => {
+            return res(ctx.status(500));
+          })
+        );
+        await expect(
+          result.current.createLogByContext('STELLAR STELLAR.')
+        ).rejects.toBeInstanceOf(AxiosError);
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(10);
+        });
+      });
     });
 
     describe('updateLog 検証', () => {
