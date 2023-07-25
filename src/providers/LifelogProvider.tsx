@@ -3,7 +3,7 @@ import { useSession } from '@providers/SessionProvider';
 import { useUser } from '@providers/UserProvider';
 import { AxiosError, AxiosResponse } from 'axios';
 import lifelog, { UpdateParams } from '@lib/api/lifelog';
-import dayjs from 'dayjs';
+import lifelogUtil from '@lib/lifelogUtil';
 
 export type Lifelog = {
   id: number;
@@ -46,6 +46,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   const [page, setPage] = useState(0);
   const { getHeaders, setToken } = useSession();
   const { clearUser } = useUser();
+  const { sort: sortLog } = lifelogUtil();
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
     setToken(response);
     return response;
@@ -78,12 +79,6 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
 
   const appendLogs = (lifelogs: Lifelog[]) => {
     setLogs([...logs, ...lifelogs]);
-  };
-
-  const sortLog = (lifelogs: Lifelog[]) => {
-    return lifelogs.sort((a, b) => {
-      return dayjs(b.startedAt).diff(dayjs(a.startedAt));
-    });
   };
 
   const newLog = (): Lifelog => {
