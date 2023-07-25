@@ -216,7 +216,7 @@ describe('LifelogProvider', () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });
         expect(result.current.newLog()).toEqual({
           id: -1,
-          user_id: -1,
+          userId: -1,
           action: '',
           detail: undefined,
           startedAt: '',
@@ -271,9 +271,91 @@ describe('LifelogProvider', () => {
     });
 
     describe('updateLog 検証', () => {
-      it.todo('データ更新成功時に該当 log も更新されている');
-      it.todo('データ更新成功時に該当 log が存在しない場合は追記する');
-      it.todo('認証エラー以外で失敗時は logs に変化はない');
+      it('データ更新成功時に該当 log も更新されている', async () => {
+        const { result } = renderHook(() => useLifelog(), { wrapper });
+        server.use(restIndex());
+        act(() => {
+          result.current.loadLogs();
+        });
+        let beforeLog: Lifelog;
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(10);
+          beforeLog = result.current.logs[5];
+        });
+
+        server.use(
+          rest.put(apiHost('/lifelogs/:id'), async (req, res, ctx) => {
+            const data = await req.json().then((body) => body.data);
+            return res(ctx.status(200), ctx.json(data));
+          })
+        );
+        act(() => {
+          result.current.updateLog(
+            lifelog({ ...beforeLog, action: 'ACTION', detail: 'DETAIL' })
+          );
+        });
+        await waitFor(() => {
+          const afterLog = result.current.logs[5];
+          expect(afterLog.id).toEqual(beforeLog.id);
+          expect(afterLog.action).toEqual('ACTION');
+          expect(afterLog.detail).toEqual('DETAIL');
+          expect(afterLog.createdAt).toEqual(beforeLog.createdAt);
+        });
+      });
+      it('データ更新成功時に該当 log が存在しない場合は追記する', async () => {
+        const { result } = renderHook(() => useLifelog(), { wrapper });
+        server.use(restIndex());
+        act(() => {
+          result.current.loadLogs();
+        });
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(10);
+        });
+
+        server.use(
+          rest.put(apiHost('/lifelogs/:id'), async (req, res, ctx) => {
+            const data = await req.json().then((body) => body.data);
+            return res(ctx.status(200), ctx.json(data));
+          })
+        );
+        const log = lifelog({ id: 99 });
+        act(() => {
+          result.current.updateLog(log);
+        });
+        await waitFor(() => {
+          const afterLog = result.current.logs.find((l) => {
+            return l.id === log.id;
+          });
+          expect(afterLog).toEqual(log);
+        });
+      });
+
+      it('認証エラー以外で失敗時は logs に変化はない', async () => {
+        const { result } = renderHook(() => useLifelog(), { wrapper });
+        server.use(restIndex(5, 9));
+        act(() => {
+          result.current.loadLogs();
+        });
+        let beforeLog: Lifelog;
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(9);
+          beforeLog = result.current.logs[5];
+        });
+
+        server.use(
+          rest.put(apiHost('/lifelogs/:id'), async (req, res, ctx) => {
+            return res(ctx.status(500));
+          })
+        );
+        await expect(
+          result.current.updateLog(lifelog())
+        ).rejects.toBeInstanceOf(AxiosError);
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(9);
+          const afterLog = result.current.logs[5];
+          expect(afterLog).toEqual(beforeLog);
+        });
+      });
     });
 
     describe('deleteLog 検証', () => {
