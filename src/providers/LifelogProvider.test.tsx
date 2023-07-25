@@ -11,6 +11,8 @@ import { setupServer } from 'msw/node';
 import { lifelog, lifelogs } from '@lib/faker/lifelog';
 import { AxiosError } from 'axios';
 import { apiHost } from '@lib/storybook/util';
+import dayjs from 'dayjs';
+import { DATETIME_FULL } from '@lib/dateUtil';
 
 let mockSetToken: jest.SpyInstance<unknown>;
 let mockClearUser: jest.SpyInstance<unknown>;
@@ -300,6 +302,48 @@ describe('LifelogProvider', () => {
           expect(afterLog.action).toEqual('ACTION');
           expect(afterLog.detail).toEqual('DETAIL');
           expect(afterLog.createdAt).toEqual(beforeLog.createdAt);
+        });
+      });
+      it('開始日時変更時に該当 log が正しくソートされている', async () => {
+        const { result } = renderHook(() => useLifelog(), { wrapper });
+        server.use(restIndex());
+        act(() => {
+          result.current.loadLogs();
+        });
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(10);
+        });
+
+        server.use(
+          rest.put(apiHost('/lifelogs/:id'), async (req, res, ctx) => {
+            const data = await req.json().then((body) => body.data);
+            return res(ctx.status(200), ctx.json(data));
+          })
+        );
+        const logs = result.current.logs;
+        const pastOneYear = dayjs(logs[9].startedAt)
+          .subtract(1, 'year')
+          .format(DATETIME_FULL);
+        const beforeLog = logs[5];
+        act(() => {
+          result.current.updateLog(
+            lifelog({
+              ...beforeLog,
+              action: 'ACTION',
+              detail: 'DETAIL',
+              startedAt: pastOneYear,
+            })
+          );
+        });
+        await waitFor(() => {
+          const afterLog = result.current.logs.find((log) => {
+            return log.id === beforeLog.id;
+          });
+          expect(afterLog).not.toBeUndefined();
+          if (afterLog === undefined) return;
+          expect(afterLog.action).toEqual('ACTION');
+          expect(afterLog.detail).toEqual('DETAIL');
+          expect(afterLog.startedAt).toEqual(pastOneYear);
         });
       });
       it('データ更新成功時に該当 log が存在しない場合は追記する', async () => {
