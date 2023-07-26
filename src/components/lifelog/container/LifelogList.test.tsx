@@ -1,21 +1,17 @@
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 import LifelogList from './LifelogList';
-import { useSession } from '@providers/SessionProvider';
-import { useAuth } from '@providers/AuthApiProvider';
-import { useUser } from '@providers/UserProvider';
 import { useLifelog } from '@providers/LifelogProvider';
 import { lifelog, lifelogs } from '@lib/faker/lifelog';
 import userEvent from '@testing-library/user-event';
+import {
+  mockUseAuth,
+  mockUseSession,
+  mockUseUser,
+} from '@src/tests/baseProviders';
 
-jest.mock('@providers/SessionProvider');
-jest.mock('@providers/AuthApiProvider');
-jest.mock('@providers/UserProvider');
 jest.mock('@providers/LifelogProvider');
 
-const mockUseSession = useSession as jest.MockedFunction<any>;
-const mockUseAuth = useAuth as jest.MockedFunction<any>;
-const mockUseUser = useUser as jest.MockedFunction<any>;
 const mockUseLifelog = useLifelog as jest.MockedFunction<any>;
 
 const mockLogs = lifelogs(10);
