@@ -1,16 +1,15 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import LifelogListItem from './LifelogListItem';
 import userEvent from '@testing-library/user-event';
-import {lifelog} from "@lib/faker/lifelog";
+import { lifelog } from '@lib/faker/lifelog';
 
 describe('LifelogListItem', () => {
-  const mockLog = { ...lifelog(),
+  const mockLog = lifelog({
     startedAt: new Date(2023, 6, 5, 12, 34).toISOString(),
     action: 'Test action',
     detail: 'Test detail',
-  };
+  });
   const mockOnEdit = jest.fn();
   const mockOnDelete = jest.fn();
   const mockOnAction = jest.fn();
@@ -35,7 +34,6 @@ describe('LifelogListItem', () => {
   });
 
   it('イベントハンドラが正しく呼び出される', () => {
-
     const { getByText, getByTestId } = render(
       <table>
         <tbody>
