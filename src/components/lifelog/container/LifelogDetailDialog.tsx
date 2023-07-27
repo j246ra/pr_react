@@ -8,6 +8,9 @@ export interface LifelogDetailDialogProps {
   log?: Lifelog;
 }
 
+export const LIFELOG_DETAIL_DIALOG_TEST_ID = 'lifelog-detail-dialog';
+const TEST_ID = LIFELOG_DETAIL_DIALOG_TEST_ID + '-';
+
 const LifelogDetailDialog: React.FC<LifelogDetailDialogProps> = ({
   isOpen,
   handleCloseDialog,
@@ -17,34 +20,36 @@ const LifelogDetailDialog: React.FC<LifelogDetailDialogProps> = ({
     <Dialog isOpen={isOpen} onClose={handleCloseDialog}>
       <DialogBody>
         <HTMLTable style={{ width: '100%' }}>
-          <tbody>
+          <tbody data-testid={`${TEST_ID}tbody`}>
             <tr>
               <th style={{ boxShadow: 'none', width: '18%' }}>ID</th>
               <td style={{ boxShadow: 'none' }}>{log?.id}</td>
             </tr>
             <tr>
               <th>行動</th>
-              <td>{log?.action}</td>
+              <td data-testid={`${TEST_ID}td-action`}>{log?.action}</td>
             </tr>
             <tr>
               <th>詳細</th>
-              <td>{log?.detail}</td>
+              <td data-testid={`${TEST_ID}td-detail`}>{log?.detail}</td>
             </tr>
             <tr>
               <th>開始時間</th>
-              <td>{log?.startedAt}</td>
+              <td data-testid={`${TEST_ID}td-started-at`}>{log?.startedAt}</td>
             </tr>
             <tr>
               <th>終了時間</th>
-              <td>{log?.finishedAt}</td>
+              <td data-testid={`${TEST_ID}td-finished-at`}>
+                {log?.finishedAt}
+              </td>
             </tr>
             <tr>
               <th>作成日時</th>
-              <td>{log?.createdAt}</td>
+              <td data-testid={`${TEST_ID}td-created-at`}>{log?.createdAt}</td>
             </tr>
             <tr>
               <th>更新日時</th>
-              <td>{log?.updatedAt}</td>
+              <td data-testid={`${TEST_ID}td-updated-at`}>{log?.updatedAt}</td>
             </tr>
           </tbody>
         </HTMLTable>
