@@ -9,7 +9,7 @@ import LifelogDetailDialog from '@lifelog/container/LifelogDetailDialog';
 import LifelogEditDialog from '@lifelog/container/LifelogEditDialog';
 
 const LifelogList = () => {
-  const { logs, loadLogs, newLog, deleteLog } = useLifelog();
+  const { logs, loadLogs, newLog, finishLog, deleteLog } = useLifelog();
   const [hasMore, setHasMore] = useState(true);
 
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
@@ -26,6 +26,10 @@ const LifelogList = () => {
       .catch((e) => {
         notify.error(e.message);
       });
+  };
+
+  const handleFinishLifelog = (lifelog: Lifelog) => {
+    finishLog(lifelog).then(() => notify.success('行動時間を記録しました。'));
   };
 
   const handleOpenEditDialog = (lifelog: Lifelog) => {
@@ -90,6 +94,7 @@ const LifelogList = () => {
               <LifelogListItem
                 key={log.id}
                 log={log}
+                onFinishButtonClick={() => handleFinishLifelog(log)}
                 onEditButtonClick={() => handleOpenEditDialog(log)}
                 onDeleteButtonClick={() => handleDeleteLifelog(log.id)}
                 onActionClick={() => handleOpenDetailDialog(log)}

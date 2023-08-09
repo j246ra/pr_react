@@ -7,7 +7,7 @@ import LifelogListHeader from './LifelogListHeader';
 import notify from '@lib/toast';
 import { HTMLTable } from '@blueprintjs/core';
 import { lifelog } from '@lib/faker/lifelog';
-import { lifelogMocks } from '../../../lib/storybook/lifelog';
+import { lifelogMocks } from '@lib/storybook/lifelog';
 
 export default {
   title: 'Lifelog/Presentational/LifelogListItem',
@@ -38,6 +38,9 @@ const { all } = lifelogMocks();
 export const Default = {
   args: {
     log: lifelog(),
+    onFinishButtonClick: () => {
+      notify.success('Finish Button Clicked.');
+    },
     onEditButtonClick: () => {
       notify.success('Edit Button Clicked.');
     },

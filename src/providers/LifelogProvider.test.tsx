@@ -348,6 +348,33 @@ describe('LifelogProvider', () => {
       });
     });
 
+    describe('finishLog 検証', () => {
+      it('完了日時だけ更新されている', async () => {
+        const { result } = renderHook(() => useLifelog(), { wrapper });
+        act(() => {
+          result.current.loadLogs();
+        });
+        let beforeLog: Lifelog;
+        await waitFor(() => {
+          expect(result.current.logs).toHaveLength(10);
+          beforeLog = result.current.logs[5];
+        });
+        act(() => {
+          result.current.finishLog(beforeLog);
+        });
+        await waitFor(() => {
+          const afterLog = result.current.logs[5];
+          expect(afterLog.id).toEqual(beforeLog.id);
+          expect(afterLog.action).toEqual(beforeLog.action);
+          expect(afterLog.detail).toEqual(beforeLog.detail);
+          expect(afterLog.startedAt).toEqual(beforeLog.startedAt);
+          expect(afterLog.createdAt).toEqual(beforeLog.createdAt);
+          expect(afterLog.updatedAt).toEqual(beforeLog.updatedAt);
+          expect(afterLog.finishedAt).not.toEqual(beforeLog.finishedAt);
+        });
+      });
+    });
+
     describe('deleteLog 検証', () => {
       it('データ削除成功時に該当 log も削除している', async () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });

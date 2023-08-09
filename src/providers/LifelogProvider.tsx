@@ -24,6 +24,7 @@ type LifelogContextType = {
   newLog: () => Lifelog;
   createLog: (params: CreatParams) => Promise<AxiosResponse>;
   createLogByContext: (context: string) => Promise<AxiosResponse>;
+  finishLog: (log: Lifelog) => Promise<AxiosResponse>;
   updateLog: (params: UpdateParams) => Promise<AxiosResponse>;
   deleteLog: (id: number) => Promise<AxiosResponse>;
   clear: () => void;
@@ -131,6 +132,12 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     return r;
   };
 
+  const finishLog = (log: Lifelog) => {
+    const params: UpdateParams = { ...log };
+    params.finishedAt = days().format(DATETIME_FULL);
+    return updateLog(params);
+  };
+
   const deleteLog = async (id: number) => {
     const r = await api.destroy(id);
     setLogs(
@@ -156,6 +163,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
         newLog,
         createLog,
         createLogByContext,
+        finishLog,
         updateLog,
         deleteLog,
         clear,

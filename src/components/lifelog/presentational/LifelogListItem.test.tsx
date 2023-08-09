@@ -10,6 +10,7 @@ describe('LifelogListItem', () => {
     action: 'Test action',
     detail: 'Test detail',
   });
+  const mockOnFinish = jest.fn();
   const mockOnEdit = jest.fn();
   const mockOnDelete = jest.fn();
   const mockOnAction = jest.fn();
@@ -20,6 +21,7 @@ describe('LifelogListItem', () => {
         <tbody>
           <LifelogListItem
             log={mockLog}
+            onFinishButtonClick={mockOnFinish}
             onEditButtonClick={mockOnEdit}
             onDeleteButtonClick={mockOnDelete}
             onActionClick={mockOnAction}
@@ -39,6 +41,7 @@ describe('LifelogListItem', () => {
         <tbody>
           <LifelogListItem
             log={mockLog}
+            onFinishButtonClick={mockOnFinish}
             onEditButtonClick={mockOnEdit}
             onDeleteButtonClick={mockOnDelete}
             onActionClick={mockOnAction}
@@ -49,6 +52,9 @@ describe('LifelogListItem', () => {
 
     userEvent.click(getByText('Test action'));
     expect(mockOnAction).toHaveBeenCalled();
+
+    userEvent.click(getByTestId('finish-button'));
+    expect(mockOnFinish).toHaveBeenCalled();
 
     userEvent.click(getByTestId('edit-button'));
     expect(mockOnEdit).toHaveBeenCalled();
