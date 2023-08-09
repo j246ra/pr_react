@@ -31,7 +31,6 @@ describe('lifelog APIの呼び出し検証', () => {
 
   it('create', async () => {
     const params: CreatParams = {
-      context: 'context',
       action: 'action',
       detail: 'detail',
       startedAt: days().format(DATETIME_FULL),
