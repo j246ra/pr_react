@@ -2,8 +2,9 @@ import React, { createContext, ReactNode, useContext, useState } from 'react';
 import { useSession } from '@providers/SessionProvider';
 import { useUser } from '@providers/UserProvider';
 import { AxiosError, AxiosResponse } from 'axios';
-import lifelog, { UpdateParams } from '@lib/api/lifelog';
+import lifelog, { CreatParams, UpdateParams } from '@lib/api/lifelog';
 import lifelogUtil from '@lib/lifelogUtil';
+import { DATETIME_FULL, now } from '@lib/dateUtil';
 
 export type Lifelog = {
   id: number;
@@ -21,6 +22,7 @@ type LifelogContextType = {
   loadLogs: () => Promise<AxiosResponse>;
   searchLogs: (word: string) => Promise<AxiosResponse>;
   newLog: () => Lifelog;
+  createLog: (params: CreatParams) => Promise<AxiosResponse>;
   createLogByContext: (context: string) => Promise<AxiosResponse>;
   updateLog: (params: UpdateParams) => Promise<AxiosResponse>;
   deleteLog: (id: number) => Promise<AxiosResponse>;
@@ -92,10 +94,27 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     };
   };
 
-  const createLogByContext = async (context: string) => {
-    const r = await api.create({ context: context });
+  const createLog = async (params: CreatParams) => {
+    const r = await api.create(params);
     setLogs(sortLog([r.data, ...logs]));
     return r;
+  };
+
+  const createLogByContext = (context: string) => {
+    const params = {
+      action: context,
+      detail: '',
+      startedAt: now.format(DATETIME_FULL),
+    };
+
+    // 正規表現で全角半角の空白を検出
+    const regex = /[\s\u3000]/;
+    const index = context.search(regex);
+    if (index !== -1) {
+      params.action = context.slice(0, index);
+      params.detail = context.slice(index + 1);
+    }
+    return createLog(params);
   };
 
   const updateLog = async (params: UpdateParams) => {
@@ -135,6 +154,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
         loadLogs,
         searchLogs,
         newLog,
+        createLog,
         createLogByContext,
         updateLog,
         deleteLog,
