@@ -19,7 +19,7 @@ const LifelogDetailDialog: React.FC<LifelogDetailDialogProps> = ({
   return (
     <Dialog isOpen={isOpen} onClose={handleCloseDialog}>
       <DialogBody>
-        <HTMLTable style={{ width: '100%' }}>
+        <HTMLTable style={{ width: '100%', whiteSpace: 'pre-line' }}>
           <tbody data-testid={`${TEST_ID}tbody`}>
             <tr>
               <th style={{ boxShadow: 'none', width: '18%' }}>ID</th>
