@@ -1,10 +1,11 @@
 import { Lifelog } from '@providers/LifelogProvider';
 import { fakerJA } from '@faker-js/faker';
-import { DATETIME_FULL, now } from '@lib/dateUtil';
+import { days, DATETIME_FULL } from '@lib/dateUtil';
 
 export type OptionalLifelog = Partial<Lifelog>;
 
 export const lifelog = (log?: OptionalLifelog): Lifelog => {
+  const now = days();
   return {
     id: log?.id || 1,
     userId: log?.userId || 1,
@@ -20,7 +21,7 @@ export const lifelog = (log?: OptionalLifelog): Lifelog => {
 export const lifelogs = (length = 1, offset = 0) => {
   let logs: Lifelog[] = [];
   for (let i = 0; i < length; i++) {
-    const datetime = now.subtract(i, 'h').format(DATETIME_FULL);
+    const datetime = days().subtract(i, 'h').format(DATETIME_FULL);
     logs.push(
       lifelog({
         id: i + offset + 1,

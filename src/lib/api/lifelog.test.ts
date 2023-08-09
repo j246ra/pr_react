@@ -1,6 +1,6 @@
 import client from './client';
 import lifelog, { CreatParams, UpdateParams } from './lifelog';
-import { DATETIME_FULL, now } from '@lib/dateUtil';
+import { days, DATETIME_FULL } from '@lib/dateUtil';
 
 jest.mock('./client');
 
@@ -34,8 +34,8 @@ describe('lifelog APIの呼び出し検証', () => {
       context: 'context',
       action: 'action',
       detail: 'detail',
-      startedAt: now.format(DATETIME_FULL),
-      finishedAt: now.subtract(30, 'minute').format(DATETIME_FULL),
+      startedAt: days().format(DATETIME_FULL),
+      finishedAt: days().subtract(30, 'minute').format(DATETIME_FULL),
     };
 
     const { create } = lifelog(headers);
@@ -56,8 +56,8 @@ describe('lifelog APIの呼び出し検証', () => {
       userId: 1,
       action: 'action',
       detail: 'detail',
-      startedAt: now.format(DATETIME_FULL),
-      finishedAt: now.subtract(30, 'minute').format(DATETIME_FULL),
+      startedAt: days().format(DATETIME_FULL),
+      finishedAt: days().subtract(30, 'minute').format(DATETIME_FULL),
     };
 
     const { update } = lifelog(headers);

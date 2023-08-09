@@ -1,14 +1,14 @@
 import { rest } from 'msw';
 import { apiHost } from '@lib/storybook/util';
 import { Lifelog } from '@providers/LifelogProvider';
-import { DATETIME_FULL, now } from '@lib/dateUtil';
+import { days, DATETIME_FULL } from '@lib/dateUtil';
 import { lifelog } from '@lib/faker/lifelog';
 
 const lifelogs = (page = 1) => {
   const list: Lifelog[] = [];
   const offset = 20 * (page - 1);
   for (let i = 1 + offset; i <= 20 + offset; i++) {
-    const datetime = now.subtract(i, 'h').format(DATETIME_FULL);
+    const datetime = days().subtract(i, 'h').format(DATETIME_FULL);
     const log = {
       ...lifelog(),
       id: i,

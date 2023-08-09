@@ -4,7 +4,7 @@ import { useUser } from '@providers/UserProvider';
 import { AxiosError, AxiosResponse } from 'axios';
 import lifelog, { CreatParams, UpdateParams } from '@lib/api/lifelog';
 import lifelogUtil from '@lib/lifelogUtil';
-import { DATETIME_FULL, now } from '@lib/dateUtil';
+import { days, DATETIME_FULL } from '@lib/dateUtil';
 
 export type Lifelog = {
   id: number;
@@ -104,7 +104,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     const params = {
       action: context,
       detail: '',
-      startedAt: now.format(DATETIME_FULL),
+      startedAt: days().format(DATETIME_FULL),
     };
 
     // 正規表現で全角半角の空白を検出
