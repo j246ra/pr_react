@@ -26,7 +26,16 @@ const LifelogListItem: React.FC<LifelogListItemProps> = ({
       <td className={'app-link-text'} onClick={onActionClick}>
         {log.action}
       </td>
-      <td>{log.detail}</td>
+      <td
+        style={{
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          maxWidth: 0,
+        }}
+      >
+        {log.detail}
+      </td>
       <td style={{ textAlign: 'center' }}>
         <Button
           data-testid="finish-button"
