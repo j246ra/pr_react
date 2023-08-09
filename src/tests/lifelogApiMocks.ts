@@ -41,13 +41,6 @@ const lifelogApiMocks = () => {
     status = 200,
   }: RestCreateOptions = {}) => {
     return rest.post(apiHost('/lifelogs'), async (req, res, ctx) => {
-      const words = await req.json().then((body) => {
-        if (typeof body.data.context === 'string')
-          return body.data.context.split(' ');
-        return [];
-      });
-      log.action = words[0] || '';
-      log.detail = words[1] || '';
       return res(ctx.status(status), ctx.json(log));
     });
   };
