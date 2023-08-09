@@ -1,6 +1,6 @@
 import { rest } from 'msw';
 import { Lifelog } from '@providers/LifelogProvider';
-import { lifelog, lifelogs, OptionalLifelog } from '@lib/faker/lifelog';
+import { lifelogs, OptionalLifelog } from '@lib/faker/lifelog';
 import { apiHost } from '@lib/storybook/util';
 
 type RestIndexOptions = {
@@ -36,19 +36,10 @@ const lifelogApiMocks = () => {
     });
   };
 
-  const create = ({
-    log = lifelog(),
-    status = 200,
-  }: RestCreateOptions = {}) => {
+  const create = ({ status = 200 }: RestCreateOptions = {}) => {
     return rest.post(apiHost('/lifelogs'), async (req, res, ctx) => {
-      const words = await req.json().then((body) => {
-        if (typeof body.data.context === 'string')
-          return body.data.context.split(' ');
-        return [];
-      });
-      log.action = words[0] || '';
-      log.detail = words[1] || '';
-      return res(ctx.status(status), ctx.json(log));
+      const data = await req.json().then((body) => body.data);
+      return res(ctx.status(status), ctx.json(data));
     });
   };
 

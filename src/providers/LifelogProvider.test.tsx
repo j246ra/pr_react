@@ -226,7 +226,7 @@ describe('LifelogProvider', () => {
         });
         await waitFor(() => {
           expect(result.current.logs[0].action).toEqual('My');
-          expect(result.current.logs[0].detail).toEqual('name');
+          expect(result.current.logs[0].detail).toEqual('name is ELITE.');
         });
       });
       it('認証エラー以外で失敗時は logs に変化はない', async () => {
