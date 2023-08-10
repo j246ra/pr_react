@@ -1,4 +1,4 @@
-import { act, render, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import DatetimeInput from '@lifelog/presentational/DatetimeInput';
 import { DATETIME_FULL, days, DISPLAY_DATETIME_FULL } from '@lib/dateUtil';
 import userEvent from '@testing-library/user-event';
@@ -20,22 +20,24 @@ describe('DatetimeInput', () => {
   });
 
   it('テキストフォームの初期値検証', async () => {
-    const { getByText, getByPlaceholderText } = render(
-      <DatetimeInput {...props} />
-    );
+    render(<DatetimeInput {...props} />);
 
-    const label = getByText('時間');
+    const label = screen.getByText('時間');
     expect(label.tagName).toEqual('LABEL');
-    const ph = getByPlaceholderText(props.placeholder) as HTMLInputElement;
+    const ph = screen.getByPlaceholderText(
+      props.placeholder
+    ) as HTMLInputElement;
     expect(ph.tagName).toEqual('INPUT');
     expect(ph.value).toEqual(date.format(DISPLAY_DATETIME_FULL));
     expect(mockOnChange).not.toHaveBeenCalled();
   });
 
   it('コールバック検証', async () => {
-    const { getByPlaceholderText } = render(<DatetimeInput {...props} />);
+    render(<DatetimeInput {...props} />);
 
-    const input = getByPlaceholderText(props.placeholder) as HTMLInputElement;
+    const input = screen.getByPlaceholderText(
+      props.placeholder
+    ) as HTMLInputElement;
     act(() => {
       userEvent.clear(input);
       userEvent.type(input, '2023-09-15 11:11:11');
@@ -47,13 +49,15 @@ describe('DatetimeInput', () => {
   });
 
   it('datepicker 表示検証', async () => {
-    const { getByPlaceholderText } = render(<DatetimeInput {...props} />);
+    render(<DatetimeInput {...props} />);
 
-    expect(document.getElementsByClassName('bp5-datepicker')).toHaveLength(0);
-    const input = getByPlaceholderText(props.placeholder) as HTMLInputElement;
+    expect(screen.queryAllByTitle('日曜日')).toHaveLength(0);
+    const input = screen.queryByPlaceholderText(
+      props.placeholder
+    ) as HTMLInputElement;
     act(() => userEvent.click(input));
     await waitFor(() => {
-      expect(document.getElementsByClassName('bp5-datepicker')).toHaveLength(1);
+      expect(screen.queryAllByTitle('日曜日')).toHaveLength(1);
     });
   });
 });
