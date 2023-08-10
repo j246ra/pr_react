@@ -19,16 +19,16 @@ describe('DatetimeInput', () => {
     props.value = date.format(DATETIME_FULL);
   });
 
-  it('テキストフォームの初期値検証', async () => {
+  it('テキストフォームの初期値検証', () => {
     render(<DatetimeInput {...props} />);
 
-    const label = screen.getByText('時間');
-    expect(label.tagName).toEqual('LABEL');
-    const ph = screen.getByPlaceholderText(
+    const el = screen.getByText(props.label);
+    expect(el.tagName).toEqual('LABEL');
+    const input = screen.getByPlaceholderText(
       props.placeholder
     ) as HTMLInputElement;
-    expect(ph.tagName).toEqual('INPUT');
-    expect(ph.value).toEqual(date.format(DISPLAY_DATETIME_FULL));
+    expect(input.tagName).toEqual('INPUT');
+    expect(input.value).toEqual(date.format(DISPLAY_DATETIME_FULL));
     expect(mockOnChange).not.toHaveBeenCalled();
   });
 
