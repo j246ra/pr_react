@@ -7,7 +7,7 @@ export interface Notify {
 
 const notify: Notify = {
   error: (message: string) => {
-    toast.error(message, { style: { color: 'red ' } });
+    toast.error(message, { style: { color: 'red' } });
   },
   success: (message: string) => {
     toast.success(message);

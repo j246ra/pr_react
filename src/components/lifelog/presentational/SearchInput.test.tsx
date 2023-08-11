@@ -134,7 +134,7 @@ describe('SearchInput', () => {
           expect(mockToast.error).toHaveBeenCalledWith(
             'Very dangerous error.',
             {
-              style: { color: 'red ' },
+              style: { color: 'red' },
             }
           );
         });

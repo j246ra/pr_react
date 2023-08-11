@@ -13,7 +13,7 @@ describe('toast', () => {
     notify.error('エラー');
     expect(mockToast.error).toHaveBeenCalled();
     expect(mockToast.error).toHaveBeenCalledWith('エラー', {
-      style: { color: 'red ' },
+      style: { color: 'red' },
     });
   });
 });
