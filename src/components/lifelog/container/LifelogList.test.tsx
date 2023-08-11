@@ -45,15 +45,13 @@ describe('LifelogList component', () => {
       deleteLog: jest.fn(),
       finishLog: jest.fn().mockReturnValue(Promise.resolve()),
     });
+
+    render(<LifelogList />);
   });
   it('LifelogListHeader component.', () => {
-    const { findByText } = render(<LifelogList />);
-    findByText('開始時間').then((element) => {
-      expect(element).not.toBeUndefined();
-    });
+    expect(screen.getByText('開始時間')).toBeInTheDocument();
   });
   it('LifelogItem component', () => {
-    render(<LifelogList />);
     const links = screen.getAllByTestId(/lifelog-item-link-text/);
     expect(links).toHaveLength(10);
     const contexts = links.map((td) => td.textContent);
@@ -63,7 +61,6 @@ describe('LifelogList component', () => {
   });
   it('Finish Button', async () => {
     const log = mockLogs[2];
-    render(<LifelogList />);
     const button = screen.getByTestId(`finish-button-${log.id}`);
     act(() => {
       userEvent.click(button);
@@ -76,7 +73,6 @@ describe('LifelogList component', () => {
     });
   });
   it('LifelogDetailDialog', async () => {
-    render(<LifelogList />);
     const testid = (id: string) => `lifelog-detail-dialog-${id}`;
     const log = mockLogs[5];
     const link = screen.getByTestId(`lifelog-item-link-text-${log.id}`);
@@ -94,7 +90,6 @@ describe('LifelogList component', () => {
   });
   it('LifelogEditDialog', async () => {
     const log = mockLogs[1];
-    render(<LifelogList />);
     expect(screen.queryAllByTestId('lifelog-edit-dialog')).toHaveLength(0);
     const button = screen.getByTestId(`edit-button-${log.id}`);
     act(() => {
