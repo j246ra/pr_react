@@ -15,10 +15,13 @@ import {
   mockUseSession,
   mockUseUser,
 } from '@src/tests/baseProviders';
+import toast from 'react-hot-toast';
 
+jest.mock('react-hot-toast');
 jest.mock('@providers/LifelogProvider');
 
 const mockUseLifelog = useLifelog as jest.MockedFunction<any>;
+const mockToast = jest.mocked(toast);
 
 let mockLogs: Lifelog[];
 describe('LifelogList component', () => {
@@ -40,6 +43,7 @@ describe('LifelogList component', () => {
       loadLogs: jest.fn(),
       newLog: lifelog,
       deleteLog: jest.fn(),
+      finishLog: jest.fn().mockReturnValue(Promise.resolve()),
     });
   });
   it('LifelogListHeader component.', () => {
@@ -55,6 +59,20 @@ describe('LifelogList component', () => {
     const contexts = links.map((td) => td.textContent);
     mockLogs.forEach((log) => {
       expect(contexts).toContain(log.action);
+    });
+  });
+  it('Finish Button', async () => {
+    const log = mockLogs[2];
+    render(<LifelogList />);
+    const button = screen.getByTestId(`finish-button-${log.id}`);
+    act(() => {
+      userEvent.click(button);
+    });
+    await waitFor(() => {
+      expect(mockToast.success).toHaveBeenCalled();
+      expect(mockToast.success).toHaveBeenCalledWith(
+        '行動時間を記録しました。'
+      );
     });
   });
   it('LifelogDetailDialog', async () => {
