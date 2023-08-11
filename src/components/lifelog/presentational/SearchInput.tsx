@@ -28,11 +28,16 @@ const SearchInput: React.FC<SearchInputProps> = ({ isShow, width = 260 }) => {
   };
 
   const searchButton = (
-    <Button icon={'search'} minimal={true} onClick={handleSearch}></Button>
+    <Button
+      data-testid={'search-input-button'}
+      icon={'search'}
+      minimal={true}
+      onClick={handleSearch}
+    ></Button>
   );
 
   return (
-    <div style={{ width }}>
+    <div style={{ width }} data-testid={'search-input'}>
       <InputGroup
         type={'search'}
         placeholder={'検索（行動、詳細）'}
