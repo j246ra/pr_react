@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import LifelogList from './LifelogList';
 import { useLifelog } from '@providers/LifelogProvider';
 import { lifelog, lifelogs } from '@lib/faker/lifelog';
@@ -41,32 +41,35 @@ describe('LifelogList component', () => {
     });
   });
   it('LifelogItem component', () => {
-    const { container } = render(<LifelogList />);
-    expect(
-      container.getElementsByClassName('app-link-text')[5]
-    ).toHaveTextContent(mockLogs[5].action);
-  });
-  it('LifelogDetailDialog', async () => {
-    const { getAllByTestId, findAllByText } = render(<LifelogList />);
-    await waitFor(() => {
-      const editButton = getAllByTestId('edit-button').pop();
-      expect(editButton).not.toBeUndefined();
-      if (editButton !== undefined) userEvent.click(editButton);
-    });
-    findAllByText(mockLogs[0].action).then((elements) => {
-      expect(elements.length).toEqual(1);
-      expect(elements[0]).toHaveTextContent(mockLogs[0].action);
+    render(<LifelogList />);
+    const links = screen.getAllByTestId(/lifelog-item-link-text/);
+    expect(links).toHaveLength(10);
+    const contexts = links.map((td) => td.textContent);
+    mockLogs.forEach((log) => {
+      expect(contexts).toContain(log.action);
     });
   });
   it('LifelogDetailDialog', async () => {
-    const { container, findAllByText } = render(<LifelogList />);
+    render(<LifelogList />);
+    const testid = (id: string) => `lifelog-detail-dialog-${id}`;
+    const log = mockLogs[5];
+    const link = screen.getByTestId(`lifelog-item-link-text-${log.id}`);
+    expect(screen.queryAllByTestId(testid('tbody'))).toHaveLength(0);
+    act(() => userEvent.click(link));
     await waitFor(() => {
-      const linkText = container.getElementsByClassName('app-link-text')[0];
-      userEvent.click(linkText);
+      expect(screen.queryAllByTestId(testid('tbody'))).toHaveLength(1);
     });
-    findAllByText(mockLogs[0].action).then((elements) => {
-      expect(elements.length).toEqual(1);
-      expect(elements[0]).toHaveTextContent(mockLogs[0].action);
+  });
+  it('LifelogEditDialog', async () => {
+    const log = mockLogs[1];
+    render(<LifelogList />);
+    expect(screen.queryAllByTestId('lifelog-edit-dialog')).toHaveLength(0);
+    const button = screen.getByTestId(`edit-button-${log.id}`);
+    act(() => {
+      userEvent.click(button);
+    });
+    await waitFor(() => {
+      expect(screen.queryAllByTestId('lifelog-edit-dialog')).toHaveLength(1);
     });
   });
 });

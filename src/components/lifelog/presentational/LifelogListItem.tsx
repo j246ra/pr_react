@@ -23,7 +23,11 @@ const LifelogListItem: React.FC<LifelogListItemProps> = ({
       <td style={{ fontWeight: log.finishedAt ? 'bold' : 'normal' }}>
         {dayjs(log.startedAt).format('YY/MM/DD HH:mm')}
       </td>
-      <td className={'app-link-text'} onClick={onActionClick}>
+      <td
+        data-testid={`lifelog-item-link-text-${log.id}`}
+        className={'app-link-text'}
+        onClick={onActionClick}
+      >
         {log.action}
       </td>
       <td
@@ -38,20 +42,20 @@ const LifelogListItem: React.FC<LifelogListItemProps> = ({
       </td>
       <td style={{ textAlign: 'center' }}>
         <Button
-          data-testid="finish-button"
+          data-testid={`finish-button-${log.id}`}
           intent={Intent.PRIMARY}
           icon={IconNames.STOPWATCH}
           onClick={onFinishButtonClick}
         />
         <Button
-          data-testid="edit-button"
+          data-testid={`edit-button-${log.id}`}
           intent={Intent.SUCCESS}
           style={{ marginLeft: '3px' }}
           icon={IconNames.EDIT}
           onClick={onEditButtonClick}
         />
         <Button
-          data-testid="delete-button"
+          data-testid={`delete-button-${log.id}`}
           intent={Intent.DANGER}
           style={{ marginLeft: '3px' }}
           icon={IconNames.DELETE}

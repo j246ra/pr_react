@@ -53,13 +53,13 @@ describe('LifelogListItem', () => {
     userEvent.click(getByText('Test action'));
     expect(mockOnAction).toHaveBeenCalled();
 
-    userEvent.click(getByTestId('finish-button'));
+    userEvent.click(getByTestId(/finish-button/));
     expect(mockOnFinish).toHaveBeenCalled();
 
-    userEvent.click(getByTestId('edit-button'));
+    userEvent.click(getByTestId(/edit-button/));
     expect(mockOnEdit).toHaveBeenCalled();
 
-    userEvent.click(getByTestId('delete-button'));
+    userEvent.click(getByTestId(/delete-button/));
     expect(mockOnDelete).toHaveBeenCalled();
   });
 });

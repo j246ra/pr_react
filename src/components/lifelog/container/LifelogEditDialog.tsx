@@ -45,59 +45,61 @@ const LifelogEditDialog: React.FC<LifelogEditDialogProps> = ({
 
   return (
     <Dialog isOpen={isOpen} onClose={handleCloseDialog}>
-      <DialogBody>
-        <FormGroup label={'行動内容'} labelFor={'lifelog-edit-action'}>
-          <InputGroup
-            id={'lifelog-edit-action'}
-            placeholder={'行動内容を入力してください。'}
-            value={lifelog.action}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setLifelog({ ...lifelog, action: e.target.value })
+      <div data-testid={'lifelog-edit-dialog'}>
+        <DialogBody>
+          <FormGroup label={'行動内容'} labelFor={'lifelog-edit-action'}>
+            <InputGroup
+              id={'lifelog-edit-action'}
+              placeholder={'行動内容を入力してください。'}
+              value={lifelog.action}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setLifelog({ ...lifelog, action: e.target.value })
+              }
+            />
+          </FormGroup>
+          <FormGroup label={'詳細'} labelFor={'lifelog-edit-detail'}>
+            <TextArea
+              placeholder={'詳細を入力してください。'}
+              fill={true}
+              rows={detailRows}
+              value={lifelog.detail}
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+                setLifelog({ ...lifelog, detail: e.target.value })
+              }
+            />
+          </FormGroup>
+          <DatetimeInput
+            label={'開始日時'}
+            placeholder={'開始日時'}
+            value={lifelog.startedAt}
+            onChange={(newDate: string | null) =>
+              setLifelog({ ...lifelog, startedAt: newDate ? newDate : '' })
             }
           />
-        </FormGroup>
-        <FormGroup label={'詳細'} labelFor={'lifelog-edit-detail'}>
-          <TextArea
-            placeholder={'詳細を入力してください。'}
-            fill={true}
-            rows={detailRows}
-            value={lifelog.detail}
-            onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-              setLifelog({ ...lifelog, detail: e.target.value })
+          <DatetimeInput
+            label={'終了日時'}
+            placeholder={'終了日時'}
+            value={lifelog.finishedAt}
+            onChange={(newDate: string | null) =>
+              setLifelog({
+                ...lifelog,
+                finishedAt: newDate ? newDate : undefined,
+              })
             }
           />
-        </FormGroup>
-        <DatetimeInput
-          label={'開始日時'}
-          placeholder={'開始日時'}
-          value={lifelog.startedAt}
-          onChange={(newDate: string | null) =>
-            setLifelog({ ...lifelog, startedAt: newDate ? newDate : '' })
+        </DialogBody>
+        <DialogFooter
+          actions={
+            <Button
+              style={{ minWidth: '80px', letterSpacing: '0.25em' }}
+              icon={IconNames.FloppyDisk}
+              onClick={handleUpdateLifelog}
+              intent={Intent.PRIMARY}
+              text={'保存'}
+            />
           }
         />
-        <DatetimeInput
-          label={'終了日時'}
-          placeholder={'終了日時'}
-          value={lifelog.finishedAt}
-          onChange={(newDate: string | null) =>
-            setLifelog({
-              ...lifelog,
-              finishedAt: newDate ? newDate : undefined,
-            })
-          }
-        />
-      </DialogBody>
-      <DialogFooter
-        actions={
-          <Button
-            style={{ minWidth: '80px', letterSpacing: '0.25em' }}
-            icon={IconNames.FloppyDisk}
-            onClick={handleUpdateLifelog}
-            intent={Intent.PRIMARY}
-            text={'保存'}
-          />
-        }
-      />
+      </div>
     </Dialog>
   );
 };
