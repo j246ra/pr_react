@@ -42,16 +42,16 @@ describe('LifelogList component', () => {
       logs: mockLogs,
       loadLogs: jest.fn(),
       newLog: lifelog,
-      deleteLog: jest.fn(),
+      deleteLog: jest.fn().mockReturnValue(Promise.resolve()),
       finishLog: jest.fn().mockReturnValue(Promise.resolve()),
     });
-
-    render(<LifelogList />);
   });
   it('LifelogListHeader component.', () => {
+    render(<LifelogList />);
     expect(screen.getByText('開始時間')).toBeInTheDocument();
   });
   it('LifelogItem component', () => {
+    render(<LifelogList />);
     const links = screen.getAllByTestId(/lifelog-item-link-text/);
     expect(links).toHaveLength(10);
     const contexts = links.map((td) => td.textContent);
@@ -60,6 +60,7 @@ describe('LifelogList component', () => {
     });
   });
   it('Finish Button', async () => {
+    render(<LifelogList />);
     const log = mockLogs[2];
     const button = screen.getByTestId(`finish-button-${log.id}`);
     act(() => {
@@ -72,7 +73,46 @@ describe('LifelogList component', () => {
       );
     });
   });
+  describe('Delete Button', () => {
+    let confirmSpay: jest.SpyInstance;
+    beforeEach(() => {
+      confirmSpay = jest.spyOn(global, 'confirm');
+    });
+    it('確認ダイアログ confirm でキャンセル時は何もしないこと', async () => {
+      confirmSpay.mockReturnValue(false);
+      const log = mockLogs[4];
+      render(<LifelogList />);
+      act(() => userEvent.click(screen.getByTestId(`delete-button-${log.id}`)));
+      await waitFor(() => {
+        expect(mockToast.success).not.toHaveBeenCalled();
+      });
+    });
+    it('確認ダイアログ OK 時は削除処理を実行すること', async () => {
+      confirmSpay.mockReturnValue(true);
+      const log = mockLogs[3];
+      render(<LifelogList />);
+      act(() => userEvent.click(screen.getByTestId(`delete-button-${log.id}`)));
+      await waitFor(() => {
+        expect(mockToast.success).toHaveBeenCalled();
+        expect(mockToast.success).toHaveBeenCalledWith('削除成功');
+      });
+    });
+    it('削除処理失敗時はエラーメッセージを通知していること', async () => {
+      useLifelog().deleteLog = jest.fn().mockRejectedValue(new Error('error!'));
+      confirmSpay.mockReturnValue(true);
+      const log = mockLogs[3];
+      render(<LifelogList />);
+      act(() => userEvent.click(screen.getByTestId(`delete-button-${log.id}`)));
+      await waitFor(() => {
+        expect(mockToast.error).toHaveBeenCalled();
+        expect(mockToast.error).toHaveBeenCalledWith('error!', {
+          style: { color: 'red' },
+        });
+      });
+    });
+  });
   it('LifelogDetailDialog', async () => {
+    render(<LifelogList />);
     const testid = (id: string) => `lifelog-detail-dialog-${id}`;
     const log = mockLogs[5];
     const link = screen.getByTestId(`lifelog-item-link-text-${log.id}`);
@@ -89,6 +129,7 @@ describe('LifelogList component', () => {
     });
   });
   it('LifelogEditDialog', async () => {
+    render(<LifelogList />);
     const log = mockLogs[1];
     expect(screen.queryAllByTestId('lifelog-edit-dialog')).toHaveLength(0);
     const button = screen.getByTestId(`edit-button-${log.id}`);
