@@ -7,7 +7,7 @@ import {
   waitFor,
 } from '@testing-library/react';
 import LifelogList from './LifelogList';
-import { useLifelog } from '@providers/LifelogProvider';
+import { Lifelog, useLifelog } from '@providers/LifelogProvider';
 import { lifelog, lifelogs } from '@lib/faker/lifelog';
 import userEvent from '@testing-library/user-event';
 import {
@@ -20,9 +20,11 @@ jest.mock('@providers/LifelogProvider');
 
 const mockUseLifelog = useLifelog as jest.MockedFunction<any>;
 
-const mockLogs = lifelogs(10);
+let mockLogs: Lifelog[];
 describe('LifelogList component', () => {
   beforeEach(() => {
+    mockLogs = lifelogs(10);
+
     mockUseSession.mockReturnValue({
       removeToken: jest.fn(),
     });
