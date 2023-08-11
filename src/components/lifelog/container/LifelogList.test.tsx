@@ -1,5 +1,11 @@
 import React from 'react';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import LifelogList from './LifelogList';
 import { useLifelog } from '@providers/LifelogProvider';
 import { lifelog, lifelogs } from '@lib/faker/lifelog';
@@ -59,6 +65,12 @@ describe('LifelogList component', () => {
     await waitFor(() => {
       expect(screen.queryAllByTestId(testid('tbody'))).toHaveLength(1);
     });
+    fireEvent.keyDown(screen.getByTestId(testid('tbody')), {
+      key: 'Escape',
+    });
+    await waitFor(() => {
+      expect(screen.queryAllByTestId(testid('tbody'))).toHaveLength(0);
+    });
   });
   it('LifelogEditDialog', async () => {
     const log = mockLogs[1];
@@ -70,6 +82,12 @@ describe('LifelogList component', () => {
     });
     await waitFor(() => {
       expect(screen.queryAllByTestId('lifelog-edit-dialog')).toHaveLength(1);
+    });
+    fireEvent.keyDown(screen.getByTestId('lifelog-edit-dialog'), {
+      key: 'Escape',
+    });
+    await waitFor(() => {
+      expect(screen.queryAllByTestId('lifelog-edit-dialog')).toHaveLength(0);
     });
   });
 });
