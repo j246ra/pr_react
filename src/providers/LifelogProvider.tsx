@@ -5,6 +5,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 import lifelog, { CreatParams, UpdateParams } from '@lib/api/lifelog';
 import lifelogUtil from '@lib/lifelogUtil';
 import { days, DATETIME_FULL } from '@lib/dateUtil';
+import { LifelogDetailDialogProps } from '@lifelog/container/LifelogDetailDialog';
 
 export type Lifelog = {
   id: number;
@@ -30,6 +31,11 @@ type LifelogContextType = {
   clear: () => void;
 };
 
+type LifelogDetailDialogContextType = {
+  openDetailDialog: (log: Lifelog) => void;
+  detailDialogProps: LifelogDetailDialogProps;
+};
+
 const LifelogContext = createContext<LifelogContextType | undefined>(undefined);
 
 export const useLifelog = (): LifelogContextType => {
@@ -39,6 +45,12 @@ export const useLifelog = (): LifelogContextType => {
   }
   return context;
 };
+
+const LifelogDetailDialogContext = createContext(
+  {} as LifelogDetailDialogContextType
+);
+export const useLifelogDetailDialog = () =>
+  useContext(LifelogDetailDialogContext);
 
 export type LifelogProviderProps = {
   children: ReactNode;
@@ -50,6 +62,11 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   const { getHeaders, setToken } = useSession();
   const { clearUser } = useUser();
   const { sort: sortLog } = lifelogUtil();
+
+  // for LifelogDetailDialog.
+  const [isOpenDetailDialog, setIsOpenDetailDialog] = useState(false);
+  const [detailLog, setDetailLog] = useState<Lifelog>();
+
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
     setToken(response);
     return response;
@@ -154,6 +171,22 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     setSearchWord('');
   };
 
+  const openDetailDialog = (log: Lifelog) => {
+    if (isOpenDetailDialog) return;
+    setIsOpenDetailDialog(true);
+    setDetailLog(log);
+  };
+
+  const closeDetailDialog = () => {
+    setIsOpenDetailDialog(false);
+  };
+
+  const detailDialogProps: LifelogDetailDialogProps = {
+    log: detailLog,
+    isOpen: isOpenDetailDialog,
+    handleCloseDialog: closeDetailDialog,
+  };
+
   return (
     <LifelogContext.Provider
       value={{
@@ -169,7 +202,14 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
         clear,
       }}
     >
-      {children}
+      <LifelogDetailDialogContext.Provider
+        value={{
+          openDetailDialog,
+          detailDialogProps,
+        }}
+      >
+        {children}
+      </LifelogDetailDialogContext.Provider>
     </LifelogContext.Provider>
   );
 }
