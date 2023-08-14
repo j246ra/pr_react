@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { HTMLTable, Intent, Spinner, SpinnerSize } from '@blueprintjs/core';
 import {
-  Lifelog,
   useLifelog,
   useLifelogDetailDialog,
   useLifelogEditDialog,
@@ -11,11 +10,13 @@ import notify from '@lib/toast';
 import LifelogListItem from '@lifelog/presentational/LifelogListItem';
 import LifelogListHeader from '@lifelog/presentational/LifelogListHeader';
 import useDeleteLifelog from '@src/hooks/useDeleteLifelog';
+import useFinishAction from '@src/hooks/useFinishAction';
 
 const LifelogList = () => {
-  const { logs, loadLogs, finishLog } = useLifelog();
+  const { logs, loadLogs } = useLifelog();
   const { openDetailDialog: handleOpenDetailDialog } = useLifelogDetailDialog();
   const handleDeleteLifelog = useDeleteLifelog();
+  const handleFinishLifelog = useFinishAction();
   const { openEditDialog: handleOpenEditDialog } = useLifelogEditDialog();
   const [hasMore, setHasMore] = useState(true);
 
@@ -27,10 +28,6 @@ const LifelogList = () => {
       .catch((e) => {
         notify.error(e.message);
       });
-  };
-
-  const handleFinishLifelog = (lifelog: Lifelog) => {
-    finishLog(lifelog).then(() => notify.success('行動時間を記録しました。'));
   };
 
   return (
