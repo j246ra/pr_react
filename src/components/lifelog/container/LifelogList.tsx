@@ -10,10 +10,12 @@ import {
 import notify from '@lib/toast';
 import LifelogListItem from '@lifelog/presentational/LifelogListItem';
 import LifelogListHeader from '@lifelog/presentational/LifelogListHeader';
+import useDeleteLifelog from '@src/hooks/useDeleteLifelog';
 
 const LifelogList = () => {
-  const { logs, loadLogs, finishLog, deleteLog } = useLifelog();
+  const { logs, loadLogs, finishLog } = useLifelog();
   const { openDetailDialog: handleOpenDetailDialog } = useLifelogDetailDialog();
+  const handleDeleteLifelog = useDeleteLifelog();
   const { openEditDialog: handleOpenEditDialog } = useLifelogEditDialog();
   const [hasMore, setHasMore] = useState(true);
 
@@ -29,17 +31,6 @@ const LifelogList = () => {
 
   const handleFinishLifelog = (lifelog: Lifelog) => {
     finishLog(lifelog).then(() => notify.success('行動時間を記録しました。'));
-  };
-
-  const handleDeleteLifelog = (logId: number) => {
-    if (!confirm('本当に削除しますか？')) return;
-    deleteLog(logId)
-      .then(() => {
-        notify.success('削除成功');
-      })
-      .catch((e) => {
-        notify.error(e?.message);
-      });
   };
 
   return (
