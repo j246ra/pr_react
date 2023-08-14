@@ -1,16 +1,11 @@
 import React from 'react';
-import {
-  act,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-} from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import LifelogList from './LifelogList';
 import {
   Lifelog,
   useLifelog,
   useLifelogDetailDialog,
+  useLifelogEditDialog,
 } from '@providers/LifelogProvider';
 import { lifelog, lifelogs } from '@lib/faker/lifelog';
 import userEvent from '@testing-library/user-event';
@@ -27,6 +22,8 @@ jest.mock('@providers/LifelogProvider');
 const mockUseLifelog = useLifelog as jest.MockedFunction<any>;
 const mockUseLifelogDetailDialog =
   useLifelogDetailDialog as jest.MockedFunction<any>;
+const mockUseLifelogEditDialog =
+  useLifelogEditDialog as jest.MockedFunction<any>;
 const mockToast = jest.mocked(toast);
 
 let mockLogs: Lifelog[];
@@ -53,6 +50,9 @@ describe('LifelogList component', () => {
     });
     mockUseLifelogDetailDialog.mockReturnValue({
       openDetailDialog: jest.fn(),
+    });
+    mockUseLifelogEditDialog.mockReturnValue({
+      openEditDialog: jest.fn(),
     });
   });
   it('LifelogListHeader component.', () => {
@@ -140,13 +140,7 @@ describe('LifelogList component', () => {
       userEvent.click(button);
     });
     await waitFor(() => {
-      expect(screen.queryAllByTestId('lifelog-edit-dialog')).toHaveLength(1);
-    });
-    fireEvent.keyDown(screen.getByTestId('lifelog-edit-dialog'), {
-      key: 'Escape',
-    });
-    await waitFor(() => {
-      expect(screen.queryAllByTestId('lifelog-edit-dialog')).toHaveLength(0);
+      expect(mockUseLifelogEditDialog().openEditDialog).toHaveBeenCalled();
     });
   });
 });

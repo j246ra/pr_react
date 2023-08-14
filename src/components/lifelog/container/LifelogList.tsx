@@ -5,19 +5,17 @@ import {
   Lifelog,
   useLifelog,
   useLifelogDetailDialog,
+  useLifelogEditDialog,
 } from '@providers/LifelogProvider';
 import notify from '@lib/toast';
 import LifelogListItem from '@lifelog/presentational/LifelogListItem';
 import LifelogListHeader from '@lifelog/presentational/LifelogListHeader';
-import LifelogEditDialog from '@lifelog/container/LifelogEditDialog';
 
 const LifelogList = () => {
-  const { logs, loadLogs, newLog, finishLog, deleteLog } = useLifelog();
+  const { logs, loadLogs, finishLog, deleteLog } = useLifelog();
   const { openDetailDialog: handleOpenDetailDialog } = useLifelogDetailDialog();
+  const { openEditDialog: handleOpenEditDialog } = useLifelogEditDialog();
   const [hasMore, setHasMore] = useState(true);
-
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [editLog, setEditLog] = useState<Lifelog>(newLog());
 
   const lifelogLoader = () => {
     loadLogs()
@@ -33,16 +31,6 @@ const LifelogList = () => {
     finishLog(lifelog).then(() => notify.success('行動時間を記録しました。'));
   };
 
-  const handleOpenEditDialog = (lifelog: Lifelog) => {
-    setIsEditDialogOpen(true);
-    setEditLog(lifelog);
-  };
-
-  const handleCloseEditDialog = () => {
-    setIsEditDialogOpen(false);
-    setEditLog(newLog());
-  };
-
   const handleDeleteLifelog = (logId: number) => {
     if (!confirm('本当に削除しますか？')) return;
     deleteLog(logId)
@@ -56,11 +44,6 @@ const LifelogList = () => {
 
   return (
     <>
-      <LifelogEditDialog
-        isOpen={isEditDialogOpen}
-        handleCloseDialog={handleCloseEditDialog}
-        log={editLog}
-      />
       <HTMLTable bordered={false} style={{ width: '100%' }}>
         <LifelogListHeader />
         <InfiniteScroll
