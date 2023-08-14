@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { HTMLTable, Intent, Spinner, SpinnerSize } from '@blueprintjs/core';
-import { Lifelog, useLifelog } from '@providers/LifelogProvider';
+import {
+  useLifelog,
+  useLifelogDetailDialog,
+  useLifelogEditDialog,
+} from '@providers/LifelogProvider';
 import notify from '@lib/toast';
 import LifelogListItem from '@lifelog/presentational/LifelogListItem';
 import LifelogListHeader from '@lifelog/presentational/LifelogListHeader';
-import LifelogDetailDialog from '@lifelog/container/LifelogDetailDialog';
-import LifelogEditDialog from '@lifelog/container/LifelogEditDialog';
+import useDeleteLifelog from '@src/hooks/useDeleteLifelog';
+import useFinishAction from '@src/hooks/useFinishAction';
 
 const LifelogList = () => {
-  const { logs, loadLogs, newLog, finishLog, deleteLog } = useLifelog();
+  const { logs, loadLogs } = useLifelog();
+  const { openDetailDialog: handleOpenDetailDialog } = useLifelogDetailDialog();
+  const handleDeleteLifelog = useDeleteLifelog();
+  const handleFinishLifelog = useFinishAction();
+  const { openEditDialog: handleOpenEditDialog } = useLifelogEditDialog();
   const [hasMore, setHasMore] = useState(true);
-
-  const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
-  const [detailLog, setDetailLog] = useState<undefined | Lifelog>(undefined);
-
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [editLog, setEditLog] = useState<Lifelog>(newLog());
 
   const lifelogLoader = () => {
     loadLogs()
@@ -28,53 +30,8 @@ const LifelogList = () => {
       });
   };
 
-  const handleFinishLifelog = (lifelog: Lifelog) => {
-    finishLog(lifelog).then(() => notify.success('行動時間を記録しました。'));
-  };
-
-  const handleOpenEditDialog = (lifelog: Lifelog) => {
-    setIsEditDialogOpen(true);
-    setEditLog(lifelog);
-  };
-
-  const handleCloseEditDialog = () => {
-    setIsEditDialogOpen(false);
-    setEditLog(newLog());
-  };
-
-  const handleDeleteLifelog = (logId: number) => {
-    if (!confirm('本当に削除しますか？')) return;
-    deleteLog(logId)
-      .then(() => {
-        notify.success('削除成功');
-      })
-      .catch((e) => {
-        notify.error(e?.message);
-      });
-  };
-
-  const handleOpenDetailDialog = (lifelog: Lifelog) => {
-    setIsDetailDialogOpen(true);
-    setDetailLog(lifelog);
-  };
-
-  const handleCloseDetailDialog = () => {
-    setIsDetailDialogOpen(false);
-    setDetailLog(undefined);
-  };
-
   return (
     <>
-      <LifelogDetailDialog
-        isOpen={isDetailDialogOpen}
-        handleCloseDialog={handleCloseDetailDialog}
-        log={detailLog}
-      />
-      <LifelogEditDialog
-        isOpen={isEditDialogOpen}
-        handleCloseDialog={handleCloseEditDialog}
-        log={editLog}
-      />
       <HTMLTable bordered={false} style={{ width: '100%' }}>
         <LifelogListHeader />
         <InfiniteScroll

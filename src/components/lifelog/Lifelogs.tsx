@@ -4,11 +4,19 @@ import { useUser } from '@providers/UserProvider';
 import notify from '@lib/toast';
 import { useNavigate } from 'react-router-dom';
 import ContextInput from '@lifelog/presentational/ContextInput';
-import { useLifelog } from '@providers/LifelogProvider';
+import {
+  useLifelog,
+  useLifelogDetailDialog,
+  useLifelogEditDialog,
+} from '@providers/LifelogProvider';
+import LifelogDetailDialog from '@lifelog/container/LifelogDetailDialog';
+import LifelogEditDialog from '@lifelog/container/LifelogEditDialog';
 
 const Lifelogs: React.FC = () => {
   const { isLogin } = useUser();
   const { createLogByContext } = useLifelog();
+  const { detailDialogProps } = useLifelogDetailDialog();
+  const { editDialogProps } = useLifelogEditDialog();
   const navigate = useNavigate();
   const [context, setContext] = useState<string>('');
 
@@ -31,6 +39,8 @@ const Lifelogs: React.FC = () => {
 
   return (
     <>
+      <LifelogDetailDialog {...detailDialogProps} />
+      <LifelogEditDialog {...editDialogProps} />
       <ContextInput
         onSubmit={handleCreateLifelog}
         value={context}

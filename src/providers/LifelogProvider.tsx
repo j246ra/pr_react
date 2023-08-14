@@ -5,6 +5,8 @@ import { AxiosError, AxiosResponse } from 'axios';
 import lifelog, { CreatParams, UpdateParams } from '@lib/api/lifelog';
 import lifelogUtil from '@lib/lifelogUtil';
 import { days, DATETIME_FULL } from '@lib/dateUtil';
+import { LifelogDetailDialogProps } from '@lifelog/container/LifelogDetailDialog';
+import { LifelogEditDialogProps } from '@lifelog/container/LifelogEditDialog';
 
 export type Lifelog = {
   id: number;
@@ -30,6 +32,16 @@ type LifelogContextType = {
   clear: () => void;
 };
 
+type LifelogDetailDialogContextType = {
+  openDetailDialog: (log: Lifelog) => void;
+  detailDialogProps: LifelogDetailDialogProps;
+};
+
+type LifelogEditDialogContextType = {
+  openEditDialog: (log: Lifelog) => void;
+  editDialogProps: LifelogEditDialogProps;
+};
+
 const LifelogContext = createContext<LifelogContextType | undefined>(undefined);
 
 export const useLifelog = (): LifelogContextType => {
@@ -40,9 +52,34 @@ export const useLifelog = (): LifelogContextType => {
   return context;
 };
 
+const LifelogDetailDialogContext = createContext(
+  {} as LifelogDetailDialogContextType
+);
+export const useLifelogDetailDialog = () =>
+  useContext(LifelogDetailDialogContext);
+
+const LifelogEditDialogContext = createContext(
+  {} as LifelogEditDialogContextType
+);
+export const useLifelogEditDialog = () => useContext(LifelogEditDialogContext);
+
 export type LifelogProviderProps = {
   children: ReactNode;
 };
+
+const newLifelog = (): Lifelog => {
+  return {
+    id: -1,
+    userId: -1,
+    action: '',
+    detail: undefined,
+    startedAt: '',
+    finishedAt: undefined,
+    createdAt: '',
+    updatedAt: '',
+  };
+};
+
 export default function LifelogProvider({ children }: LifelogProviderProps) {
   const [logs, setLogs] = useState<Lifelog[]>([]);
   const [searchWord, setSearchWord] = useState('');
@@ -50,6 +87,15 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   const { getHeaders, setToken } = useSession();
   const { clearUser } = useUser();
   const { sort: sortLog } = lifelogUtil();
+
+  // for LifelogDetailDialog.
+  const [isOpenDetailDialog, setIsOpenDetailDialog] = useState(false);
+  const [detailLog, setDetailLog] = useState<Lifelog>();
+
+  // for LifelogEditDialog.
+  const [isOpenEditDialog, setIsOpenEditDialog] = useState(false);
+  const [editLog, setEditLog] = useState<Lifelog>(newLifelog());
+
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
     setToken(response);
     return response;
@@ -82,18 +128,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     setLogs([...logs, ...lifelogs]);
   };
 
-  const newLog = (): Lifelog => {
-    return {
-      id: -1,
-      userId: -1,
-      action: '',
-      detail: undefined,
-      startedAt: '',
-      finishedAt: undefined,
-      createdAt: '',
-      updatedAt: '',
-    };
-  };
+  const newLog = newLifelog;
 
   const createLog = async (params: CreatParams) => {
     const r = await api.create(params);
@@ -154,6 +189,38 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     setSearchWord('');
   };
 
+  const openDetailDialog = (log: Lifelog) => {
+    if (isOpenDetailDialog) return;
+    setIsOpenDetailDialog(true);
+    setDetailLog(log);
+  };
+
+  const closeDetailDialog = () => {
+    setIsOpenDetailDialog(false);
+  };
+
+  const detailDialogProps: LifelogDetailDialogProps = {
+    log: detailLog,
+    isOpen: isOpenDetailDialog,
+    handleCloseDialog: closeDetailDialog,
+  };
+
+  const openEditDialog = (log: Lifelog) => {
+    if (isOpenEditDialog) return;
+    setIsOpenEditDialog(true);
+    setEditLog(log);
+  };
+
+  const closeEditDialog = () => {
+    setIsOpenEditDialog(false);
+  };
+
+  const editDialogProps: LifelogEditDialogProps = {
+    log: editLog,
+    isOpen: isOpenEditDialog,
+    handleCloseDialog: closeEditDialog,
+  };
+
   return (
     <LifelogContext.Provider
       value={{
@@ -169,7 +236,21 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
         clear,
       }}
     >
-      {children}
+      <LifelogDetailDialogContext.Provider
+        value={{
+          openDetailDialog,
+          detailDialogProps,
+        }}
+      >
+        <LifelogEditDialogContext.Provider
+          value={{
+            openEditDialog,
+            editDialogProps,
+          }}
+        >
+          {children}
+        </LifelogEditDialogContext.Provider>
+      </LifelogDetailDialogContext.Provider>
     </LifelogContext.Provider>
   );
 }
