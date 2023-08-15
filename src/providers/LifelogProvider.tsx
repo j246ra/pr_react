@@ -84,7 +84,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   const [logs, setLogs] = useState<Lifelog[]>([]);
   const [searchWord, setSearchWord] = useState('');
   const [page, setPage] = useState(0);
-  const { getHeaders, setToken } = useSession();
+  const { getHeaders, setHeaders } = useSession();
   const { clearUser } = useUser();
   const { sort: sortLog } = lifelogUtil();
 
@@ -97,7 +97,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   const [editLog, setEditLog] = useState<Lifelog>(newLifelog());
 
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
-    setToken(response);
+    setHeaders(response);
     return response;
   };
   const errorInterceptor = (error: AxiosError): Promise<never> => {

@@ -23,10 +23,10 @@ type Data = {
 };
 
 export default function AuthApiProvider({ children }: AuthApiProviderProps) {
-  const { getHeaders, setToken } = useSession();
+  const { getHeaders, setHeaders } = useSession();
   const { user, updateUser } = useUser();
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
-    setToken(response);
+    setHeaders(response);
     if (user.email !== response.headers['uid'])
       updateUser(response.headers['uid']);
     return response;

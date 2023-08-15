@@ -11,7 +11,7 @@ import { PasswordInput } from '@presentational/PasswordInput';
 
 const PasswordEdit: React.FC = () => {
   const navigate = useNavigate();
-  const { setToken } = useSession();
+  const { setHeaders } = useSession();
   const { authApi: api } = useAuth();
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
@@ -23,7 +23,7 @@ const PasswordEdit: React.FC = () => {
       client: params.get('client') || undefined,
       uid: params.get('uid') || undefined,
     };
-    setToken(headers);
+    setHeaders(headers);
   }, [params]);
 
   const handlePasswordConfirmation = (e: FormEvent) => {

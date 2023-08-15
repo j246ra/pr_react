@@ -37,7 +37,7 @@ const ChildComponent: React.FC<ChildComponentProps> = ({
   headers,
   uid,
 }) => {
-  const { initCookieByUid, getHeaders, hasToken, setToken, removeToken } =
+  const { initCookieByUid, getHeaders, hasToken, setHeaders, removeToken } =
     useSession();
   useEffect(() => {
     switch (methodType) {
@@ -45,7 +45,7 @@ const ChildComponent: React.FC<ChildComponentProps> = ({
         if (uid) initCookieByUid(uid);
         return;
       case 'set':
-        if (headers) setToken(headers);
+        if (headers) setHeaders(headers);
         return;
       case 'remove':
         removeToken();
@@ -146,7 +146,7 @@ describe('SessionProvider', () => {
     });
   });
 
-  describe('setToken 検証', () => {
+  describe('setHeaders 検証', () => {
     it('引数の型が Headers の場合に正しく cookie へ保存されている', () => {
       const headerToken = {
         'access-token': 'TOKEN-001',

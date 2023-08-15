@@ -13,7 +13,7 @@ import dayjs from 'dayjs';
 import { DATETIME_FULL } from '@lib/dateUtil';
 import lifelogApiMocks from '@src/tests/lifelogApiMocks';
 
-let mockSetToken: jest.SpyInstance<unknown>;
+let mockSetHeaders: jest.SpyInstance<unknown>;
 let mockClearUser: jest.SpyInstance<unknown>;
 
 const {
@@ -25,18 +25,18 @@ const {
 
 describe('LifelogProvider', () => {
   beforeEach(() => {
-    mockSetToken = jest.fn();
+    mockSetHeaders = jest.fn();
     mockClearUser = jest.fn();
     mockUseSession.mockReturnValue({
       getHeaders: jest.fn(),
-      setToken: mockSetToken,
+      setHeaders: mockSetHeaders,
     });
     mockUseUser.mockReturnValue({
       clearUser: mockClearUser,
     });
   });
   afterEach(() => {
-    mockSetToken.mockClear();
+    mockSetHeaders.mockClear();
   });
 
   it('子要素がレンダリングされる', () => {
@@ -64,7 +64,7 @@ describe('LifelogProvider', () => {
     afterAll(() => server.close());
 
     describe('Axios Interceptor with loadLogs().', () => {
-      it('status 200 の場合、setToken() にてセッション情報を更新する', async () => {
+      it('status 200 の場合、setHeaders() にてセッション情報を更新する', async () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });
 
         expect(result.current.logs).toHaveLength(0);
@@ -73,7 +73,7 @@ describe('LifelogProvider', () => {
         });
         await waitFor(() => {
           expect(result.current.logs).toHaveLength(10);
-          expect(mockSetToken).toBeCalled();
+          expect(mockSetHeaders).toBeCalled();
         });
       });
 

@@ -20,7 +20,7 @@ describe('AuthApiProvider', () => {
   beforeEach(() => {
     mockUseSession.mockReturnValue({
       getHeaders: jest.fn(),
-      setToken: jest.fn(),
+      setHeaders: jest.fn(),
     });
     mockUseUser.mockReturnValue({
       user: mockUser,
@@ -85,7 +85,7 @@ describe('AuthApiProvider', () => {
         );
         await waitFor(() => {
           expect(getByTestId('sign-in')).toBeInTheDocument();
-          expect(mockUseSession().setToken).toBeCalled();
+          expect(mockUseSession().setHeaders).toBeCalled();
           expect(mockUseUser().updateUser).toBeCalled();
           expect(mockUseUser().updateUser).toBeCalledWith(responseUid);
           expect(notifySpy).not.toBeCalled();
@@ -101,7 +101,7 @@ describe('AuthApiProvider', () => {
         );
         await waitFor(() => {
           expect(getByTestId('sign-in')).toBeInTheDocument();
-          expect(mockUseSession().setToken).toBeCalled();
+          expect(mockUseSession().setHeaders).toBeCalled();
           expect(mockUseUser().updateUser).not.toBeCalled();
           expect(notifySpy).not.toBeCalled();
         });
@@ -134,7 +134,7 @@ describe('AuthApiProvider', () => {
             expect(getByTestId('sign-in').textContent).toEqual(
               'Request failed.'
             );
-            expect(mockUseSession().setToken).not.toBeCalled();
+            expect(mockUseSession().setHeaders).not.toBeCalled();
             expect(notifySpy).toBeCalled();
             expect(notifySpy).toBeCalledWith('error message 1');
             expect(notifySpy).toBeCalledWith('error message 2');
@@ -160,7 +160,7 @@ describe('AuthApiProvider', () => {
           );
           await waitFor(() => {
             expect(getByTestId('sign-in')).toBeInTheDocument();
-            expect(mockUseSession().setToken).not.toBeCalled();
+            expect(mockUseSession().setHeaders).not.toBeCalled();
             expect(notifySpy).toBeCalled();
             expect(notifySpy).toBeCalledWith(
               expect.stringMatching('想定外のエラーが発生しました')

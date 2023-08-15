@@ -14,7 +14,7 @@ const mockUseAuth = useAuth as jest.MockedFunction<any>;
 describe('PasswordEdit component', () => {
   beforeEach(() => {
     mockUseSession.mockReturnValue({
-      setToken: jest.fn(),
+      setHeaders: jest.fn(),
     });
 
     mockUseAuth.mockReturnValue({
