@@ -84,9 +84,11 @@ describe('SessionProvider', () => {
         </SessionProvider>
       );
 
-      expect(getByTestId('uid').textContent).toEqual('uid');
-      expect(getByTestId('token').textContent).toEqual('access-token');
-      expect(getByTestId('client').textContent).toEqual('client');
+      expect(getByTestId('uid').textContent).toEqual(initToken.uid);
+      expect(getByTestId('token').textContent).toEqual(
+        initToken['access-token']
+      );
+      expect(getByTestId('client').textContent).toEqual(initToken.client);
       expect(mockSetCookie).toHaveBeenCalledTimes(1);
       expect(mockSetCookie).toHaveBeenCalledWith('token', { uid: 'UID001' });
     });

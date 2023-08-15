@@ -11,7 +11,7 @@ export interface UserParams {
 }
 
 export default function session(
-  headers: Headers,
+  headers: () => Headers,
   responseInterceptor?: ResponseInterceptor,
   errorInterceptor?: ErrorInterceptor
 ) {
@@ -23,10 +23,11 @@ export default function session(
   const signUp = (email: string, password: string) =>
     client.post('/auth', { email, password });
   const updateUser = (params: UserParams) =>
-    client.put('/auth', params, { headers });
-  const signOut = () => client.delete('/auth/sign_out', { headers });
-  const deleteUser = () => client.delete('/auth', { headers });
-  const validate = () => client.get('/auth/validate_token', { headers });
+    client.put('/auth', params, { headers: headers() });
+  const signOut = () => client.delete('/auth/sign_out', { headers: headers() });
+  const deleteUser = () => client.delete('/auth', { headers: headers() });
+  const validate = () =>
+    client.get('/auth/validate_token', { headers: headers() });
   const passwordForget = (email: string) =>
     client.post('/auth/password', {
       email,
@@ -36,7 +37,7 @@ export default function session(
     client.put(
       '/auth/password',
       { password, password_confirmation: passwordConfirmation },
-      { headers }
+      { headers: headers() }
     );
 
   return {

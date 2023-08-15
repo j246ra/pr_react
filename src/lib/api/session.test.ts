@@ -6,7 +6,9 @@ jest.mock('./client');
 const mockedClient = client as jest.Mocked<typeof client>;
 
 describe('session APIの呼び出し検証', () => {
-  const headers = { 'access-token': 'token', client: 'client', uid: 'uid' };
+  const headers = () => {
+    return { 'access-token': 'token', client: 'client', uid: 'uid' };
+  };
 
   beforeEach(() => {
     mockedClient.post.mockReset();
@@ -48,7 +50,7 @@ describe('session APIの呼び出し検証', () => {
     await updateUser(userParams);
 
     expect(mockedClient.put).toHaveBeenCalledWith('/auth', userParams, {
-      headers,
+      headers: headers(),
     });
   });
 
@@ -57,7 +59,7 @@ describe('session APIの呼び出し検証', () => {
     await signOut();
 
     expect(mockedClient.delete).toHaveBeenCalledWith('/auth/sign_out', {
-      headers,
+      headers: headers(),
     });
   });
 
@@ -66,7 +68,7 @@ describe('session APIの呼び出し検証', () => {
     await deleteUser();
 
     expect(mockedClient.delete).toHaveBeenCalledWith('/auth', {
-      headers,
+      headers: headers(),
     });
   });
 
@@ -75,7 +77,7 @@ describe('session APIの呼び出し検証', () => {
     await validate();
 
     expect(mockedClient.get).toHaveBeenCalledWith('/auth/validate_token', {
-      headers,
+      headers: headers(),
     });
   });
 
@@ -102,7 +104,7 @@ describe('session APIの呼び出し検証', () => {
         password: password,
         password_confirmation: passwordConfirmation,
       },
-      { headers }
+      { headers: headers() }
     );
   });
 });
