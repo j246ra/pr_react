@@ -9,17 +9,8 @@ interface AuthApiContextProps {
   authApi: ReturnType<typeof session>;
 }
 
-const AuthApiContext = createContext<AuthApiContextProps | undefined>(
-  undefined
-);
-
-export const useAuth = (): AuthApiContextProps => {
-  const context = useContext(AuthApiContext);
-  if (!context) {
-    throw new Error('useAuth must be used within a AuthApiProvider');
-  }
-  return context;
-};
+const AuthApiContext = createContext({} as AuthApiContextProps);
+export const useAuth = (): AuthApiContextProps => useContext(AuthApiContext);
 
 interface AuthApiProviderProps {
   children: ReactNode;
