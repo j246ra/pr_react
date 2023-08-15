@@ -7,7 +7,7 @@ import * as SessionContext from './SessionProvider';
 import { useSession } from './SessionProvider';
 import React, { useEffect } from 'react';
 let sessionSpy: jest.SpyInstance<unknown>;
-const initCookieByUidSpy = jest.fn();
+const initializeByUidSpy = jest.fn();
 const getHeaderSpy = jest.fn().mockImplementation(() => {
   return { uid: 'test666@example.com' };
 });
@@ -16,7 +16,7 @@ beforeEach(() => {
   sessionSpy = jest.spyOn(SessionContext, 'useSession');
   sessionSpy.mockImplementation(() => {
     return {
-      initCookieByUid: initCookieByUidSpy,
+      initializeByUid: initializeByUidSpy,
       getHeaders: getHeaderSpy,
       hasToken: hasTokenSpy,
     };
@@ -51,7 +51,7 @@ describe('UserProvider', () => {
       </UserProvider>
     );
     expect(getByTestId('email').textContent).toEqual(email);
-    expect(initCookieByUidSpy).toHaveBeenCalledWith(email);
+    expect(initializeByUidSpy).toHaveBeenCalledWith(email);
   });
 
   it('updateUser 検証', () => {

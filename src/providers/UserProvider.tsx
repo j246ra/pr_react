@@ -21,14 +21,14 @@ type Props = {
 };
 
 const UserProvider: React.FC<Props> = ({ children }) => {
-  const { initCookieByUid, getHeaders, hasToken } = useSession();
+  const { initializeByUid, getHeaders, hasToken } = useSession();
   const [user, setUser] = useState<User>({
     email: getHeaders()?.uid || '',
   });
 
   const createUser = (email: string) => {
     setUser({ ...user, email });
-    initCookieByUid(email);
+    initializeByUid(email);
   };
 
   const updateUser = (email: string) => {
