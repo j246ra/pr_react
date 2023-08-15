@@ -14,7 +14,7 @@ import { useLifelog } from '@providers/LifelogProvider';
 
 const Hello = () => {
   const { user, clearUser, isLogin } = useUser();
-  const { getHeaders, removeToken } = useSession();
+  const { getHeaders, removeHeaders } = useSession();
   const { authApi } = useAuth();
   const { createLogByContext } = useLifelog();
   const [valid, setValid] = useState(false);
@@ -53,7 +53,7 @@ const Hello = () => {
 
   const clear = () => {
     clearUser();
-    removeToken();
+    removeHeaders();
     setValid(false);
   };
 

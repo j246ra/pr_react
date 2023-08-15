@@ -10,7 +10,7 @@ const AccountDelete: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { authApi: api } = useAuth();
   const { clearUser } = useUser();
-  const { removeToken } = useSession();
+  const { removeHeaders } = useSession();
   const navigate = useNavigate();
   const handleOpenAlert = () => {
     setIsOpen(true);
@@ -27,7 +27,7 @@ const AccountDelete: React.FC = () => {
       .then(() => notify.success('アカウントを削除しました。'))
       .finally(() => {
         clearUser();
-        removeToken();
+        removeHeaders();
         handleCloseAlert();
         navigate('/login');
       });

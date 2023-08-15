@@ -8,7 +8,7 @@ type SessionContextType = {
   getHeaders: () => Headers;
   hasToken: () => boolean;
   setHeaders: (r: AxiosResponse<Headers> | Headers) => void;
-  removeToken: () => void;
+  removeHeaders: () => void;
 };
 
 const SessionContext = createContext({} as SessionContextType);
@@ -74,7 +74,7 @@ const SessionProvider: React.FC<Props> = ({ children }) => {
     }
   };
 
-  const removeToken = (): void => removeCookie('token');
+  const removeHeaders = (): void => removeCookie('token');
 
   return (
     <CookiesProvider>
@@ -84,7 +84,7 @@ const SessionProvider: React.FC<Props> = ({ children }) => {
           getHeaders,
           hasToken,
           setHeaders,
-          removeToken,
+          removeHeaders,
         }}
       >
         {children}

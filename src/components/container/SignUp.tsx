@@ -12,7 +12,7 @@ import { PasswordInput } from '@presentational/PasswordInput';
 import SessionCard from '@presentational/SessionCard';
 
 const SignUp = () => {
-  const { removeToken } = useSession();
+  const { removeHeaders } = useSession();
   const { authApi: session } = useAuth();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -32,7 +32,7 @@ const SignUp = () => {
       })
       .catch(() => {
         clearUser();
-        removeToken();
+        removeHeaders();
       });
   };
 

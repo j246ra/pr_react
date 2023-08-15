@@ -23,7 +23,7 @@ describe('AccountDelete component', () => {
       isLogin: jest.fn(),
     });
     mockUseSession.mockReturnValue({
-      removeToken: jest.fn(),
+      removeHeaders: jest.fn(),
     });
   });
 
@@ -49,7 +49,7 @@ describe('AccountDelete component', () => {
     await waitFor(() => {
       expect(mockUseAuth().authApi.deleteUser).toHaveBeenCalled();
       expect(mockUseUser().clearUser).toHaveBeenCalled();
-      expect(mockUseSession().removeToken).toHaveBeenCalled();
+      expect(mockUseSession().removeHeaders).toHaveBeenCalled();
     });
   });
 });

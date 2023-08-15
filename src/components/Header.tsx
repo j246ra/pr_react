@@ -16,7 +16,7 @@ import SearchInput from '@lifelog/presentational/SearchInput';
 import { useLifelog } from '@providers/LifelogProvider';
 
 const Header = () => {
-  const { removeToken } = useSession();
+  const { removeHeaders } = useSession();
   const navigate = useNavigate();
   const { isLogin, clearUser } = useUser();
   const { authApi } = useAuth();
@@ -26,7 +26,7 @@ const Header = () => {
     authApi.signOut().finally(() => {
       clearUser();
       clearLifelog();
-      removeToken();
+      removeHeaders();
       navigate('/login');
     });
   };

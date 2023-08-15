@@ -37,7 +37,7 @@ const ChildComponent: React.FC<ChildComponentProps> = ({
   headers,
   uid,
 }) => {
-  const { initializeByUid, getHeaders, hasToken, setHeaders, removeToken } =
+  const { initializeByUid, getHeaders, hasToken, setHeaders, removeHeaders } =
     useSession();
   useEffect(() => {
     switch (methodType) {
@@ -48,7 +48,7 @@ const ChildComponent: React.FC<ChildComponentProps> = ({
         if (headers) setHeaders(headers);
         return;
       case 'remove':
-        removeToken();
+        removeHeaders();
         break;
     }
   }, []);
@@ -233,7 +233,7 @@ describe('SessionProvider', () => {
     });
   });
 
-  describe('removeToken 検証', () => {
+  describe('removeHeaders 検証', () => {
     mockToken = { token: { ...initToken } };
     render(
       <SessionProvider>
