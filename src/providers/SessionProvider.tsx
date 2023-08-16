@@ -14,17 +14,17 @@ type SessionContextType = {
 const SessionContext = createContext({} as SessionContextType);
 export const useSession = () => useContext(SessionContext);
 
-type Props = {
-  children: ReactNode;
-};
-
 export type Headers = {
   'access-token'?: string;
   uid?: string;
   client?: string;
 };
 
-const SessionProvider: React.FC<Props> = ({ children }) => {
+export type SessionProviderProps = {
+  children: ReactNode;
+};
+
+const SessionProvider = ({ children }: SessionProviderProps) => {
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
 
   const hasToken = (): boolean => {
