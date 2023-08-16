@@ -16,11 +16,11 @@ export type UserContextType = {
 const UserContext = createContext({} as UserContextType);
 export const useUser = () => useContext(UserContext);
 
-type Props = {
+export type UserProviderProps = {
   children: ReactNode;
 };
 
-const UserProvider: React.FC<Props> = ({ children }) => {
+const UserProvider = ({ children }: UserProviderProps) => {
   const { initializeByUid, getHeaders, hasToken } = useSession();
   const [user, setUser] = useState<User>({
     email: getHeaders()?.uid || '',
