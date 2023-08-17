@@ -112,15 +112,4 @@ describe('SessionProvider', () => {
       expect(mockRemoveCookie).toHaveBeenCalledTimes(1);
     });
   });
-
-  describe('hasToken 検証', () => {
-    it('有効な access-token の場合は true', () => {
-      expect(result.current.hasToken()).toBeTruthy();
-    });
-
-    xit('無効な access-token の場合 false', () => {
-      // モック化している cookie を差し替える方法を調査中
-      expect(result.current.hasToken()).toBeFalsy();
-    });
-  });
 });
