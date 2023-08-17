@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import { Button, Intent } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import { Lifelog } from '@providers/LifelogProvider';
+import styles from './LifelogListItem.module.scss';
 
 export interface LifelogListItemProps {
   log: Lifelog;
@@ -20,7 +21,7 @@ const LifelogListItem: React.FC<LifelogListItemProps> = ({
 }) => {
   return (
     <tr>
-      <td style={{ fontWeight: log.finishedAt ? 'bold' : 'normal' }}>
+      <td className={`${log.finishedAt ? styles.tdStartedAtBold : ''}`}>
         {dayjs(log.startedAt).format('YY/MM/DD HH:mm')}
       </td>
       <td
@@ -30,17 +31,8 @@ const LifelogListItem: React.FC<LifelogListItemProps> = ({
       >
         {log.action}
       </td>
-      <td
-        style={{
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          maxWidth: 0,
-        }}
-      >
-        {log.detail}
-      </td>
-      <td style={{ textAlign: 'center' }}>
+      <td className={styles.tdDetail}>{log.detail}</td>
+      <td className={styles.tdOperation}>
         <Button
           data-testid={`finish-button-${log.id}`}
           intent={Intent.PRIMARY}
@@ -48,16 +40,16 @@ const LifelogListItem: React.FC<LifelogListItemProps> = ({
           onClick={onFinishButtonClick}
         />
         <Button
+          className={styles.editButton}
           data-testid={`edit-button-${log.id}`}
           intent={Intent.SUCCESS}
-          style={{ marginLeft: '3px' }}
           icon={IconNames.EDIT}
           onClick={onEditButtonClick}
         />
         <Button
+          className={styles.deleteButton}
           data-testid={`delete-button-${log.id}`}
           intent={Intent.DANGER}
-          style={{ marginLeft: '3px' }}
           icon={IconNames.DELETE}
           onClick={onDeleteButtonClick}
         />

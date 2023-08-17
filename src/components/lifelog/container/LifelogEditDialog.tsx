@@ -13,6 +13,7 @@ import { Lifelog, useLifelog } from '@providers/LifelogProvider';
 import DatetimeInput from '@lifelog/presentational/DatetimeInput';
 import notify from '@lib/toast';
 import { IconNames } from '@blueprintjs/icons';
+import styles from './LifelogEditDialog.module.scss';
 
 export interface LifelogEditDialogProps {
   isOpen: boolean;
@@ -91,7 +92,7 @@ const LifelogEditDialog: React.FC<LifelogEditDialogProps> = ({
         <DialogFooter
           actions={
             <Button
-              style={{ minWidth: '80px', letterSpacing: '0.25em' }}
+              className={styles.saveButton}
               icon={IconNames.FloppyDisk}
               onClick={handleUpdateLifelog}
               intent={Intent.PRIMARY}

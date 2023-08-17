@@ -11,6 +11,7 @@ import LifelogListItem from '@lifelog/presentational/LifelogListItem';
 import LifelogListHeader from '@lifelog/presentational/LifelogListHeader';
 import useDeleteLifelog from '@src/hooks/useDeleteLifelog';
 import useFinishAction from '@src/hooks/useFinishAction';
+import styles from './LifelogList.module.scss';
 
 const LifelogList = () => {
   const { logs, loadLogs } = useLifelog();
@@ -32,15 +33,15 @@ const LifelogList = () => {
 
   return (
     <>
-      <HTMLTable bordered={false} style={{ width: '100%' }}>
-        <LifelogListHeader />
+      <HTMLTable className={styles.baseTable} bordered={false}>
+        <LifelogListHeader enabled={logs.length > 0} />
         <InfiniteScroll
           element={'tbody'}
           loadMore={lifelogLoader}
           hasMore={hasMore}
           loader={
             <tr key={0}>
-              <td colSpan={4} style={{ boxShadow: 'none' }}>
+              <td className={styles.spinnerTd} colSpan={4}>
                 <Spinner intent={Intent.PRIMARY} size={SpinnerSize.SMALL} />
               </td>
             </tr>

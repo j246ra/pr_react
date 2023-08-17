@@ -1,6 +1,7 @@
 import React from 'react';
 import { Dialog, DialogBody, HTMLTable } from '@blueprintjs/core';
 import { Lifelog } from '@providers/LifelogProvider';
+import styles from './LifelogDetailDialog.module.scss';
 
 export interface LifelogDetailDialogProps {
   isOpen: boolean;
@@ -19,11 +20,11 @@ const LifelogDetailDialog: React.FC<LifelogDetailDialogProps> = ({
   return (
     <Dialog isOpen={isOpen} onClose={handleCloseDialog}>
       <DialogBody>
-        <HTMLTable style={{ width: '100%', whiteSpace: 'pre-line' }}>
+        <HTMLTable className={styles.base}>
           <tbody data-testid={`${TEST_ID}tbody`}>
             <tr>
-              <th style={{ boxShadow: 'none', width: '18%' }}>ID</th>
-              <td style={{ boxShadow: 'none' }}>{log?.id}</td>
+              <th className={styles.trIdTh}>ID</th>
+              <td className={styles.trIdTd}>{log?.id}</td>
             </tr>
             <tr>
               <th>行動</th>

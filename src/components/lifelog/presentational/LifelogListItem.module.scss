@@ -1,0 +1,22 @@
+.tdStartedAtBold {
+  font-weight: bold;
+}
+
+.tdDetail {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 0;
+}
+
+.tdOperation {
+  text-align: center!important;
+}
+
+.editButton {
+  margin-left: 3px;
+}
+
+.deleteButton {
+  margin-left: 3px;
+}
