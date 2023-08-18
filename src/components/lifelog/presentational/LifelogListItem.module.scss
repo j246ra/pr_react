@@ -1,3 +1,10 @@
+@import "src/App";
+
+.tdAction {
+  @include appLinkText();
+  color: $pt-link-color!important;
+}
+
 .tdStartedAtBold {
   font-weight: bold;
 }

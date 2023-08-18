@@ -68,7 +68,7 @@ const Hello = () => {
           <p>{valid ? '検証済み' : '未検証'}</p>
           <form onSubmit={handleValidToken}>
             <Button
-              className="m-4"
+              style={{ margin: '4px' }}
               type="submit"
               intent={Intent.PRIMARY}
               icon={IconNames.TICK}

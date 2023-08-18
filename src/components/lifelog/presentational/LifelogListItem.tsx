@@ -26,7 +26,7 @@ const LifelogListItem: React.FC<LifelogListItemProps> = ({
       </td>
       <td
         data-testid={`lifelog-item-link-text-${log.id}`}
-        className={'app-link-text'}
+        className={styles.tdAction}
         onClick={onActionClick}
       >
         {log.action}

@@ -14,6 +14,7 @@ import { useAuth } from '@providers/AuthApiProvider';
 import { useSession } from '@providers/SessionProvider';
 import SearchInput from '@lifelog/presentational/SearchInput';
 import { useLifelog } from '@providers/LifelogProvider';
+import styles from './Header.module.scss';
 
 const Header = () => {
   const { removeHeaders } = useSession();
@@ -33,7 +34,7 @@ const Header = () => {
 
   return (
     <Navbar fixedToTop={true}>
-      <div className={'app-max-width m-w-auto p-w-20'}>
+      <div className={styles.base}>
         <Navbar.Group align={Alignment.LEFT}>
           <Navbar.Heading>
             <a href="/">Lifelog</a>

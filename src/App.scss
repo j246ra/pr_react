@@ -2,26 +2,13 @@
 
 $AppMaxWidth: 1280px;
 
-.App {
-  .app-max-width {
-    max-width: $AppMaxWidth;
-  }
-  .m-w-auto {
-    margin: 0 auto;
-  }
-  .m-4 {
-    margin: 4px;
-  }
-  .p-w-20 {
-    padding: 0 20px;
-  }
-  .app-link-text {
-    cursor: pointer;
-    color: $pt-link-color;
-    font-weight: bold;
-    text-decoration-line: none;
-  }
-  .app-link-text:hover {
+@mixin appLinkText {
+  cursor: pointer;
+  color: $pt-link-color;
+  font-weight: bold;
+  text-decoration-line: none;
+
+  &:hover {
     text-decoration-line: underline;
   }
 }
