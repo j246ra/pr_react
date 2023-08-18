@@ -49,14 +49,21 @@ const Header = () => {
                 <MenuItem icon="plus" text="新規作成" />
                 <MenuItem icon="search" text="詳細検索" />
                 <MenuDivider />
-                <MenuItem text="設定" icon="cog" intent="primary">
+                <MenuItem
+                  data-testid={'menu-settings'}
+                  text="設定"
+                  icon="cog"
+                  intent="primary"
+                >
                   <MenuItem
+                    data-testid={'menu-edit-account'}
                     icon="edit"
                     text="アカウント編集"
                     href={'/update_account'}
                     disabled={!isLogin()}
                   />
                   <MenuItem
+                    data-testid={'menu-logout'}
                     icon="log-out"
                     text="ログアウト"
                     onClick={handleLogout}
@@ -67,7 +74,7 @@ const Header = () => {
             }
             placement="bottom-end"
           >
-            <Button icon="menu" minimal={true} />
+            <Button data-testid={'menu-button'} icon="menu" minimal={true} />
           </Popover>
         </Navbar.Group>
       </div>
