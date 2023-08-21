@@ -33,7 +33,7 @@ describe('Login component', () => {
   });
 
   it('ログインフォームが表示されている', () => {
-    const { getByTestId } = render(
+    const { container, getByTestId } = render(
       <Router>
         <Login />
       </Router>
@@ -50,6 +50,16 @@ describe('Login component', () => {
     const loginButton = getByTestId('login-button');
     expect(loginButton).toBeInTheDocument();
     expect(loginButton).toHaveTextContent('ログイン');
+
+    const passwordLinks = container.getElementsByClassName(
+      'password-forget-link'
+    );
+    expect(passwordLinks).toHaveLength(1);
+    expect(passwordLinks[0]).toHaveAttribute('href', '/password_forget');
+
+    const signUpLinks = container.getElementsByClassName('sign-up-link');
+    expect(signUpLinks).toHaveLength(1);
+    expect(signUpLinks[0]).toHaveAttribute('href', '/sign_up');
   });
 
   it('ユーザーがフォームに情報を入力し、ログインする', async () => {
