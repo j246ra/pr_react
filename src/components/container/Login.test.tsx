@@ -1,6 +1,11 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { render, fireEvent, waitFor, screen } from '@testing-library/react';
+import {
+  BrowserRouter,
+  BrowserRouter as Router,
+  Route,
+  Routes,
+} from 'react-router-dom';
 import Login from './Login';
 import notify from '@lib/toast';
 import { mockNavigator } from '@src/tests/common';
@@ -9,8 +14,14 @@ import {
   mockUseSession,
   mockUseAuth,
 } from '@src/tests/baseProviders';
+import App from '@src/App';
+import PasswordForget from '@container/PasswordForget';
+import { useLifelog } from '@providers/LifelogProvider';
+import SignUp from '@container/SignUp';
 
+jest.mock('@providers/LifelogProvider');
 jest.mock('@lib/toast');
+const mockUseLifelog = useLifelog as jest.MockedFunction<any>;
 const mockNotify = jest.mocked(notify);
 
 describe('Login component', () => {
@@ -29,6 +40,9 @@ describe('Login component', () => {
       authApi: {
         signIn: jest.fn().mockResolvedValue({ status: 200 }),
       },
+    });
+    mockUseLifelog.mockReturnValue({
+      clear: jest.fn(),
     });
   });
 
@@ -60,6 +74,47 @@ describe('Login component', () => {
     const signUpLinks = container.getElementsByClassName('sign-up-link');
     expect(signUpLinks).toHaveLength(1);
     expect(signUpLinks[0]).toHaveAttribute('href', '/sign_up');
+  });
+
+  describe('Link コンポーネント', () => {
+    const renderWithRouter = () =>
+      render(
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<App />}>
+              <Route index element={<Login />} />
+              <Route path="/sign_up" element={<SignUp />} />
+              <Route path="/password_forget" element={<PasswordForget />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      );
+
+    it('Sign Up', async () => {
+      const { container } = renderWithRouter();
+      const signUpLinks = container.getElementsByClassName('sign-up-link');
+      expect(signUpLinks).toHaveLength(1);
+      expect(signUpLinks[0]).toHaveAttribute('href', '/sign_up');
+      fireEvent.click(signUpLinks[0]);
+      await waitFor(() => {
+        const els = screen.getAllByTestId('sign-up-form');
+        expect(els).toHaveLength(1);
+      });
+    });
+
+    it('Password forget', async () => {
+      const { container } = renderWithRouter();
+      const passwordLinks = container.getElementsByClassName(
+        'password-forget-link'
+      );
+      expect(passwordLinks).toHaveLength(1);
+      expect(passwordLinks[0]).toHaveAttribute('href', '/password_forget');
+      fireEvent.click(passwordLinks[0]);
+      await waitFor(() => {
+        const els = container.getElementsByClassName('session-callout');
+        expect(els).toHaveLength(1);
+      });
+    });
   });
 
   it('ユーザーがフォームに情報を入力し、ログインする', async () => {

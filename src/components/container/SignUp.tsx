@@ -44,7 +44,7 @@ const SignUp = () => {
 
   return (
     <SessionCard>
-      <form onSubmit={handleSignUp}>
+      <form onSubmit={handleSignUp} data-testid={'sign-up-form'}>
         <EmailInput
           id={'sign-up-email-input'}
           value={email}
