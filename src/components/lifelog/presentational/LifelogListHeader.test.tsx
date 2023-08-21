@@ -23,7 +23,7 @@ describe('LifelogListHeader', () => {
     );
     const thead = container.getElementsByTagName('thead')[0];
 
-    expect(thead).not.toBeVisible();
+    expect(thead).toBeUndefined();
   });
 
   it('enabled が 未指定時にヘッダーが表示されない', () => {

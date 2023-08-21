@@ -4,11 +4,12 @@ import styles from './LifelogListHeader.module.scss';
 export interface LifelogListHeaderProps {
   enabled?: boolean;
 }
-export const LifelogListHeader: React.FC<LifelogListHeaderProps> = ({
+export const LifelogListHeader = ({
   enabled = true,
-}) => {
+}: LifelogListHeaderProps) => {
+  if (!enabled) return <></>;
   return (
-    <thead className={`${enabled ? '' : styles.thead}`}>
+    <thead>
       <tr>
         <th className={styles.thStartedAt}>開始時間</th>
         <th className={styles.thFinishedAt}>行動内容</th>
