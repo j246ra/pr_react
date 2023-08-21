@@ -7,7 +7,7 @@ export interface LifelogListHeaderProps {
 export const LifelogListHeader = ({
   enabled = true,
 }: LifelogListHeaderProps) => {
-  if (!enabled) return <></>;
+  if (!enabled) return null;
   return (
     <thead>
       <tr>
