@@ -1,4 +1,5 @@
 import notify from '@lib/toast';
+import { VALIDATOR } from '@lib/consts';
 
 export interface Result {
   isInvalid: boolean;
@@ -6,14 +7,12 @@ export interface Result {
 }
 
 export const INVALID_MESSAGES = {
-  TEXT_PRESENCE: (name: string) => `${name}を入力してください`,
-  EMAIL_FORMAT: 'メールアドレスのフォーマットエラー',
-  PASSWORD_LENGTH: 'パスワードは６文字以上１２８文字以下にしてください。',
-  PASSWORD_NO_MATCH: '入力したパスワードが一致しません。',
+  ...VALIDATOR.MESSAGE,
+  TEXT_PRESENCE: (name: string) => `${name}${VALIDATOR.MESSAGE.TEXT_PRESENCE}`,
 };
 
 export default function validator() {
-  const emailRegex = /^[\w+\-.]+@[a-zA-Z\d\-.]+\.[a-zA-Z]+$/;
+  const emailRegex = VALIDATOR.EMAIL_REGEX;
 
   const result: Result = {
     isInvalid: false,

@@ -50,6 +50,16 @@ export const USE_FINISH_ACTION = {
   } as const,
 };
 
+export const VALIDATOR = {
+  EMAIL_REGEX: /^[\w+\-.]+@[a-zA-Z\d\-.]+\.[a-zA-Z]+$/,
+  MESSAGE: {
+    TEXT_PRESENCE: `を入力してください`,
+    EMAIL_FORMAT: 'メールアドレスのフォーマットエラー',
+    PASSWORD_LENGTH: 'パスワードは６文字以上１２８文字以下にしてください。',
+    PASSWORD_NO_MATCH: '入力したパスワードが一致しません。',
+  } as const,
+};
+
 const CONST = {
   COMMON,
   API,
@@ -57,6 +67,7 @@ const CONST = {
   NOTIFY,
   USE_DELETE_LIFELOG,
   USE_FINISH_ACTION,
+  VALIDATOR,
 };
 
 export default CONST;
