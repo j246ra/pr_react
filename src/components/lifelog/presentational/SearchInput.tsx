@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Button, InputGroup } from '@blueprintjs/core';
 import { useLifelog } from '@providers/LifelogProvider';
 import notify from '@lib/toast';
+import { SEARCH_INPUT } from '@lib/consts';
+import { IconNames } from '@blueprintjs/icons';
 
 export interface SearchInputProps {
   isShow: boolean;
@@ -30,7 +32,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ isShow, width = 260 }) => {
   const searchButton = (
     <Button
       data-testid={'search-input-button'}
-      icon={'search'}
+      icon={IconNames.SEARCH}
       minimal={true}
       onClick={handleSearch}
     ></Button>
@@ -40,7 +42,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ isShow, width = 260 }) => {
     <div style={{ width }} data-testid={'search-input'}>
       <InputGroup
         type={'search'}
-        placeholder={'検索（行動、詳細）'}
+        placeholder={SEARCH_INPUT.PLACEHOLDER}
         rightElement={searchButton}
         value={word}
         onChange={(e) => setWord(e.target.value)}

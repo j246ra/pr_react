@@ -9,6 +9,7 @@ import SearchInput from '@lifelog/presentational/SearchInput';
 import { useLifelog } from '@providers/LifelogProvider';
 import userEvent from '@testing-library/user-event';
 import toast from 'react-hot-toast';
+import { NOTIFY, SEARCH_INPUT } from '@lib/consts';
 
 jest.mock('react-hot-toast');
 jest.mock('@providers/LifelogProvider');
@@ -49,7 +50,7 @@ describe('SearchInput', () => {
     describe('文字入力', () => {
       it('日本語入力中でない場合 Enter を押すと検索すること', async () => {
         const input = screen.getByPlaceholderText(
-          '検索（行動、詳細）'
+          SEARCH_INPUT.PLACEHOLDER
         ) as HTMLInputElement;
         act(() => {
           userEvent.type(input, 'running');
@@ -63,7 +64,7 @@ describe('SearchInput', () => {
 
       it('日本語入力中に Enter を押しても検索しないこと', async () => {
         const input = screen.getByPlaceholderText(
-          '検索（行動、詳細）'
+          SEARCH_INPUT.PLACEHOLDER
         ) as HTMLInputElement;
         act(() => {
           fireEvent.compositionStart(input);
@@ -81,7 +82,7 @@ describe('SearchInput', () => {
     describe('検索ボタン検証', () => {
       it('押下時に検索すること', async () => {
         const input = screen.getByPlaceholderText(
-          '検索（行動、詳細）'
+          SEARCH_INPUT.PLACEHOLDER
         ) as HTMLInputElement;
         const button = screen.getByTestId('search-input-button');
         act(() => {
@@ -96,7 +97,7 @@ describe('SearchInput', () => {
 
       it('日本語入力中でも検索すること', async () => {
         const input = screen.getByPlaceholderText(
-          '検索（行動、詳細）'
+          SEARCH_INPUT.PLACEHOLDER
         ) as HTMLInputElement;
         const button = screen.getByTestId('search-input-button');
         act(() => {
@@ -120,7 +121,7 @@ describe('SearchInput', () => {
       });
       it('検索エラー時に toast を表示していること', async () => {
         const input = screen.getAllByPlaceholderText(
-          '検索（行動、詳細）'
+          SEARCH_INPUT.PLACEHOLDER
         )[0] as HTMLInputElement;
         const button = screen.getAllByTestId('search-input-button')[0];
         act(() => {
@@ -133,9 +134,7 @@ describe('SearchInput', () => {
           expect(mockToast.error).toHaveBeenCalled();
           expect(mockToast.error).toHaveBeenCalledWith(
             'Very dangerous error.',
-            {
-              style: { color: 'red' },
-            }
+            NOTIFY.STYLE.ERROR
           );
         });
       });

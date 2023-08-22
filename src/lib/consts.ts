@@ -222,6 +222,10 @@ export const LIFELOG_LIST_HEADER = {
   OPERATION: '操作',
 };
 
+export const SEARCH_INPUT = {
+  PLACEHOLDER: '検索（行動、詳細）',
+};
+
 export const COMPONENT = {
   ACCOUNT_DELETE,
   ACCOUNT_UPDATE,
@@ -237,6 +241,7 @@ export const COMPONENT = {
   CONTEXT_INPUT,
   DATETIME_INPUT,
   LIFELOG_LIST_HEADER,
+  SEARCH_INPUT,
 };
 
 const CONST = {
