@@ -1,10 +1,12 @@
 import React, { useState, FormEvent, ChangeEvent } from 'react';
-import { Button, Callout } from '@blueprintjs/core';
+import { Button, Callout, Intent } from '@blueprintjs/core';
 import notify from '@lib/toast';
 import { useAuth } from '@providers/AuthApiProvider';
 import { EmailInput } from '@presentational/EmailInput';
 import { useNavigate } from 'react-router-dom';
 import SessionCard from '@presentational/SessionCard';
+import { PASSWORD_FORGET } from '@lib/consts';
+import { IconNames } from '@blueprintjs/icons';
 
 const PasswordForget: React.FC = () => {
   const { authApi: session } = useAuth();
@@ -16,14 +18,14 @@ const PasswordForget: React.FC = () => {
     session
       .passwordForget(email)
       .then(() => {
-        notify.success('パスワードリセットメールを送信しました。');
+        notify.success(PASSWORD_FORGET.MESSAGE.SUCCESS);
         navigate('/send_success');
       })
       .catch((e) => {
         if (e?.response.status === 404) {
-          notify.success('パスワードリセットメールを送信しました。');
+          notify.success(PASSWORD_FORGET.MESSAGE.SUCCESS);
         } else {
-          notify.error('送信に失敗しました。');
+          notify.error(PASSWORD_FORGET.MESSAGE.ERROR);
         }
       });
   };
@@ -34,21 +36,21 @@ const PasswordForget: React.FC = () => {
   return (
     <SessionCard>
       <Callout className="session-callout" icon="info-sign" intent="primary">
-        パスワードリセットメールの送信先を入力してください。
+        {PASSWORD_FORGET.MESSAGE.INFO}
       </Callout>
       <form onSubmit={handlePasswordForget}>
         <EmailInput
           id={'password-forget-email-input'}
           value={email}
-          placeholder={'送信先のメールドレスを入力'}
+          placeholder={PASSWORD_FORGET.EMAIL_INPUT.PLACEHOLDER}
           onChange={handleEmailChange}
         />
         <Button
           data-testid={'password-forget-submit-button'}
           type="submit"
-          intent="primary"
-          icon="envelope"
-          text="送信"
+          intent={Intent.PRIMARY}
+          icon={IconNames.ENVELOPE}
+          text={PASSWORD_FORGET.BUTTON.SUBMIT}
         />
       </form>
     </SessionCard>

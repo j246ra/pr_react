@@ -127,12 +127,27 @@ export const PASSWORD_EDIT = {
   } as const,
 };
 
+export const PASSWORD_FORGET = {
+  MESSAGE: {
+    INFO: 'パスワードリセットメールの送信先を入力してください。',
+    SUCCESS: 'パスワードリセットメールを送信しました。',
+    ERROR: '送信に失敗しました。',
+  } as const,
+  EMAIL_INPUT: {
+    PLACEHOLDER: '送信先のメールドレスを入力',
+  } as const,
+  BUTTON: {
+    SUBMIT: '送信',
+  } as const,
+};
+
 export const COMPONENT = {
   ACCOUNT_DELETE,
   ACCOUNT_UPDATE,
   LOGIN,
   PASSWORD_INPUT,
   PASSWORD_EDIT,
+  PASSWORD_FORGET,
 };
 
 const CONST = {

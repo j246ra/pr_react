@@ -3,6 +3,7 @@ import { render, fireEvent, waitFor } from '@testing-library/react';
 import PasswordForget from './PasswordForget';
 import { useAuth } from '@providers/AuthApiProvider';
 import { mockNavigator } from '@src/tests/common';
+import { PASSWORD_FORGET } from '@lib/consts';
 
 jest.mock('@providers/AuthApiProvider');
 
@@ -25,7 +26,7 @@ describe('PasswordForget コンポーネント', () => {
     expect(emailInput.tagName).toEqual('INPUT');
     expect(emailInput).toHaveAttribute(
       'placeholder',
-      '送信先のメールドレスを入力'
+      PASSWORD_FORGET.EMAIL_INPUT.PLACEHOLDER
     );
 
     const submitButton = getByTestId('password-forget-submit-button');
