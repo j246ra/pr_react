@@ -141,6 +141,10 @@ export const PASSWORD_FORGET = {
   } as const,
 };
 
+export const RESET_MAIL_SUCCESS = {
+  INFO: '送信に成功しました。メールをご確認ください。',
+};
+
 export const COMPONENT = {
   ACCOUNT_DELETE,
   ACCOUNT_UPDATE,
@@ -148,6 +152,7 @@ export const COMPONENT = {
   PASSWORD_INPUT,
   PASSWORD_EDIT,
   PASSWORD_FORGET,
+  RESET_MAIL_SUCCESS,
 };
 
 const CONST = {
