@@ -1,3 +1,11 @@
+export const COMMON = {
+  MESSAGE: {
+    ERROR: {
+      GENERAL: '想定外のエラーが発生しました',
+    } as const,
+  } as const,
+};
+
 export const API = {
   SCHEME: 'http',
   HOST: 'localhost:3000',
@@ -41,3 +49,14 @@ export const USE_FINISH_ACTION = {
     SUCCESS: '行動時間を記録しました。',
   } as const,
 };
+
+const CONST = {
+  COMMON,
+  API,
+  DATE_UTIL,
+  NOTIFY,
+  USE_DELETE_LIFELOG,
+  USE_FINISH_ACTION,
+};
+
+export default CONST;

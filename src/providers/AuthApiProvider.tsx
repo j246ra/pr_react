@@ -4,6 +4,7 @@ import session from '@lib/api/session';
 import { useSession } from './SessionProvider';
 import { AxiosResponse, AxiosError } from 'axios';
 import notify from '@lib/toast';
+import CONST from '@lib/consts';
 
 interface AuthApiContextProps {
   authApi: ReturnType<typeof session>;
@@ -33,7 +34,7 @@ export default function AuthApiProvider({ children }: AuthApiProviderProps) {
   };
   const errorInterceptor = (error: AxiosError): Promise<never> => {
     if (error.response === undefined) {
-      notify.error(`想定外のエラーが発生しました (${error.message})`);
+      notify.error(`${CONST.COMMON.MESSAGE.ERROR.GENERAL}(${error.message})`);
     } else {
       const data = error.response.data as Data;
       if (data?.errors.fullMessages !== undefined) {

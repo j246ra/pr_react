@@ -11,6 +11,11 @@ import {
   rest,
 } from 'msw';
 import notify from '@lib/toast';
+import CONST from '@lib/consts';
+import { baseUrl } from '@lib/api/client';
+
+const MESSAGE = CONST.COMMON.MESSAGE;
+const URL = `${baseUrl}/${CONST.API.VERSION}${CONST.API.SESSION.ENDPOINT.SIGN_IN}`;
 
 jest.unmock('@providers/AuthApiProvider');
 
@@ -44,7 +49,7 @@ describe('AuthApiProvider', () => {
   describe('authApi 検証', () => {
     const createServer = (r: ResponseTransformer<DefaultBodyType, any>) => {
       return setupServer(
-        rest.post('http://localhost:3000/v1/auth/sign_in', (req, res) => {
+        rest.post(URL, (req, res) => {
           return res(r);
         })
       );
@@ -144,7 +149,7 @@ describe('AuthApiProvider', () => {
 
       describe('responseが存在しない場合', () => {
         const server = setupServer(
-          rest.post('http://localhost:3000/v1/auth/sign_in', (req, res) => {
+          rest.post(URL, (req, res) => {
             return res.networkError('Failed to connect.');
           })
         );
@@ -163,7 +168,7 @@ describe('AuthApiProvider', () => {
             expect(mockUseSession().setHeaders).not.toBeCalled();
             expect(notifySpy).toBeCalled();
             expect(notifySpy).toBeCalledWith(
-              expect.stringMatching('想定外のエラーが発生しました')
+              expect.stringMatching(MESSAGE.ERROR.GENERAL)
             );
           });
         });
