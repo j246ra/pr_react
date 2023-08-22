@@ -165,6 +165,16 @@ export const SIGN_UP = {
   },
 };
 
+export const HEADER = {
+  MENU: {
+    TOP: '設定',
+    CREATE_LOG: '新規作成',
+    SEARCH: '詳細検索',
+    EDIT_ACCOUNT: 'アカウント編集',
+    LOG_OUT: 'ログアウト',
+  },
+};
+
 export const COMPONENT = {
   ACCOUNT_DELETE,
   ACCOUNT_UPDATE,
@@ -175,6 +185,7 @@ export const COMPONENT = {
   RESET_MAIL_SUCCESS,
   SIGN_UP,
   EMAIL_INPUT,
+  HEADER,
 };
 
 const CONST = {

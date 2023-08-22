@@ -7,6 +7,7 @@ import {
   MenuItem,
   MenuDivider,
   Popover,
+  Intent,
 } from '@blueprintjs/core';
 import { useUser } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
@@ -15,6 +16,8 @@ import { useSession } from '@providers/SessionProvider';
 import SearchInput from '@lifelog/presentational/SearchInput';
 import { useLifelog } from '@providers/LifelogProvider';
 import styles from './Header.module.scss';
+import { HEADER } from '@lib/consts';
+import { IconNames } from '@blueprintjs/icons';
 
 const Header = () => {
   const { removeHeaders } = useSession();
@@ -46,26 +49,26 @@ const Header = () => {
           <Popover
             content={
               <Menu>
-                <MenuItem icon="plus" text="新規作成" />
-                <MenuItem icon="search" text="詳細検索" />
+                <MenuItem icon="plus" text={HEADER.MENU.CREATE_LOG} />
+                <MenuItem icon="search" text={HEADER.MENU.SEARCH} />
                 <MenuDivider />
                 <MenuItem
                   data-testid={'menu-settings'}
-                  text="設定"
-                  icon="cog"
-                  intent="primary"
+                  text={HEADER.MENU.TOP}
+                  icon={IconNames.COG}
+                  intent={Intent.PRIMARY}
                 >
                   <MenuItem
                     data-testid={'menu-edit-account'}
-                    icon="edit"
-                    text="アカウント編集"
+                    icon={IconNames.EDIT}
+                    text={HEADER.MENU.EDIT_ACCOUNT}
                     href={'/update_account'}
                     disabled={!isLogin()}
                   />
                   <MenuItem
                     data-testid={'menu-logout'}
-                    icon="log-out"
-                    text="ログアウト"
+                    icon={IconNames.LOG_OUT}
+                    text={HEADER.MENU.LOG_OUT}
                     onClick={handleLogout}
                     disabled={!isLogin()}
                   />
