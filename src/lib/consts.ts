@@ -74,8 +74,22 @@ export const ACCOUNT_DELETE = {
   } as const,
 };
 
+export const ACCOUNT_UPDATE = {
+  MESSAGE: {
+    ERROR: 'アカウントの更新に失敗しました。',
+  } as const,
+  PASSWORD_CONFIRM: {
+    LABEL: 'パスワード（確認用）',
+    PLACEHOLDER: '新しいパスワードを入力',
+  },
+  BUTTON: {
+    SUBMIT: '更新',
+  } as const,
+};
+
 export const COMPONENT = {
   ACCOUNT_DELETE,
+  ACCOUNT_UPDATE,
 };
 
 const CONST = {

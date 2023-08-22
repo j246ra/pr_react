@@ -7,6 +7,7 @@ import {
   mockUseSession,
   mockUseUser,
 } from '@src/tests/baseProviders';
+import { ACCOUNT_UPDATE } from '@lib/consts';
 
 describe('AccountUpdate component', () => {
   beforeEach(() => {
@@ -43,9 +44,11 @@ describe('AccountUpdate component', () => {
     expect(passwordConfirmInput).toBeInTheDocument();
     expect(passwordConfirmInput).toHaveAttribute(
       'placeholder',
-      '新しいパスワードを入力'
+      ACCOUNT_UPDATE.PASSWORD_CONFIRM.PLACEHOLDER
     );
-    expect(getByText('パスワード（確認用）')).toBeInTheDocument();
+    expect(
+      getByText(ACCOUNT_UPDATE.PASSWORD_CONFIRM.LABEL)
+    ).toBeInTheDocument();
   });
 
   it('ユーザーがフォームに情報を入力し、アカウントを更新する', async () => {

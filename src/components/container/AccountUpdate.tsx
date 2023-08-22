@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { Button } from '@blueprintjs/core';
+import { Button, Intent } from '@blueprintjs/core';
 import { useUser, User } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import accountUpdateValidator from '@validators/accountUpdate';
@@ -10,6 +10,8 @@ import { PasswordInput } from '@presentational/PasswordInput';
 import AccountDelete from '@container/AccountDelete';
 import SessionCard from '@presentational/SessionCard';
 import notify from '@lib/toast';
+import { ACCOUNT_UPDATE } from '@lib/consts';
+import { IconNames } from '@blueprintjs/icons';
 
 const AccountUpdate: React.FC = () => {
   const { user, updateUser } = useUser();
@@ -35,7 +37,7 @@ const AccountUpdate: React.FC = () => {
         navigate('/');
       })
       .catch(() => {
-        notify.error('アカウントの更新に失敗しました。');
+        notify.error(ACCOUNT_UPDATE.MESSAGE.ERROR);
       });
   };
 
@@ -69,16 +71,16 @@ const AccountUpdate: React.FC = () => {
           id={'account-update-password-confirm-input'}
           value={passwordConfirmation}
           onChange={handlePasswordConfirmationChange}
-          label={'パスワード（確認用）'}
-          placeholder={'新しいパスワードを入力'}
+          label={ACCOUNT_UPDATE.PASSWORD_CONFIRM.LABEL}
+          placeholder={ACCOUNT_UPDATE.PASSWORD_CONFIRM.PLACEHOLDER}
           required={false}
         />
         <Button
           data-testid={'account-update-submit-button'}
           type="submit"
-          intent="primary"
-          icon="floppy-disk"
-          text="更新"
+          intent={Intent.PRIMARY}
+          icon={IconNames.FloppyDisk}
+          text={ACCOUNT_UPDATE.BUTTON.SUBMIT}
         />
       </form>
       <AccountDelete />
