@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import PasswordEdit from './PasswordEdit';
 import { useSession } from '@providers/SessionProvider';
 import { useAuth } from '@providers/AuthApiProvider';
+import { PASSWORD_EDIT } from '@lib/consts';
 
 jest.mock('@providers/SessionProvider');
 jest.mock('@providers/AuthApiProvider');
@@ -30,7 +31,9 @@ describe('PasswordEdit component', () => {
         <PasswordEdit />
       </Router>
     );
-    expect(getByPlaceholderText('新しいパスワードを入力')).toBeInTheDocument();
+    expect(
+      getByPlaceholderText(PASSWORD_EDIT.PASSWORD_INPUT.PLACEHOLDER)
+    ).toBeInTheDocument();
   });
 
   it('ユーザーがパスワードをリセットできる', async () => {
@@ -40,10 +43,13 @@ describe('PasswordEdit component', () => {
       </Router>
     );
 
-    const passwordInput = getByPlaceholderText('新しいパスワードを入力');
-    const passwordConfirmationInput =
-      getByPlaceholderText('新しいパスワードを入力（確認用）');
-    const submitButton = getByText('パスワード変更');
+    const passwordInput = getByPlaceholderText(
+      PASSWORD_EDIT.PASSWORD_INPUT.PLACEHOLDER
+    );
+    const passwordConfirmationInput = getByPlaceholderText(
+      PASSWORD_EDIT.PASSWORD_CONFIRM.PLACEHOLDER
+    );
+    const submitButton = getByText(PASSWORD_EDIT.BUTTON.SUBMIT);
 
     fireEvent.change(passwordInput, {
       target: { value: 'newpassword' },

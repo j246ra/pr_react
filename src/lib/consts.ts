@@ -104,10 +104,35 @@ export const LOGIN = {
   } as const,
 };
 
+export const PASSWORD_INPUT = {
+  LABEL: 'パスワード',
+  PLACEHOLDER: 'パスワードを入力',
+  REQUIRED: '(必須)',
+};
+
+export const PASSWORD_EDIT = {
+  MESSAGE: {
+    SUCCESS: 'パスワードリセットが成功しました。',
+    ERROR: 'パスワードリセットに失敗しました。',
+  } as const,
+  PASSWORD_INPUT: {
+    PLACEHOLDER: '新しいパスワードを入力',
+  } as const,
+  PASSWORD_CONFIRM: {
+    LABEL: 'パスワード（確認用）',
+    PLACEHOLDER: '新しいパスワードを入力（確認用）',
+  } as const,
+  BUTTON: {
+    SUBMIT: 'パスワード変更',
+  } as const,
+};
+
 export const COMPONENT = {
   ACCOUNT_DELETE,
   ACCOUNT_UPDATE,
   LOGIN,
+  PASSWORD_INPUT,
+  PASSWORD_EDIT,
 };
 
 const CONST = {

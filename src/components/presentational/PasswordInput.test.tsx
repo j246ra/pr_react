@@ -3,6 +3,7 @@ import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import { PasswordInput } from './PasswordInput';
+import { PASSWORD_INPUT } from '@lib/consts';
 
 describe('ContextInput', () => {
   const mockOnChange = jest.fn();
@@ -16,10 +17,10 @@ describe('ContextInput', () => {
     expect(input.getAttribute('type')).toEqual('password');
     expect(input.id).toEqual('password-input');
     expect(input.required).toEqual(true);
-    expect(input.placeholder).toEqual('パスワードを入力');
+    expect(input.placeholder).toEqual(PASSWORD_INPUT.PLACEHOLDER);
     expect(input.value).toEqual('');
     const label = container.getElementsByTagName('label')[0];
-    expect(label.textContent).toMatch('必須');
+    expect(label.textContent).toMatch(PASSWORD_INPUT.REQUIRED);
   });
   it('任意項目指定時の各属性の確認', () => {
     const { container } = render(
@@ -50,6 +51,6 @@ describe('ContextInput', () => {
     const input = container.getElementsByTagName('input')[0];
     expect(input.required).toEqual(false);
     const label = container.getElementsByTagName('label')[0];
-    expect(label.textContent).not.toMatch('必須');
+    expect(label.textContent).not.toMatch(PASSWORD_INPUT.REQUIRED);
   });
 });

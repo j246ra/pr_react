@@ -1,5 +1,6 @@
 import passwordEditValidator from '@validators/passwordEdit';
 import { INVALID_MESSAGES } from '@validators/validator';
+import { PASSWORD_EDIT, PASSWORD_INPUT } from '@lib/consts';
 
 describe('signUpValidator', () => {
   it('正常系', () => {
@@ -12,7 +13,7 @@ describe('signUpValidator', () => {
     expect(result.isInvalid).toBe(true);
     expect(result.message).toHaveLength(1);
     expect(result.message).toContain(
-      INVALID_MESSAGES.TEXT_PRESENCE('パスワード')
+      INVALID_MESSAGES.TEXT_PRESENCE(PASSWORD_INPUT.LABEL)
     );
   });
   it('確認用パスワードが未入力', () => {
@@ -20,7 +21,7 @@ describe('signUpValidator', () => {
     expect(result.isInvalid).toBe(true);
     expect(result.message).toHaveLength(1);
     expect(result.message).toContain(
-      INVALID_MESSAGES.TEXT_PRESENCE('パスワード（確認用）')
+      INVALID_MESSAGES.TEXT_PRESENCE(PASSWORD_EDIT.PASSWORD_CONFIRM.LABEL)
     );
   });
   it('2つのパスワードが未入力', () => {
@@ -28,10 +29,10 @@ describe('signUpValidator', () => {
     expect(result.isInvalid).toBe(true);
     expect(result.message).toHaveLength(2);
     expect(result.message).toContain(
-      INVALID_MESSAGES.TEXT_PRESENCE('パスワード')
+      INVALID_MESSAGES.TEXT_PRESENCE(PASSWORD_INPUT.LABEL)
     );
     expect(result.message).toContain(
-      INVALID_MESSAGES.TEXT_PRESENCE('パスワード（確認用）')
+      INVALID_MESSAGES.TEXT_PRESENCE(PASSWORD_EDIT.PASSWORD_CONFIRM.LABEL)
     );
   });
   it('2つのパスワードが一致しない', () => {

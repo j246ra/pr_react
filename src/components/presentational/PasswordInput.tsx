@@ -1,5 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import { FormGroup, InputGroup } from '@blueprintjs/core';
+import { PASSWORD_INPUT } from '@lib/consts';
 
 interface PasswordInputProps {
   value: string;
@@ -15,10 +16,14 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
   onChange,
   id = 'password-input',
   required = true,
-  label = 'パスワード',
-  placeholder = 'パスワードを入力',
+  label = PASSWORD_INPUT.LABEL,
+  placeholder = PASSWORD_INPUT.PLACEHOLDER,
 }) => (
-  <FormGroup label={label} labelFor={id} labelInfo={required ? '(必須)' : ''}>
+  <FormGroup
+    label={label}
+    labelFor={id}
+    labelInfo={required ? PASSWORD_INPUT.REQUIRED : ''}
+  >
     <InputGroup
       id={id}
       data-testid={id}

@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { Button } from '@blueprintjs/core';
+import { Button, Intent } from '@blueprintjs/core';
 import { Headers } from '@providers/SessionProvider';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import passwordEditValidator from '@validators/passwordEdit';
@@ -8,6 +8,8 @@ import { useSession } from '@providers/SessionProvider';
 import { useAuth } from '@providers/AuthApiProvider';
 import SessionCard from '@presentational/SessionCard';
 import { PasswordInput } from '@presentational/PasswordInput';
+import { PASSWORD_EDIT } from '@lib/consts';
+import { IconNames } from '@blueprintjs/icons';
 
 const PasswordEdit: React.FC = () => {
   const navigate = useNavigate();
@@ -32,11 +34,11 @@ const PasswordEdit: React.FC = () => {
     api
       .passwordReset(password, passwordConfirmation)
       .then(() => {
-        notify.success('パスワードリセットが成功しました。');
+        notify.success(PASSWORD_EDIT.MESSAGE.SUCCESS);
         navigate('/');
       })
       .catch(() => {
-        notify.error('パスワードリセットに失敗しました。');
+        notify.error(PASSWORD_EDIT.MESSAGE.ERROR);
       });
   };
 
@@ -51,20 +53,20 @@ const PasswordEdit: React.FC = () => {
         <PasswordInput
           value={password}
           onChange={handlePasswordChange}
-          placeholder={'新しいパスワードを入力'}
+          placeholder={PASSWORD_EDIT.PASSWORD_INPUT.PLACEHOLDER}
         />
         <PasswordInput
           value={passwordConfirmation}
           onChange={handlePasswordConfirmationChange}
           id={'password-input-confirmation'}
-          label={'パスワード（確認用）'}
-          placeholder={'新しいパスワードを入力（確認用）'}
+          label={PASSWORD_EDIT.PASSWORD_CONFIRM.LABEL}
+          placeholder={PASSWORD_EDIT.PASSWORD_CONFIRM.PLACEHOLDER}
         />
         <Button
           type="submit"
-          intent="primary"
-          icon="key"
-          text="パスワード変更"
+          intent={Intent.PRIMARY}
+          icon={IconNames.KEY}
+          text={PASSWORD_EDIT.BUTTON.SUBMIT}
         />
       </form>
     </SessionCard>

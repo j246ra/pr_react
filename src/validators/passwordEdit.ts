@@ -1,4 +1,5 @@
 import validator, { INVALID_MESSAGES, Result } from './validator';
+import { PASSWORD_EDIT, PASSWORD_INPUT } from '@lib/consts';
 
 type PasswordEditValidator = (
   password: string,
@@ -12,8 +13,11 @@ const passwordEditValidator: PasswordEditValidator = (
   const { result, addError, textPresenceValidator, passwordLengthValidator } =
     validator();
 
-  textPresenceValidator(password, 'パスワード');
-  textPresenceValidator(passwordConfirmation, 'パスワード（確認用）');
+  textPresenceValidator(password, PASSWORD_INPUT.LABEL);
+  textPresenceValidator(
+    passwordConfirmation,
+    PASSWORD_EDIT.PASSWORD_CONFIRM.LABEL
+  );
 
   if (!result.isInvalid) {
     if (password !== passwordConfirmation)
