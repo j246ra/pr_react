@@ -186,6 +186,34 @@ export const CONTEXT_INPUT = {
   PLACEHOLDER: '行動を入力(空白以降は詳細として記録されます)',
 };
 
+export const DATETIME_INPUT = {
+  MONTHS: [
+    '１月',
+    '２月',
+    '３月',
+    '４月',
+    '５月',
+    '６月',
+    '７月',
+    '８月',
+    '９月',
+    '１０月',
+    '１１月',
+    '１２月',
+  ],
+  WEEKDAYS_LONG: [
+    '日曜日',
+    '月曜日',
+    '火曜日',
+    '水曜日',
+    '木曜日',
+    '金曜日',
+    '土曜日',
+  ],
+  WEEKDAYS_SHORT: ['日', '月', '火', '水', '木', '金', '土'],
+  LOCALE: 'ja',
+};
+
 export const COMPONENT = {
   ACCOUNT_DELETE,
   ACCOUNT_UPDATE,
@@ -199,6 +227,7 @@ export const COMPONENT = {
   HEADER,
   LIFELOGS,
   CONTEXT_INPUT,
+  DATETIME_INPUT,
 };
 
 const CONST = {
