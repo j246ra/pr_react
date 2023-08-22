@@ -1,6 +1,7 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import client from '@lib/api/client';
 import { Headers } from '@providers/SessionProvider';
+import { API } from '@lib/consts';
 
 type ResponseInterceptor = (response: AxiosResponse) => AxiosResponse;
 type ErrorInterceptor = (error: AxiosError) => Promise<never>;
@@ -21,6 +22,8 @@ export type UpdateParams = {
   finishedAt?: string;
 };
 
+const ENDPOINT = API.LIFELOG.ENDPOINT;
+
 export default function lifelog(
   headers: Headers,
   responseInterceptor?: ResponseInterceptor,
@@ -30,15 +33,16 @@ export default function lifelog(
     client.interceptors.response.use(responseInterceptor, errorInterceptor);
 
   const index = (page = 0, word = '') =>
-    client.get('/lifelogs', { headers, params: { page, word } });
+    client.get(ENDPOINT, { headers, params: { page, word } });
 
   const create = (params: CreatParams) =>
-    client.post('/lifelogs', { data: params }, { headers });
+    client.post(ENDPOINT, { data: params }, { headers });
 
   const update = (params: UpdateParams) =>
-    client.put('/lifelogs/' + params.id, { data: params }, { headers });
+    client.put(`${ENDPOINT}/${params.id}`, { data: params }, { headers });
 
-  const destroy = (id: number) => client.delete('/lifelogs/' + id, { headers });
+  const destroy = (id: number) =>
+    client.delete(`${ENDPOINT}/${id}`, { headers });
 
   return {
     index,

@@ -1,5 +1,6 @@
 import notify from '@lib/toast';
 import toast from 'react-hot-toast';
+import { NOTIFY } from '@lib/consts';
 
 jest.mock('react-hot-toast');
 const mockToast = jest.mocked(toast);
@@ -12,8 +13,6 @@ describe('toast', () => {
   it('error', () => {
     notify.error('エラー');
     expect(mockToast.error).toHaveBeenCalled();
-    expect(mockToast.error).toHaveBeenCalledWith('エラー', {
-      style: { color: 'red' },
-    });
+    expect(mockToast.error).toHaveBeenCalledWith('エラー', NOTIFY.STYLE.ERROR);
   });
 });

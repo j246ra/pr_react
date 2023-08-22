@@ -15,6 +15,7 @@ import {
   mockUseUser,
 } from '@src/tests/baseProviders';
 import toast from 'react-hot-toast';
+import { NOTIFY } from '@src/lib/consts';
 
 jest.mock('react-hot-toast');
 jest.mock('@providers/LifelogProvider');
@@ -114,9 +115,10 @@ describe('LifelogList component', () => {
       act(() => userEvent.click(screen.getByTestId(`delete-button-${log.id}`)));
       await waitFor(() => {
         expect(mockToast.error).toHaveBeenCalled();
-        expect(mockToast.error).toHaveBeenCalledWith('error!', {
-          style: { color: 'red' },
-        });
+        expect(mockToast.error).toHaveBeenCalledWith(
+          'error!',
+          NOTIFY.STYLE.ERROR
+        );
       });
     });
   });

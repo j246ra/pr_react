@@ -1,4 +1,5 @@
 import toast from 'react-hot-toast';
+import { NOTIFY as CONST } from '@lib/consts';
 
 export interface Notify {
   error: (message: string) => void;
@@ -7,7 +8,7 @@ export interface Notify {
 
 const notify: Notify = {
   error: (message: string) => {
-    toast.error(message, { style: { color: 'red' } });
+    toast.error(message, CONST.STYLE.ERROR);
   },
   success: (message: string) => {
     toast.success(message);

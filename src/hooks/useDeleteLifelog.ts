@@ -1,14 +1,15 @@
 import { useLifelog } from '@providers/LifelogProvider';
 import notify from '@lib/toast';
+import { USE_DELETE_LIFELOG as CONST } from '@lib/consts';
 
 const useDeleteLifelog = () => {
   const { deleteLog } = useLifelog();
 
   return (logId: number) => {
-    if (!confirm('本当に削除しますか？')) return;
+    if (!confirm(CONST.MESSAGE.CONFIRM)) return;
     deleteLog(logId)
       .then(() => {
-        notify.success('削除成功');
+        notify.success(CONST.MESSAGE.SUCCESS);
       })
       .catch((e) => {
         notify.error(e?.message);

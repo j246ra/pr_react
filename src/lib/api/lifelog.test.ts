@@ -1,6 +1,7 @@
 import client from './client';
 import lifelog, { CreatParams, UpdateParams } from './lifelog';
 import { days, DATETIME_FULL } from '@lib/dateUtil';
+import { API } from '@lib/consts';
 
 jest.mock('./client');
 
@@ -41,7 +42,7 @@ describe('lifelog APIの呼び出し検証', () => {
     await create(params);
 
     expect(mockedClient.post).toHaveBeenCalledWith(
-      '/lifelogs',
+      API.LIFELOG.ENDPOINT,
       {
         data: params,
       },
@@ -63,7 +64,7 @@ describe('lifelog APIの呼び出し検証', () => {
     await update(params);
 
     expect(mockedClient.put).toHaveBeenCalledWith(
-      '/lifelogs/' + params.id,
+      `${API.LIFELOG.ENDPOINT}/${params.id}`,
       {
         data: params,
       },
@@ -77,8 +78,11 @@ describe('lifelog APIの呼び出し検証', () => {
     const { destroy } = lifelog(headers);
     await destroy(id);
 
-    expect(mockedClient.delete).toHaveBeenCalledWith('/lifelogs/' + id, {
-      headers,
-    });
+    expect(mockedClient.delete).toHaveBeenCalledWith(
+      `${API.LIFELOG.ENDPOINT}/${id}`,
+      {
+        headers,
+      }
+    );
   });
 });

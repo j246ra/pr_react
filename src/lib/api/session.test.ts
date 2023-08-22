@@ -1,9 +1,12 @@
 import client from './client';
 import session from './session';
+import { API } from '@lib/consts';
 
 jest.mock('./client');
 
 const mockedClient = client as jest.Mocked<typeof client>;
+
+const ENDPOINT = API.SESSION.ENDPOINT;
 
 describe('session APIの呼び出し検証', () => {
   const headers = () => {
@@ -24,7 +27,7 @@ describe('session APIの呼び出し検証', () => {
     const { signIn } = session(headers);
     await signIn(email, password);
 
-    expect(mockedClient.post).toHaveBeenCalledWith('/auth/sign_in', {
+    expect(mockedClient.post).toHaveBeenCalledWith(ENDPOINT.SIGN_IN, {
       email,
       password,
     });
@@ -37,7 +40,7 @@ describe('session APIの呼び出し検証', () => {
     const { signUp } = session(headers);
     await signUp(email, password);
 
-    expect(mockedClient.post).toHaveBeenCalledWith('/auth', {
+    expect(mockedClient.post).toHaveBeenCalledWith(ENDPOINT.USER, {
       email,
       password,
     });
@@ -49,7 +52,7 @@ describe('session APIの呼び出し検証', () => {
     const { updateUser } = session(headers);
     await updateUser(userParams);
 
-    expect(mockedClient.put).toHaveBeenCalledWith('/auth', userParams, {
+    expect(mockedClient.put).toHaveBeenCalledWith(ENDPOINT.USER, userParams, {
       headers: headers(),
     });
   });
@@ -58,7 +61,7 @@ describe('session APIの呼び出し検証', () => {
     const { signOut } = session(headers);
     await signOut();
 
-    expect(mockedClient.delete).toHaveBeenCalledWith('/auth/sign_out', {
+    expect(mockedClient.delete).toHaveBeenCalledWith(ENDPOINT.SIGN_OUT, {
       headers: headers(),
     });
   });
@@ -67,7 +70,7 @@ describe('session APIの呼び出し検証', () => {
     const { deleteUser } = session(headers);
     await deleteUser();
 
-    expect(mockedClient.delete).toHaveBeenCalledWith('/auth', {
+    expect(mockedClient.delete).toHaveBeenCalledWith(ENDPOINT.USER, {
       headers: headers(),
     });
   });
@@ -76,7 +79,7 @@ describe('session APIの呼び出し検証', () => {
     const { validate } = session(headers);
     await validate();
 
-    expect(mockedClient.get).toHaveBeenCalledWith('/auth/validate_token', {
+    expect(mockedClient.get).toHaveBeenCalledWith(ENDPOINT.VALIDATE, {
       headers: headers(),
     });
   });
@@ -86,7 +89,7 @@ describe('session APIの呼び出し検証', () => {
     const { passwordForget } = session(headers);
     await passwordForget(email);
 
-    expect(mockedClient.post).toHaveBeenCalledWith('/auth/password', {
+    expect(mockedClient.post).toHaveBeenCalledWith(ENDPOINT.PASSWORD_RESET, {
       email,
       redirect_url: `${process.env.REACT_APP_HOST_URL}/password_edit`,
     });
@@ -99,7 +102,7 @@ describe('session APIの呼び出し検証', () => {
     await passwordReset(password, passwordConfirmation);
 
     expect(mockedClient.put).toHaveBeenCalledWith(
-      '/auth/password',
+      ENDPOINT.PASSWORD_RESET,
       {
         password: password,
         password_confirmation: passwordConfirmation,
