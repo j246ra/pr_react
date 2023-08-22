@@ -214,6 +214,13 @@ export const DATETIME_INPUT = {
   LOCALE: 'ja',
 };
 
+export const LIFELOG_LIST_HEADER = {
+  STARTED_AT: '開始時間',
+  ACTION: '行動内容',
+  DETAIL: '詳細',
+  OPERATION: '操作',
+};
+
 export const COMPONENT = {
   ACCOUNT_DELETE,
   ACCOUNT_UPDATE,
@@ -228,6 +235,7 @@ export const COMPONENT = {
   LIFELOGS,
   CONTEXT_INPUT,
   DATETIME_INPUT,
+  LIFELOG_LIST_HEADER,
 };
 
 const CONST = {
