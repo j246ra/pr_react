@@ -1,9 +1,9 @@
 import React from 'react';
-import dayjs from 'dayjs';
 import { Button, Intent } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import { Lifelog } from '@providers/LifelogProvider';
 import styles from './LifelogListItem.module.scss';
+import { days, DISPLAY_DATETIME } from '@lib/dateUtil';
 
 export interface LifelogListItemProps {
   log: Lifelog;
@@ -22,7 +22,7 @@ const LifelogListItem: React.FC<LifelogListItemProps> = ({
   return (
     <tr>
       <td className={`${log.finishedAt ? styles.tdStartedAtBold : ''}`}>
-        {dayjs(log.startedAt).format('YY/MM/DD HH:mm')}
+        {days(log.startedAt).format(DISPLAY_DATETIME)}
       </td>
       <td
         data-testid={`lifelog-item-link-text-${log.id}`}

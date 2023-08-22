@@ -28,6 +28,7 @@ export const API = {
 export const DATE_UTIL = {
   FORMAT: {
     DATETIME_FULL: 'YYYY-MM-DD HH:mm:ss.SSS',
+    DISPLAY_DATETIME: 'YY/MM/DD HH:mm',
     DISPLAY_DATETIME_FULL: 'YYYY-MM-DD HH:mm:ss',
   } as const,
 };
