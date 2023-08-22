@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Alert, Button } from '@blueprintjs/core';
+import { Alert, Button, Intent } from '@blueprintjs/core';
 import { useAuth } from '@providers/AuthApiProvider';
 import notify from '@lib/toast';
 import { useUser } from '@providers/UserProvider';
 import { useSession } from '@providers/SessionProvider';
 import { useNavigate } from 'react-router-dom';
 import { ACCOUNT_DELETE } from '@lib/consts';
+import { IconNames } from '@blueprintjs/icons';
 
 const AccountDelete: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,8 +51,8 @@ const AccountDelete: React.FC = () => {
         onCancel={handleCloseAlert}
         confirmButtonText={ACCOUNT_DELETE.ALERT.CONFIRM}
         onConfirm={handleAccountDelete}
-        intent="danger"
-        icon="trash"
+        intent={Intent.DANGER}
+        icon={IconNames.TRASH}
         canEscapeKeyCancel={true}
         canOutsideClickCancel={true}
       >
