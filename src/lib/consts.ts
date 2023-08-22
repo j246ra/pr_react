@@ -182,6 +182,10 @@ export const LIFELOGS = {
   },
 };
 
+export const CONTEXT_INPUT = {
+  PLACEHOLDER: '行動を入力(空白以降は詳細として記録されます)',
+};
+
 export const COMPONENT = {
   ACCOUNT_DELETE,
   ACCOUNT_UPDATE,
@@ -194,6 +198,7 @@ export const COMPONENT = {
   EMAIL_INPUT,
   HEADER,
   LIFELOGS,
+  CONTEXT_INPUT,
 };
 
 const CONST = {

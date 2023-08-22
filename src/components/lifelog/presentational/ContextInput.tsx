@@ -2,6 +2,7 @@ import React, { ChangeEvent, FormEvent } from 'react';
 import { Button, ControlGroup, InputGroup, Intent } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import styles from './ContextInput.module.scss';
+import { CONTEXT_INPUT } from '@lib/consts';
 
 export interface ContextInputProps {
   onSubmit: (e: FormEvent) => void;
@@ -18,7 +19,7 @@ export const ContextInput: React.FC<ContextInputProps> = ({
   onChange,
   id = 'context-input',
   required = true,
-  placeholder = '行動を入力(空白以降は詳細として記録されます)',
+  placeholder = CONTEXT_INPUT.PLACEHOLDER,
 }) => {
   return (
     <div className={styles.base}>
