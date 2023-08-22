@@ -1,6 +1,6 @@
 import React, { useState, FormEvent, ChangeEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from '@blueprintjs/core';
+import { Button, Intent } from '@blueprintjs/core';
 import { useUser } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import signUpValidator from '@validators/signUp';
@@ -10,6 +10,8 @@ import { useAuth } from '@providers/AuthApiProvider';
 import { EmailInput } from '@presentational/EmailInput';
 import { PasswordInput } from '@presentational/PasswordInput';
 import SessionCard from '@presentational/SessionCard';
+import { SIGN_UP } from '@lib/consts';
+import { IconNames } from '@blueprintjs/icons';
 
 const SignUp = () => {
   const { removeHeaders } = useSession();
@@ -27,7 +29,7 @@ const SignUp = () => {
       .then((r) => {
         if (r.status !== 200) return;
         updateUser(email);
-        notify.success('アカウント作成に成功しました');
+        notify.success(SIGN_UP.MESSAGE.SUCCESS);
         navigate('/');
       })
       .catch(() => {
@@ -58,14 +60,14 @@ const SignUp = () => {
         <Button
           data-testid={'sign-up-button'}
           type="submit"
-          intent="primary"
-          icon="new-person"
-          text="登録"
+          intent={Intent.PRIMARY}
+          icon={IconNames.NEW_PERSON}
+          text={SIGN_UP.BUTTON.SUBMIT}
         />
       </form>
       <div className={'links'}>
         <Link className="password-forget-link" to={'/password_forget'}>
-          パスワードを忘れた方
+          {SIGN_UP.LINK.PASSWORD_FORGET}
         </Link>
       </div>
     </SessionCard>

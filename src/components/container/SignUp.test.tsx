@@ -9,6 +9,7 @@ import {
   mockUseSession,
   mockUseUser,
 } from '@src/tests/baseProviders';
+import { EMAIL_INPUT, PASSWORD_INPUT, SIGN_UP } from '@lib/consts';
 
 jest.mock('@lib/toast');
 const mockNotify = jest.mocked(notify);
@@ -40,15 +41,18 @@ describe('SignUp component', () => {
     );
     const emailInput = getByTestId('sign-up-email-input');
     expect(emailInput).toBeInTheDocument();
-    expect(emailInput).toHaveAttribute('placeholder', 'メールアドレスを入力');
+    expect(emailInput).toHaveAttribute('placeholder', EMAIL_INPUT.PLACEHOLDER);
 
     const passwordInput = getByTestId('sign-up-password-input');
     expect(passwordInput).toBeInTheDocument();
-    expect(passwordInput).toHaveAttribute('placeholder', 'パスワードを入力');
+    expect(passwordInput).toHaveAttribute(
+      'placeholder',
+      PASSWORD_INPUT.PLACEHOLDER
+    );
 
     const signUpButton = getByTestId('sign-up-button');
     expect(signUpButton).toBeInTheDocument();
-    expect(signUpButton).toHaveTextContent('登録');
+    expect(signUpButton).toHaveTextContent(SIGN_UP.BUTTON.SUBMIT);
   });
 
   it('ユーザーがフォームを入力して登録できる', async () => {
@@ -78,9 +82,7 @@ describe('SignUp component', () => {
         'password'
       );
       expect(mockNotify.success).toHaveBeenCalledTimes(1);
-      expect(mockNotify.success).toHaveBeenCalledWith(
-        'アカウント作成に成功しました'
-      );
+      expect(mockNotify.success).toHaveBeenCalledWith(SIGN_UP.MESSAGE.SUCCESS);
       expect(mockNavigator).toHaveBeenCalledTimes(1);
       expect(mockNavigator).toHaveBeenCalledWith('/');
     });

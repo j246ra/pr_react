@@ -4,6 +4,7 @@ export const COMMON = {
       GENERAL: '想定外のエラーが発生しました',
     } as const,
   } as const,
+  REQUIRED: '(必須)',
 };
 
 export const API = {
@@ -60,6 +61,27 @@ export const VALIDATOR = {
   } as const,
 };
 
+export const EMAIL_INPUT = {
+  LABEL: 'メールアドレス',
+  PLACEHOLDER: 'メールアドレスを入力',
+  REQUIRED: COMMON.REQUIRED,
+};
+
+export const PASSWORD_FORGET = {
+  GUIDANCE: 'パスワードを忘れた方',
+  MESSAGE: {
+    INFO: 'パスワードリセットメールの送信先を入力してください。',
+    SUCCESS: 'パスワードリセットメールを送信しました。',
+    ERROR: '送信に失敗しました。',
+  } as const,
+  EMAIL_INPUT: {
+    PLACEHOLDER: '送信先のメールドレスを入力',
+  } as const,
+  BUTTON: {
+    SUBMIT: '送信',
+  } as const,
+};
+
 export const ACCOUNT_DELETE = {
   MESSAGE: {
     SUCCESS: 'アカウントを削除しました。',
@@ -99,7 +121,7 @@ export const LOGIN = {
     SUBMIT: 'ログイン',
   } as const,
   LINK: {
-    PASSWORD_FORGET: 'パスワードを忘れた方',
+    PASSWORD_FORGET: PASSWORD_FORGET.GUIDANCE,
     SIGN_UP: '新規登録',
   } as const,
 };
@@ -107,7 +129,7 @@ export const LOGIN = {
 export const PASSWORD_INPUT = {
   LABEL: 'パスワード',
   PLACEHOLDER: 'パスワードを入力',
-  REQUIRED: '(必須)',
+  REQUIRED: COMMON.REQUIRED,
 };
 
 export const PASSWORD_EDIT = {
@@ -127,22 +149,20 @@ export const PASSWORD_EDIT = {
   } as const,
 };
 
-export const PASSWORD_FORGET = {
-  MESSAGE: {
-    INFO: 'パスワードリセットメールの送信先を入力してください。',
-    SUCCESS: 'パスワードリセットメールを送信しました。',
-    ERROR: '送信に失敗しました。',
-  } as const,
-  EMAIL_INPUT: {
-    PLACEHOLDER: '送信先のメールドレスを入力',
-  } as const,
-  BUTTON: {
-    SUBMIT: '送信',
-  } as const,
-};
-
 export const RESET_MAIL_SUCCESS = {
   INFO: '送信に成功しました。メールをご確認ください。',
+};
+
+export const SIGN_UP = {
+  MESSAGE: {
+    SUCCESS: 'アカウント作成に成功しました',
+  } as const,
+  BUTTON: {
+    SUBMIT: '登録',
+  } as const,
+  LINK: {
+    PASSWORD_FORGET: PASSWORD_FORGET.GUIDANCE,
+  },
 };
 
 export const COMPONENT = {
@@ -153,6 +173,8 @@ export const COMPONENT = {
   PASSWORD_EDIT,
   PASSWORD_FORGET,
   RESET_MAIL_SUCCESS,
+  SIGN_UP,
+  EMAIL_INPUT,
 };
 
 const CONST = {

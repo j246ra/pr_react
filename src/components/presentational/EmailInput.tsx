@@ -1,5 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import { FormGroup, InputGroup } from '@blueprintjs/core';
+import { EMAIL_INPUT } from '@lib/consts';
 
 export interface EmailInputProps {
   value: string;
@@ -14,12 +15,12 @@ export const EmailInput: React.FC<EmailInputProps> = ({
   onChange,
   id = 'email-input',
   required = true,
-  placeholder = 'メールアドレスを入力',
+  placeholder = EMAIL_INPUT.PLACEHOLDER,
 }) => (
   <FormGroup
     label="メールアドレス"
     labelFor={id}
-    labelInfo={required ? '(必須)' : ''}
+    labelInfo={required ? EMAIL_INPUT.REQUIRED : ''}
   >
     <InputGroup
       id={id}

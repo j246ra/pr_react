@@ -3,6 +3,7 @@ import { render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import { EmailInput } from './EmailInput';
+import { EMAIL_INPUT } from '@lib/consts';
 
 describe('ContextInput', () => {
   const mockOnChange = jest.fn();
@@ -15,10 +16,10 @@ describe('ContextInput', () => {
     expect(input.getAttribute('type')).toEqual('email');
     expect(input.id).toEqual('email-input');
     expect(input.required).toEqual(true);
-    expect(input.placeholder).toEqual('メールアドレスを入力');
+    expect(input.placeholder).toEqual(EMAIL_INPUT.PLACEHOLDER);
     expect(input.value).toEqual('');
     const label = container.getElementsByTagName('label')[0];
-    expect(label.textContent).toMatch('必須');
+    expect(label.textContent).toMatch(EMAIL_INPUT.REQUIRED);
   });
   it('任意項目指定時の各属性の確認', async () => {
     const { container } = render(
@@ -51,6 +52,6 @@ describe('ContextInput', () => {
     const input = container.getElementsByTagName('input')[0];
     expect(input.required).toEqual(false);
     const label = container.getElementsByTagName('label')[0];
-    expect(label.textContent).not.toMatch('必須');
+    expect(label.textContent).not.toMatch(EMAIL_INPUT.REQUIRED);
   });
 });
