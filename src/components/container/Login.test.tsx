@@ -18,6 +18,7 @@ import App from '@src/App';
 import PasswordForget from '@container/PasswordForget';
 import { useLifelog } from '@providers/LifelogProvider';
 import SignUp from '@container/SignUp';
+import { LOGIN } from '@lib/consts';
 
 jest.mock('@providers/LifelogProvider');
 jest.mock('@lib/toast');
@@ -144,7 +145,7 @@ describe('Login component', () => {
         'password'
       );
       expect(mockNotify.success).toHaveBeenCalledTimes(1);
-      expect(mockNotify.success).toHaveBeenCalledWith('ログイン成功');
+      expect(mockNotify.success).toHaveBeenCalledWith(LOGIN.MESSAGE.SUCCESS);
       expect(mockNavigator).toHaveBeenCalledTimes(1);
       expect(mockNavigator).toHaveBeenCalledWith('/lifelogs');
     });

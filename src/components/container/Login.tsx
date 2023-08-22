@@ -1,6 +1,6 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from '@blueprintjs/core';
+import { Button, Intent } from '@blueprintjs/core';
 import { useUser } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@providers/AuthApiProvider';
@@ -8,6 +8,8 @@ import notify from '@lib/toast';
 import { EmailInput } from '@presentational/EmailInput';
 import { PasswordInput } from '@presentational/PasswordInput';
 import SessionCard from '@presentational/SessionCard';
+import { LOGIN } from '@lib/consts';
+import { IconNames } from '@blueprintjs/icons';
 
 const DEFAULT_PATH = '/lifelogs';
 
@@ -29,14 +31,13 @@ const Login: React.FC = () => {
       .signIn(email, password)
       .then((r) => {
         if (r.status !== 200) return;
-        notify.success('ログイン成功');
+        notify.success(LOGIN.MESSAGE.SUCCESS);
         navigate(DEFAULT_PATH);
       })
       .catch((e) => {
-        let message = '認証に失敗しました。';
         if (e.response.status === 401)
-          message = '認証に失敗しました。IDとパスワードをご確認ください。';
-        notify.error(message);
+          notify.error(LOGIN.MESSAGE.ERROR.STATUS_401);
+        else notify.error(LOGIN.MESSAGE.ERROR.NORMAL);
       });
   };
 
@@ -64,17 +65,17 @@ const Login: React.FC = () => {
         <Button
           data-testid={'login-button'}
           type="submit"
-          intent="primary"
-          icon="log-in"
-          text="ログイン"
+          intent={Intent.PRIMARY}
+          icon={IconNames.LogIn}
+          text={LOGIN.BUTTON.SUBMIT}
         />
       </form>
       <div className={'links'}>
         <Link className="password-forget-link" to={'/password_forget'}>
-          パスワードを忘れた方
+          {LOGIN.LINK.PASSWORD_FORGET}
         </Link>
         <Link className="sign-up-link" to={'/sign_up'}>
-          新規登録
+          {LOGIN.LINK.SIGN_UP}
         </Link>
       </div>
     </SessionCard>

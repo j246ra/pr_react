@@ -87,9 +87,27 @@ export const ACCOUNT_UPDATE = {
   } as const,
 };
 
+export const LOGIN = {
+  MESSAGE: {
+    SUCCESS: 'ログイン成功',
+    ERROR: {
+      STATUS_401: '認証に失敗しました。IDとパスワードをご確認ください。',
+      NORMAL: '認証に失敗しました。',
+    } as const,
+  } as const,
+  BUTTON: {
+    SUBMIT: 'ログイン',
+  } as const,
+  LINK: {
+    PASSWORD_FORGET: 'パスワードを忘れた方',
+    SIGN_UP: '新規登録',
+  } as const,
+};
+
 export const COMPONENT = {
   ACCOUNT_DELETE,
   ACCOUNT_UPDATE,
+  LOGIN,
 };
 
 const CONST = {
