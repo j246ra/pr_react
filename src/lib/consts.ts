@@ -175,6 +175,13 @@ export const HEADER = {
   },
 };
 
+export const LIFELOGS = {
+  MESSAGE: {
+    SUCCESS: '行動を記録しました。',
+    ERROR: 'ログインしてください。',
+  },
+};
+
 export const COMPONENT = {
   ACCOUNT_DELETE,
   ACCOUNT_UPDATE,
@@ -186,6 +193,7 @@ export const COMPONENT = {
   SIGN_UP,
   EMAIL_INPUT,
   HEADER,
+  LIFELOGS,
 };
 
 const CONST = {

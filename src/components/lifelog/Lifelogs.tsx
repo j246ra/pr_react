@@ -11,6 +11,7 @@ import {
 } from '@providers/LifelogProvider';
 import LifelogDetailDialog from '@lifelog/container/LifelogDetailDialog';
 import LifelogEditDialog from '@lifelog/container/LifelogEditDialog';
+import { LIFELOGS } from '@lib/consts';
 
 const Lifelogs: React.FC = () => {
   const { isLogin } = useUser();
@@ -22,7 +23,7 @@ const Lifelogs: React.FC = () => {
 
   useEffect(() => {
     if (!isLogin()) {
-      notify.error('ログインしてください。');
+      notify.error(LIFELOGS.MESSAGE.ERROR);
       return navigate('/login');
     }
   }, [isLogin]);
@@ -32,7 +33,7 @@ const Lifelogs: React.FC = () => {
     createLogByContext(context)
       .then(() => {
         setContext('');
-        notify.success('行動を記録しました。');
+        notify.success(LIFELOGS.MESSAGE.SUCCESS);
       })
       .catch((e) => notify.error(e.message));
   };
