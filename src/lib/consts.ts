@@ -226,6 +226,26 @@ export const SEARCH_INPUT = {
   PLACEHOLDER: '検索（行動、詳細）',
 };
 
+export const LIFELOG_DETAIL_DIALOG = {
+  LABEL: {
+    ACTION: '行動',
+    DETAIL: '詳細',
+    STARTED_AT: '開始時間',
+    FINISHED_AT: '終了時間',
+    CREATED_AT: '作成日時',
+    UPDATED_AT: '更新日時',
+  } as const,
+  TEST_ID: {
+    TBODY: 'LifelogDetailDialogTbody',
+    TD_ACTION: 'LifelogDetailDialogTdAction',
+    TD_DETAIL: 'LifelogDetailDialogTdDetail',
+    TD_STARTED_AT: 'LifelogDetailDialogTdStartedAt',
+    TD_FINISHED_AT: 'LifelogDetailDialogTdFinishedAt',
+    TD_CREATED_AT: 'LifelogDetailDialogTdCreatedAt',
+    TD_UPDATED_AT: 'LifelogDetailDialogTdUpdatedAt',
+  } as const,
+};
+
 export const COMPONENT = {
   ACCOUNT_DELETE,
   ACCOUNT_UPDATE,
@@ -242,6 +262,7 @@ export const COMPONENT = {
   DATETIME_INPUT,
   LIFELOG_LIST_HEADER,
   SEARCH_INPUT,
+  LIFELOG_DETAIL_DIALOG,
 };
 
 const CONST = {

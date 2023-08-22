@@ -19,7 +19,7 @@ export const lifelog = (log?: OptionalLifelog): Lifelog => {
 };
 
 export const lifelogs = (length = 1, offset = 0) => {
-  let logs: Lifelog[] = [];
+  const logs: Lifelog[] = [];
   for (let i = 0; i < length; i++) {
     const datetime = days().subtract(i, 'h').format(DATETIME_FULL);
     logs.push(

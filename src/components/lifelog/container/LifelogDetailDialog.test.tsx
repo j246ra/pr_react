@@ -1,11 +1,11 @@
 import { fireEvent, render, waitFor } from '@testing-library/react';
-import LifelogDetailDialog, {
-  LIFELOG_DETAIL_DIALOG_TEST_ID,
-} from '@lifelog/container/LifelogDetailDialog';
+import LifelogDetailDialog from '@lifelog/container/LifelogDetailDialog';
 import { lifelog } from '@lib/faker/lifelog';
 import { Lifelog } from '@providers/LifelogProvider';
+import { LIFELOG_DETAIL_DIALOG } from '@lib/consts';
 
-const TEST_ID = LIFELOG_DETAIL_DIALOG_TEST_ID + '-';
+const TEST_ID = LIFELOG_DETAIL_DIALOG.TEST_ID;
+const LABEL = LIFELOG_DETAIL_DIALOG.LABEL;
 
 describe('LifelogDetailDialog', () => {
   const handleClose = jest.fn();
@@ -23,28 +23,26 @@ describe('LifelogDetailDialog', () => {
         />
       );
       await waitFor(() => {
-        expect(getByText('行動')).not.toBeUndefined();
-        expect(getByTestId(`${TEST_ID}td-action`)).toHaveTextContent(
-          log.action
-        );
-        expect(getByText('詳細')).not.toBeUndefined();
-        expect(getByTestId(`${TEST_ID}td-detail`)).toHaveTextContent(
+        expect(getByText(LABEL.ACTION)).not.toBeUndefined();
+        expect(getByTestId(TEST_ID.TD_ACTION)).toHaveTextContent(log.action);
+        expect(getByText(LABEL.DETAIL)).not.toBeUndefined();
+        expect(getByTestId(TEST_ID.TD_DETAIL)).toHaveTextContent(
           log.detail || ''
         );
-        expect(getByText('開始時間')).not.toBeUndefined();
-        expect(getByTestId(`${TEST_ID}td-started-at`)).toHaveTextContent(
+        expect(getByText(LABEL.STARTED_AT)).not.toBeUndefined();
+        expect(getByTestId(TEST_ID.TD_STARTED_AT)).toHaveTextContent(
           log.startedAt
         );
-        expect(getByText('終了時間')).not.toBeUndefined();
-        expect(getByTestId(`${TEST_ID}td-finished-at`)).toHaveTextContent(
+        expect(getByText(LABEL.FINISHED_AT)).not.toBeUndefined();
+        expect(getByTestId(TEST_ID.TD_FINISHED_AT)).toHaveTextContent(
           log.finishedAt || ''
         );
-        expect(getByText('作成日時')).not.toBeUndefined();
-        expect(getByTestId(`${TEST_ID}td-created-at`)).toHaveTextContent(
+        expect(getByText(LABEL.CREATED_AT)).not.toBeUndefined();
+        expect(getByTestId(TEST_ID.TD_CREATED_AT)).toHaveTextContent(
           log.createdAt
         );
-        expect(getByText('更新日時')).not.toBeUndefined();
-        expect(getByTestId(`${TEST_ID}td-updated-at`)).toHaveTextContent(
+        expect(getByText(LABEL.UPDATED_AT)).not.toBeUndefined();
+        expect(getByTestId(TEST_ID.TD_UPDATED_AT)).toHaveTextContent(
           log.updatedAt
         );
       });
@@ -54,18 +52,18 @@ describe('LifelogDetailDialog', () => {
         <LifelogDetailDialog isOpen={true} handleCloseDialog={handleClose} />
       );
       await waitFor(() => {
-        expect(getByText('行動')).not.toBeUndefined();
-        expect(getByTestId(`${TEST_ID}td-action`)).toBeEmptyDOMElement();
-        expect(getByText('詳細')).not.toBeUndefined();
-        expect(getByTestId(`${TEST_ID}td-detail`)).toBeEmptyDOMElement();
-        expect(getByText('開始時間')).not.toBeUndefined();
-        expect(getByTestId(`${TEST_ID}td-started-at`)).toBeEmptyDOMElement();
-        expect(getByText('終了時間')).not.toBeUndefined();
-        expect(getByTestId(`${TEST_ID}td-finished-at`)).toBeEmptyDOMElement();
-        expect(getByText('作成日時')).not.toBeUndefined();
-        expect(getByTestId(`${TEST_ID}td-created-at`)).toBeEmptyDOMElement();
-        expect(getByText('更新日時')).not.toBeUndefined();
-        expect(getByTestId(`${TEST_ID}td-updated-at`)).toBeEmptyDOMElement();
+        expect(getByText(LABEL.ACTION)).not.toBeUndefined();
+        expect(getByTestId(TEST_ID.TD_ACTION)).toBeEmptyDOMElement();
+        expect(getByText(LABEL.DETAIL)).not.toBeUndefined();
+        expect(getByTestId(TEST_ID.TD_DETAIL)).toBeEmptyDOMElement();
+        expect(getByText(LABEL.STARTED_AT)).not.toBeUndefined();
+        expect(getByTestId(TEST_ID.TD_STARTED_AT)).toBeEmptyDOMElement();
+        expect(getByText(LABEL.FINISHED_AT)).not.toBeUndefined();
+        expect(getByTestId(TEST_ID.TD_FINISHED_AT)).toBeEmptyDOMElement();
+        expect(getByText(LABEL.CREATED_AT)).not.toBeUndefined();
+        expect(getByTestId(TEST_ID.TD_CREATED_AT)).toBeEmptyDOMElement();
+        expect(getByText(LABEL.UPDATED_AT)).not.toBeUndefined();
+        expect(getByTestId(TEST_ID.TD_UPDATED_AT)).toBeEmptyDOMElement();
       });
     });
   });
@@ -76,56 +74,56 @@ describe('LifelogDetailDialog', () => {
         <LifelogDetailDialog isOpen={true} handleCloseDialog={handleClose} />
       );
       await waitFor(() => {
-        const elements = getAllByTestId(`${TEST_ID}tbody`);
+        const elements = getAllByTestId(TEST_ID.TBODY);
         expect(elements).toHaveLength(1);
       });
     });
-  });
-  it('false 時にダイアログは表示されない', async () => {
-    const { queryByText, queryAllByTestId } = render(
-      <LifelogDetailDialog isOpen={false} handleCloseDialog={handleClose} />
-    );
-    await waitFor(() => {
-      const elements = queryAllByTestId(`${TEST_ID}tbody`);
-      expect(elements).toHaveLength(0);
+    it('false 時にダイアログは表示されない', async () => {
+      const { queryByText, queryAllByTestId } = render(
+        <LifelogDetailDialog isOpen={false} handleCloseDialog={handleClose} />
+      );
+      await waitFor(() => {
+        const elements = queryAllByTestId(TEST_ID.TBODY);
+        expect(elements).toHaveLength(0);
+      });
+      expect(queryByText(LABEL.ACTION)).toBeNull();
+      expect(queryByText(LABEL.DETAIL)).toBeNull();
+      expect(queryByText(LABEL.STARTED_AT)).toBeNull();
+      expect(queryByText(LABEL.FINISHED_AT)).toBeNull();
+      expect(queryByText(LABEL.CREATED_AT)).toBeNull();
+      expect(queryByText(LABEL.UPDATED_AT)).toBeNull();
     });
-    expect(queryByText('行動')).toBeNull();
-    expect(queryByText('詳細')).toBeNull();
-    expect(queryByText('開始時間')).toBeNull();
-    expect(queryByText('終了時間')).toBeNull();
-    expect(queryByText('作成日時')).toBeNull();
-    expect(queryByText('更新日時')).toBeNull();
-  });
-  it('false -> true 時にダイアログが表示される', async () => {
-    const { getAllByTestId, queryAllByTestId, rerender } = render(
-      <LifelogDetailDialog isOpen={false} handleCloseDialog={handleClose} />
-    );
-    await waitFor(() => {
-      const elements = queryAllByTestId(`${TEST_ID}tbody`);
-      expect(elements).toHaveLength(0);
+    it('false -> true 時にダイアログが表示される', async () => {
+      const { getAllByTestId, queryAllByTestId, rerender } = render(
+        <LifelogDetailDialog isOpen={false} handleCloseDialog={handleClose} />
+      );
+      await waitFor(() => {
+        const elements = queryAllByTestId(TEST_ID.TBODY);
+        expect(elements).toHaveLength(0);
+      });
+      rerender(
+        <LifelogDetailDialog isOpen={true} handleCloseDialog={handleClose} />
+      );
+      await waitFor(() => {
+        const elements = getAllByTestId(TEST_ID.TBODY);
+        expect(elements).toHaveLength(1);
+      });
     });
-    rerender(
-      <LifelogDetailDialog isOpen={true} handleCloseDialog={handleClose} />
-    );
-    await waitFor(() => {
-      const elements = getAllByTestId(`${TEST_ID}tbody`);
-      expect(elements).toHaveLength(1);
-    });
-  });
-  it('true -> false 時にダイアログが閉じる', async () => {
-    const { getAllByTestId, queryAllByTestId, rerender } = render(
-      <LifelogDetailDialog isOpen={true} handleCloseDialog={handleClose} />
-    );
-    await waitFor(() => {
-      const elements = getAllByTestId(`${TEST_ID}tbody`);
-      expect(elements).toHaveLength(1);
-    });
-    rerender(
-      <LifelogDetailDialog isOpen={false} handleCloseDialog={handleClose} />
-    );
-    await waitFor(() => {
-      const elements = queryAllByTestId(`${TEST_ID}tbody`);
-      expect(elements).toHaveLength(0);
+    it('true -> false 時にダイアログが閉じる', async () => {
+      const { getAllByTestId, queryAllByTestId, rerender } = render(
+        <LifelogDetailDialog isOpen={true} handleCloseDialog={handleClose} />
+      );
+      await waitFor(() => {
+        const elements = getAllByTestId(TEST_ID.TBODY);
+        expect(elements).toHaveLength(1);
+      });
+      rerender(
+        <LifelogDetailDialog isOpen={false} handleCloseDialog={handleClose} />
+      );
+      await waitFor(() => {
+        const elements = queryAllByTestId(TEST_ID.TBODY);
+        expect(elements).toHaveLength(0);
+      });
     });
   });
 
@@ -139,10 +137,10 @@ describe('LifelogDetailDialog', () => {
         />
       );
       await waitFor(() => {
-        const elements = getAllByTestId(`${TEST_ID}tbody`);
+        const elements = getAllByTestId(TEST_ID.TBODY);
         expect(elements).toHaveLength(1);
       });
-      fireEvent.keyDown(getByTestId(`${TEST_ID}tbody`), {
+      fireEvent.keyDown(getByTestId(TEST_ID.TBODY), {
         key: 'Escape',
       });
       await waitFor(() => {
