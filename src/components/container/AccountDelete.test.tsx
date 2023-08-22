@@ -7,6 +7,7 @@ import {
   mockUseSession,
   mockUseUser,
 } from '@src/tests/baseProviders';
+import { ACCOUNT_DELETE } from '@lib/consts';
 
 describe('AccountDelete component', () => {
   beforeEach(() => {
@@ -43,8 +44,8 @@ describe('AccountDelete component', () => {
       </Router>
     );
 
-    fireEvent.click(getByText('アカウント削除'));
-    fireEvent.click(getByText('削除'));
+    fireEvent.click(getByText(ACCOUNT_DELETE.BUTTON.DELETE));
+    fireEvent.click(getByText(ACCOUNT_DELETE.ALERT.CONFIRM));
 
     await waitFor(() => {
       expect(mockUseAuth().authApi.deleteUser).toHaveBeenCalled();

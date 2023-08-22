@@ -5,6 +5,7 @@ import notify from '@lib/toast';
 import { useUser } from '@providers/UserProvider';
 import { useSession } from '@providers/SessionProvider';
 import { useNavigate } from 'react-router-dom';
+import { ACCOUNT_DELETE } from '@lib/consts';
 
 const AccountDelete: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +25,7 @@ const AccountDelete: React.FC = () => {
     e?.preventDefault();
     api
       .deleteUser()
-      .then(() => notify.success('アカウントを削除しました。'))
+      .then(() => notify.success(ACCOUNT_DELETE.MESSAGE.SUCCESS))
       .finally(() => {
         clearUser();
         removeHeaders();
@@ -36,7 +37,7 @@ const AccountDelete: React.FC = () => {
   return (
     <>
       <Button
-        text="アカウント削除"
+        text={ACCOUNT_DELETE.BUTTON.DELETE}
         icon="trash"
         intent="danger"
         onClick={handleOpenAlert}
@@ -45,16 +46,16 @@ const AccountDelete: React.FC = () => {
       />
       <Alert
         isOpen={isOpen}
-        cancelButtonText="キャンセル"
+        cancelButtonText={ACCOUNT_DELETE.ALERT.CANCEL}
         onCancel={handleCloseAlert}
-        confirmButtonText="削除"
+        confirmButtonText={ACCOUNT_DELETE.ALERT.CONFIRM}
         onConfirm={handleAccountDelete}
         intent="danger"
         icon="trash"
         canEscapeKeyCancel={true}
         canOutsideClickCancel={true}
       >
-        本当にアカウントを削除しますか？
+        {ACCOUNT_DELETE.ALERT.MESSAGE}
       </Alert>
     </>
   );

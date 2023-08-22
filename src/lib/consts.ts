@@ -60,6 +60,24 @@ export const VALIDATOR = {
   } as const,
 };
 
+export const ACCOUNT_DELETE = {
+  MESSAGE: {
+    SUCCESS: 'アカウントを削除しました。',
+  } as const,
+  BUTTON: {
+    DELETE: 'アカウント削除',
+  } as const,
+  ALERT: {
+    CONFIRM: '削除',
+    CANCEL: 'キャンセル',
+    MESSAGE: '本当にアカウントを削除しますか？',
+  } as const,
+};
+
+export const COMPONENT = {
+  ACCOUNT_DELETE,
+};
+
 const CONST = {
   COMMON,
   API,
@@ -68,6 +86,7 @@ const CONST = {
   USE_DELETE_LIFELOG,
   USE_FINISH_ACTION,
   VALIDATOR,
+  COMPONENT,
 };
 
 export default CONST;
