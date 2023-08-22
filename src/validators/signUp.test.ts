@@ -1,5 +1,6 @@
 import signUpValidator from '@validators/signUp';
 import { INVALID_MESSAGES } from '@validators/validator';
+import { EMAIL_INPUT } from '@lib/consts';
 
 describe('signUpValidator', () => {
   it('正常系', () => {
@@ -19,7 +20,7 @@ describe('signUpValidator', () => {
       expect(result.isInvalid).toBe(true);
       expect(result.message).toHaveLength(1);
       expect(result.message).toContain(
-        INVALID_MESSAGES.TEXT_PRESENCE('メールアドレス')
+        INVALID_MESSAGES.TEXT_PRESENCE(EMAIL_INPUT.PLACEHOLDER)
       );
     });
     it('パスワードの長さエラーの場合', () => {

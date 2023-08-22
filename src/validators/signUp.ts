@@ -1,4 +1,5 @@
 import validator, { Result } from './validator';
+import { EMAIL_INPUT } from '@lib/consts';
 
 type SignUpValidator = (email: string, password: string) => Result;
 
@@ -9,7 +10,7 @@ const signUpValidator: SignUpValidator = (email, password) => {
     emailFormatValidator,
     passwordLengthValidator,
   } = validator();
-  textPresenceValidator(email, 'メールアドレス');
+  textPresenceValidator(email, EMAIL_INPUT.PLACEHOLDER);
   if (!result.isInvalid) emailFormatValidator(email);
   passwordLengthValidator(password);
   return result;
