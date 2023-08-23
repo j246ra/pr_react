@@ -1,0 +1,18 @@
+const g = (prefix: string, value: string) => prefix + value;
+
+const LIFELOG_DETAIL_DIALOG_PREFIX = 'LifelogDetailDialog';
+export const LIFELOG_DETAIL_DIALOG_TEST_ID = {
+  TBODY: g(LIFELOG_DETAIL_DIALOG_PREFIX, 'Tbody'),
+  TD_ACTION: g(LIFELOG_DETAIL_DIALOG_PREFIX, 'TdAction'),
+  TD_DETAIL: g(LIFELOG_DETAIL_DIALOG_PREFIX, 'TdDetail'),
+  TD_STARTED_AT: g(LIFELOG_DETAIL_DIALOG_PREFIX, 'TdStartedAt'),
+  TD_FINISHED_AT: g(LIFELOG_DETAIL_DIALOG_PREFIX, 'TdFinishedAt'),
+  TD_CREATED_AT: g(LIFELOG_DETAIL_DIALOG_PREFIX, 'TdCreatedAt'),
+  TD_UPDATED_AT: g(LIFELOG_DETAIL_DIALOG_PREFIX, 'TdUpdatedAt'),
+};
+
+export const TEST_IDS = {
+  LIFELOG_DETAIL_DIALOG: LIFELOG_DETAIL_DIALOG_TEST_ID,
+};
+
+export default TEST_IDS;

@@ -3,8 +3,8 @@ import LifelogDetailDialog from '@lifelog/container/LifelogDetailDialog';
 import { lifelog } from '@lib/faker/lifelog';
 import { Lifelog } from '@providers/LifelogProvider';
 import { LIFELOG_DETAIL_DIALOG } from '@lib/consts';
+import { LIFELOG_DETAIL_DIALOG_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
-const TEST_ID = LIFELOG_DETAIL_DIALOG.TEST_ID;
 const LABEL = LIFELOG_DETAIL_DIALOG.LABEL;
 
 describe('LifelogDetailDialog', () => {

@@ -235,15 +235,6 @@ export const LIFELOG_DETAIL_DIALOG = {
     CREATED_AT: '作成日時',
     UPDATED_AT: '更新日時',
   } as const,
-  TEST_ID: {
-    TBODY: 'LifelogDetailDialogTbody',
-    TD_ACTION: 'LifelogDetailDialogTdAction',
-    TD_DETAIL: 'LifelogDetailDialogTdDetail',
-    TD_STARTED_AT: 'LifelogDetailDialogTdStartedAt',
-    TD_FINISHED_AT: 'LifelogDetailDialogTdFinishedAt',
-    TD_CREATED_AT: 'LifelogDetailDialogTdCreatedAt',
-    TD_UPDATED_AT: 'LifelogDetailDialogTdUpdatedAt',
-  } as const,
 };
 
 export const LIFELOG_EDIT_DIALOG = {

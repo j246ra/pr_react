@@ -3,6 +3,7 @@ import { Dialog, DialogBody, HTMLTable } from '@blueprintjs/core';
 import { Lifelog } from '@providers/LifelogProvider';
 import styles from './LifelogDetailDialog.module.scss';
 import { LIFELOG_DETAIL_DIALOG } from '@lib/consts';
+import { LIFELOG_DETAIL_DIALOG_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
 export interface LifelogDetailDialogProps {
   isOpen: boolean;
@@ -10,7 +11,6 @@ export interface LifelogDetailDialogProps {
   log?: Lifelog;
 }
 
-const TEST_ID = LIFELOG_DETAIL_DIALOG.TEST_ID;
 const LABEL = LIFELOG_DETAIL_DIALOG.LABEL;
 
 const LifelogDetailDialog = ({
