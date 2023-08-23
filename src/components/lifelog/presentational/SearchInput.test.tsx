@@ -10,6 +10,7 @@ import { useLifelog } from '@providers/LifelogProvider';
 import userEvent from '@testing-library/user-event';
 import toast from 'react-hot-toast';
 import { NOTIFY, SEARCH_INPUT } from '@lib/consts';
+import { SEARCH_INPUT_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
 jest.mock('react-hot-toast');
 jest.mock('@providers/LifelogProvider');
@@ -25,14 +26,14 @@ describe('SearchInput', () => {
   describe('props検証', () => {
     it('isShow が true の場合、表示され指定の width であること', () => {
       render(<SearchInput isShow={true} width={300} />);
-      const input = screen.getByTestId('search-input');
+      const input = screen.getByTestId(TEST_ID.BASE);
       expect(input).toBeInTheDocument();
       expect(input.style.width).toEqual('300px');
     });
 
     it('isShow が true で width 未指定の場合、260px であること', () => {
       render(<SearchInput isShow={true} />);
-      const input = screen.getByTestId('search-input');
+      const input = screen.getByTestId(TEST_ID.BASE);
       expect(input).toBeInTheDocument();
       expect(input.style.width).toEqual('260px');
     });
@@ -84,7 +85,7 @@ describe('SearchInput', () => {
         const input = screen.getByPlaceholderText(
           SEARCH_INPUT.PLACEHOLDER
         ) as HTMLInputElement;
-        const button = screen.getByTestId('search-input-button');
+        const button = screen.getByTestId(TEST_ID.BUTTON);
         act(() => {
           userEvent.type(input, 'walking');
           userEvent.click(button);
@@ -99,7 +100,7 @@ describe('SearchInput', () => {
         const input = screen.getByPlaceholderText(
           SEARCH_INPUT.PLACEHOLDER
         ) as HTMLInputElement;
-        const button = screen.getByTestId('search-input-button');
+        const button = screen.getByTestId(TEST_ID.BUTTON);
         act(() => {
           fireEvent.compositionStart(input);
           userEvent.type(input, 'にほんごにゅうりょくちゅう');
@@ -123,7 +124,7 @@ describe('SearchInput', () => {
         const input = screen.getAllByPlaceholderText(
           SEARCH_INPUT.PLACEHOLDER
         )[0] as HTMLInputElement;
-        const button = screen.getAllByTestId('search-input-button')[0];
+        const button = screen.getAllByTestId(TEST_ID.BUTTON)[0];
         act(() => {
           userEvent.type(input, 'searching');
           userEvent.click(button);

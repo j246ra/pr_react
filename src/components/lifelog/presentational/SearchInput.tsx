@@ -4,6 +4,7 @@ import { useLifelog } from '@providers/LifelogProvider';
 import notify from '@lib/toast';
 import { SEARCH_INPUT } from '@lib/consts';
 import { IconNames } from '@blueprintjs/icons';
+import { SEARCH_INPUT_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
 export interface SearchInputProps {
   isShow: boolean;
@@ -31,7 +32,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ isShow, width = 260 }) => {
 
   const searchButton = (
     <Button
-      data-testid={'search-input-button'}
+      data-testid={TEST_ID.BUTTON}
       icon={IconNames.SEARCH}
       minimal={true}
       onClick={handleSearch}
@@ -39,7 +40,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ isShow, width = 260 }) => {
   );
 
   return (
-    <div style={{ width }} data-testid={'search-input'}>
+    <div style={{ width }} data-testid={TEST_ID.BASE}>
       <InputGroup
         type={'search'}
         placeholder={SEARCH_INPUT.PLACEHOLDER}
