@@ -18,6 +18,7 @@ import { useLifelog } from '@providers/LifelogProvider';
 import styles from './Header.module.scss';
 import { HEADER } from '@lib/consts';
 import { IconNames } from '@blueprintjs/icons';
+import { HEADER_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
 const Header = () => {
   const { removeHeaders } = useSession();
@@ -53,20 +54,20 @@ const Header = () => {
                 <MenuItem icon="search" text={HEADER.MENU.SEARCH} />
                 <MenuDivider />
                 <MenuItem
-                  data-testid={'menu-settings'}
+                  data-testid={TEST_ID.SETTINGS}
                   text={HEADER.MENU.TOP}
                   icon={IconNames.COG}
                   intent={Intent.PRIMARY}
                 >
                   <MenuItem
-                    data-testid={'menu-edit-account'}
+                    data-testid={TEST_ID.EDIT_ACCOUNT}
                     icon={IconNames.EDIT}
                     text={HEADER.MENU.EDIT_ACCOUNT}
                     href={'/update_account'}
                     disabled={!isLogin()}
                   />
                   <MenuItem
-                    data-testid={'menu-logout'}
+                    data-testid={TEST_ID.LOGOUT}
                     icon={IconNames.LOG_OUT}
                     text={HEADER.MENU.LOG_OUT}
                     onClick={handleLogout}
@@ -77,7 +78,11 @@ const Header = () => {
             }
             placement="bottom-end"
           >
-            <Button data-testid={'menu-button'} icon="menu" minimal={true} />
+            <Button
+              data-testid={TEST_ID.BUTTON}
+              icon={IconNames.MENU}
+              minimal={true}
+            />
           </Popover>
         </Navbar.Group>
       </div>

@@ -11,8 +11,18 @@ export const LIFELOG_DETAIL_DIALOG_TEST_ID = {
   TD_UPDATED_AT: g(LIFELOG_DETAIL_DIALOG_PREFIX, 'TdUpdatedAt'),
 };
 
+const HEADER_PREFIX = 'Headers';
+
+export const HEADER_TEST_ID = {
+  SETTINGS: g(HEADER_PREFIX, 'Settings'),
+  EDIT_ACCOUNT: g(HEADER_PREFIX, 'EditAccount'),
+  LOGOUT: g(HEADER_PREFIX, 'Logout'),
+  BUTTON: g(HEADER_PREFIX, 'Button'),
+};
+
 export const TEST_IDS = {
   LIFELOG_DETAIL_DIALOG: LIFELOG_DETAIL_DIALOG_TEST_ID,
+  HEADER: HEADER_TEST_ID,
 };
 
 export default TEST_IDS;
