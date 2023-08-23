@@ -25,7 +25,7 @@ export type UpdateParams = {
 const ENDPOINT = API.LIFELOG.ENDPOINT;
 
 export default function lifelog(
-  headers: Headers,
+  headers: () => Headers,
   responseInterceptor?: ResponseInterceptor,
   errorInterceptor?: ErrorInterceptor
 ) {
@@ -33,16 +33,20 @@ export default function lifelog(
     client.interceptors.response.use(responseInterceptor, errorInterceptor);
 
   const index = (page = 0, word = '') =>
-    client.get(ENDPOINT, { headers, params: { page, word } });
+    client.get(ENDPOINT, { headers: headers(), params: { page, word } });
 
   const create = (params: CreatParams) =>
-    client.post(ENDPOINT, { data: params }, { headers });
+    client.post(ENDPOINT, { data: params }, { headers: headers() });
 
   const update = (params: UpdateParams) =>
-    client.put(`${ENDPOINT}/${params.id}`, { data: params }, { headers });
+    client.put(
+      `${ENDPOINT}/${params.id}`,
+      { data: params },
+      { headers: headers() }
+    );
 
   const destroy = (id: number) =>
-    client.delete(`${ENDPOINT}/${id}`, { headers });
+    client.delete(`${ENDPOINT}/${id}`, { headers: headers() });
 
   return {
     index,

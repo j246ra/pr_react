@@ -8,7 +8,9 @@ jest.mock('./client');
 const mockedClient = client as jest.Mocked<typeof client>;
 
 describe('lifelog APIの呼び出し検証', () => {
-  const headers = { 'access-token': 'token', client: 'client', uid: 'uid' };
+  const headers = () => {
+    return { 'access-token': 'token', client: 'client', uid: 'uid' };
+  };
 
   beforeEach(() => {
     mockedClient.post.mockReset();
@@ -25,7 +27,7 @@ describe('lifelog APIの呼び出し検証', () => {
     await index(page, word);
 
     expect(mockedClient.get).toHaveBeenCalledWith('/lifelogs', {
-      headers,
+      headers: headers(),
       params: { page, word },
     });
   });
@@ -46,7 +48,7 @@ describe('lifelog APIの呼び出し検証', () => {
       {
         data: params,
       },
-      { headers }
+      { headers: headers() }
     );
   });
 
@@ -68,7 +70,7 @@ describe('lifelog APIの呼び出し検証', () => {
       {
         data: params,
       },
-      { headers }
+      { headers: headers() }
     );
   });
 
@@ -80,9 +82,7 @@ describe('lifelog APIの呼び出し検証', () => {
 
     expect(mockedClient.delete).toHaveBeenCalledWith(
       `${API.LIFELOG.ENDPOINT}/${id}`,
-      {
-        headers,
-      }
+      { headers: headers() }
     );
   });
 });

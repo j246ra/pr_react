@@ -104,7 +104,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     if (error.response?.status === 401) clearUser();
     return Promise.reject(error);
   };
-  const api = lifelog(getHeaders(), responseInterceptor, errorInterceptor);
+  const api = lifelog(getHeaders, responseInterceptor, errorInterceptor);
 
   const loadLogs = async () => {
     const nextPage = page + 1;
