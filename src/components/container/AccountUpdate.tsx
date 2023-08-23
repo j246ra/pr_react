@@ -12,6 +12,7 @@ import SessionCard from '@presentational/SessionCard';
 import notify from '@lib/toast';
 import { ACCOUNT_UPDATE } from '@lib/consts';
 import { IconNames } from '@blueprintjs/icons';
+import { ACCOUNT_UPDATE_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
 const AccountUpdate: React.FC = () => {
   const { user, updateUser } = useUser();
@@ -56,19 +57,19 @@ const AccountUpdate: React.FC = () => {
     <SessionCard>
       <form onSubmit={handleAccountUpdate}>
         <EmailInput
-          id={'account-update-email-input'}
+          testId={TEST_ID.EMAIL_INPUT}
           value={email}
           onChange={handleEmailChange}
           required={false}
         />
         <PasswordInput
-          id={'account-update-password-input'}
+          testId={TEST_ID.PASSWORD_INPUT}
           value={password}
           onChange={handlePasswordChange}
           required={false}
         />
         <PasswordInput
-          id={'account-update-password-confirm-input'}
+          testId={TEST_ID.PASSWORD_CONFIRM_INPUT}
           value={passwordConfirmation}
           onChange={handlePasswordConfirmationChange}
           label={ACCOUNT_UPDATE.PASSWORD_CONFIRM.LABEL}
@@ -76,10 +77,10 @@ const AccountUpdate: React.FC = () => {
           required={false}
         />
         <Button
-          data-testid={'account-update-submit-button'}
+          data-testid={TEST_ID.BUTTON}
           type="submit"
           intent={Intent.PRIMARY}
-          icon={IconNames.FloppyDisk}
+          icon={IconNames.FLOPPY_DISK}
           text={ACCOUNT_UPDATE.BUTTON.SUBMIT}
         />
       </form>

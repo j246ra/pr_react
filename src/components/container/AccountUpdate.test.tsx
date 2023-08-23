@@ -7,7 +7,8 @@ import {
   mockUseSession,
   mockUseUser,
 } from '@src/tests/baseProviders';
-import { ACCOUNT_UPDATE } from '@lib/consts';
+import { ACCOUNT_UPDATE, PASSWORD_INPUT } from '@lib/consts';
+import { ACCOUNT_UPDATE_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
 describe('AccountUpdate component', () => {
   beforeEach(() => {
@@ -32,15 +33,16 @@ describe('AccountUpdate component', () => {
 
   it('アカウント更新フォームが表示されている', () => {
     const { getByTestId, getByText } = render(<AccountUpdate />);
-    expect(getByTestId('account-update-email-input')).toBeInTheDocument();
+    expect(getByTestId(TEST_ID.EMAIL_INPUT)).toBeInTheDocument();
 
-    const passwordInput = getByTestId('account-update-password-input');
+    const passwordInput = getByTestId(TEST_ID.PASSWORD_INPUT);
     expect(passwordInput).toBeInTheDocument();
-    expect(passwordInput).toHaveAttribute('placeholder', 'パスワードを入力');
-
-    const passwordConfirmInput = getByTestId(
-      'account-update-password-confirm-input'
+    expect(passwordInput).toHaveAttribute(
+      'placeholder',
+      PASSWORD_INPUT.PLACEHOLDER
     );
+
+    const passwordConfirmInput = getByTestId(TEST_ID.PASSWORD_CONFIRM_INPUT);
     expect(passwordConfirmInput).toBeInTheDocument();
     expect(passwordConfirmInput).toHaveAttribute(
       'placeholder',
@@ -54,12 +56,12 @@ describe('AccountUpdate component', () => {
   it('ユーザーがフォームに情報を入力し、アカウントを更新する', async () => {
     const { getByTestId } = render(<AccountUpdate />);
 
-    const emailInput = getByTestId('account-update-email-input');
-    const passwordInput = getByTestId('account-update-password-input');
+    const emailInput = getByTestId(TEST_ID.EMAIL_INPUT);
+    const passwordInput = getByTestId(TEST_ID.PASSWORD_INPUT);
     const passwordConfirmationInput = getByTestId(
-      'account-update-password-confirm-input'
+      TEST_ID.PASSWORD_CONFIRM_INPUT
     );
-    const updateButton = getByTestId('account-update-submit-button');
+    const updateButton = getByTestId(TEST_ID.BUTTON);
 
     fireEvent.change(emailInput, {
       target: { value: 'newemail@example.com' },
