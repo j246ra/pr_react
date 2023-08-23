@@ -35,11 +35,20 @@ export const LOGIN_TEST_ID = {
   BUTTON: g(LOGIN_PREFIX, 'Button'),
 };
 
+const SIGN_UP_PREFIX = 'SignUp';
+export const SIGN_UP_TEST_ID = {
+  FORM: g(SIGN_UP_PREFIX, 'Form'),
+  EMAIL_INPUT: g(SIGN_UP_PREFIX, 'EmailInput'),
+  PASSWORD_INPUT: g(LOGIN_PREFIX, 'PasswordInput'),
+  BUTTON: g(LOGIN_PREFIX, 'Button'),
+};
+
 export const TEST_IDS = {
   LIFELOG_DETAIL_DIALOG: LIFELOG_DETAIL_DIALOG_TEST_ID,
   HEADER: HEADER_TEST_ID,
   ACCOUNT_UPDATE: ACCOUNT_UPDATE_TEST_ID,
   LOGIN: LOGIN_TEST_ID,
+  SIGN_UP: SIGN_UP_TEST_ID,
 };
 
 export default TEST_IDS;

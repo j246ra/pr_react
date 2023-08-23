@@ -19,7 +19,7 @@ import PasswordForget from '@container/PasswordForget';
 import { useLifelog } from '@providers/LifelogProvider';
 import SignUp from '@container/SignUp';
 import { EMAIL_INPUT, LOGIN, PASSWORD_INPUT } from '@lib/consts';
-import { LOGIN_TEST_ID as TEST_ID } from '@lib/consts/testId';
+import { LOGIN_TEST_ID as TEST_ID, SIGN_UP_TEST_ID } from '@lib/consts/testId';
 
 jest.mock('@providers/LifelogProvider');
 jest.mock('@lib/toast');
@@ -102,7 +102,7 @@ describe('Login component', () => {
       expect(signUpLinks[0]).toHaveAttribute('href', '/sign_up');
       fireEvent.click(signUpLinks[0]);
       await waitFor(() => {
-        const els = screen.getAllByTestId('sign-up-form');
+        const els = screen.getAllByTestId(SIGN_UP_TEST_ID.FORM);
         expect(els).toHaveLength(1);
       });
     });

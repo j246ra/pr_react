@@ -10,6 +10,7 @@ import {
   mockUseUser,
 } from '@src/tests/baseProviders';
 import { EMAIL_INPUT, PASSWORD_INPUT, SIGN_UP } from '@lib/consts';
+import { SIGN_UP_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
 jest.mock('@lib/toast');
 const mockNotify = jest.mocked(notify);
@@ -39,18 +40,18 @@ describe('SignUp component', () => {
         <SignUp />
       </Router>
     );
-    const emailInput = getByTestId('sign-up-email-input');
+    const emailInput = getByTestId(TEST_ID.EMAIL_INPUT);
     expect(emailInput).toBeInTheDocument();
     expect(emailInput).toHaveAttribute('placeholder', EMAIL_INPUT.PLACEHOLDER);
 
-    const passwordInput = getByTestId('sign-up-password-input');
+    const passwordInput = getByTestId(TEST_ID.PASSWORD_INPUT);
     expect(passwordInput).toBeInTheDocument();
     expect(passwordInput).toHaveAttribute(
       'placeholder',
       PASSWORD_INPUT.PLACEHOLDER
     );
 
-    const signUpButton = getByTestId('sign-up-button');
+    const signUpButton = getByTestId(TEST_ID.BUTTON);
     expect(signUpButton).toBeInTheDocument();
     expect(signUpButton).toHaveTextContent(SIGN_UP.BUTTON.SUBMIT);
   });
@@ -62,9 +63,9 @@ describe('SignUp component', () => {
       </Router>
     );
 
-    const emailInput = getByTestId('sign-up-email-input');
-    const passwordInput = getByTestId('sign-up-password-input');
-    const signUpButton = getByTestId('sign-up-button');
+    const emailInput = getByTestId(TEST_ID.EMAIL_INPUT);
+    const passwordInput = getByTestId(TEST_ID.PASSWORD_INPUT);
+    const signUpButton = getByTestId(TEST_ID.BUTTON);
 
     fireEvent.change(emailInput, {
       target: { value: 'test@example.com' },
