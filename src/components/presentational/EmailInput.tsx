@@ -8,15 +8,17 @@ export interface EmailInputProps {
   id?: string;
   required?: boolean;
   placeholder?: string;
+  testId?: string;
 }
 
-export const EmailInput: React.FC<EmailInputProps> = ({
+export const EmailInput = ({
   value,
   onChange,
   id = 'email-input',
   required = true,
   placeholder = EMAIL_INPUT.PLACEHOLDER,
-}) => (
+  testId = id,
+}: EmailInputProps) => (
   <FormGroup
     label="メールアドレス"
     labelFor={id}
@@ -24,7 +26,7 @@ export const EmailInput: React.FC<EmailInputProps> = ({
   >
     <InputGroup
       id={id}
-      data-testid={id}
+      data-testid={testId}
       placeholder={placeholder}
       type="email"
       value={value}

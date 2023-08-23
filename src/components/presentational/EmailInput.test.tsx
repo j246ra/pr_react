@@ -1,6 +1,5 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { EmailInput } from './EmailInput';
 import { EMAIL_INPUT } from '@lib/consts';
@@ -29,6 +28,7 @@ describe('ContextInput', () => {
         id={'input-test'}
         required={true}
         placeholder={'メールアドレスを入力してください。'}
+        testId={'EmailInputTestId'}
       />
     );
     const input = container.getElementsByTagName('input')[0];
@@ -44,6 +44,7 @@ describe('ContextInput', () => {
       expect(mockOnChange).toHaveBeenCalledTimes(6);
       // 入力値の検証は親コンポーネントで行う
     });
+    expect(screen.getByTestId('EmailInputTestId')).toBeInTheDocument();
   });
   it('required が false の時必須ではない', () => {
     const { container } = render(
