@@ -1,28 +1,37 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ContextInput from './ContextInput';
+import { CONTEXT_INPUT } from '@lib/consts';
+
+const mockOnSubmit = jest.fn((e) => e.preventDefault());
 
 describe('ContextInput', () => {
   it('レンダリングとイベントハンドラの動作を正しく行う', () => {
-    const mockOnChange = jest.fn();
-    const mockOnSubmit = jest.fn((e) => e.preventDefault());
+    let str = '';
+    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      str = e.target.value;
+    };
     const { getByPlaceholderText } = render(
       <ContextInput
         onSubmit={mockOnSubmit}
-        onChange={mockOnChange}
+        onChange={handleOnChange}
         placeholder="テスト用のプレースホルダ"
       />
     );
 
     const input = getByPlaceholderText('テスト用のプレースホルダ');
-
-    // onChangeイベントのテスト
+    expect(input).toBeInTheDocument();
+    expect(input).toHaveAttribute('required');
     userEvent.type(input, 'テスト文字列');
-    expect(mockOnChange).toHaveBeenCalled();
-
-    // onSubmitイベントのテスト
+    expect(str).toEqual('テスト文字列');
     userEvent.type(input, '{enter}');
     expect(mockOnSubmit).toHaveBeenCalled();
+  });
+  it('Props デフォルト値確認', () => {
+    render(<ContextInput onSubmit={jest.fn} onChange={jest.fn} />);
+    const input = screen.getByPlaceholderText(CONTEXT_INPUT.PLACEHOLDER);
+    expect(input).toBeInTheDocument();
+    expect(input).toHaveAttribute('value');
   });
 });

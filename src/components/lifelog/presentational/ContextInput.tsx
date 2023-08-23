@@ -9,18 +9,16 @@ export interface ContextInputProps {
   value?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   id?: string;
-  required?: boolean;
   placeholder?: string;
 }
 
-export const ContextInput: React.FC<ContextInputProps> = ({
+export const ContextInput = ({
   onSubmit,
   value,
   onChange,
   id = 'context-input',
-  required = true,
   placeholder = CONTEXT_INPUT.PLACEHOLDER,
-}) => {
+}: ContextInputProps) => {
   return (
     <div className={styles.base}>
       <form onSubmit={onSubmit}>
@@ -31,7 +29,7 @@ export const ContextInput: React.FC<ContextInputProps> = ({
             placeholder={placeholder}
             value={value}
             onChange={onChange}
-            required={required}
+            required={true}
           />
           <Button
             type={'submit'}
