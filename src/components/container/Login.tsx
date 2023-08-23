@@ -10,6 +10,7 @@ import { PasswordInput } from '@presentational/PasswordInput';
 import SessionCard from '@presentational/SessionCard';
 import { LOGIN } from '@lib/consts';
 import { IconNames } from '@blueprintjs/icons';
+import { LOGIN_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
 const DEFAULT_PATH = '/lifelogs';
 
@@ -53,20 +54,20 @@ const Login: React.FC = () => {
     <SessionCard>
       <form onSubmit={handleLogin}>
         <EmailInput
-          id={'login-email-input'}
+          testId={TEST_ID.EMAIL_INPUT}
           value={email}
           onChange={handleEmailChange}
         />
         <PasswordInput
-          id={'login-password-input'}
+          testId={TEST_ID.PASSWORD_INPUT}
           value={password}
           onChange={handlePasswordChange}
         />
         <Button
-          data-testid={'login-button'}
+          data-testid={TEST_ID.BUTTON}
           type="submit"
           intent={Intent.PRIMARY}
-          icon={IconNames.LogIn}
+          icon={IconNames.LOG_IN}
           text={LOGIN.BUTTON.SUBMIT}
         />
       </form>

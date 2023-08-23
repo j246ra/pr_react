@@ -18,7 +18,8 @@ import App from '@src/App';
 import PasswordForget from '@container/PasswordForget';
 import { useLifelog } from '@providers/LifelogProvider';
 import SignUp from '@container/SignUp';
-import { LOGIN } from '@lib/consts';
+import { EMAIL_INPUT, LOGIN, PASSWORD_INPUT } from '@lib/consts';
+import { LOGIN_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
 jest.mock('@providers/LifelogProvider');
 jest.mock('@lib/toast');
@@ -54,17 +55,20 @@ describe('Login component', () => {
       </Router>
     );
 
-    const emailInput = getByTestId('login-email-input');
+    const emailInput = getByTestId(TEST_ID.EMAIL_INPUT);
     expect(emailInput).toBeInTheDocument();
-    expect(emailInput).toHaveAttribute('placeholder', 'メールアドレスを入力');
+    expect(emailInput).toHaveAttribute('placeholder', EMAIL_INPUT.PLACEHOLDER);
 
-    const passwordInput = getByTestId('login-password-input');
+    const passwordInput = getByTestId(TEST_ID.PASSWORD_INPUT);
     expect(passwordInput).toBeInTheDocument();
-    expect(passwordInput).toHaveAttribute('placeholder', 'パスワードを入力');
+    expect(passwordInput).toHaveAttribute(
+      'placeholder',
+      PASSWORD_INPUT.PLACEHOLDER
+    );
 
-    const loginButton = getByTestId('login-button');
+    const loginButton = getByTestId(TEST_ID.BUTTON);
     expect(loginButton).toBeInTheDocument();
-    expect(loginButton).toHaveTextContent('ログイン');
+    expect(loginButton).toHaveTextContent(LOGIN.BUTTON.SUBMIT);
 
     const passwordLinks = container.getElementsByClassName(
       'password-forget-link'
@@ -125,9 +129,9 @@ describe('Login component', () => {
       </Router>
     );
 
-    const emailInput = getByTestId('login-email-input');
-    const passwordInput = getByTestId('login-password-input');
-    const loginButton = getByTestId('login-button');
+    const emailInput = getByTestId(TEST_ID.EMAIL_INPUT);
+    const passwordInput = getByTestId(TEST_ID.PASSWORD_INPUT);
+    const loginButton = getByTestId(TEST_ID.BUTTON);
 
     fireEvent.change(emailInput, {
       target: { value: 'test@example.com' },
