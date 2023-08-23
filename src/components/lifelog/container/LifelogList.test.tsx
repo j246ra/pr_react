@@ -16,6 +16,7 @@ import {
 } from '@src/tests/baseProviders';
 import toast from 'react-hot-toast';
 import { COMPONENT, NOTIFY, USE_FINISH_ACTION } from '@src/lib/consts';
+import { LIFELOG_LIST_ITEM_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
 jest.mock('react-hot-toast');
 jest.mock('@providers/LifelogProvider');
@@ -64,7 +65,7 @@ describe('LifelogList component', () => {
   });
   it('LifelogItem component', () => {
     render(<LifelogList />);
-    const links = screen.getAllByTestId(/lifelog-item-link-text/);
+    const links = screen.getAllByTestId(new RegExp(TEST_ID.LINK_TEXT));
     expect(links).toHaveLength(10);
     const contexts = links.map((td) => td.textContent);
     mockLogs.forEach((log) => {
@@ -74,7 +75,7 @@ describe('LifelogList component', () => {
   it('Finish Button', async () => {
     render(<LifelogList />);
     const log = mockLogs[2];
-    const button = screen.getByTestId(`finish-button-${log.id}`);
+    const button = screen.getByTestId(TEST_ID.FINISH_BUTTON + log.id);
     act(() => {
       userEvent.click(button);
     });
@@ -94,7 +95,9 @@ describe('LifelogList component', () => {
       confirmSpay.mockReturnValue(false);
       const log = mockLogs[4];
       render(<LifelogList />);
-      act(() => userEvent.click(screen.getByTestId(`delete-button-${log.id}`)));
+      act(() =>
+        userEvent.click(screen.getByTestId(TEST_ID.DELETE_BUTTON + log.id))
+      );
       await waitFor(() => {
         expect(mockToast.success).not.toHaveBeenCalled();
       });
@@ -103,7 +106,9 @@ describe('LifelogList component', () => {
       confirmSpay.mockReturnValue(true);
       const log = mockLogs[3];
       render(<LifelogList />);
-      act(() => userEvent.click(screen.getByTestId(`delete-button-${log.id}`)));
+      act(() =>
+        userEvent.click(screen.getByTestId(TEST_ID.DELETE_BUTTON + log.id))
+      );
       await waitFor(() => {
         expect(mockToast.success).toHaveBeenCalled();
         expect(mockToast.success).toHaveBeenCalledWith('削除成功');
@@ -114,7 +119,9 @@ describe('LifelogList component', () => {
       confirmSpay.mockReturnValue(true);
       const log = mockLogs[3];
       render(<LifelogList />);
-      act(() => userEvent.click(screen.getByTestId(`delete-button-${log.id}`)));
+      act(() =>
+        userEvent.click(screen.getByTestId(TEST_ID.DELETE_BUTTON + log.id))
+      );
       await waitFor(() => {
         expect(mockToast.error).toHaveBeenCalled();
         expect(mockToast.error).toHaveBeenCalledWith(
@@ -128,7 +135,7 @@ describe('LifelogList component', () => {
     render(<LifelogList />);
     const testid = (id: string) => `lifelog-detail-dialog-${id}`;
     const log = mockLogs[5];
-    const link = screen.getByTestId(`lifelog-item-link-text-${log.id}`);
+    const link = screen.getByTestId(TEST_ID.LINK_TEXT + log.id);
     expect(screen.queryAllByTestId(testid('tbody'))).toHaveLength(0);
     act(() => userEvent.click(link));
     await waitFor(() => {
@@ -139,7 +146,7 @@ describe('LifelogList component', () => {
     render(<LifelogList />);
     const log = mockLogs[1];
     expect(screen.queryAllByTestId('lifelog-edit-dialog')).toHaveLength(0);
-    const button = screen.getByTestId(`edit-button-${log.id}`);
+    const button = screen.getByTestId(TEST_ID.EDIT_BUTTON + log.id);
     act(() => {
       userEvent.click(button);
     });

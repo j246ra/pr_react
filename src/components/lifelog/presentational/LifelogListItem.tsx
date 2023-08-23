@@ -4,6 +4,7 @@ import { IconNames } from '@blueprintjs/icons';
 import { Lifelog } from '@providers/LifelogProvider';
 import styles from './LifelogListItem.module.scss';
 import { days, DISPLAY_DATETIME } from '@lib/dateUtil';
+import { LIFELOG_LIST_ITEM_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
 export interface LifelogListItemProps {
   log: Lifelog;
@@ -25,7 +26,7 @@ const LifelogListItem: React.FC<LifelogListItemProps> = ({
         {days(log.startedAt).format(DISPLAY_DATETIME)}
       </td>
       <td
-        data-testid={`lifelog-item-link-text-${log.id}`}
+        data-testid={TEST_ID.LINK_TEXT + log.id}
         className={styles.tdAction}
         onClick={onActionClick}
       >
@@ -34,21 +35,21 @@ const LifelogListItem: React.FC<LifelogListItemProps> = ({
       <td className={styles.tdDetail}>{log.detail}</td>
       <td className={styles.tdOperation}>
         <Button
-          data-testid={`finish-button-${log.id}`}
+          data-testid={TEST_ID.FINISH_BUTTON + log.id}
           intent={Intent.PRIMARY}
           icon={IconNames.STOPWATCH}
           onClick={onFinishButtonClick}
         />
         <Button
           className={styles.editButton}
-          data-testid={`edit-button-${log.id}`}
+          data-testid={TEST_ID.EDIT_BUTTON + log.id}
           intent={Intent.SUCCESS}
           icon={IconNames.EDIT}
           onClick={onEditButtonClick}
         />
         <Button
           className={styles.deleteButton}
-          data-testid={`delete-button-${log.id}`}
+          data-testid={TEST_ID.DELETE_BUTTON + log.id}
           intent={Intent.DANGER}
           icon={IconNames.DELETE}
           onClick={onDeleteButtonClick}

@@ -3,6 +3,7 @@ import { render } from '@testing-library/react';
 import LifelogListItem from './LifelogListItem';
 import userEvent from '@testing-library/user-event';
 import { lifelog } from '@lib/faker/lifelog';
+import { LIFELOG_LIST_ITEM_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
 describe('LifelogListItem', () => {
   const mockLog = lifelog({
@@ -53,13 +54,13 @@ describe('LifelogListItem', () => {
     userEvent.click(getByText('Test action'));
     expect(mockOnAction).toHaveBeenCalled();
 
-    userEvent.click(getByTestId(/finish-button/));
+    userEvent.click(getByTestId(new RegExp(TEST_ID.FINISH_BUTTON)));
     expect(mockOnFinish).toHaveBeenCalled();
 
-    userEvent.click(getByTestId(/edit-button/));
+    userEvent.click(getByTestId(new RegExp(TEST_ID.EDIT_BUTTON)));
     expect(mockOnEdit).toHaveBeenCalled();
 
-    userEvent.click(getByTestId(/delete-button/));
+    userEvent.click(getByTestId(new RegExp(TEST_ID.DELETE_BUTTON)));
     expect(mockOnDelete).toHaveBeenCalled();
   });
 });
