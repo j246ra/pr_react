@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import SessionCard from '@presentational/SessionCard';
 import { PASSWORD_FORGET } from '@lib/consts';
 import { IconNames } from '@blueprintjs/icons';
+import { PASSWORD_FORGET_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
 const PasswordForget: React.FC = () => {
   const { authApi: session } = useAuth();
@@ -35,18 +36,22 @@ const PasswordForget: React.FC = () => {
 
   return (
     <SessionCard>
-      <Callout className="session-callout" icon="info-sign" intent="primary">
+      <Callout
+        className="session-callout"
+        icon={IconNames.INFO_SIGN}
+        intent={Intent.PRIMARY}
+      >
         {PASSWORD_FORGET.MESSAGE.INFO}
       </Callout>
       <form onSubmit={handlePasswordForget}>
         <EmailInput
-          id={'password-forget-email-input'}
+          testId={TEST_ID.EMAIL_INPUT}
           value={email}
           placeholder={PASSWORD_FORGET.EMAIL_INPUT.PLACEHOLDER}
           onChange={handleEmailChange}
         />
         <Button
-          data-testid={'password-forget-submit-button'}
+          data-testid={TEST_ID.BUTTON}
           type="submit"
           intent={Intent.PRIMARY}
           icon={IconNames.ENVELOPE}

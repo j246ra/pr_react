@@ -4,6 +4,7 @@ import PasswordForget from './PasswordForget';
 import { useAuth } from '@providers/AuthApiProvider';
 import { mockNavigator } from '@src/tests/common';
 import { PASSWORD_FORGET } from '@lib/consts';
+import { PASSWORD_FORGET_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
 jest.mock('@providers/AuthApiProvider');
 
@@ -21,7 +22,7 @@ describe('PasswordForget コンポーネント', () => {
   it('入力フォームのレンダリング', () => {
     const { getByTestId } = render(<PasswordForget />);
 
-    const emailInput = getByTestId('password-forget-email-input');
+    const emailInput = getByTestId(TEST_ID.EMAIL_INPUT);
     expect(emailInput).toBeInTheDocument();
     expect(emailInput.tagName).toEqual('INPUT');
     expect(emailInput).toHaveAttribute(
@@ -29,17 +30,17 @@ describe('PasswordForget コンポーネント', () => {
       PASSWORD_FORGET.EMAIL_INPUT.PLACEHOLDER
     );
 
-    const submitButton = getByTestId('password-forget-submit-button');
+    const submitButton = getByTestId(TEST_ID.BUTTON);
     expect(submitButton).toBeInTheDocument();
     expect(submitButton.tagName).toEqual('BUTTON');
-    expect(submitButton).toHaveTextContent('送信');
+    expect(submitButton).toHaveTextContent(PASSWORD_FORGET.BUTTON.SUBMIT);
   });
 
   it('ユーザーがパスワードを忘れたときにパスワードリセットメールを送信できる', async () => {
     const { getByTestId } = render(<PasswordForget />);
 
-    const emailInput = getByTestId('password-forget-email-input');
-    const submitButton = getByTestId('password-forget-submit-button');
+    const emailInput = getByTestId(TEST_ID.EMAIL_INPUT);
+    const submitButton = getByTestId(TEST_ID.BUTTON);
 
     fireEvent.change(emailInput, {
       target: { value: 'test@example.com' },
