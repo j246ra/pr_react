@@ -14,6 +14,7 @@ import DatetimeInput from '@lifelog/presentational/DatetimeInput';
 import notify from '@lib/toast';
 import { IconNames } from '@blueprintjs/icons';
 import styles from './LifelogEditDialog.module.scss';
+import { LIFELOG_EDIT_DIALOG as Defs } from '@lib/consts';
 
 export interface LifelogEditDialogProps {
   isOpen: boolean;
@@ -38,7 +39,7 @@ const LifelogEditDialog: React.FC<LifelogEditDialogProps> = ({
   const handleUpdateLifelog = () => {
     updateLog(lifelog)
       .then(() => {
-        notify.success('行動を保存しました。');
+        notify.success(Defs.MESSAGE.SUCCESS);
         handleCloseDialog();
       })
       .catch((e) => notify.error(e.message));
@@ -48,19 +49,19 @@ const LifelogEditDialog: React.FC<LifelogEditDialogProps> = ({
     <Dialog isOpen={isOpen} onClose={handleCloseDialog}>
       <div data-testid={'lifelog-edit-dialog'}>
         <DialogBody>
-          <FormGroup label={'行動内容'} labelFor={'lifelog-edit-action'}>
+          <FormGroup label={Defs.ACTION.LABEL} labelFor={'lifelog-edit-action'}>
             <InputGroup
               id={'lifelog-edit-action'}
-              placeholder={'行動内容を入力してください。'}
+              placeholder={Defs.ACTION.PLACEHOLDER}
               value={lifelog.action}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setLifelog({ ...lifelog, action: e.target.value })
               }
             />
           </FormGroup>
-          <FormGroup label={'詳細'} labelFor={'lifelog-edit-detail'}>
+          <FormGroup label={Defs.DETAIL.LABEL} labelFor={'lifelog-edit-detail'}>
             <TextArea
-              placeholder={'詳細を入力してください。'}
+              placeholder={Defs.DETAIL.PLACEHOLDER}
               fill={true}
               rows={detailRows}
               value={lifelog.detail}
@@ -70,16 +71,16 @@ const LifelogEditDialog: React.FC<LifelogEditDialogProps> = ({
             />
           </FormGroup>
           <DatetimeInput
-            label={'開始日時'}
-            placeholder={'開始日時'}
+            label={Defs.STARTED_AT.LABEL}
+            placeholder={Defs.STARTED_AT.PLACEHOLDER}
             value={lifelog.startedAt}
             onChange={(newDate: string | null) =>
               setLifelog({ ...lifelog, startedAt: newDate ? newDate : '' })
             }
           />
           <DatetimeInput
-            label={'終了日時'}
-            placeholder={'終了日時'}
+            label={Defs.FINISHED_AT.LABEL}
+            placeholder={Defs.FINISHED_AT.PLACEHOLDER}
             value={lifelog.finishedAt}
             onChange={(newDate: string | null) =>
               setLifelog({
@@ -96,7 +97,7 @@ const LifelogEditDialog: React.FC<LifelogEditDialogProps> = ({
               icon={IconNames.FloppyDisk}
               onClick={handleUpdateLifelog}
               intent={Intent.PRIMARY}
-              text={'保存'}
+              text={Defs.BUTTON}
             />
           }
         />

@@ -246,6 +246,29 @@ export const LIFELOG_DETAIL_DIALOG = {
   } as const,
 };
 
+export const LIFELOG_EDIT_DIALOG = {
+  MESSAGE: {
+    SUCCESS: '行動を保存しました。',
+  } as const,
+  ACTION: {
+    LABEL: '行動内容',
+    PLACEHOLDER: '行動内容を入力してください。',
+  } as const,
+  DETAIL: {
+    LABEL: '詳細',
+    PLACEHOLDER: '詳細を入力してください。',
+  } as const,
+  STARTED_AT: {
+    LABEL: '開始日時',
+    PLACEHOLDER: '開始日時',
+  } as const,
+  FINISHED_AT: {
+    LABEL: '終了日時',
+    PLACEHOLDER: '終了日時',
+  } as const,
+  BUTTON: '保存',
+};
+
 export const COMPONENT = {
   ACCOUNT_DELETE,
   ACCOUNT_UPDATE,
@@ -263,6 +286,7 @@ export const COMPONENT = {
   LIFELOG_LIST_HEADER,
   SEARCH_INPUT,
   LIFELOG_DETAIL_DIALOG,
+  LIFELOG_EDIT_DIALOG,
 };
 
 const CONST = {
