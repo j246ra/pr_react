@@ -15,7 +15,7 @@ import {
   mockUseUser,
 } from '@src/tests/baseProviders';
 import toast from 'react-hot-toast';
-import { NOTIFY } from '@src/lib/consts';
+import { COMPONENT, NOTIFY, USE_FINISH_ACTION } from '@src/lib/consts';
 
 jest.mock('react-hot-toast');
 jest.mock('@providers/LifelogProvider');
@@ -58,7 +58,9 @@ describe('LifelogList component', () => {
   });
   it('LifelogListHeader component.', () => {
     render(<LifelogList />);
-    expect(screen.getByText('開始時間')).toBeInTheDocument();
+    expect(
+      screen.getByText(COMPONENT.LIFELOG_LIST_HEADER.STARTED_AT)
+    ).toBeInTheDocument();
   });
   it('LifelogItem component', () => {
     render(<LifelogList />);
@@ -79,7 +81,7 @@ describe('LifelogList component', () => {
     await waitFor(() => {
       expect(mockToast.success).toHaveBeenCalled();
       expect(mockToast.success).toHaveBeenCalledWith(
-        '行動時間を記録しました。'
+        USE_FINISH_ACTION.MESSAGE.SUCCESS
       );
     });
   });
