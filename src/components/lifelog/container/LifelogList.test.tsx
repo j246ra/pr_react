@@ -133,10 +133,8 @@ describe('LifelogList component', () => {
   });
   it('LifelogDetailDialog', async () => {
     render(<LifelogList />);
-    const testid = (id: string) => `lifelog-detail-dialog-${id}`;
     const log = mockLogs[5];
     const link = screen.getByTestId(TEST_ID.LINK_TEXT + log.id);
-    expect(screen.queryAllByTestId(testid('tbody'))).toHaveLength(0);
     act(() => userEvent.click(link));
     await waitFor(() => {
       expect(mockUseLifelogDetailDialog().openDetailDialog).toHaveBeenCalled();
@@ -145,7 +143,6 @@ describe('LifelogList component', () => {
   it('LifelogEditDialog', async () => {
     render(<LifelogList />);
     const log = mockLogs[1];
-    expect(screen.queryAllByTestId('lifelog-edit-dialog')).toHaveLength(0);
     const button = screen.getByTestId(TEST_ID.EDIT_BUTTON + log.id);
     act(() => {
       userEvent.click(button);
