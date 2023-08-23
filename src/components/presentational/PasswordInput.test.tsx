@@ -1,6 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { PasswordInput } from './PasswordInput';
 import { PASSWORD_INPUT } from '@lib/consts';
@@ -21,6 +20,7 @@ describe('ContextInput', () => {
     expect(input.value).toEqual('');
     const label = container.getElementsByTagName('label')[0];
     expect(label.textContent).toMatch(PASSWORD_INPUT.REQUIRED);
+    expect(screen.getByTestId('password-input')).toBeInTheDocument();
   });
   it('任意項目指定時の各属性の確認', () => {
     const { container } = render(
@@ -31,6 +31,7 @@ describe('ContextInput', () => {
         required={true}
         label={'ラベル確認用'}
         placeholder={'パスワードを入力してください。'}
+        testId={'PasswordInputTestId'}
       />
     );
     const input = container.getElementsByTagName('input')[0];
@@ -43,6 +44,7 @@ describe('ContextInput', () => {
     expect(input.value).toEqual('SecretPassw0rd');
     const label = container.getElementsByTagName('label')[0];
     expect(label.textContent).toMatch('ラベル確認用');
+    expect(screen.getByTestId('PasswordInputTestId')).toBeInTheDocument();
   });
   it('required が false の時必須ではない', () => {
     const { container } = render(

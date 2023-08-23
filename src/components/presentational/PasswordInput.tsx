@@ -9,6 +9,7 @@ interface PasswordInputProps {
   required?: boolean;
   label?: string;
   placeholder?: string;
+  testId?: string;
 }
 
 export const PasswordInput: React.FC<PasswordInputProps> = ({
@@ -18,6 +19,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
   required = true,
   label = PASSWORD_INPUT.LABEL,
   placeholder = PASSWORD_INPUT.PLACEHOLDER,
+  testId = id,
 }) => (
   <FormGroup
     label={label}
@@ -26,7 +28,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
   >
     <InputGroup
       id={id}
-      data-testid={id}
+      data-testid={testId}
       placeholder={placeholder}
       type="password"
       value={value}
