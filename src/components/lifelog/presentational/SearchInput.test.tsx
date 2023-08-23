@@ -40,7 +40,7 @@ describe('SearchInput', () => {
 
     it('isShow が false の場合、非表示であること', () => {
       render(<SearchInput isShow={false} />);
-      expect(screen.queryByTestId('search-input')).toBeNull();
+      expect(screen.queryByTestId(TEST_ID.BASE)).toBeNull();
     });
   });
 
