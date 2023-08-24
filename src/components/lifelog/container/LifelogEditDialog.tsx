@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent } from 'react';
 import {
   Button,
   Dialog,
@@ -9,45 +9,35 @@ import {
   Intent,
   TextArea,
 } from '@blueprintjs/core';
-import { Lifelog, useLifelog } from '@providers/LifelogProvider';
+import { useLifelog } from '@providers/LifelogProvider';
 import DatetimeInput from '@lifelog/presentational/DatetimeInput';
 import notify from '@lib/toast';
 import { IconNames } from '@blueprintjs/icons';
 import styles from './LifelogEditDialog.module.scss';
 import { LIFELOG_EDIT_DIALOG as Defs } from '@lib/consts/component';
 import { LIFELOG_EDIT_DIALOG_TEST_ID as TEST_ID } from '@lib/consts/testId';
+import { useLifelogEditDialog } from '@providers/LifelogEditDialogProvider';
 
 export interface LifelogEditDialogProps {
-  isOpen: boolean;
-  handleCloseDialog: () => void;
-  log: Lifelog;
   detailRows?: number;
 }
 
-const LifelogEditDialog = ({
-  isOpen,
-  handleCloseDialog,
-  log,
-  detailRows = 8,
-}: LifelogEditDialogProps) => {
+const LifelogEditDialog = ({ detailRows = 8 }: LifelogEditDialogProps) => {
+  const { isOpen, lifelog, editLifelog, closeEditDialog } =
+    useLifelogEditDialog();
   const { updateLog } = useLifelog();
-  const [lifelog, setLifelog] = useState(log);
-
-  useEffect(() => {
-    setLifelog(log);
-  }, [log]);
 
   const handleUpdateLifelog = () => {
     updateLog(lifelog)
       .then(() => {
         notify.success(Defs.MESSAGE.SUCCESS);
-        handleCloseDialog();
+        closeEditDialog();
       })
       .catch((e) => notify.error(e.message));
   };
 
   return (
-    <Dialog isOpen={isOpen} onClose={handleCloseDialog}>
+    <Dialog isOpen={isOpen} onClose={closeEditDialog}>
       <div data-testid={TEST_ID.BASE}>
         <DialogBody>
           <FormGroup label={Defs.ACTION.LABEL}>
@@ -55,7 +45,7 @@ const LifelogEditDialog = ({
               placeholder={Defs.ACTION.PLACEHOLDER}
               value={lifelog.action}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setLifelog({ ...lifelog, action: e.target.value })
+                editLifelog({ action: e.target.value })
               }
             />
           </FormGroup>
@@ -66,7 +56,7 @@ const LifelogEditDialog = ({
               rows={detailRows}
               value={lifelog.detail}
               onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-                setLifelog({ ...lifelog, detail: e.target.value })
+                editLifelog({ detail: e.target.value })
               }
             />
           </FormGroup>
@@ -75,7 +65,7 @@ const LifelogEditDialog = ({
             placeholder={Defs.STARTED_AT.PLACEHOLDER}
             value={lifelog.startedAt}
             onChange={(newDate: string | null) =>
-              setLifelog({ ...lifelog, startedAt: newDate ? newDate : '' })
+              editLifelog({ startedAt: newDate || undefined })
             }
           />
           <DatetimeInput
@@ -83,9 +73,8 @@ const LifelogEditDialog = ({
             placeholder={Defs.FINISHED_AT.PLACEHOLDER}
             value={lifelog.finishedAt}
             onChange={(newDate: string | null) =>
-              setLifelog({
-                ...lifelog,
-                finishedAt: newDate ? newDate : undefined,
+              editLifelog({
+                finishedAt: newDate || undefined,
               })
             }
           />

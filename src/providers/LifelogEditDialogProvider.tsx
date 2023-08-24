@@ -1,10 +1,12 @@
-import { LifelogEditDialogProps } from '@lifelog/container/LifelogEditDialog';
 import { Lifelog, useLifelog } from '@providers/LifelogProvider';
 import React, { createContext, ReactNode, useContext, useState } from 'react';
 
 type LifelogEditDialogContextType = {
   openEditDialog: (log: Lifelog) => void;
-  editDialogProps: LifelogEditDialogProps;
+  lifelog: Lifelog;
+  editLifelog: (log: Partial<Lifelog>) => void;
+  isOpen: boolean;
+  closeEditDialog: () => void;
 };
 
 const LifelogEditDialogContext = createContext(
@@ -18,30 +20,31 @@ export const LifelogEditDialogProvider = ({
   children: ReactNode;
 }) => {
   const { newLog } = useLifelog();
-  const [isOpenEditDialog, setIsOpenEditDialog] = useState(false);
-  const [editLog, setEditLog] = useState<Lifelog>(newLog());
+  const [isOpen, setIsOpen] = useState(false);
+  const [lifelog, setLifelog] = useState<Lifelog>(newLog());
 
   const openEditDialog = (log: Lifelog) => {
-    if (isOpenEditDialog) return;
-    setIsOpenEditDialog(true);
-    setEditLog(log);
+    if (isOpen) return;
+    setIsOpen(true);
+    setLifelog(log);
   };
 
   const closeEditDialog = () => {
-    setIsOpenEditDialog(false);
+    setIsOpen(false);
   };
 
-  const editDialogProps: LifelogEditDialogProps = {
-    log: editLog,
-    isOpen: isOpenEditDialog,
-    handleCloseDialog: closeEditDialog,
+  const editLifelog = (log: Partial<Lifelog>) => {
+    setLifelog({ ...lifelog, ...log });
   };
 
   return (
     <LifelogEditDialogContext.Provider
       value={{
         openEditDialog,
-        editDialogProps,
+        closeEditDialog,
+        lifelog,
+        editLifelog,
+        isOpen,
       }}
     >
       {children}

@@ -15,7 +15,7 @@ const LifelogList = () => {
   const { openDetailDialog: handleOpenDetailDialog } = useLifelogDetailDialog();
   const handleDeleteLifelog = useDeleteLifelog();
   const handleFinishLifelog = useFinishAction();
-  const { openEditDialog: handleOpenEditDialog } = useLifelogEditDialog();
+  const { openEditDialog } = useLifelogEditDialog();
   const [hasMore, setHasMore] = useState(true);
 
   const lifelogLoader = () => {
@@ -50,7 +50,7 @@ const LifelogList = () => {
                 key={log.id}
                 log={log}
                 onFinishButtonClick={() => handleFinishLifelog(log)}
-                onEditButtonClick={() => handleOpenEditDialog(log)}
+                onEditButtonClick={() => openEditDialog(log)}
                 onDeleteButtonClick={() => handleDeleteLifelog(log.id)}
                 onActionClick={() => handleOpenDetailDialog(log)}
               />
