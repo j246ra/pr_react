@@ -15,6 +15,7 @@ import notify from '@lib/toast';
 import { IconNames } from '@blueprintjs/icons';
 import styles from './LifelogEditDialog.module.scss';
 import { LIFELOG_EDIT_DIALOG as Defs } from '@lib/consts';
+import { LIFELOG_EDIT_DIALOG_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
 export interface LifelogEditDialogProps {
   isOpen: boolean;
@@ -23,12 +24,12 @@ export interface LifelogEditDialogProps {
   detailRows?: number;
 }
 
-const LifelogEditDialog: React.FC<LifelogEditDialogProps> = ({
+const LifelogEditDialog = ({
   isOpen,
   handleCloseDialog,
   log,
   detailRows = 8,
-}) => {
+}: LifelogEditDialogProps) => {
   const { updateLog } = useLifelog();
   const [lifelog, setLifelog] = useState(log);
 
@@ -47,11 +48,10 @@ const LifelogEditDialog: React.FC<LifelogEditDialogProps> = ({
 
   return (
     <Dialog isOpen={isOpen} onClose={handleCloseDialog}>
-      <div data-testid={'lifelog-edit-dialog'}>
+      <div data-testid={TEST_ID.BASE}>
         <DialogBody>
-          <FormGroup label={Defs.ACTION.LABEL} labelFor={'lifelog-edit-action'}>
+          <FormGroup label={Defs.ACTION.LABEL}>
             <InputGroup
-              id={'lifelog-edit-action'}
               placeholder={Defs.ACTION.PLACEHOLDER}
               value={lifelog.action}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -59,7 +59,7 @@ const LifelogEditDialog: React.FC<LifelogEditDialogProps> = ({
               }
             />
           </FormGroup>
-          <FormGroup label={Defs.DETAIL.LABEL} labelFor={'lifelog-edit-detail'}>
+          <FormGroup label={Defs.DETAIL.LABEL}>
             <TextArea
               placeholder={Defs.DETAIL.PLACEHOLDER}
               fill={true}
@@ -94,7 +94,7 @@ const LifelogEditDialog: React.FC<LifelogEditDialogProps> = ({
           actions={
             <Button
               className={styles.saveButton}
-              icon={IconNames.FloppyDisk}
+              icon={IconNames.FLOPPY_DISK}
               onClick={handleUpdateLifelog}
               intent={Intent.PRIMARY}
               text={Defs.BUTTON}
