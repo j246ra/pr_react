@@ -1,9 +1,9 @@
-import Defs from '@lib/consts/common';
+import CONST from '@lib/consts/common';
 
 export const EMAIL_INPUT = {
   LABEL: 'メールアドレス',
   PLACEHOLDER: 'メールアドレスを入力',
-  REQUIRED: Defs.COMMON.REQUIRED,
+  REQUIRED: CONST.COMMON.REQUIRED,
 };
 
 export const PASSWORD_FORGET = {
@@ -68,7 +68,7 @@ export const LOGIN = {
 export const PASSWORD_INPUT = {
   LABEL: 'パスワード',
   PLACEHOLDER: 'パスワードを入力',
-  REQUIRED: Defs.COMMON.REQUIRED,
+  REQUIRED: CONST.COMMON.REQUIRED,
 };
 
 export const PASSWORD_EDIT = {

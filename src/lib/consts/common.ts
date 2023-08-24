@@ -65,7 +65,7 @@ export const VALIDATOR = {
   } as const,
 };
 
-export const Defs = {
+export const CONST = {
   COMMON,
   API,
   DATE_UTIL,
@@ -75,4 +75,4 @@ export const Defs = {
   VALIDATOR,
 };
 
-export default Defs;
+export default CONST;

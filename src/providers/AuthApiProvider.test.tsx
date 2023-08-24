@@ -11,8 +11,8 @@ import {
   rest,
 } from 'msw';
 import notify from '@lib/toast';
-import Defs from '@lib/consts/common';
 import { baseUrl } from '@lib/api/client';
+import Defs from '@lib/consts';
 
 const MESSAGE = Defs.COMMON.MESSAGE;
 const URL = `${baseUrl}/${Defs.API.VERSION}${Defs.API.SESSION.ENDPOINT.SIGN_IN}`;
