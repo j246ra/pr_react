@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import PasswordEdit from './PasswordEdit';
 import { useSession } from '@providers/SessionProvider';
 import { useAuth } from '@providers/AuthApiProvider';
-import { PASSWORD_EDIT } from '@lib/consts';
+import { PASSWORD_EDIT } from '@lib/consts/component';
 
 jest.mock('@providers/SessionProvider');
 jest.mock('@providers/AuthApiProvider');

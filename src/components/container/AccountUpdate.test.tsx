@@ -7,7 +7,7 @@ import {
   mockUseSession,
   mockUseUser,
 } from '@src/tests/baseProviders';
-import { ACCOUNT_UPDATE, PASSWORD_INPUT } from '@lib/consts';
+import { ACCOUNT_UPDATE, PASSWORD_INPUT } from '@lib/consts/component';
 import { ACCOUNT_UPDATE_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
 describe('AccountUpdate component', () => {

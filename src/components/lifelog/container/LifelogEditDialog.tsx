@@ -14,7 +14,7 @@ import DatetimeInput from '@lifelog/presentational/DatetimeInput';
 import notify from '@lib/toast';
 import { IconNames } from '@blueprintjs/icons';
 import styles from './LifelogEditDialog.module.scss';
-import { LIFELOG_EDIT_DIALOG as Defs } from '@lib/consts';
+import { LIFELOG_EDIT_DIALOG as Defs } from '@lib/consts/component';
 import { LIFELOG_EDIT_DIALOG_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
 export interface LifelogEditDialogProps {

@@ -8,7 +8,7 @@ import {
 } from '@src/tests/baseProviders';
 import userEvent from '@testing-library/user-event';
 import { HEADER_TEST_ID as TEST_ID } from '@lib/consts/testId';
-import { SEARCH_INPUT } from '@lib/consts';
+import { SEARCH_INPUT } from '@lib/consts/component';
 
 jest.mock('@providers/LifelogProvider');
 

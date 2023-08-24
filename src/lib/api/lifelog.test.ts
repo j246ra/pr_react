@@ -1,7 +1,7 @@
 import client from './client';
 import lifelog, { CreatParams, UpdateParams } from './lifelog';
 import { days, DATETIME_FULL } from '@lib/dateUtil';
-import { API } from '@lib/consts';
+import { API } from '@lib/consts/common';
 
 jest.mock('./client');
 

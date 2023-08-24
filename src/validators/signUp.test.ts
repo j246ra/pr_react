@@ -1,6 +1,6 @@
 import signUpValidator from '@validators/signUp';
 import { INVALID_MESSAGES } from '@validators/validator';
-import { EMAIL_INPUT } from '@lib/consts';
+import { EMAIL_INPUT } from '@lib/consts/component';
 
 describe('signUpValidator', () => {
   it('正常系', () => {

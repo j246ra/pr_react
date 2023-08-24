@@ -2,7 +2,7 @@ import { fireEvent, render, waitFor } from '@testing-library/react';
 import LifelogDetailDialog from '@lifelog/container/LifelogDetailDialog';
 import { lifelog } from '@lib/faker/lifelog';
 import { Lifelog } from '@providers/LifelogProvider';
-import { LIFELOG_DETAIL_DIALOG } from '@lib/consts';
+import { LIFELOG_DETAIL_DIALOG } from '@lib/consts/component';
 import { LIFELOG_DETAIL_DIALOG_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
 const LABEL = LIFELOG_DETAIL_DIALOG.LABEL;

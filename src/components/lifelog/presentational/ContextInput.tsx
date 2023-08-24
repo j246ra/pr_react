@@ -2,7 +2,7 @@ import React, { ChangeEvent, FormEvent } from 'react';
 import { Button, ControlGroup, InputGroup, Intent } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import styles from './ContextInput.module.scss';
-import { CONTEXT_INPUT } from '@lib/consts';
+import { CONTEXT_INPUT } from '@lib/consts/component';
 
 export interface ContextInputProps {
   onSubmit: (e: FormEvent) => void;

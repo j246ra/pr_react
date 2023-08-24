@@ -1,5 +1,5 @@
 import React from 'react';
-import { RESET_MAIL_SUCCESS } from '@lib/consts';
+import { RESET_MAIL_SUCCESS } from '@lib/consts/component';
 
 const ResetMailSendSuccess = () => {
   return (

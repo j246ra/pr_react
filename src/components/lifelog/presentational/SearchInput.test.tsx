@@ -9,8 +9,9 @@ import SearchInput from '@lifelog/presentational/SearchInput';
 import { useLifelog } from '@providers/LifelogProvider';
 import userEvent from '@testing-library/user-event';
 import toast from 'react-hot-toast';
-import { NOTIFY, SEARCH_INPUT } from '@lib/consts';
+import { SEARCH_INPUT } from '@lib/consts/component';
 import { SEARCH_INPUT_TEST_ID as TEST_ID } from '@lib/consts/testId';
+import { NOTIFY } from '@lib/consts/common';
 
 jest.mock('react-hot-toast');
 jest.mock('@providers/LifelogProvider');

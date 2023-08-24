@@ -1,6 +1,6 @@
 import { Lifelog, useLifelog } from '@providers/LifelogProvider';
 import notify from '@lib/toast';
-import { USE_FINISH_ACTION as CONST } from '@lib/consts';
+import { USE_FINISH_ACTION as CONST } from '@lib/consts/common';
 
 const useFinishAction = () => {
   const { finishLog } = useLifelog();

@@ -1,4 +1,4 @@
-import { API } from '@lib/consts';
+import { API } from '@lib/consts/common';
 import { baseUrl } from '@lib/api/client';
 
 const normalizeUrl = (url: string) => {

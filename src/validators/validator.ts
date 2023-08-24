@@ -1,5 +1,5 @@
 import notify from '@lib/toast';
-import { VALIDATOR } from '@lib/consts';
+import { VALIDATOR } from '@lib/consts/common';
 
 export interface Result {
   isInvalid: boolean;

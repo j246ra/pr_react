@@ -3,7 +3,7 @@ import { apiHost } from '@lib/storybook/util';
 import { Lifelog } from '@providers/LifelogProvider';
 import { days, DATETIME_FULL } from '@lib/dateUtil';
 import { lifelog } from '@lib/faker/lifelog';
-import { API } from '@lib/consts';
+import { API } from '@lib/consts/common';
 
 const ENDPOINT = API.LIFELOG.ENDPOINT;
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, InputGroup } from '@blueprintjs/core';
 import { useLifelog } from '@providers/LifelogProvider';
 import notify from '@lib/toast';
-import { SEARCH_INPUT } from '@lib/consts';
+import { SEARCH_INPUT } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import { SEARCH_INPUT_TEST_ID as TEST_ID } from '@lib/consts/testId';
 

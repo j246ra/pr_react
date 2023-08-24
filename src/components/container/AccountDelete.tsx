@@ -5,7 +5,7 @@ import notify from '@lib/toast';
 import { useUser } from '@providers/UserProvider';
 import { useSession } from '@providers/SessionProvider';
 import { useNavigate } from 'react-router-dom';
-import { ACCOUNT_DELETE } from '@lib/consts';
+import { ACCOUNT_DELETE } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 
 const AccountDelete: React.FC = () => {

@@ -3,7 +3,7 @@ import { render, fireEvent, waitFor } from '@testing-library/react';
 import PasswordForget from './PasswordForget';
 import { useAuth } from '@providers/AuthApiProvider';
 import { mockNavigator } from '@src/tests/common';
-import { PASSWORD_FORGET } from '@lib/consts';
+import { PASSWORD_FORGET } from '@lib/consts/component';
 import { PASSWORD_FORGET_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
 jest.mock('@providers/AuthApiProvider');

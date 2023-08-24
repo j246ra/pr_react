@@ -15,8 +15,9 @@ import {
   mockUseUser,
 } from '@src/tests/baseProviders';
 import toast from 'react-hot-toast';
-import { COMPONENT, NOTIFY, USE_FINISH_ACTION } from '@src/lib/consts';
+import COMPONENT from '@lib/consts/component';
 import { LIFELOG_LIST_ITEM_TEST_ID as TEST_ID } from '@lib/consts/testId';
+import { NOTIFY, USE_FINISH_ACTION } from '@lib/consts/common';
 
 jest.mock('react-hot-toast');
 jest.mock('@providers/LifelogProvider');

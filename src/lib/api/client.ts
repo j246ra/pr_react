@@ -1,6 +1,6 @@
 import applyCaseMiddleware from 'axios-case-converter';
 import axios, { AxiosInstance } from 'axios';
-import { API } from '@lib/consts';
+import { API } from '@lib/consts/common';
 
 interface Options {
   ignoreHeaders: boolean;

@@ -3,7 +3,7 @@ import { FormGroup } from '@blueprintjs/core';
 import { DateInput, TimePrecision } from '@blueprintjs/datetime';
 import dayjs from 'dayjs';
 import { DISPLAY_DATETIME_FULL } from '@lib/dateUtil';
-import { DATETIME_INPUT } from '@lib/consts';
+import { DATETIME_INPUT } from '@lib/consts/component';
 
 export interface DatetimeInputProps {
   label: string;

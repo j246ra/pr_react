@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './LifelogListHeader.module.scss';
-import { LIFELOG_LIST_HEADER } from '@lib/consts';
+import { LIFELOG_LIST_HEADER } from '@lib/consts/component';
 
 export interface LifelogListHeaderProps {
   enabled?: boolean;

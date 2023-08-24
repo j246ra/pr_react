@@ -2,7 +2,7 @@ import React from 'react';
 import { Dialog, DialogBody, HTMLTable } from '@blueprintjs/core';
 import { Lifelog } from '@providers/LifelogProvider';
 import styles from './LifelogDetailDialog.module.scss';
-import { LIFELOG_DETAIL_DIALOG } from '@lib/consts';
+import { LIFELOG_DETAIL_DIALOG } from '@lib/consts/component';
 import { LIFELOG_DETAIL_DIALOG_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
 export interface LifelogDetailDialogProps {

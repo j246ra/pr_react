@@ -10,7 +10,7 @@ import { useAuth } from '@providers/AuthApiProvider';
 import { EmailInput } from '@presentational/EmailInput';
 import { PasswordInput } from '@presentational/PasswordInput';
 import SessionCard from '@presentational/SessionCard';
-import { SIGN_UP } from '@lib/consts';
+import { SIGN_UP } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import { SIGN_UP_TEST_ID as TEST_ID } from '@lib/consts/testId';
 

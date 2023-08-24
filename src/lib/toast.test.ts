@@ -1,6 +1,6 @@
 import notify from '@lib/toast';
 import toast from 'react-hot-toast';
-import { NOTIFY } from '@lib/consts';
+import { NOTIFY } from '@lib/consts/common';
 
 jest.mock('react-hot-toast');
 const mockToast = jest.mocked(toast);

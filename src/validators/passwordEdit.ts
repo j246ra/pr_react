@@ -1,5 +1,5 @@
 import validator, { INVALID_MESSAGES, Result } from './validator';
-import { PASSWORD_EDIT, PASSWORD_INPUT } from '@lib/consts';
+import { PASSWORD_EDIT, PASSWORD_INPUT } from '@lib/consts/component';
 
 type PasswordEditValidator = (
   password: string,

@@ -7,7 +7,7 @@ import {
   mockUseSession,
   mockUseUser,
 } from '@src/tests/baseProviders';
-import { ACCOUNT_DELETE } from '@lib/consts';
+import { ACCOUNT_DELETE } from '@lib/consts/component';
 
 describe('AccountDelete component', () => {
   beforeEach(() => {

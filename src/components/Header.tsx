@@ -16,7 +16,7 @@ import { useSession } from '@providers/SessionProvider';
 import SearchInput from '@lifelog/presentational/SearchInput';
 import { useLifelog } from '@providers/LifelogProvider';
 import styles from './Header.module.scss';
-import { HEADER } from '@lib/consts';
+import { HEADER } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import { HEADER_TEST_ID as TEST_ID } from '@lib/consts/testId';
 

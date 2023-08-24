@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { EmailInput } from './EmailInput';
-import { EMAIL_INPUT } from '@lib/consts';
+import { EMAIL_INPUT } from '@lib/consts/component';
 
 describe('ContextInput', () => {
   const mockOnChange = jest.fn();

@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import { FormGroup, InputGroup } from '@blueprintjs/core';
-import { EMAIL_INPUT } from '@lib/consts';
+import { EMAIL_INPUT } from '@lib/consts/component';
 
 export interface EmailInputProps {
   value: string;

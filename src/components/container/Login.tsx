@@ -8,7 +8,7 @@ import notify from '@lib/toast';
 import { EmailInput } from '@presentational/EmailInput';
 import { PasswordInput } from '@presentational/PasswordInput';
 import SessionCard from '@presentational/SessionCard';
-import { LOGIN } from '@lib/consts';
+import { LOGIN } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import { LOGIN_TEST_ID as TEST_ID } from '@lib/consts/testId';
 

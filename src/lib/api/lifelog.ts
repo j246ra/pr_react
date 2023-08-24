@@ -1,7 +1,7 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import client from '@lib/api/client';
 import { Headers } from '@providers/SessionProvider';
-import { API } from '@lib/consts';
+import { API } from '@lib/consts/common';
 
 type ResponseInterceptor = (response: AxiosResponse) => AxiosResponse;
 type ErrorInterceptor = (error: AxiosError) => Promise<never>;

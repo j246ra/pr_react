@@ -1,6 +1,6 @@
 import passwordEditValidator from '@validators/passwordEdit';
 import { INVALID_MESSAGES } from '@validators/validator';
-import { PASSWORD_EDIT, PASSWORD_INPUT } from '@lib/consts';
+import { PASSWORD_EDIT, PASSWORD_INPUT } from '@lib/consts/component';
 
 describe('signUpValidator', () => {
   it('正常系', () => {

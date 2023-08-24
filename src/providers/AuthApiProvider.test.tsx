@@ -11,11 +11,11 @@ import {
   rest,
 } from 'msw';
 import notify from '@lib/toast';
-import CONST from '@lib/consts';
+import Defs from '@lib/consts/common';
 import { baseUrl } from '@lib/api/client';
 
-const MESSAGE = CONST.COMMON.MESSAGE;
-const URL = `${baseUrl}/${CONST.API.VERSION}${CONST.API.SESSION.ENDPOINT.SIGN_IN}`;
+const MESSAGE = Defs.COMMON.MESSAGE;
+const URL = `${baseUrl}/${Defs.API.VERSION}${Defs.API.SESSION.ENDPOINT.SIGN_IN}`;
 
 jest.unmock('@providers/AuthApiProvider');
 

@@ -1,5 +1,5 @@
 import validator, { Result } from './validator';
-import { EMAIL_INPUT } from '@lib/consts';
+import { EMAIL_INPUT } from '@lib/consts/component';
 
 type SignUpValidator = (email: string, password: string) => Result;
 

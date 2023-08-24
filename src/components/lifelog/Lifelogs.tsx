@@ -11,7 +11,7 @@ import {
 } from '@providers/LifelogProvider';
 import LifelogDetailDialog from '@lifelog/container/LifelogDetailDialog';
 import LifelogEditDialog from '@lifelog/container/LifelogEditDialog';
-import { LIFELOGS } from '@lib/consts';
+import { LIFELOGS } from '@lib/consts/component';
 
 const Lifelogs: React.FC = () => {
   const { isLogin } = useUser();

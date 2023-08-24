@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import { FormGroup, InputGroup } from '@blueprintjs/core';
-import { PASSWORD_INPUT } from '@lib/consts';
+import { PASSWORD_INPUT } from '@lib/consts/component';
 
 interface PasswordInputProps {
   value: string;

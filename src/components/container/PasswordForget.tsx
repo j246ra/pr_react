@@ -5,7 +5,7 @@ import { useAuth } from '@providers/AuthApiProvider';
 import { EmailInput } from '@presentational/EmailInput';
 import { useNavigate } from 'react-router-dom';
 import SessionCard from '@presentational/SessionCard';
-import { PASSWORD_FORGET } from '@lib/consts';
+import { PASSWORD_FORGET } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import { PASSWORD_FORGET_TEST_ID as TEST_ID } from '@lib/consts/testId';
 

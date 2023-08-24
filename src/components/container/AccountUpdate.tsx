@@ -10,7 +10,7 @@ import { PasswordInput } from '@presentational/PasswordInput';
 import AccountDelete from '@container/AccountDelete';
 import SessionCard from '@presentational/SessionCard';
 import notify from '@lib/toast';
-import { ACCOUNT_UPDATE } from '@lib/consts';
+import { ACCOUNT_UPDATE } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import { ACCOUNT_UPDATE_TEST_ID as TEST_ID } from '@lib/consts/testId';
 

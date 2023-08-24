@@ -1,6 +1,6 @@
 import client from './client';
 import session from './session';
-import { API, COMMON } from '@lib/consts';
+import { API, COMMON } from '@lib/consts/common';
 
 jest.mock('./client');
 

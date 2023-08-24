@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ContextInput from './ContextInput';
-import { CONTEXT_INPUT } from '@lib/consts';
+import { CONTEXT_INPUT } from '@lib/consts/component';
 
 const mockOnSubmit = jest.fn((e) => e.preventDefault());
 

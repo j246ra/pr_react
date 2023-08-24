@@ -8,7 +8,7 @@ import { useSession } from '@providers/SessionProvider';
 import { useAuth } from '@providers/AuthApiProvider';
 import SessionCard from '@presentational/SessionCard';
 import { PasswordInput } from '@presentational/PasswordInput';
-import { PASSWORD_EDIT } from '@lib/consts';
+import { PASSWORD_EDIT } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 
 const PasswordEdit: React.FC = () => {

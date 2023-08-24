@@ -9,7 +9,7 @@ import {
   mockUseSession,
   mockUseUser,
 } from '@src/tests/baseProviders';
-import { EMAIL_INPUT, PASSWORD_INPUT, SIGN_UP } from '@lib/consts';
+import { EMAIL_INPUT, PASSWORD_INPUT, SIGN_UP } from '@lib/consts/component';
 import { SIGN_UP_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
 jest.mock('@lib/toast');

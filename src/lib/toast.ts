@@ -1,5 +1,5 @@
 import toast from 'react-hot-toast';
-import { NOTIFY as CONST } from '@lib/consts';
+import { NOTIFY as CONST } from '@lib/consts/common';
 
 export interface Notify {
   error: (message: string) => void;

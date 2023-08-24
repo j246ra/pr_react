@@ -18,7 +18,7 @@ import App from '@src/App';
 import PasswordForget from '@container/PasswordForget';
 import { useLifelog } from '@providers/LifelogProvider';
 import SignUp from '@container/SignUp';
-import { EMAIL_INPUT, LOGIN, PASSWORD_INPUT } from '@lib/consts';
+import { EMAIL_INPUT, LOGIN, PASSWORD_INPUT } from '@lib/consts/component';
 import { LOGIN_TEST_ID as TEST_ID, SIGN_UP_TEST_ID } from '@lib/consts/testId';
 
 jest.mock('@providers/LifelogProvider');
