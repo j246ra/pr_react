@@ -1,6 +1,6 @@
 import client from './client';
 import session from './session';
-import { API } from '@lib/consts';
+import { API, COMMON } from '@lib/consts';
 
 jest.mock('./client');
 
@@ -91,7 +91,7 @@ describe('session APIの呼び出し検証', () => {
 
     expect(mockedClient.post).toHaveBeenCalledWith(ENDPOINT.PASSWORD_RESET, {
       email,
-      redirect_url: `${process.env.REACT_APP_HOST_URL}/password_edit`,
+      redirect_url: `${COMMON.HOST_URL}/password_edit`,
     });
   });
 

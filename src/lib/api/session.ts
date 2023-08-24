@@ -1,7 +1,7 @@
 import { AxiosResponse, AxiosError } from 'axios';
 import client from './client';
 import { Headers } from '@providers/SessionProvider';
-import { API } from '@lib/consts';
+import { API, COMMON } from '@lib/consts';
 
 type ResponseInterceptor = (response: AxiosResponse) => AxiosResponse;
 type ErrorInterceptor = (error: AxiosError) => Promise<never>;
@@ -34,7 +34,7 @@ export default function session(
   const passwordForget = (email: string) =>
     client.post(ENDPOINT.PASSWORD_RESET, {
       email,
-      redirect_url: `${process.env.REACT_APP_HOST_URL}/password_edit`,
+      redirect_url: `${COMMON.HOST_URL}/password_edit`,
     });
   const passwordReset = (password: string, passwordConfirmation: string) =>
     client.put(

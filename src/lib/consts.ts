@@ -1,4 +1,7 @@
+import env from '@lib/appEnv';
+
 export const COMMON = {
+  HOST_URL: env('host_url', 'http://localhost:3001'),
   MESSAGE: {
     ERROR: {
       GENERAL: '想定外のエラーが発生しました',
@@ -8,9 +11,9 @@ export const COMMON = {
 };
 
 export const API = {
-  SCHEME: 'http',
-  HOST: 'localhost:3000',
-  VERSION: 'v1',
+  SCHEME: env('api_scheme', 'http'),
+  HOST: env('api_host', 'localhost:3000'),
+  VERSION: env('api_version', 'v1'),
   SESSION: {
     ENDPOINT: {
       USER: '/auth',
