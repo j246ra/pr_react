@@ -8,7 +8,6 @@ export interface ContextInputProps {
   onSubmit: (e: FormEvent) => void;
   value?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  id?: string;
   placeholder?: string;
 }
 
@@ -16,7 +15,6 @@ export const ContextInput = ({
   onSubmit,
   value,
   onChange,
-  id = 'context-input',
   placeholder = CONTEXT_INPUT.PLACEHOLDER,
 }: ContextInputProps) => {
   return (
@@ -25,7 +23,6 @@ export const ContextInput = ({
         <ControlGroup>
           <InputGroup
             className={styles.inputGroup}
-            id={id}
             placeholder={placeholder}
             value={value}
             onChange={onChange}
