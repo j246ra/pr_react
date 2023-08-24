@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import LifelogEditDialog from '@lifelog/container/LifelogEditDialog';
 import { lifelog } from '@lib/faker/lifelog';
-import { useLifelog } from '@providers/LifelogProvider';
+import { Lifelog, useLifelog } from '@providers/LifelogProvider';
 import { LIFELOG_EDIT_DIALOG_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
 jest.mock('@providers/LifelogProvider');
@@ -9,7 +9,7 @@ jest.mock('@providers/LifelogProvider');
 const mockUseLifelog = useLifelog as jest.MockedFunction<any>;
 const mockHandleCloseDialog = jest.fn();
 
-let log = lifelog();
+let log: Lifelog;
 
 describe('LifelogEditDialog', () => {
   beforeEach(() => {

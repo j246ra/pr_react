@@ -1,11 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { useUser } from '@providers/UserProvider';
-import {
-  useLifelog,
-  useLifelogDetailDialog,
-  useLifelogEditDialog,
-} from '@providers/LifelogProvider';
+import { useLifelog, useLifelogDetailDialog } from '@providers/LifelogProvider';
 import Lifelogs from '@lifelog/Lifelogs';
 import { BrowserRouter as Router } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
@@ -22,8 +18,6 @@ const mockUseUser = useUser as jest.MockedFunction<any>;
 const mockUseLifelog = useLifelog as jest.MockedFunction<any>;
 const mockUseLifelogDetailDialog =
   useLifelogDetailDialog as jest.MockedFunction<any>;
-const mockUseLifelogEditDialog =
-  useLifelogEditDialog as jest.MockedFunction<any>;
 
 describe('Lifelogs component.', () => {
   beforeEach(() => {
@@ -35,9 +29,6 @@ describe('Lifelogs component.', () => {
     });
     mockUseLifelogDetailDialog.mockReturnValue({
       detailDialogProps: jest.fn(),
-    });
-    mockUseLifelogEditDialog.mockReturnValue({
-      editDialogProps: jest.fn(),
     });
   });
   it('ContextInput component', () => {

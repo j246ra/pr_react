@@ -5,7 +5,6 @@ import {
   Lifelog,
   useLifelog,
   useLifelogDetailDialog,
-  useLifelogEditDialog,
 } from '@providers/LifelogProvider';
 import { lifelog, lifelogs } from '@lib/faker/lifelog';
 import userEvent from '@testing-library/user-event';
@@ -18,9 +17,11 @@ import toast from 'react-hot-toast';
 import COMPONENT from '@lib/consts/component';
 import { LIFELOG_LIST_ITEM_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import { NOTIFY, USE_FINISH_ACTION } from '@lib/consts/common';
+import { useLifelogEditDialog } from '@providers/LifelogEditDialogProvider';
 
 jest.mock('react-hot-toast');
 jest.mock('@providers/LifelogProvider');
+jest.mock('@providers/LifelogEditDialogProvider');
 
 const mockUseLifelog = useLifelog as jest.MockedFunction<any>;
 const mockUseLifelogDetailDialog =
