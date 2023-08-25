@@ -14,6 +14,7 @@ export const LIFELOG_DETAIL_DIALOG_TEST_ID = {
 const LIFELOG_EDIT_DIALOG_PREFIX = 'LifelogEditDialog';
 export const LIFELOG_EDIT_DIALOG_TEST_ID = {
   BASE: g(LIFELOG_EDIT_DIALOG_PREFIX, ''),
+  BUTTON: g(LIFELOG_DETAIL_DIALOG_PREFIX, 'Button'),
 };
 
 const HEADER_PREFIX = 'Headers';

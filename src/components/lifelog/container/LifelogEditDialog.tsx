@@ -9,7 +9,6 @@ import {
   Intent,
   TextArea,
 } from '@blueprintjs/core';
-import { useLifelog } from '@providers/LifelogProvider';
 import DatetimeInput from '@lifelog/presentational/DatetimeInput';
 import notify from '@lib/toast';
 import { IconNames } from '@blueprintjs/icons';
@@ -24,13 +23,12 @@ export type LifelogEditDialogProps = {
 };
 
 const LifelogEditDialog = ({ detailRows = 8 }: LifelogEditDialogProps) => {
-  const { isOpen, lifelog, editLifelog, closeEditDialog } =
+  const { isOpen, lifelog, editLifelog, updateLifelog, closeEditDialog } =
     useLifelogEditDialog();
-  const { updateLog } = useLifelog();
 
   const handleUpdateLifelog = () => {
     if (lifelogEditDialogValidator(lifelog).isInvalid) return;
-    updateLog(lifelog)
+    updateLifelog(lifelog)
       .then(() => {
         notify.success(Defs.MESSAGE.SUCCESS);
         closeEditDialog();
@@ -49,6 +47,7 @@ const LifelogEditDialog = ({ detailRows = 8 }: LifelogEditDialogProps) => {
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 editLifelog({ action: e.target.value })
               }
+              required={true}
             />
           </FormGroup>
           <FormGroup label={Defs.DETAIL.LABEL}>
@@ -84,6 +83,7 @@ const LifelogEditDialog = ({ detailRows = 8 }: LifelogEditDialogProps) => {
         <DialogFooter
           actions={
             <Button
+              data-testid={TEST_ID.BUTTON}
               className={styles.saveButton}
               icon={IconNames.FLOPPY_DISK}
               onClick={handleUpdateLifelog}

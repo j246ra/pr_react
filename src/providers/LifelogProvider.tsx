@@ -19,7 +19,7 @@ export type Lifelog = {
   updatedAt: string;
 };
 
-type LifelogContextType = {
+export type LifelogContextType = {
   logs: Lifelog[];
   loadLogs: () => Promise<AxiosResponse>;
   searchLogs: (word: string) => Promise<AxiosResponse>;

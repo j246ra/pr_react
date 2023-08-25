@@ -1,10 +1,15 @@
-import { Lifelog, useLifelog } from '@providers/LifelogProvider';
+import {
+  Lifelog,
+  LifelogContextType,
+  useLifelog,
+} from '@providers/LifelogProvider';
 import React, { createContext, ReactNode, useContext, useState } from 'react';
 
 type LifelogEditDialogContextType = {
   openEditDialog: (log: Lifelog) => void;
   lifelog: Lifelog;
   editLifelog: (log: Partial<Lifelog>) => void;
+  updateLifelog: LifelogContextType['updateLog'];
   isOpen: boolean;
   closeEditDialog: () => void;
 };
@@ -19,7 +24,7 @@ export const LifelogEditDialogProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const { newLog } = useLifelog();
+  const { newLog, updateLog } = useLifelog();
   const [isOpen, setIsOpen] = useState(false);
   const [lifelog, setLifelog] = useState<Lifelog>(newLog());
 
@@ -37,6 +42,8 @@ export const LifelogEditDialogProvider = ({
     setLifelog({ ...lifelog, ...log });
   };
 
+  const updateLifelog = updateLog;
+
   return (
     <LifelogEditDialogContext.Provider
       value={{
@@ -44,6 +51,7 @@ export const LifelogEditDialogProvider = ({
         closeEditDialog,
         lifelog,
         editLifelog,
+        updateLifelog,
         isOpen,
       }}
     >
