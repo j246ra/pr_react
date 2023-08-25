@@ -17,10 +17,11 @@ import styles from './LifelogEditDialog.module.scss';
 import { LIFELOG_EDIT_DIALOG as Defs } from '@lib/consts/component';
 import { LIFELOG_EDIT_DIALOG_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import { useLifelogEditDialog } from '@providers/LifelogEditDialogProvider';
+import lifelogEditDialogValidator from '@validators/lifelogEditDialog';
 
-export interface LifelogEditDialogProps {
+export type LifelogEditDialogProps = {
   detailRows?: number;
-}
+};
 
 const LifelogEditDialog = ({ detailRows = 8 }: LifelogEditDialogProps) => {
   const { isOpen, lifelog, editLifelog, closeEditDialog } =
@@ -28,6 +29,7 @@ const LifelogEditDialog = ({ detailRows = 8 }: LifelogEditDialogProps) => {
   const { updateLog } = useLifelog();
 
   const handleUpdateLifelog = () => {
+    if (lifelogEditDialogValidator(lifelog).isInvalid) return;
     updateLog(lifelog)
       .then(() => {
         notify.success(Defs.MESSAGE.SUCCESS);
