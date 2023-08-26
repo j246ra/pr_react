@@ -46,26 +46,13 @@ export type LifelogProviderProps = {
   children: ReactNode;
 };
 
-const newLifelog = (): Lifelog => {
-  return {
-    id: -1,
-    userId: -1,
-    action: '',
-    detail: undefined,
-    startedAt: '',
-    finishedAt: undefined,
-    createdAt: '',
-    updatedAt: '',
-  };
-};
-
 export default function LifelogProvider({ children }: LifelogProviderProps) {
   const [logs, setLogs] = useState<Lifelog[]>([]);
   const [searchWord, setSearchWord] = useState('');
   const [page, setPage] = useState(0);
   const { getHeaders, setHeaders } = useSession();
   const { clearUser } = useUser();
-  const { sort: sortLog } = lifelogUtil();
+  const { blank: newLifelog, sort: sortLog } = lifelogUtil();
 
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
     setHeaders(response);

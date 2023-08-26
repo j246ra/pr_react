@@ -19,4 +19,17 @@ describe('lifelogUtil', () => {
       expect(sort([])).toEqual([]);
     });
   });
+
+  it('create', () => {
+    expect(lifelogUtil().blank()).toEqual({
+      id: -1,
+      userId: -1,
+      action: '',
+      detail: undefined,
+      startedAt: '',
+      finishedAt: undefined,
+      createdAt: '',
+      updatedAt: '',
+    });
+  });
 });
