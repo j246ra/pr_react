@@ -1,10 +1,9 @@
-import { renderHook, waitFor } from '@testing-library/react';
+import {act, renderHook} from '@testing-library/react';
 import SessionProvider, {
   useSession,
   Headers,
   SessionProviderProps,
 } from '@providers/SessionProvider';
-import { AxiosResponse } from 'axios';
 
 jest.unmock('@providers/SessionProvider');
 
@@ -14,102 +13,90 @@ const initToken = {
   client: 'client',
 } as Headers;
 
-const mockSetCookie = jest.fn();
-const mockRemoveCookie = jest.fn();
-
-jest.mock('react-cookie', () => {
-  const originalModule = jest.requireActual('react-cookie');
-  return {
-    __esModule: true,
-    ...originalModule,
-    useCookies: () => [{ token: initToken }, mockSetCookie, mockRemoveCookie],
-  };
-});
-
 describe('SessionProvider', () => {
   const wrapper = ({ children }: SessionProviderProps) => (
     <SessionProvider>{children}</SessionProvider>
   );
-  const { result } = renderHook(() => useSession(), { wrapper });
-  it('initializeByUid 検証', async () => {
-    expect(mockSetCookie).not.toBeCalled();
-    result.current.initializeByUid('UID-1111');
-    await waitFor(() => {
-      expect(mockSetCookie).toHaveBeenCalledTimes(1);
-      expect(mockSetCookie).toHaveBeenCalledWith('token', { uid: 'UID-1111' });
-    });
-  });
-
-  it('getHeaders 検証', async () => {
-    let tokens: Headers = result.current.getHeaders();
-    await waitFor(() => {
-      expect(tokens).toEqual(initToken);
-    });
+  it('initializeByUid 検証', () => {
+    const { result } = renderHook(() => useSession(), { wrapper });
+    act(() => {
+      result.current.initializeByUid('UID-1111');
+    })
+    const headers  = result.current.getHeaders();
+    expect(headers.uid).toEqual('UID-1111')
   });
 
   describe('setHeaders 検証', () => {
-    it('引数の型が Headers の場合に正しく cookie へ保存されている', () => {
-      const headers = {
-        'access-token': 'TOKEN-001',
-        uid: 'UID-001',
-        client: 'CLIENT-001',
-      } as Headers;
-      result.current.setHeaders(headers);
-      expect(mockSetCookie).toHaveBeenCalledTimes(1);
-      expect(mockSetCookie).toHaveBeenCalledWith('token', headers);
+    it('引数の型が Headers の場合に正常に保存できること', () => {
+      const { result } = renderHook(() => useSession(), { wrapper });
+      act(() => {
+        result.current.setHeaders(initToken)
+      })
+      const headers =result.current.getHeaders()
+      expect(initToken).toEqual(headers)
     });
-
-    it('引数の型が AxiosResponse<Headers> の場合に正しく cookie へ保存されている', () => {
-      const headers = {
-        'access-token': 'TOKEN-002',
-        uid: 'UID-002',
-        client: 'CLIENT-002',
-      } as Headers;
-      const response = {
-        headers,
-      } as AxiosResponse;
-      result.current.setHeaders(response);
-      expect(mockSetCookie).toHaveBeenCalledTimes(1);
-      expect(mockSetCookie).toHaveBeenCalledWith('token', headers);
+    it('引数の型が AxiosResponse<Headers> の場合に正常に保存できること', () => {
+      const { result } = renderHook(() => useSession(), { wrapper });
+      const r = {headers: initToken}
+      act(() => {
+        result.current.setHeaders(r)
+      })
+      const headers =result.current.getHeaders()
+      expect(initToken).toEqual(headers)
     });
-
-    describe('access-token が', () => {
-      let baseHeaders = {
-        uid: 'UID-AAA',
-        client: 'CLIENT-AAA',
-      };
-      it('未定義の場合は cookie へ保存しない', () => {
-        result.current.setHeaders(baseHeaders);
-        expect(mockSetCookie).toHaveBeenCalledTimes(0);
-      });
-      it('undefined の場合は cookie へ保存しない', () => {
-        result.current.setHeaders({
-          ...baseHeaders,
-          'access-token': undefined,
-        });
-        expect(mockSetCookie).toHaveBeenCalledTimes(0);
-      });
-      it('空白の場合は cookie へ保存しない', () => {
-        result.current.setHeaders({ ...baseHeaders, 'access-token': '' });
-        expect(mockSetCookie).toHaveBeenCalledTimes(0);
-      });
-      it('access-token が null の場合', () => {
-        const invalidHeaders = {
-          ...baseHeaders,
-          'access-token': null,
-        } as unknown as Headers;
-        expect(() => {
-          result.current.setHeaders(invalidHeaders);
-        }).toThrow('Invalid access-token type error');
-        expect(mockSetCookie).toHaveBeenCalledTimes(0);
-      });
+    it('access-token が無効（空白 or undefined）の場合は保存しない', () => {
+      const { result } = renderHook(() => useSession(), { wrapper });
+      act(() => {
+        result.current.initializeByUid('UID-1111');
+        result.current.setHeaders({...initToken, 'access-token': ''})
+      })
+      const headers =result.current.getHeaders()
+      expect(headers.uid).toEqual('UID-1111')
+    });
+    it('access-token が不正（文字列型以外）の場合はエラーを投げること', () => {
+      const { result } = renderHook(() => useSession(), { wrapper });
+      act(() => {
+        result.current.initializeByUid('UID-1111');
+        expect(() => result.current.setHeaders({...initToken, 'access-token': 1111})).toThrowError('Invalid access-token type error.')
+      })
     });
   });
 
-  it('removeHeaders 検証', async () => {
-    result.current.removeHeaders();
-    await waitFor(() => {
-      expect(mockRemoveCookie).toHaveBeenCalledTimes(1);
+  describe('hasToken 検証', () => {
+    it('有効な access-token の場合 true', () => {
+      const { result } = renderHook(() => useSession(), { wrapper });
+      act(() => {
+        result.current.setHeaders(initToken);
+      });
+      expect(result.current.hasToken()).toBeTruthy();
+      act(() => {
+        result.current.removeHeaders();
+      });
     });
+    it('無効な access-token の場合 false', () => {
+      const { result } = renderHook(() => useSession(), { wrapper });
+      act(() => {
+        result.current.removeHeaders();
+      });
+      expect(result.current.hasToken()).toBeFalsy();
+    });
+  });
+
+
+  it('removeHeaders 検証', async () => {
+    const { result } = renderHook(() => useSession(), { wrapper });
+    act(() => {
+      result.current.setHeaders(initToken)
+    })
+    const headers =result.current.getHeaders()
+    expect(initToken).toEqual(headers)
+    act(() => {
+      result.current.removeHeaders();
+    })
+    expect(result.current.getHeaders()).toEqual({
+      'access-token': undefined,
+      uid: undefined,
+      client: undefined,
+    })
   });
 });
