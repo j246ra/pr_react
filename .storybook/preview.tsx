@@ -17,7 +17,7 @@ initialize();
 export const decorators = [
   cookieDecorator,
   mswDecorator,
-  (Story) => (
+  (Story: any) => (
     <div className={'navbar-height'}>
       <BrowserRouter>
         <SessionProvider>
