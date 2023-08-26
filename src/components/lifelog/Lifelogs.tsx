@@ -4,10 +4,11 @@ import { useUser } from '@providers/UserProvider';
 import notify from '@lib/toast';
 import { useNavigate } from 'react-router-dom';
 import ContextInput from '@lifelog/presentational/ContextInput';
-import { useLifelog, useLifelogDetailDialog } from '@providers/LifelogProvider';
+import { useLifelog } from '@providers/LifelogProvider';
 import LifelogDetailDialog from '@lifelog/container/LifelogDetailDialog';
 import LifelogEditDialog from '@lifelog/container/LifelogEditDialog';
 import { LIFELOGS } from '@lib/consts/component';
+import { useLifelogDetailDialog } from '@providers/LifelogDetailDialogProvider';
 
 const Lifelogs: React.FC = () => {
   const { isLogin } = useUser();

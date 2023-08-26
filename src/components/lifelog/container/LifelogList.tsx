@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { HTMLTable, Intent, Spinner, SpinnerSize } from '@blueprintjs/core';
-import { useLifelog, useLifelogDetailDialog } from '@providers/LifelogProvider';
+import { useLifelog } from '@providers/LifelogProvider';
 import notify from '@lib/toast';
 import LifelogListItem from '@lifelog/presentational/LifelogListItem';
 import LifelogListHeader from '@lifelog/presentational/LifelogListHeader';
@@ -9,6 +9,7 @@ import useDeleteLifelog from '@src/hooks/useDeleteLifelog';
 import useFinishAction from '@src/hooks/useFinishAction';
 import styles from './LifelogList.module.scss';
 import { useLifelogEditDialog } from '@providers/LifelogEditDialogProvider';
+import { useLifelogDetailDialog } from '@providers/LifelogDetailDialogProvider';
 
 const LifelogList = () => {
   const { logs, loadLogs } = useLifelog();

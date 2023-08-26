@@ -1,11 +1,7 @@
 import React from 'react';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import LifelogList from './LifelogList';
-import {
-  Lifelog,
-  useLifelog,
-  useLifelogDetailDialog,
-} from '@providers/LifelogProvider';
+import { Lifelog, useLifelog } from '@providers/LifelogProvider';
 import { lifelog, lifelogs } from '@lib/faker/lifelog';
 import userEvent from '@testing-library/user-event';
 import {
@@ -18,9 +14,11 @@ import COMPONENT from '@lib/consts/component';
 import { LIFELOG_LIST_ITEM_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import { NOTIFY, USE_FINISH_ACTION } from '@lib/consts/common';
 import { useLifelogEditDialog } from '@providers/LifelogEditDialogProvider';
+import { useLifelogDetailDialog } from '@providers/LifelogDetailDialogProvider';
 
 jest.mock('react-hot-toast');
 jest.mock('@providers/LifelogProvider');
+jest.mock('@providers/LifelogDetailDialogProvider');
 jest.mock('@providers/LifelogEditDialogProvider');
 
 const mockUseLifelog = useLifelog as jest.MockedFunction<any>;

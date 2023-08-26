@@ -1,14 +1,15 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { useUser } from '@providers/UserProvider';
-import { useLifelog, useLifelogDetailDialog } from '@providers/LifelogProvider';
+import { useLifelog } from '@providers/LifelogProvider';
 import Lifelogs from '@lifelog/Lifelogs';
 import { BrowserRouter as Router } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
+import { useLifelogDetailDialog } from '@providers/LifelogDetailDialogProvider';
 
 jest.mock('@providers/UserProvider');
 jest.mock('@providers/LifelogProvider');
-jest.mock('@lifelog/container/LifelogDetailDialog');
+jest.mock('@providers/LifelogDetailDialogProvider');
 jest.mock('@lifelog/container/LifelogEditDialog');
 jest.mock('@lifelog/container/LifelogList', () => () => (
   <div>Lifelog List Stub</div>
