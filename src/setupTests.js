@@ -15,14 +15,5 @@ console.error = (...args) => {
   ) {
     return;
   }
-  if (args[0].includes('useSession must be used within a SessionProvider'))
-    return;
-  if (
-    args[0].includes(
-      'The above error occurred in the <ChildComponent> component'
-    ) ||
-    args[0].includes('SessionProvider: Invalid access-token type error.')
-  )
-    return;
   originalConsoleError(...args);
 };
