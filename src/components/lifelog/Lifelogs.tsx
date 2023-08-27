@@ -8,12 +8,10 @@ import { useLifelog } from '@providers/LifelogProvider';
 import LifelogDetailDialog from '@lifelog/container/LifelogDetailDialog';
 import LifelogEditDialog from '@lifelog/container/LifelogEditDialog';
 import { LIFELOGS } from '@lib/consts/component';
-import { useLifelogDetailDialog } from '@providers/LifelogDetailDialogProvider';
 
 const Lifelogs: React.FC = () => {
   const { isLogin } = useUser();
   const { createLogByContext } = useLifelog();
-  const { detailDialogProps } = useLifelogDetailDialog();
   const navigate = useNavigate();
   const [context, setContext] = useState<string>('');
 
@@ -36,7 +34,7 @@ const Lifelogs: React.FC = () => {
 
   return (
     <>
-      <LifelogDetailDialog {...detailDialogProps} />
+      <LifelogDetailDialog />
       <LifelogEditDialog />
       <ContextInput
         onSubmit={handleCreateLifelog}

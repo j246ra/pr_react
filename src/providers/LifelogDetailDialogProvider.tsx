@@ -1,10 +1,12 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
-import { LifelogDetailDialogProps } from '@lifelog/container/LifelogDetailDialog';
 import { Lifelog } from '@providers/LifelogProvider';
+import lifelogUtil from '@lib/lifelogUtil';
 
 type LifelogDetailDialogContextType = {
   openDetailDialog: (log: Lifelog) => void;
-  detailDialogProps: LifelogDetailDialogProps;
+  closeDetailDialog: () => void;
+  isOpen: boolean;
+  log: Lifelog;
 };
 
 const LifelogDetailDialogContext = createContext(
@@ -20,8 +22,9 @@ type LifelogDetailDialogProvider = {
 export const LifelogDetailDialogProvider = ({
   children,
 }: LifelogDetailDialogProvider) => {
+  const { blank: newLog } = lifelogUtil();
   const [isOpenDetailDialog, setIsOpenDetailDialog] = useState(false);
-  const [detailLog, setDetailLog] = useState<Lifelog>();
+  const [detailLog, setDetailLog] = useState<Lifelog>(newLog());
 
   const openDetailDialog = (log: Lifelog) => {
     if (isOpenDetailDialog) return;
@@ -33,15 +36,14 @@ export const LifelogDetailDialogProvider = ({
     setIsOpenDetailDialog(false);
   };
 
-  const detailDialogProps: LifelogDetailDialogProps = {
-    log: detailLog,
-    isOpen: isOpenDetailDialog,
-    handleCloseDialog: closeDetailDialog,
-  };
-
   return (
     <LifelogDetailDialogContext.Provider
-      value={{ openDetailDialog, detailDialogProps }}
+      value={{
+        openDetailDialog,
+        closeDetailDialog,
+        isOpen: isOpenDetailDialog,
+        log: detailLog,
+      }}
     >
       {children}
     </LifelogDetailDialogContext.Provider>

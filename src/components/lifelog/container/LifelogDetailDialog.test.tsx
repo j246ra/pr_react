@@ -1,151 +1,98 @@
-import { fireEvent, render, waitFor } from '@testing-library/react';
-import LifelogDetailDialog from '@lifelog/container/LifelogDetailDialog';
+import { useLifelogDetailDialog } from '@providers/LifelogDetailDialogProvider';
 import { lifelog } from '@lib/faker/lifelog';
-import { Lifelog } from '@providers/LifelogProvider';
-import { LIFELOG_DETAIL_DIALOG } from '@lib/consts/component';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { LIFELOG_DETAIL_DIALOG_TEST_ID as TEST_ID } from '@lib/consts/testId';
+import LifelogDetailDialog from '@lifelog/container/LifelogDetailDialog';
+import { LIFELOG_DETAIL_DIALOG } from '@lib/consts/component';
+import lifelogUtil from '@lib/lifelogUtil';
 
-const LABEL = LIFELOG_DETAIL_DIALOG.LABEL;
+jest.mock('@providers/LifelogDetailDialogProvider');
+const mockUseLifelogDetailDialog =
+  useLifelogDetailDialog as jest.MockedFunction<any>;
 
 describe('LifelogDetailDialog', () => {
-  const handleClose = jest.fn();
-  let log: Lifelog;
   beforeEach(() => {
-    log = lifelog();
-  });
-  describe('Props log', () => {
-    it('log が存在する時は各項目が正しく表示されている', async () => {
-      const { getByTestId, getByText } = render(
-        <LifelogDetailDialog
-          isOpen={true}
-          handleCloseDialog={handleClose}
-          log={log}
-        />
-      );
-      await waitFor(() => {
-        expect(getByText(LABEL.ACTION)).not.toBeUndefined();
-        expect(getByTestId(TEST_ID.TD_ACTION)).toHaveTextContent(log.action);
-        expect(getByText(LABEL.DETAIL)).not.toBeUndefined();
-        expect(getByTestId(TEST_ID.TD_DETAIL)).toHaveTextContent(
-          log.detail || ''
-        );
-        expect(getByText(LABEL.STARTED_AT)).not.toBeUndefined();
-        expect(getByTestId(TEST_ID.TD_STARTED_AT)).toHaveTextContent(
-          log.startedAt
-        );
-        expect(getByText(LABEL.FINISHED_AT)).not.toBeUndefined();
-        expect(getByTestId(TEST_ID.TD_FINISHED_AT)).toHaveTextContent(
-          log.finishedAt || ''
-        );
-        expect(getByText(LABEL.CREATED_AT)).not.toBeUndefined();
-        expect(getByTestId(TEST_ID.TD_CREATED_AT)).toHaveTextContent(
-          log.createdAt
-        );
-        expect(getByText(LABEL.UPDATED_AT)).not.toBeUndefined();
-        expect(getByTestId(TEST_ID.TD_UPDATED_AT)).toHaveTextContent(
-          log.updatedAt
-        );
-      });
-    });
-    it('log が存在しない時もダイアログは表示される', async () => {
-      const { getByTestId, getByText } = render(
-        <LifelogDetailDialog isOpen={true} handleCloseDialog={handleClose} />
-      );
-      await waitFor(() => {
-        expect(getByText(LABEL.ACTION)).not.toBeUndefined();
-        expect(getByTestId(TEST_ID.TD_ACTION)).toBeEmptyDOMElement();
-        expect(getByText(LABEL.DETAIL)).not.toBeUndefined();
-        expect(getByTestId(TEST_ID.TD_DETAIL)).toBeEmptyDOMElement();
-        expect(getByText(LABEL.STARTED_AT)).not.toBeUndefined();
-        expect(getByTestId(TEST_ID.TD_STARTED_AT)).toBeEmptyDOMElement();
-        expect(getByText(LABEL.FINISHED_AT)).not.toBeUndefined();
-        expect(getByTestId(TEST_ID.TD_FINISHED_AT)).toBeEmptyDOMElement();
-        expect(getByText(LABEL.CREATED_AT)).not.toBeUndefined();
-        expect(getByTestId(TEST_ID.TD_CREATED_AT)).toBeEmptyDOMElement();
-        expect(getByText(LABEL.UPDATED_AT)).not.toBeUndefined();
-        expect(getByTestId(TEST_ID.TD_UPDATED_AT)).toBeEmptyDOMElement();
-      });
+    mockUseLifelogDetailDialog.mockReturnValue({
+      isOpen: true,
+      log: lifelog(),
+      closeDetailDialog: jest.fn(),
     });
   });
 
-  describe('Props isOpen', () => {
-    it('true 時にダイアログがレンダリングされる', async () => {
-      const { getAllByTestId } = render(
-        <LifelogDetailDialog isOpen={true} handleCloseDialog={handleClose} />
-      );
+  describe('ダイアログの開閉検証', () => {
+    it('閉じているダイアログを開く', () => {
+      useLifelogDetailDialog().isOpen = false;
+      const { rerender } = render(<LifelogDetailDialog />);
+      expect(screen.queryByTestId(TEST_ID.TBODY)).not.toBeInTheDocument();
+      useLifelogDetailDialog().isOpen = true;
+      rerender(<LifelogDetailDialog />);
+      expect(screen.getByTestId(TEST_ID.TBODY)).toBeInTheDocument();
+    });
+    it('開いているダイアログを閉じる', async () => {
+      const { rerender } = render(<LifelogDetailDialog />);
+      expect(screen.getByTestId(TEST_ID.TBODY)).toBeInTheDocument();
+      useLifelogDetailDialog().isOpen = false;
+      rerender(<LifelogDetailDialog />);
       await waitFor(() => {
-        const elements = getAllByTestId(TEST_ID.TBODY);
-        expect(elements).toHaveLength(1);
+        expect(screen.queryByTestId(TEST_ID.TBODY)).not.toBeInTheDocument();
       });
     });
-    it('false 時にダイアログは表示されない', async () => {
-      const { queryByText, queryAllByTestId } = render(
-        <LifelogDetailDialog isOpen={false} handleCloseDialog={handleClose} />
-      );
-      await waitFor(() => {
-        const elements = queryAllByTestId(TEST_ID.TBODY);
-        expect(elements).toHaveLength(0);
-      });
-      expect(queryByText(LABEL.ACTION)).toBeNull();
-      expect(queryByText(LABEL.DETAIL)).toBeNull();
-      expect(queryByText(LABEL.STARTED_AT)).toBeNull();
-      expect(queryByText(LABEL.FINISHED_AT)).toBeNull();
-      expect(queryByText(LABEL.CREATED_AT)).toBeNull();
-      expect(queryByText(LABEL.UPDATED_AT)).toBeNull();
-    });
-    it('false -> true 時にダイアログが表示される', async () => {
-      const { getAllByTestId, queryAllByTestId, rerender } = render(
-        <LifelogDetailDialog isOpen={false} handleCloseDialog={handleClose} />
-      );
-      await waitFor(() => {
-        const elements = queryAllByTestId(TEST_ID.TBODY);
-        expect(elements).toHaveLength(0);
-      });
-      rerender(
-        <LifelogDetailDialog isOpen={true} handleCloseDialog={handleClose} />
-      );
-      await waitFor(() => {
-        const elements = getAllByTestId(TEST_ID.TBODY);
-        expect(elements).toHaveLength(1);
-      });
-    });
-    it('true -> false 時にダイアログが閉じる', async () => {
-      const { getAllByTestId, queryAllByTestId, rerender } = render(
-        <LifelogDetailDialog isOpen={true} handleCloseDialog={handleClose} />
-      );
-      await waitFor(() => {
-        const elements = getAllByTestId(TEST_ID.TBODY);
-        expect(elements).toHaveLength(1);
-      });
-      rerender(
-        <LifelogDetailDialog isOpen={false} handleCloseDialog={handleClose} />
-      );
-      await waitFor(() => {
-        const elements = queryAllByTestId(TEST_ID.TBODY);
-        expect(elements).toHaveLength(0);
-      });
-    });
-  });
-
-  describe('Props handleCloseDialog', () => {
-    it('ダイアログが閉じられるときに呼び出されている', async () => {
-      const { getAllByTestId, getByTestId } = render(
-        <LifelogDetailDialog
-          isOpen={true}
-          log={log}
-          handleCloseDialog={handleClose}
-        />
-      );
-      await waitFor(() => {
-        const elements = getAllByTestId(TEST_ID.TBODY);
-        expect(elements).toHaveLength(1);
-      });
-      fireEvent.keyDown(getByTestId(TEST_ID.TBODY), {
+    it('開いているダイアログを Esc キーで閉じる', async () => {
+      render(<LifelogDetailDialog />);
+      expect(screen.getByTestId(TEST_ID.TBODY)).toBeInTheDocument();
+      fireEvent.keyDown(screen.getByTestId(TEST_ID.TBODY), {
         key: 'Escape',
       });
-      await waitFor(() => {
-        expect(handleClose).toHaveBeenCalled();
-      });
+      expect(mockUseLifelogDetailDialog().closeDetailDialog).toHaveBeenCalled();
+    });
+  });
+
+  describe('表示項目検証', () => {
+    const LABEL = LIFELOG_DETAIL_DIALOG.LABEL;
+    it('すべての項目が正しく表示されていること', () => {
+      render(<LifelogDetailDialog />);
+      const log = mockUseLifelogDetailDialog().log;
+
+      expect(screen.getByText(LABEL.ACTION)).not.toBeUndefined();
+      expect(screen.getByTestId(TEST_ID.TD_ACTION)).toHaveTextContent(
+        log.action
+      );
+      expect(screen.getByText(LABEL.DETAIL)).not.toBeUndefined();
+      expect(screen.getByTestId(TEST_ID.TD_DETAIL)).toHaveTextContent(
+        log.detail || ''
+      );
+      expect(screen.getByText(LABEL.STARTED_AT)).not.toBeUndefined();
+      expect(screen.getByTestId(TEST_ID.TD_STARTED_AT)).toHaveTextContent(
+        log.startedAt
+      );
+      expect(screen.getByText(LABEL.FINISHED_AT)).not.toBeUndefined();
+      expect(screen.getByTestId(TEST_ID.TD_FINISHED_AT)).toHaveTextContent(
+        log.finishedAt || ''
+      );
+      expect(screen.getByText(LABEL.CREATED_AT)).not.toBeUndefined();
+      expect(screen.getByTestId(TEST_ID.TD_CREATED_AT)).toHaveTextContent(
+        log.createdAt
+      );
+      expect(screen.getByText(LABEL.UPDATED_AT)).not.toBeUndefined();
+      expect(screen.getByTestId(TEST_ID.TD_UPDATED_AT)).toHaveTextContent(
+        log.updatedAt
+      );
+    });
+    it('未設定の場合でも初期値で表示されること', () => {
+      mockUseLifelogDetailDialog().log = lifelogUtil().blank();
+      render(<LifelogDetailDialog />);
+      expect(screen.getByText(LABEL.ACTION)).not.toBeUndefined();
+      expect(screen.getByTestId(TEST_ID.TD_ACTION)).toHaveTextContent('');
+      expect(screen.getByText(LABEL.DETAIL)).not.toBeUndefined();
+      expect(screen.getByTestId(TEST_ID.TD_DETAIL)).toHaveTextContent('');
+      expect(screen.getByText(LABEL.STARTED_AT)).not.toBeUndefined();
+      expect(screen.getByTestId(TEST_ID.TD_STARTED_AT)).toHaveTextContent('');
+      expect(screen.getByText(LABEL.FINISHED_AT)).not.toBeUndefined();
+      expect(screen.getByTestId(TEST_ID.TD_FINISHED_AT)).toHaveTextContent('');
+      expect(screen.getByText(LABEL.CREATED_AT)).not.toBeUndefined();
+      expect(screen.getByTestId(TEST_ID.TD_CREATED_AT)).toHaveTextContent('');
+      expect(screen.getByText(LABEL.UPDATED_AT)).not.toBeUndefined();
+      expect(screen.getByTestId(TEST_ID.TD_UPDATED_AT)).toHaveTextContent('');
     });
   });
 });
