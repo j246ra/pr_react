@@ -3,7 +3,7 @@ import { Meta } from '@storybook/react';
 import ResetMailSendSuccess from './ResetMailSendSuccess';
 
 export default {
-  title: 'Container/ResetMailSendSuccess',
+  title: 'Session/Container/ResetMailSendSuccess',
   component: ResetMailSendSuccess,
 } as Meta;
 

@@ -3,7 +3,7 @@ import { Meta } from '@storybook/react';
 import PasswordForget from './PasswordForget';
 
 export default {
-  title: 'Container/PasswordForget',
+  title: 'Session/Container/PasswordForget',
   component: PasswordForget,
 } as Meta;
 

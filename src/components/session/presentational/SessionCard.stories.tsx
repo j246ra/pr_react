@@ -4,7 +4,7 @@ import SessionCard from './SessionCard';
 import { Button, Classes, H5 } from '@blueprintjs/core';
 
 export default {
-  title: 'Components/SessionCard',
+  title: 'Session/Presentational/SessionCard',
   component: SessionCard,
 } as Meta;
 

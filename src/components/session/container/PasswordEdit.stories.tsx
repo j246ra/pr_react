@@ -3,7 +3,7 @@ import { Meta } from '@storybook/react';
 import PasswordEdit from './PasswordEdit';
 
 export default {
-  title: 'Container/PasswordEdit',
+  title: 'Session/Container/PasswordEdit',
   component: PasswordEdit,
 } as Meta;
 

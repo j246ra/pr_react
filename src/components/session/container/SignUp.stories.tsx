@@ -3,7 +3,7 @@ import { Meta } from '@storybook/react';
 import SignUp from './SignUp';
 
 export default {
-  title: 'Container/SignUp',
+  title: 'Session/Container/SignUp',
   component: SignUp,
 } as Meta;
 

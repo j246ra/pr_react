@@ -16,7 +16,7 @@ SuccessBehavior.parameters = {
 };
 
 export default {
-  title: 'Container/Login',
+  title: 'Session/Container/Login',
   component: Login,
 } as Meta;
 

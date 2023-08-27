@@ -3,7 +3,7 @@ import { Meta } from '@storybook/react';
 import AccountUpdate from './AccountUpdate';
 
 export default {
-  title: 'Container/AccountUpdate',
+  title: 'Session/Container/AccountUpdate',
   component: AccountUpdate,
 } as Meta;
 
