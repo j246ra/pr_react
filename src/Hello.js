@@ -8,18 +8,12 @@ import { useAuth } from '@providers/AuthApiProvider';
 import { useNavigate } from 'react-router-dom';
 import notify from './lib/toast';
 import { useSession } from '@providers/SessionProvider';
-import LifelogList from '@lifelog/container/LifelogList';
-import ContextInput from '@lifelog/presentational/ContextInput';
-import { useLifelog } from '@providers/LifelogProvider';
 
 const Hello = () => {
   const { user, clearUser, isLogin } = useUser();
   const { getHeaders, removeHeaders } = useSession();
   const { authApi } = useAuth();
-  const { createLogByContext } = useLifelog();
   const [valid, setValid] = useState(false);
-  const [message, setMessage] = useState('');
-  const [context, setContext] = useState('');
   const navigate = useNavigate();
   const cookie = getHeaders();
 
@@ -41,16 +35,6 @@ const Hello = () => {
       .catch(() => clear());
   };
 
-  const handleCreateLifelog = (e) => {
-    e.preventDefault();
-    createLogByContext(context)
-      .then((r) => {
-        setContext('');
-        setMessage(`ログ保存成功！！(${r.status})`);
-      })
-      .catch((e) => notify.error(e.message));
-  };
-
   const clear = () => {
     clearUser();
     removeHeaders();
@@ -59,7 +43,6 @@ const Hello = () => {
 
   return (
     <div className="hello">
-      <h2 style={{ textAlign: 'center' }}>{message}</h2>
       <div className="hello-container">
         <Card elevation={Elevation.TWO} className="hello-card">
           <p>email: {user.email}</p>
@@ -75,14 +58,8 @@ const Hello = () => {
               text="トークン検証"
             />
           </form>
-          <ContextInput
-            onSubmit={handleCreateLifelog}
-            value={context}
-            onChange={(e) => setContext(e.target.value)}
-          />
         </Card>
       </div>
-      <LifelogList />
     </div>
   );
 };
