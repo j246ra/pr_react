@@ -15,9 +15,9 @@ import {
   mockUseAuth,
 } from '@src/tests/baseProviders';
 import App from '@src/App';
-import PasswordForget from '@container/PasswordForget';
+import PasswordForget from '@session/container/PasswordForget';
 import { useLifelog } from '@providers/LifelogProvider';
-import SignUp from '@container/SignUp';
+import SignUp from '@session/container/SignUp';
 import { EMAIL_INPUT, LOGIN, PASSWORD_INPUT } from '@lib/consts/component';
 import { LOGIN_TEST_ID as TEST_ID, SIGN_UP_TEST_ID } from '@lib/consts/testId';
 

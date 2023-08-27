@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
-import SignUp from '@container/SignUp';
+import SignUp from './SignUp';
 
 export default {
   title: 'Container/SignUp',

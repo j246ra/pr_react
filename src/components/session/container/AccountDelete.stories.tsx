@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
-import AccountDelete from '@container/AccountDelete';
+import AccountDelete from './AccountDelete';
 
 export default {
   title: 'Container/AccountDelete',

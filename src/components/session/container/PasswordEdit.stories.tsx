@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
-import PasswordEdit from '@container/PasswordEdit';
+import PasswordEdit from './PasswordEdit';
 
 export default {
   title: 'Container/PasswordEdit',

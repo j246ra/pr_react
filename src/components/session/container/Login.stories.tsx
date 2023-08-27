@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
-import Login from '@container/Login';
+import Login from './Login';
 import { rest } from 'msw';
 import { apiHost } from '@lib/storybook/util';
 

@@ -11,8 +11,7 @@ module.exports = async ({ config }) => {
     '@lib': path.resolve(paths.appSrc, 'lib'),
     '@providers': path.resolve(paths.appSrc, 'providers'),
     '@validators': path.resolve(paths.appSrc, 'validators'),
-    '@presentational': path.resolve(paths.appSrc, 'components/presentational'),
-    '@container': path.resolve(paths.appSrc, 'components/container'),
+    '@session': path.resolve(paths.appSrc, 'components/session'),
     '@lifelog': path.resolve(paths.appSrc, 'components/lifelog'),
     // 他のエイリアス設定がある場合はここに追加します
   };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
-import PasswordForget from '@container/PasswordForget';
+import PasswordForget from './PasswordForget';
 
 export default {
   title: 'Container/PasswordForget',

@@ -2,12 +2,12 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import App from '@src/App';
 import Hello from '../Hello';
-import Login from '@container/Login';
-import SignUp from '@container/SignUp';
-import AccountUpdate from '@container/AccountUpdate';
-import PasswordForget from '@container/PasswordForget';
-import PasswordEdit from '@container/PasswordEdit';
-import ResetMailSendSuccess from '@container/ResetMailSendSuccess';
+import Login from '@session/container/Login';
+import SignUp from '@session/container/SignUp';
+import AccountUpdate from '@session/container/AccountUpdate';
+import PasswordForget from '@session/container/PasswordForget';
+import PasswordEdit from '@session/container/PasswordEdit';
+import ResetMailSendSuccess from '@session/container/ResetMailSendSuccess';
 import Lifelogs from '@lifelog/Lifelogs';
 
 const RootRouterProvider = () => {

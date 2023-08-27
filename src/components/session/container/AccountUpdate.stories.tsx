@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
-import AccountUpdate from '@container/AccountUpdate';
+import AccountUpdate from './AccountUpdate';
 
 export default {
   title: 'Container/AccountUpdate',

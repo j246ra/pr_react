@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
-import ResetMailSendSuccess from '@container/ResetMailSendSuccess';
+import ResetMailSendSuccess from './ResetMailSendSuccess';
 
 export default {
   title: 'Container/ResetMailSendSuccess',

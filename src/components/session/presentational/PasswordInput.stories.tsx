@@ -1,4 +1,3 @@
-import React, { ChangeEvent } from 'react';
 import { Meta } from '@storybook/react';
 import { PasswordInput } from './PasswordInput';
 
@@ -10,14 +9,14 @@ export default {
 export const Default = {
   args: {
     value: '',
-    onChange: (e: ChangeEvent<HTMLInputElement>) => {},
+    onChange: () => {},
   },
 };
 
 export const WithPlaceholder = {
   args: {
     value: '',
-    onChange: (e: ChangeEvent<HTMLInputElement>) => {},
+    onChange: () => {},
     placeholder: 'パスワードを入力してください',
   },
 };
@@ -25,7 +24,7 @@ export const WithPlaceholder = {
 export const Optional = {
   args: {
     value: '',
-    onChange: (e: ChangeEvent<HTMLInputElement>) => {},
+    onChange: () => {},
     required: false,
   },
 };

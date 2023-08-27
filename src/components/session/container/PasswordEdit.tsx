@@ -6,8 +6,8 @@ import passwordEditValidator from '@validators/passwordEdit';
 import notify from '@lib/toast';
 import { useSession } from '@providers/SessionProvider';
 import { useAuth } from '@providers/AuthApiProvider';
-import SessionCard from '@presentational/SessionCard';
-import { PasswordInput } from '@presentational/PasswordInput';
+import SessionCard from '@session/presentational/SessionCard';
+import { PasswordInput } from '@session/presentational/PasswordInput';
 import { PASSWORD_EDIT } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 

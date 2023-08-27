@@ -21,11 +21,8 @@
       "@providers/*": [
         "./src/providers/*"
       ],
-      "@presentational/*": [
-        "./src/components/presentational/*"
-      ],
-      "@container/*": [
-        "./src/components/container/*"
+      "@session/*": [
+        "./src/components/session/*"
       ],
       "@lifelog/*": [
         "./src/components/lifelog/*"
