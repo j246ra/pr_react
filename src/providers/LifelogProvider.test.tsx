@@ -9,8 +9,7 @@ import { mockUseSession, mockUseUser } from '@src/tests/baseProviders';
 import { setupServer } from 'msw/node';
 import { lifelog } from '@lib/faker/lifelog';
 import { AxiosError } from 'axios';
-import dayjs from 'dayjs';
-import { DATETIME_FULL } from '@lib/dateUtil';
+import { DATETIME_FULL, days } from '@lib/dateUtil';
 import lifelogApiMocks from '@src/tests/lifelogApiMocks';
 
 let mockSetHeaders: jest.SpyInstance<unknown>;
@@ -280,7 +279,7 @@ describe('LifelogProvider', () => {
           expect(result.current.logs).toHaveLength(10);
         });
         const logs = result.current.logs;
-        const pastOneYear = dayjs(logs[9].startedAt)
+        const pastOneYear = days(logs[9].startedAt)
           .subtract(1, 'year')
           .format(DATETIME_FULL);
         const beforeLog = logs[5];

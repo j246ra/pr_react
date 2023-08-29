@@ -1,5 +1,5 @@
 import { Lifelog } from '@providers/LifelogProvider';
-import dayjs from 'dayjs';
+import { days } from '@lib/dateUtil';
 
 const blank = (): Lifelog => {
   return {
@@ -16,7 +16,7 @@ const blank = (): Lifelog => {
 
 const sort = (logs: Lifelog[]) => {
   return logs.sort((a, b) => {
-    return dayjs(b.startedAt).diff(dayjs(a.startedAt));
+    return days(b.startedAt).diff(days(a.startedAt));
   });
 };
 

@@ -2,11 +2,10 @@ import { act, render, screen, waitFor } from '@testing-library/react';
 import DatetimeInput from '@lifelog/presentational/DatetimeInput';
 import { DATETIME_FULL, days, DISPLAY_DATETIME_FULL } from '@lib/dateUtil';
 import userEvent from '@testing-library/user-event';
-import dayjs from 'dayjs';
 
 describe('DatetimeInput', () => {
   const mockOnChange = jest.fn();
-  let date: dayjs.Dayjs;
+  let date: ReturnType<typeof days>;
   const props = {
     label: '時間',
     placeholder: '時間を入力してください',
