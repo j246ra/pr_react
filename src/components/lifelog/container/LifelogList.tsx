@@ -13,7 +13,7 @@ import { useLifelogDetailDialog } from '@providers/LifelogDetailDialogProvider';
 
 const LifelogList = () => {
   const { logs, loadLogs } = useLifelog();
-  const { openDetailDialog: handleOpenDetailDialog } = useLifelogDetailDialog();
+  const { openDetailDialog } = useLifelogDetailDialog();
   const handleDeleteLifelog = useDeleteLifelog();
   const handleFinishLifelog = useFinishAction();
   const { openEditDialog } = useLifelogEditDialog();
@@ -53,7 +53,7 @@ const LifelogList = () => {
                 onFinishButtonClick={() => handleFinishLifelog(log)}
                 onEditButtonClick={() => openEditDialog(log)}
                 onDeleteButtonClick={() => handleDeleteLifelog(log.id)}
-                onActionClick={() => handleOpenDetailDialog(log)}
+                onActionClick={() => openDetailDialog(log)}
               />
             );
           })}
