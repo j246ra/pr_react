@@ -10,6 +10,7 @@ import useFinishAction from '@src/hooks/useFinishAction';
 import styles from './LifelogList.module.scss';
 import { useLifelogEditDialog } from '@providers/LifelogEditDialogProvider';
 import { useLifelogDetailDialog } from '@providers/LifelogDetailDialogProvider';
+import { LIFELOG_LIST_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
 const LifelogList = () => {
   const { logs, loadLogs } = useLifelog();
@@ -38,7 +39,7 @@ const LifelogList = () => {
           loadMore={lifelogLoader}
           hasMore={hasMore}
           loader={
-            <tr key={0}>
+            <tr data-testid={TEST_ID.SPINNER} key={0}>
               <td className={styles.spinnerTd} colSpan={4}>
                 <Spinner intent={Intent.PRIMARY} size={SpinnerSize.SMALL} />
               </td>
