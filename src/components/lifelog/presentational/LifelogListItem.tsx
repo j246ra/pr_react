@@ -6,20 +6,20 @@ import styles from './LifelogListItem.module.scss';
 import { days, DISPLAY_DATETIME } from '@lib/dateUtil';
 import { LIFELOG_LIST_ITEM_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
-export interface LifelogListItemProps {
+export type LifelogListItemProps = {
   log: Lifelog;
   onFinishButtonClick: () => void;
   onDeleteButtonClick: () => void;
   onEditButtonClick: () => void;
   onActionClick: () => void;
-}
-const LifelogListItem: React.FC<LifelogListItemProps> = ({
+};
+const LifelogListItem = ({
   log,
   onFinishButtonClick,
   onEditButtonClick,
   onDeleteButtonClick,
   onActionClick,
-}) => {
+}: LifelogListItemProps) => {
   return (
     <tr>
       <td className={`${log.finishedAt ? styles.tdStartedAtBold : ''}`}>

@@ -4,19 +4,19 @@ import { DateInput, TimePrecision } from '@blueprintjs/datetime';
 import { days, DISPLAY_DATETIME_FULL } from '@lib/dateUtil';
 import { DATETIME_INPUT } from '@lib/consts/component';
 
-export interface DatetimeInputProps {
+export type DatetimeInputProps = {
   label: string;
   placeholder?: string;
   value?: string;
   onChange: (newDate: string | null) => void;
-}
+};
 
-const DatetimeInput: React.FC<DatetimeInputProps> = ({
+const DatetimeInput = ({
   label,
   placeholder,
   value,
   onChange,
-}) => {
+}: DatetimeInputProps) => {
   return (
     <FormGroup label={label}>
       <DateInput

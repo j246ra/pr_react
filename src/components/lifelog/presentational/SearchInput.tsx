@@ -6,12 +6,12 @@ import { SEARCH_INPUT } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import { SEARCH_INPUT_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
-export interface SearchInputProps {
+export type SearchInputProps = {
   isShow: boolean;
   width?: number;
-}
+};
 
-const SearchInput: React.FC<SearchInputProps> = ({ isShow, width = 260 }) => {
+const SearchInput = ({ isShow, width = 260 }: SearchInputProps) => {
   if (!isShow) return null;
 
   const { searchLogs } = useLifelog();

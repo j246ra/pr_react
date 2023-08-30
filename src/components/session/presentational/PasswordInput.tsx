@@ -2,7 +2,7 @@ import React, { ChangeEvent } from 'react';
 import { FormGroup, InputGroup } from '@blueprintjs/core';
 import { PASSWORD_INPUT } from '@lib/consts/component';
 
-interface PasswordInputProps {
+type PasswordInputProps = {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   id?: string;
@@ -10,9 +10,9 @@ interface PasswordInputProps {
   label?: string;
   placeholder?: string;
   testId?: string;
-}
+};
 
-export const PasswordInput: React.FC<PasswordInputProps> = ({
+export const PasswordInput = ({
   value,
   onChange,
   id = 'password-input',
@@ -20,7 +20,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
   label = PASSWORD_INPUT.LABEL,
   placeholder = PASSWORD_INPUT.PLACEHOLDER,
   testId = id,
-}) => (
+}: PasswordInputProps) => (
   <FormGroup
     label={label}
     labelFor={id}
