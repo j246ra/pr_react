@@ -1,10 +1,10 @@
 import validator, { INVALID_MESSAGES, Result } from './validator';
 
-export interface accountUpdateParams {
+export type accountUpdateParams = {
   email?: string;
   password?: string;
   passwordConfirmation?: string;
-}
+};
 
 export default function accountUpdateValidator(
   params: accountUpdateParams

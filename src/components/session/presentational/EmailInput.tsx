@@ -2,14 +2,14 @@ import React, { ChangeEvent } from 'react';
 import { FormGroup, InputGroup } from '@blueprintjs/core';
 import { EMAIL_INPUT } from '@lib/consts/component';
 
-export interface EmailInputProps {
+export type EmailInputProps = {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   id?: string;
   required?: boolean;
   placeholder?: string;
   testId?: string;
-}
+};
 
 export const EmailInput = ({
   value,

@@ -6,16 +6,16 @@ import { AxiosResponse, AxiosError } from 'axios';
 import notify from '@lib/toast';
 import { COMMON } from '@lib/consts/common';
 
-interface AuthApiContextProps {
+type AuthApiContextProps = {
   authApi: ReturnType<typeof session>;
-}
+};
 
 const AuthApiContext = createContext({} as AuthApiContextProps);
 export const useAuth = (): AuthApiContextProps => useContext(AuthApiContext);
 
-interface AuthApiProviderProps {
+type AuthApiProviderProps = {
   children: ReactNode;
-}
+};
 
 type Data = {
   errors: {

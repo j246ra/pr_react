@@ -6,10 +6,10 @@ import Defs from '@lib/consts';
 type ResponseInterceptor = (response: AxiosResponse) => AxiosResponse;
 type ErrorInterceptor = (error: AxiosError) => Promise<never>;
 
-export interface UserParams {
+export type UserParams = {
   email?: string;
   password?: string;
-}
+};
 
 const ENDPOINT = Defs.API.SESSION.ENDPOINT;
 

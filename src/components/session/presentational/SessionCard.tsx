@@ -2,11 +2,11 @@ import React, { ReactNode } from 'react';
 import { Card, Elevation } from '@blueprintjs/core';
 import './session.scss';
 
-export interface SessionCardProps {
+export type SessionCardProps = {
   children: ReactNode;
   interactive?: boolean;
   elevation?: Elevation;
-}
+};
 const SessionCard: React.FC<SessionCardProps> = ({
   children,
   interactive = false,

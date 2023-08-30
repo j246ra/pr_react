@@ -1,10 +1,10 @@
 import notify from '@lib/toast';
 import { VALIDATOR } from '@lib/consts/common';
 
-export interface Result {
+export type Result = {
   isInvalid: boolean;
   message: string[];
-}
+};
 
 export const INVALID_MESSAGES = {
   ...VALIDATOR.MESSAGE,

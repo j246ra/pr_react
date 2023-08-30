@@ -1,10 +1,10 @@
 import toast from 'react-hot-toast';
 import { NOTIFY as CONST } from '@lib/consts/common';
 
-export interface Notify {
+export type Notify = {
   error: (message: string) => void;
   success: (message: string) => void;
-}
+};
 
 const notify: Notify = {
   error: (message: string) => {

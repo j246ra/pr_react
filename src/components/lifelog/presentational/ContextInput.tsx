@@ -4,12 +4,12 @@ import { IconNames } from '@blueprintjs/icons';
 import styles from './ContextInput.module.scss';
 import { CONTEXT_INPUT } from '@lib/consts/component';
 
-export interface ContextInputProps {
+export type ContextInputProps = {
   onSubmit: (e: FormEvent) => void;
   value?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
-}
+};
 
 export const ContextInput = ({
   onSubmit,
