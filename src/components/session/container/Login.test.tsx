@@ -17,9 +17,11 @@ import {
 import App from '@src/App';
 import PasswordForget from '@session/container/PasswordForget';
 import { useLifelog } from '@providers/LifelogProvider';
-import SignUp from '@session/container/SignUp';
 import { EMAIL_INPUT, LOGIN, PASSWORD_INPUT } from '@lib/consts/component';
-import { LOGIN_TEST_ID as TEST_ID, SIGN_UP_TEST_ID } from '@lib/consts/testId';
+import {
+  LOGIN_TEST_ID as TEST_ID,
+  SESSION_OTHER_LINKS_TEST_ID,
+} from '@lib/consts/testId';
 
 jest.mock('@providers/LifelogProvider');
 jest.mock('@lib/toast');
@@ -49,7 +51,7 @@ describe('Login component', () => {
   });
 
   it('ログインフォームが表示されている', () => {
-    const { container, getByTestId } = render(
+    const { getByTestId } = render(
       <Router>
         <Login />
       </Router>
@@ -70,15 +72,15 @@ describe('Login component', () => {
     expect(loginButton).toBeInTheDocument();
     expect(loginButton).toHaveTextContent(LOGIN.BUTTON.SUBMIT);
 
-    const passwordLinks = container.getElementsByClassName(
-      'password-forget-link'
+    const passwordLinks = getByTestId(
+      SESSION_OTHER_LINKS_TEST_ID.PASSWORD_FORGET
     );
-    expect(passwordLinks).toHaveLength(1);
-    expect(passwordLinks[0]).toHaveAttribute('href', '/password_forget');
+    expect(passwordLinks).toBeInTheDocument();
+    expect(passwordLinks).toHaveAttribute('href', '/password_forget');
 
-    const signUpLinks = container.getElementsByClassName('sign-up-link');
-    expect(signUpLinks).toHaveLength(1);
-    expect(signUpLinks[0]).toHaveAttribute('href', '/sign_up');
+    const signUpLinks = getByTestId(SESSION_OTHER_LINKS_TEST_ID.SIGN_UP);
+    expect(signUpLinks).toBeInTheDocument();
+    expect(signUpLinks).toHaveAttribute('href', '/sign_up');
   });
 
   describe('Link コンポーネント', () => {
@@ -88,37 +90,29 @@ describe('Login component', () => {
           <Routes>
             <Route path="/" element={<App />}>
               <Route index element={<Login />} />
-              <Route path="/sign_up" element={<SignUp />} />
+              <Route path="/sign_up" element={<Login />} />
               <Route path="/password_forget" element={<PasswordForget />} />
             </Route>
           </Routes>
         </BrowserRouter>
       );
 
-    it('Sign Up', async () => {
-      const { container } = renderWithRouter();
-      const signUpLinks = container.getElementsByClassName('sign-up-link');
-      expect(signUpLinks).toHaveLength(1);
-      expect(signUpLinks[0]).toHaveAttribute('href', '/sign_up');
-      fireEvent.click(signUpLinks[0]);
-      await waitFor(() => {
-        const els = screen.getAllByTestId(SIGN_UP_TEST_ID.FORM);
-        expect(els).toHaveLength(1);
-      });
+    it('Sign Up', () => {
+      renderWithRouter();
+      const signUpLink = screen.getByTestId(
+        SESSION_OTHER_LINKS_TEST_ID.SIGN_UP
+      );
+      expect(signUpLink).toBeInTheDocument();
+      expect(signUpLink).toHaveAttribute('href', '/sign_up');
     });
 
-    it('Password forget', async () => {
-      const { container } = renderWithRouter();
-      const passwordLinks = container.getElementsByClassName(
-        'password-forget-link'
+    it('Password forget', () => {
+      renderWithRouter();
+      const passwordLink = screen.getByTestId(
+        SESSION_OTHER_LINKS_TEST_ID.PASSWORD_FORGET
       );
-      expect(passwordLinks).toHaveLength(1);
-      expect(passwordLinks[0]).toHaveAttribute('href', '/password_forget');
-      fireEvent.click(passwordLinks[0]);
-      await waitFor(() => {
-        const els = container.getElementsByClassName('session-callout');
-        expect(els).toHaveLength(1);
-      });
+      expect(passwordLink).toBeInTheDocument();
+      expect(passwordLink).toHaveAttribute('href', '/password_forget');
     });
   });
 

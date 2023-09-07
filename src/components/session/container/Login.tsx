@@ -1,5 +1,4 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
-import { Link } from 'react-router-dom';
 import { Button, Intent } from '@blueprintjs/core';
 import { useUser } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +10,7 @@ import SessionCard from '@session/presentational/SessionCard';
 import { LOGIN } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import { LOGIN_TEST_ID as TEST_ID } from '@lib/consts/testId';
+import SessionOtherLinks from '@session/presentational/SessionOtherLinks';
 
 const DEFAULT_PATH = '/lifelogs';
 
@@ -71,14 +71,7 @@ const Login: React.FC = () => {
           text={LOGIN.BUTTON.SUBMIT}
         />
       </form>
-      <div className={'links'}>
-        <Link className="password-forget-link" to={'/password_forget'}>
-          {LOGIN.LINK.PASSWORD_FORGET}
-        </Link>
-        <Link className="sign-up-link" to={'/sign_up'}>
-          {LOGIN.LINK.SIGN_UP}
-        </Link>
-      </div>
+      <SessionOtherLinks passwordForgetEnabled={true} signUpEnabled={true} />
     </SessionCard>
   );
 };

@@ -55,6 +55,12 @@ export const PASSWORD_FORGET_TEST_ID = {
   BUTTON: value('Button'),
 };
 
+value = prefixedValueFunction('SessionOtherLinks');
+export const SESSION_OTHER_LINKS_TEST_ID = {
+  PASSWORD_FORGET: value('PasswordForget'),
+  SIGN_UP: value('SingUp'),
+};
+
 value = prefixedValueFunction('LifelogList');
 export const LIFELOG_LIST_TEST_ID = {
   SPINNER: value('Spinner'),
@@ -82,6 +88,7 @@ export const TEST_IDS = {
   LOGIN: LOGIN_TEST_ID,
   SIGN_UP: SIGN_UP_TEST_ID,
   PASSWORD_FORGET: PASSWORD_FORGET_TEST_ID,
+  SESSION_OTHER_LINKS: SESSION_OTHER_LINKS_TEST_ID,
   LIFELOG_LIST: LIFELOG_LIST_TEST_ID,
   LIFELOG_LIST_ITEM: LIFELOG_LIST_ITEM_TEST_ID,
   SEARCH_INPUT: SEARCH_INPUT_TEST_ID,

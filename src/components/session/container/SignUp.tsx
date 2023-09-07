@@ -1,5 +1,4 @@
 import React, { useState, FormEvent, ChangeEvent } from 'react';
-import { Link } from 'react-router-dom';
 import { Button, Intent } from '@blueprintjs/core';
 import { useUser } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +12,7 @@ import SessionCard from '@session/presentational/SessionCard';
 import { SIGN_UP } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import { SIGN_UP_TEST_ID as TEST_ID } from '@lib/consts/testId';
+import SessionOtherLinks from '@session/presentational/SessionOtherLinks';
 
 const SignUp = () => {
   const { removeHeaders } = useSession();
@@ -66,11 +66,7 @@ const SignUp = () => {
           text={SIGN_UP.BUTTON.SUBMIT}
         />
       </form>
-      <div className={'links'}>
-        <Link className="password-forget-link" to={'/password_forget'}>
-          {SIGN_UP.LINK.PASSWORD_FORGET}
-        </Link>
-      </div>
+      <SessionOtherLinks signUpEnabled={true} />
     </SessionCard>
   );
 };
