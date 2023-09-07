@@ -89,7 +89,7 @@ export const PASSWORD_EDIT = {
 };
 
 export const RESET_MAIL_SUCCESS = {
-  INFO: '送信に成功しました。メールをご確認ください。',
+  INFO: 'メールを送信しました。メールをご確認ください。',
 };
 
 export const SIGN_UP = {
