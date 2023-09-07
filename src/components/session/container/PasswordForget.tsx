@@ -26,6 +26,7 @@ const PasswordForget: React.FC = () => {
       .catch((e) => {
         if (e?.response.status === 404) {
           notify.success(PASSWORD_FORGET.MESSAGE.SUCCESS);
+          navigate('/send_success');
         } else {
           notify.error(PASSWORD_FORGET.MESSAGE.ERROR);
         }
