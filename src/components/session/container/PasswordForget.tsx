@@ -8,6 +8,7 @@ import SessionCard from '@session/presentational/SessionCard';
 import { PASSWORD_FORGET } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import { PASSWORD_FORGET_TEST_ID as TEST_ID } from '@lib/consts/testId';
+import styles from './PasswordForget.module.scss';
 
 const PasswordForget: React.FC = () => {
   const { authApi: session } = useAuth();
@@ -37,7 +38,7 @@ const PasswordForget: React.FC = () => {
   return (
     <SessionCard>
       <Callout
-        className="session-callout"
+        className={styles.sessionCallout}
         icon={IconNames.INFO_SIGN}
         intent={Intent.PRIMARY}
       >
