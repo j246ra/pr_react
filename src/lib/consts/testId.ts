@@ -1,77 +1,77 @@
-const g = (prefix: string, value: string) => prefix + value;
+const prefixedValueFunction = (prefix: string) => (value: string) =>
+  prefix + value;
 
-const LIFELOG_DETAIL_DIALOG_PREFIX = 'LifelogDetailDialog';
+let value = prefixedValueFunction('LifelogDetailDialog');
 export const LIFELOG_DETAIL_DIALOG_TEST_ID = {
-  TBODY: g(LIFELOG_DETAIL_DIALOG_PREFIX, 'Tbody'),
-  TD_ACTION: g(LIFELOG_DETAIL_DIALOG_PREFIX, 'TdAction'),
-  TD_DETAIL: g(LIFELOG_DETAIL_DIALOG_PREFIX, 'TdDetail'),
-  TD_STARTED_AT: g(LIFELOG_DETAIL_DIALOG_PREFIX, 'TdStartedAt'),
-  TD_FINISHED_AT: g(LIFELOG_DETAIL_DIALOG_PREFIX, 'TdFinishedAt'),
-  TD_CREATED_AT: g(LIFELOG_DETAIL_DIALOG_PREFIX, 'TdCreatedAt'),
-  TD_UPDATED_AT: g(LIFELOG_DETAIL_DIALOG_PREFIX, 'TdUpdatedAt'),
+  TBODY: value('Tbody'),
+  TD_ACTION: value('TdAction'),
+  TD_DETAIL: value('TdDetail'),
+  TD_STARTED_AT: value('TdStartedAt'),
+  TD_FINISHED_AT: value('TdFinishedAt'),
+  TD_CREATED_AT: value('TdCreatedAt'),
+  TD_UPDATED_AT: value('TdUpdatedAt'),
 };
 
-const LIFELOG_EDIT_DIALOG_PREFIX = 'LifelogEditDialog';
+value = prefixedValueFunction('LifelogEditDialog');
 export const LIFELOG_EDIT_DIALOG_TEST_ID = {
-  BASE: g(LIFELOG_EDIT_DIALOG_PREFIX, ''),
-  BUTTON: g(LIFELOG_DETAIL_DIALOG_PREFIX, 'Button'),
+  BASE: value(''),
+  BUTTON: value('Button'),
 };
 
-const HEADER_PREFIX = 'Headers';
-
+value = prefixedValueFunction('Headers');
 export const HEADER_TEST_ID = {
-  SETTINGS: g(HEADER_PREFIX, 'Settings'),
-  EDIT_ACCOUNT: g(HEADER_PREFIX, 'EditAccount'),
-  LOGOUT: g(HEADER_PREFIX, 'Logout'),
-  BUTTON: g(HEADER_PREFIX, 'Button'),
+  SETTINGS: value('Settings'),
+  EDIT_ACCOUNT: value('EditAccount'),
+  LOGOUT: value('Logout'),
+  BUTTON: value('Button'),
 };
 
-const ACCOUNT_UPDATE_PREFIX = 'AccountUpdate';
+value = prefixedValueFunction('AccountUpdate');
 export const ACCOUNT_UPDATE_TEST_ID = {
-  EMAIL_INPUT: g(ACCOUNT_UPDATE_PREFIX, 'EmailInput'),
-  PASSWORD_INPUT: g(ACCOUNT_UPDATE_PREFIX, 'PasswordInput'),
-  PASSWORD_CONFIRM_INPUT: g(ACCOUNT_UPDATE_PREFIX, 'PasswordConfirmInput'),
-  BUTTON: g(ACCOUNT_UPDATE_PREFIX, 'Button'),
+  EMAIL_INPUT: value('EmailInput'),
+  PASSWORD_INPUT: value('PasswordInput'),
+  PASSWORD_CONFIRM_INPUT: value('PasswordConfirmInput'),
+  BUTTON: value('Button'),
 };
 
-const LOGIN_PREFIX = 'Login';
+value = prefixedValueFunction('Login');
 export const LOGIN_TEST_ID = {
-  EMAIL_INPUT: g(LOGIN_PREFIX, 'EmailInput'),
-  PASSWORD_INPUT: g(LOGIN_PREFIX, 'PasswordInput'),
-  BUTTON: g(LOGIN_PREFIX, 'Button'),
+  EMAIL_INPUT: value('EmailInput'),
+  PASSWORD_INPUT: value('PasswordInput'),
+  BUTTON: value('Button'),
 };
 
-const SIGN_UP_PREFIX = 'SignUp';
+value = prefixedValueFunction('SignUp');
 export const SIGN_UP_TEST_ID = {
-  FORM: g(SIGN_UP_PREFIX, 'Form'),
-  EMAIL_INPUT: g(SIGN_UP_PREFIX, 'EmailInput'),
-  PASSWORD_INPUT: g(LOGIN_PREFIX, 'PasswordInput'),
-  BUTTON: g(LOGIN_PREFIX, 'Button'),
+  FORM: value('Form'),
+  EMAIL_INPUT: value('EmailInput'),
+  PASSWORD_INPUT: value('PasswordInput'),
+  BUTTON: value('Button'),
 };
 
-const PASSWORD_FORGET_PREFIX = 'PasswordForget';
+value = prefixedValueFunction('PasswordForget');
 export const PASSWORD_FORGET_TEST_ID = {
-  EMAIL_INPUT: g(PASSWORD_FORGET_PREFIX, 'EmailInput'),
-  BUTTON: g(PASSWORD_FORGET_PREFIX, 'Button'),
+  EMAIL_INPUT: value('EmailInput'),
+  BUTTON: value('Button'),
 };
 
-const LIFELOG_LIST_PREFIX = 'LifelogList';
+value = prefixedValueFunction('LifelogList');
 export const LIFELOG_LIST_TEST_ID = {
-  SPINNER: g(LIFELOG_LIST_PREFIX, 'Spinner'),
+  SPINNER: value('Spinner'),
 };
 
-const LIFELOG_LIST_ITEM_PREFIX = 'LifelogListItem';
+value = prefixedValueFunction('LifelogListItem');
 export const LIFELOG_LIST_ITEM_TEST_ID = {
-  LINK_TEXT: g(LIFELOG_LIST_ITEM_PREFIX, 'LinkText'),
-  FINISH_BUTTON: g(LIFELOG_LIST_ITEM_PREFIX, 'FinishButton'),
-  EDIT_BUTTON: g(LIFELOG_LIST_ITEM_PREFIX, 'EditButton'),
-  DELETE_BUTTON: g(LIFELOG_LIST_ITEM_PREFIX, 'DeleteButton'),
+  LINK_TEXT: value('LinkText'),
+  FINISH_BUTTON: value('FinishButton'),
+  EDIT_BUTTON: value('EditButton'),
+  DELETE_BUTTON: value('DeleteButton'),
 };
 
-const SEARCH_INPUT_PREFIX = 'SearchInput';
+value = prefixedValueFunction('SearchInput');
 export const SEARCH_INPUT_TEST_ID = {
-  BASE: g(SEARCH_INPUT_PREFIX, ''),
-  BUTTON: g(SEARCH_INPUT_PREFIX, 'Button'),
+  BASE: value(''),
+  BUTTON: value('Button'),
 };
 
 export const TEST_IDS = {
