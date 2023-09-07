@@ -1,11 +1,11 @@
-.session-container {
+.sessionContainer {
   display: flex;
   justify-content: center;
   align-items: center;
   height: calc(100vh - 50px);
   width: 100%;
 
-  .session-card {
+  .sessionCard {
     width: 280px;
     padding: 20px;
   }

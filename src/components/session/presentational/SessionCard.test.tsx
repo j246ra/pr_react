@@ -4,7 +4,7 @@ import SessionCard from './SessionCard';
 import { Elevation } from '@blueprintjs/core';
 
 describe('SessionCard', () => {
-  const cardClassName = 'session-card';
+  const cardClassName = 'sessionCard';
   describe('interactive', () => {
     const interactiveClassName = 'bp5-interactive';
     it('true時にマウスオーバーで高度が変わる', () => {
