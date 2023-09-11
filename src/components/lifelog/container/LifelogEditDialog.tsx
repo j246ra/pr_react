@@ -72,10 +72,10 @@ const LifelogEditDialog = ({ detailRows = 8 }: LifelogEditDialogProps) => {
           <DatetimeInput
             label={Defs.FINISHED_AT.LABEL}
             placeholder={Defs.FINISHED_AT.PLACEHOLDER}
-            value={lifelog.finishedAt}
+            value={lifelog.finishedAt || undefined}
             onChange={(newDate: string | null) =>
               editLifelog({
-                finishedAt: newDate || undefined,
+                finishedAt: newDate,
               })
             }
           />

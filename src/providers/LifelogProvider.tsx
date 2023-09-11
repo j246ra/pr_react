@@ -14,7 +14,7 @@ export type Lifelog = {
   action: string;
   detail?: string;
   startedAt: string;
-  finishedAt?: string;
+  finishedAt?: string | null;
   createdAt: string;
   updatedAt: string;
 };
