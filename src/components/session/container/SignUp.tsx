@@ -13,6 +13,7 @@ import { SIGN_UP } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import { SIGN_UP_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import SessionOtherLinks from '@session/presentational/SessionOtherLinks';
+import SessionForm from '@session/presentational/SessionForm';
 
 const SignUp = () => {
   const { removeHeaders } = useSession();
@@ -47,7 +48,7 @@ const SignUp = () => {
 
   return (
     <SessionCard>
-      <form onSubmit={handleSignUp} data-testid={TEST_ID.FORM}>
+      <SessionForm onSubmit={handleSignUp} data-testid={TEST_ID.FORM}>
         <EmailInput
           id={TEST_ID.EMAIL_INPUT}
           value={email}
@@ -64,8 +65,9 @@ const SignUp = () => {
           intent={Intent.PRIMARY}
           icon={IconNames.NEW_PERSON}
           text={SIGN_UP.BUTTON.SUBMIT}
+          fill={true}
         />
-      </form>
+      </SessionForm>
       <SessionOtherLinks signUpEnabled={true} />
     </SessionCard>
   );

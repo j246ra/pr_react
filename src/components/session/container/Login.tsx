@@ -11,6 +11,7 @@ import { LOGIN } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import { LOGIN_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import SessionOtherLinks from '@session/presentational/SessionOtherLinks';
+import SessionForm from '@session/presentational/SessionForm';
 
 const DEFAULT_PATH = '/lifelogs';
 
@@ -52,7 +53,7 @@ const Login: React.FC = () => {
 
   return (
     <SessionCard>
-      <form onSubmit={handleLogin}>
+      <SessionForm onSubmit={handleLogin}>
         <EmailInput
           testId={TEST_ID.EMAIL_INPUT}
           value={email}
@@ -69,8 +70,9 @@ const Login: React.FC = () => {
           intent={Intent.PRIMARY}
           icon={IconNames.LOG_IN}
           text={LOGIN.BUTTON.SUBMIT}
+          fill={true}
         />
-      </form>
+      </SessionForm>
       <SessionOtherLinks passwordForgetEnabled={true} signUpEnabled={true} />
     </SessionCard>
   );

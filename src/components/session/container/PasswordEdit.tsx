@@ -10,6 +10,7 @@ import SessionCard from '@session/presentational/SessionCard';
 import { PasswordInput } from '@session/presentational/PasswordInput';
 import { PASSWORD_EDIT } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
+import SessionForm from '@session/presentational/SessionForm';
 
 const PasswordEdit: React.FC = () => {
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ const PasswordEdit: React.FC = () => {
 
   return (
     <SessionCard>
-      <form onSubmit={handlePasswordConfirmation}>
+      <SessionForm onSubmit={handlePasswordConfirmation}>
         <PasswordInput
           value={password}
           onChange={handlePasswordChange}
@@ -67,8 +68,9 @@ const PasswordEdit: React.FC = () => {
           intent={Intent.PRIMARY}
           icon={IconNames.KEY}
           text={PASSWORD_EDIT.BUTTON.SUBMIT}
+          fill={true}
         />
-      </form>
+      </SessionForm>
     </SessionCard>
   );
 };

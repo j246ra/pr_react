@@ -9,6 +9,7 @@ import { PASSWORD_FORGET } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import { PASSWORD_FORGET_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import styles from './PasswordForget.module.scss';
+import SessionForm from '@session/presentational/SessionForm';
 
 const PasswordForget: React.FC = () => {
   const { authApi: session } = useAuth();
@@ -45,7 +46,7 @@ const PasswordForget: React.FC = () => {
       >
         {PASSWORD_FORGET.MESSAGE.INFO}
       </Callout>
-      <form onSubmit={handlePasswordForget}>
+      <SessionForm onSubmit={handlePasswordForget}>
         <EmailInput
           testId={TEST_ID.EMAIL_INPUT}
           value={email}
@@ -58,8 +59,9 @@ const PasswordForget: React.FC = () => {
           intent={Intent.PRIMARY}
           icon={IconNames.ENVELOPE}
           text={PASSWORD_FORGET.BUTTON.SUBMIT}
+          fill={true}
         />
-      </form>
+      </SessionForm>
     </SessionCard>
   );
 };
