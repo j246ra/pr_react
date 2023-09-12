@@ -2,6 +2,7 @@ import React, { createContext, ReactNode, useContext } from 'react';
 import { useCookies } from 'react-cookie/cjs';
 import { CookiesProvider } from 'react-cookie';
 import { AxiosResponse } from 'axios';
+import { expires } from '@lib/dateUtil';
 
 type SessionContextType = {
   initializeByUid: (uid: string) => void;
@@ -36,7 +37,7 @@ const SessionProvider = ({ children }: SessionProviderProps) => {
 
   const initializeByUid = (uid: string): void => {
     const token: Headers = { uid };
-    setCookie('token', token);
+    setCookie('token', token, { expires: expires() });
   };
 
   const getHeaders = (): Headers => {
@@ -65,7 +66,7 @@ const SessionProvider = ({ children }: SessionProviderProps) => {
     )
       return;
     else if (typeof headersToSet['access-token'] === 'string') {
-      setCookie('token', headersToSet);
+      setCookie('token', headersToSet, { expires: expires() });
     } else {
       const error = new TypeError();
       error.name = 'SessionProvider';
