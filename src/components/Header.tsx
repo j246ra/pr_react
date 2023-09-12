@@ -50,8 +50,16 @@ const Header = () => {
           <Popover
             content={
               <Menu>
-                <MenuItem icon="plus" text={HEADER.MENU.CREATE_LOG} />
-                <MenuItem icon="search" text={HEADER.MENU.SEARCH} />
+                <MenuItem
+                  disabled={true}
+                  icon="plus"
+                  text={HEADER.MENU.CREATE_LOG}
+                />
+                <MenuItem
+                  disabled={true}
+                  icon="search"
+                  text={HEADER.MENU.SEARCH}
+                />
                 <MenuDivider />
                 <MenuItem
                   data-testid={TEST_ID.SETTINGS}
