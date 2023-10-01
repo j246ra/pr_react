@@ -2,7 +2,7 @@ import React, { createContext, ReactNode, useContext, useState } from 'react';
 import { Lifelog } from '@providers/LifelogProvider';
 import lifelogUtil from '@lib/lifelogUtil';
 
-type LifelogDetailDialogContextType = {
+export type LifelogDetailDialogContextType = {
   openDetailDialog: (log: Lifelog) => void;
   closeDetailDialog: () => void;
   isOpen: boolean;
