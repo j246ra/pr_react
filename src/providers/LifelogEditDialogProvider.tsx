@@ -5,7 +5,7 @@ import {
 } from '@providers/LifelogProvider';
 import React, { createContext, ReactNode, useContext, useState } from 'react';
 
-type LifelogEditDialogContextType = {
+export type LifelogEditDialogContextType = {
   openEditDialog: (log: Lifelog) => void;
   lifelog: Lifelog;
   editLifelog: (log: Partial<Lifelog>) => void;

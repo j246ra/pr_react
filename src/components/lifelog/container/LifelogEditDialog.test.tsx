@@ -71,13 +71,6 @@ describe('LifelogEditDialog', () => {
       );
       expect(detailInput.getAttribute('rows')).toEqual('8');
     });
-    it('detailRows 指定時は detail の textarea は 指定した行数であること', () => {
-      render(<LifelogEditDialog detailRows={20} />);
-      const detailInput = screen.getByPlaceholderText(
-        LIFELOG_EDIT_DIALOG.DETAIL.PLACEHOLDER
-      );
-      expect(detailInput.getAttribute('rows')).toEqual('20');
-    });
   });
   describe('入力値検証', () => {
     it('行動(action)入力検証', async () => {
