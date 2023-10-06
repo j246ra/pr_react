@@ -151,7 +151,6 @@ export const DATETIME_INPUT = {
   ],
   WEEKDAYS_SHORT: ['日', '月', '火', '水', '木', '金', '土'],
   LOCALE: 'ja',
-  TIMEZONE: 'Asia/Tokyo',
 };
 
 export const LIFELOG_LIST_HEADER = {

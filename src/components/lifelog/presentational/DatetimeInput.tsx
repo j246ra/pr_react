@@ -29,7 +29,6 @@ const DatetimeInput = ({
         )}
         parseDate={useCallback((date: string) => days(date).toDate(), [])}
         locale={DATETIME_INPUT.LOCALE}
-        defaultTimezone={DATETIME_INPUT.TIMEZONE}
         dayPickerProps={{
           months: DATETIME_INPUT.MONTHS,
           weekdaysShort: DATETIME_INPUT.WEEKDAYS_SHORT,
