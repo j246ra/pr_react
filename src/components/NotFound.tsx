@@ -1,5 +1,6 @@
 import React from 'react';
 import { H3 } from '@blueprintjs/core';
+import { NOTFOUND } from '@lib/consts/component';
 
 const NotFound = () => {
   return (
@@ -12,7 +13,7 @@ const NotFound = () => {
         textAlign: 'center',
       }}
     >
-      お探しのページは見つかりません。
+      {NOTFOUND.CONTEXT}
     </H3>
   );
 };
