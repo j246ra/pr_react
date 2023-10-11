@@ -9,6 +9,7 @@ import PasswordForget from '@session/container/PasswordForget';
 import PasswordEdit from '@session/container/PasswordEdit';
 import ResetMailSendSuccess from '@session/container/ResetMailSendSuccess';
 import Lifelogs from '@lifelog/Lifelogs';
+import NotFound from '@src/components/NotFound';
 
 const RootRouterProvider = () => {
   return (
@@ -23,6 +24,7 @@ const RootRouterProvider = () => {
         <Route path="/password_edit" element={<PasswordEdit />} />
         <Route path="/lifelogs" element={<Lifelogs />} />
         <Route path="/hello" element={<Hello />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   );
