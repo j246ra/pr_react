@@ -198,6 +198,10 @@ export const LIFELOG_EDIT_DIALOG = {
   BUTTON: '保存',
 };
 
+export const NOTFOUND = {
+  CONTEXT: 'お探しのページは見つかりません。',
+};
+
 export const COMPONENT = {
   ACCOUNT_DELETE,
   ACCOUNT_UPDATE,
@@ -216,6 +220,7 @@ export const COMPONENT = {
   SEARCH_INPUT,
   LIFELOG_DETAIL_DIALOG,
   LIFELOG_EDIT_DIALOG,
+  NOTFOUND,
 };
 
 export default COMPONENT;
