@@ -36,7 +36,7 @@ describe('SearchInput', () => {
       render(<SearchInput isShow={true} />);
       const input = screen.getByTestId(TEST_ID.BASE);
       expect(input).toBeInTheDocument();
-      expect(input.style.width).toEqual('260px');
+      expect(input.style.width).toEqual('200px');
     });
 
     it('isShow が false の場合、非表示であること', () => {

@@ -10,3 +10,9 @@
   width: 150px;
   text-align: center!important;
 }
+
+@media (max-width: 767px) {
+  .thAction {
+    width: auto;
+  }
+}
