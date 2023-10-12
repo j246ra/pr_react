@@ -11,7 +11,7 @@ export type SearchInputProps = {
   width?: number;
 };
 
-const SearchInput = ({ isShow, width = 260 }: SearchInputProps) => {
+const SearchInput = ({ isShow, width = 200 }: SearchInputProps) => {
   if (!isShow) return null;
 
   const { searchLogs } = useLifelog();
