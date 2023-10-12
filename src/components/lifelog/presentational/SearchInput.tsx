@@ -5,13 +5,14 @@ import notify from '@lib/toast';
 import { SEARCH_INPUT } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import { SEARCH_INPUT_TEST_ID as TEST_ID } from '@lib/consts/testId';
+import styles from './SearchInput.module.scss';
 
 export type SearchInputProps = {
   isShow: boolean;
   width?: number;
 };
 
-const SearchInput = ({ isShow, width = 200 }: SearchInputProps) => {
+const SearchInput = ({ isShow, width = 260 }: SearchInputProps) => {
   if (!isShow) return null;
 
   const { searchLogs } = useLifelog();
@@ -30,6 +31,10 @@ const SearchInput = ({ isShow, width = 200 }: SearchInputProps) => {
     }
   };
 
+  const containerStyle = {
+    '--container-width': `${width}px`,
+  } as React.CSSProperties;
+
   const searchButton = (
     <Button
       data-testid={TEST_ID.BUTTON}
@@ -40,7 +45,11 @@ const SearchInput = ({ isShow, width = 200 }: SearchInputProps) => {
   );
 
   return (
-    <div style={{ width }} data-testid={TEST_ID.BASE}>
+    <div
+      className={styles.container}
+      style={containerStyle}
+      data-testid={TEST_ID.BASE}
+    >
       <InputGroup
         type={'search'}
         placeholder={SEARCH_INPUT.PLACEHOLDER}

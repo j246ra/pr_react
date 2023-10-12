@@ -29,14 +29,14 @@ describe('SearchInput', () => {
       render(<SearchInput isShow={true} width={300} />);
       const input = screen.getByTestId(TEST_ID.BASE);
       expect(input).toBeInTheDocument();
-      expect(input.style.width).toEqual('300px');
+      expect(input).toHaveStyle({ '--container-width': '300px' });
     });
 
     it('isShow が true で width 未指定の場合、260px であること', () => {
       render(<SearchInput isShow={true} />);
       const input = screen.getByTestId(TEST_ID.BASE);
       expect(input).toBeInTheDocument();
-      expect(input.style.width).toEqual('200px');
+      expect(input).toHaveStyle({ '--container-width': '260px' });
     });
 
     it('isShow が false の場合、非表示であること', () => {
