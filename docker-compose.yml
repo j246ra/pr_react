@@ -11,25 +11,20 @@ services:
     build:
       context: .
       dockerfile: ./containers/react/Dockerfile
+      target: development
     ports:
       - "${HOST_PORT:-3000}:3000"
     volumes:
       - ./:/app
-      - node_modules:/app/node_modules
-    working_dir: /app
-    command: sh -c "yarn install&&yarn start"
     environment:
-      TZ: Asia/Tokyo
       WDS_SOCKET_PORT: ${HOST_PORT:-3000}
       REACT_APP_HOST_URL: ${HOST_URL:-http://localhost:3000}
   storybook:
-    image: node:20.5-bookworm
+    build:
+      context: .
+      dockerfile: ./containers/react/Dockerfile
+      target: storybook
     ports:
       - "${STORYBOOK_PORT:-6006}:6006"
     volumes:
       - ./:/app
-      - node_modules:/app/node_modules
-    working_dir: /app
-    command: sh -c "yarn install && yarn storybook"
-volumes:
-  node_modules:
