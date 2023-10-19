@@ -12,7 +12,6 @@ RUN mkdir $APP_ROOT
 WORKDIR $APP_ROOT
 
 COPY package.json yarn.lock ./
-RUN yarn install
 
 FROM base as development
 

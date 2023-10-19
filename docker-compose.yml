@@ -7,6 +7,7 @@ services:
     volumes:
       - ./build:/usr/share/nginx/html:ro
       - ./containers/web/default.conf:/etc/nginx/conf.d/default.conf:ro
+
   react:
     build:
       context: .
@@ -14,11 +15,13 @@ services:
       target: development
     ports:
       - "${HOST_PORT:-3000}:3000"
-    volumes:
-      - ./:/app
     environment:
       WDS_SOCKET_PORT: ${HOST_PORT:-3000}
       REACT_APP_HOST_URL: ${HOST_URL:-http://localhost:3000}
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+
   storybook:
     build:
       context: .
@@ -27,4 +30,8 @@ services:
     ports:
       - "${STORYBOOK_PORT:-6006}:6006"
     volumes:
-      - ./:/app
+      - .:/app
+      - node_modules:/app/node_modules
+
+volumes:
+  node_modules:
