@@ -14,7 +14,7 @@ ENV REACT_APP_HOST_URL=${HOST_URL} \
     REACT_APP_API_SCHEME=${API_SCHEME}
 
 COPY . $APP_ROOT
-RUN yarn build
+RUN yarn build --prod
 
 FROM nginx:1.25.2-alpine-slim as nginx
 
