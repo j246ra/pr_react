@@ -24,6 +24,7 @@
     "babel-jest": "^27.4.2",
     "babel-loader": "^8.2.3",
     "babel-plugin-named-asset-import": "^0.3.8",
+    "babel-plugin-react-remove-properties": "^0.3.0",
     "babel-preset-react-app": "^10.0.1",
     "bfj": "^7.0.2",
     "browserslist": "^4.18.1",
@@ -160,6 +161,13 @@
     "resetMocks": true
   },
   "babel": {
+    "env": {
+      "production": {
+        "plugins": [
+          ["react-remove-properties", {"properties": ["data-testid"]}]
+        ]
+      }
+    },
     "presets": [
       "react-app"
     ]
