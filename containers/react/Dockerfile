@@ -14,8 +14,6 @@ WORKDIR $APP_ROOT
 COPY package.json yarn.lock ./
 RUN yarn install
 
-COPY . ./
-
 FROM base as development
 
 EXPOSE 3000
@@ -23,8 +21,6 @@ EXPOSE 3000
 CMD ["sh", "-c", "yarn install && yarn start"]
 
 FROM base as storybook
-
-COPY . $APP_ROOT
 
 EXPOSE 6006
 
