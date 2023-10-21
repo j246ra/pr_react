@@ -18,9 +18,11 @@ services:
     environment:
       WDS_SOCKET_PORT: ${HOST_PORT:-3000}
       REACT_APP_HOST_URL: ${HOST_URL:-http://localhost:3000}
-    volumes:
-      - .:/app
-      - node_modules:/app/node_modules
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app/
 
   storybook:
     build:
@@ -29,9 +31,8 @@ services:
       target: storybook
     ports:
       - "${STORYBOOK_PORT:-6006}:6006"
-    volumes:
-      - .:/app
-      - node_modules:/app/node_modules
-
-volumes:
-  node_modules:
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app/
