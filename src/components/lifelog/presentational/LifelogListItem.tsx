@@ -38,6 +38,7 @@ const LifelogListItem = ({
           data-testid={TEST_ID.FINISH_BUTTON + log.id}
           intent={Intent.PRIMARY}
           icon={IconNames.STOPWATCH}
+          outlined={true}
           onClick={onFinishButtonClick}
         />
         <Button
@@ -45,6 +46,7 @@ const LifelogListItem = ({
           data-testid={TEST_ID.EDIT_BUTTON + log.id}
           intent={Intent.SUCCESS}
           icon={IconNames.EDIT}
+          outlined={true}
           onClick={onEditButtonClick}
         />
         <Button
@@ -52,6 +54,7 @@ const LifelogListItem = ({
           data-testid={TEST_ID.DELETE_BUTTON + log.id}
           intent={Intent.DANGER}
           icon={IconNames.DELETE}
+          outlined={true}
           onClick={onDeleteButtonClick}
         />
       </td>
