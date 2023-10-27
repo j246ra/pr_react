@@ -15,7 +15,7 @@ if (!container) {
 const root = createRoot(container);
 
 root.render(
-  <BrowserRouter>
+  <BrowserRouter basename={'/app'}>
     <SessionProvider>
       <UserProvider>
         <AuthApiProvider>
