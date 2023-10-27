@@ -9,12 +9,26 @@ const config: StorybookConfig = {
     '@storybook/addon-interactions',
     '@storybook/addon-essentials',
     {
-      name: '@storybook/addon-styling',
+      name: '@storybook/addon-styling-webpack',
       options: {
-        sass: {
-          // Require your Sass preprocessor here
-          implementation: require('sass'),
-        },
+        rules: [
+          {
+            test: /\.s?css$/,
+            use: [
+              'style-loader',
+              'css-loader',
+              {
+                loader: 'sass-loader',
+                options: {
+                  implementation: require.resolve('sass'),
+                  sassOptions: {
+                    includePaths: ['node_modules'],
+                  },
+                },
+              },
+            ],
+          },
+        ],
       },
     },
     'storybook-addon-cookie',

@@ -41,7 +41,7 @@ const Header = () => {
       <div className={styles.base}>
         <Navbar.Group align={Alignment.LEFT}>
           <Navbar.Heading>
-            <a href="/">Lifelog</a>
+            <a href="/app">Lifelog</a>
           </Navbar.Heading>
         </Navbar.Group>
         <Navbar.Group align={Alignment.RIGHT}>
@@ -71,7 +71,7 @@ const Header = () => {
                     data-testid={TEST_ID.EDIT_ACCOUNT}
                     icon={IconNames.EDIT}
                     text={HEADER.MENU.EDIT_ACCOUNT}
-                    href={'/update_account'}
+                    href={'/app/update_account'}
                     disabled={!isLogin()}
                   />
                   <MenuItem
