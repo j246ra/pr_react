@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "jsx": "react-jsx",
+    "target": "es5",
+    "sourceMap": true,
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@src/*": [
+        "./src/*"
+      ],
+      "@lib/*": [
+        "./src/lib/*"
+      ],
+      "@validators/*": [
+        "./src/validators/*"
+      ],
+      "@providers/*": [
+        "./src/providers/*"
+      ],
+      "@session/*": [
+        "./src/components/session/*"
+      ],
+      "@lifelog/*": [
+        "./src/components/lifelog/*"
+      ]}
+    },
+  "include": [
+    "./src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

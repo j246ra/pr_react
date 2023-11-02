@@ -1,0 +1,14 @@
+@import "@blueprintjs/core/lib/scss/variables";
+
+$AppMaxWidth: 1280px;
+
+@mixin appLinkText {
+  cursor: pointer;
+  color: $pt-link-color;
+  font-weight: bold;
+  text-decoration-line: none;
+
+  &:hover {
+    text-decoration-line: underline;
+  }
+}
