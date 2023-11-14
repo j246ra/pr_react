@@ -1,11 +1,16 @@
 import { snakeToPascal } from '@lib/stringUtil';
 
-export const applyPrefixedValues = <T extends Record<string, string>>(
-  prefix: string,
-  object: T
-): void => {
-  (Object.keys(object) as Array<keyof T>).forEach((key) => {
-    object[key] = `${prefix}${snakeToPascal(String(key))}` as T[keyof T];
+export const applyPrefixedValues = <
+  T extends Record<string, string>
+>(testIdObject: {
+  [key: string]: T;
+}): void => {
+  // testIdObject からキーと値（オブジェクト）を取得
+  const [name, testId] = Object.entries(testIdObject)[0];
+  const prefix = snakeToPascal(name.replace(/_TEST_ID$/, ''));
+
+  (Object.keys(testId) as Array<keyof T>).forEach((key) => {
+    testId[key] = `${prefix}${snakeToPascal(String(key))}` as T[keyof T];
   });
 };
 
@@ -18,13 +23,13 @@ export const LIFELOG_DETAIL_DIALOG_TEST_ID = {
   TD_CREATED_AT: '',
   TD_UPDATED_AT: '',
 };
-applyPrefixedValues('LifelogDetailDialog', LIFELOG_DETAIL_DIALOG_TEST_ID);
+applyPrefixedValues({ LIFELOG_DETAIL_DIALOG_TEST_ID });
 
 export const LIFELOG_EDIT_DIALOG_TEST_ID = {
   BASE: '',
   BUTTON: '',
 };
-applyPrefixedValues('LifelogEditDialog', LIFELOG_EDIT_DIALOG_TEST_ID);
+applyPrefixedValues({ LIFELOG_EDIT_DIALOG_TEST_ID });
 
 export const HEADER_TEST_ID = {
   SETTINGS: '',
@@ -32,7 +37,7 @@ export const HEADER_TEST_ID = {
   LOGOUT: '',
   BUTTON: '',
 };
-applyPrefixedValues('Headers', HEADER_TEST_ID);
+applyPrefixedValues({ HEADER_TEST_ID });
 
 export const ACCOUNT_UPDATE_TEST_ID = {
   EMAIL_INPUT: '',
@@ -40,14 +45,14 @@ export const ACCOUNT_UPDATE_TEST_ID = {
   PASSWORD_CONFIRM_INPUT: '',
   BUTTON: '',
 };
-applyPrefixedValues('AccountUpdate', ACCOUNT_UPDATE_TEST_ID);
+applyPrefixedValues({ ACCOUNT_UPDATE_TEST_ID });
 
 export const LOGIN_TEST_ID = {
   EMAIL_INPUT: '',
   PASSWORD_INPUT: '',
   BUTTON: '',
 };
-applyPrefixedValues('Login', LOGIN_TEST_ID);
+applyPrefixedValues({ LOGIN_TEST_ID });
 
 export const SIGN_UP_TEST_ID = {
   FORM: '',
@@ -55,24 +60,24 @@ export const SIGN_UP_TEST_ID = {
   PASSWORD_INPUT: '',
   BUTTON: '',
 };
-applyPrefixedValues('SignUp', SIGN_UP_TEST_ID);
+applyPrefixedValues({ SIGN_UP_TEST_ID });
 
 export const PASSWORD_FORGET_TEST_ID = {
   EMAIL_INPUT: '',
   BUTTON: '',
 };
-applyPrefixedValues('PasswordForget', PASSWORD_FORGET_TEST_ID);
+applyPrefixedValues({ PASSWORD_FORGET_TEST_ID });
 
 export const SESSION_OTHER_LINKS_TEST_ID = {
   PASSWORD_FORGET: '',
   SIGN_UP: '',
 };
-applyPrefixedValues('SessionOtherLinks', SESSION_OTHER_LINKS_TEST_ID);
+applyPrefixedValues({ SESSION_OTHER_LINKS_TEST_ID });
 
 export const LIFELOG_LIST_TEST_ID = {
   SPINNER: '',
 };
-applyPrefixedValues('LifelogList', LIFELOG_LIST_TEST_ID);
+applyPrefixedValues({ LIFELOG_LIST_TEST_ID });
 
 export const LIFELOG_LIST_ITEM_TEST_ID = {
   LINK_TEXT: '',
@@ -80,13 +85,13 @@ export const LIFELOG_LIST_ITEM_TEST_ID = {
   EDIT_BUTTON: '',
   DELETE_BUTTON: '',
 };
-applyPrefixedValues('LifelogListItem', LIFELOG_LIST_ITEM_TEST_ID);
+applyPrefixedValues({ LIFELOG_LIST_ITEM_TEST_ID });
 
 export const SEARCH_INPUT_TEST_ID = {
   BASE: '',
   BUTTON: '',
 };
-applyPrefixedValues('SearchInput', SEARCH_INPUT_TEST_ID);
+applyPrefixedValues({ SEARCH_INPUT_TEST_ID });
 
 export const TEST_IDS = {
   LIFELOG_DETAIL_DIALOG: LIFELOG_DETAIL_DIALOG_TEST_ID,
