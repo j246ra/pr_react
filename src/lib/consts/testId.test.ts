@@ -2,7 +2,7 @@ import { applyPrefixedValues } from '@lib/consts/testId';
 
 describe('applyPrefixedValues', () => {
   describe('オブジェクト名の末尾が', () => {
-    it('TEST_IDの場合、それ以外でprefixがが自動生成されている', () => {
+    it('TEST_IDの場合、それ以外でprefixが生成される', () => {
       const MY_APP_TEST_ID = {
         ID: '',
         FIRST_NAME: '',
@@ -18,7 +18,7 @@ describe('applyPrefixedValues', () => {
       });
     });
 
-    it('TEST_IDではない場合、オブジェクト名でprefixが自動生成されている', () => {
+    it('TEST_IDではない場合、オブジェクト名でprefixが生成される', () => {
       const MY_GREAT_APP = {
         ID: '',
         FIRST_NAME: '',
@@ -35,7 +35,7 @@ describe('applyPrefixedValues', () => {
     });
   });
 
-  it('空オブジェクトの場合でも正常に処理されていること', () => {
+  it('空オブジェクトの場合でも正常に処理される', () => {
     const MY_TEST_ID = {};
     applyPrefixedValues({ MY_TEST_ID });
     expect(MY_TEST_ID).toEqual({});
