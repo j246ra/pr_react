@@ -5,6 +5,7 @@ import { LIFELOG_DETAIL_DIALOG_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import LifelogDetailDialog from '@lifelog/container/LifelogDetailDialog';
 import { LIFELOG_DETAIL_DIALOG } from '@lib/consts/component';
 import lifelogUtil from '@lib/lifelogUtil';
+import { daysDisplayFull } from '@lib/dateUtil';
 
 jest.mock('@providers/LifelogDetailDialogProvider');
 const mockUseLifelogDetailDialog =
@@ -63,19 +64,19 @@ describe('LifelogDetailDialog', () => {
       );
       expect(screen.getByText(LABEL.STARTED_AT)).not.toBeUndefined();
       expect(screen.getByTestId(TEST_ID.TD_STARTED_AT)).toHaveTextContent(
-        log.startedAt
+        daysDisplayFull(log.startedAt)
       );
       expect(screen.getByText(LABEL.FINISHED_AT)).not.toBeUndefined();
       expect(screen.getByTestId(TEST_ID.TD_FINISHED_AT)).toHaveTextContent(
-        log.finishedAt || ''
+        daysDisplayFull(log.finishedAt) || ''
       );
       expect(screen.getByText(LABEL.CREATED_AT)).not.toBeUndefined();
       expect(screen.getByTestId(TEST_ID.TD_CREATED_AT)).toHaveTextContent(
-        log.createdAt
+        daysDisplayFull(log.createdAt)
       );
       expect(screen.getByText(LABEL.UPDATED_AT)).not.toBeUndefined();
       expect(screen.getByTestId(TEST_ID.TD_UPDATED_AT)).toHaveTextContent(
-        log.updatedAt
+        daysDisplayFull(log.updatedAt)
       );
     });
     it('未設定の場合でも初期値で表示されること', () => {

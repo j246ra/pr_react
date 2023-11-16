@@ -8,3 +8,9 @@ export const DISPLAY_DATETIME_FULL = CONST.FORMAT.DISPLAY_DATETIME_FULL;
 export const days = dayjs;
 
 export const expires = () => dayjs().add(1, 'weeks').toDate();
+
+export const daysDisplay = (datetime?: string | null) =>
+  datetime ? dayjs(datetime).format(DISPLAY_DATETIME) : '';
+
+export const daysDisplayFull = (datetime?: string | null) =>
+  datetime ? dayjs(datetime).format(DISPLAY_DATETIME_FULL) : '';
