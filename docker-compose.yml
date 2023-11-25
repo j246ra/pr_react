@@ -1,12 +1,13 @@
 version: '3.8'
 
 x-app: &app
-  build:
-    context: .
-    dockerfile: ./containers/react/Dockerfile
   volumes:
     - .:/app
     - node_modules:/app/node_modules
+
+x-app-build: &app-build
+  context: .
+  dockerfile: ./containers/react/Dockerfile
 
 services:
   web:
@@ -20,6 +21,7 @@ services:
   react:
     <<: *app
     build:
+      <<: *app-build
       target: development
     ports:
       - "${HOST_PORT:-3000}:3000"
@@ -30,6 +32,7 @@ services:
   storybook:
     <<: *app
     build:
+      <<: *app-build
       target: storybook
     ports:
       - "${STORYBOOK_PORT:-6006}:6006"
