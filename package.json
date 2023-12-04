@@ -165,7 +165,14 @@
     "env": {
       "production": {
         "plugins": [
-          ["react-remove-properties", {"properties": ["data-testid"]}]
+          [
+            "react-remove-properties",
+            {
+              "properties": [
+                "data-testid"
+              ]
+            }
+          ]
         ]
       }
     },
@@ -177,12 +184,12 @@
     "@babel/preset-env": "^7.21.5",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.21.5",
-    "@storybook/addon-essentials": "^7.5.2",
-    "@storybook/addon-interactions": "^7.5.2",
-    "@storybook/addon-links": "^7.5.2",
-    "@storybook/blocks": "^7.5.2",
-    "@storybook/react": "^7.5.2",
-    "@storybook/react-webpack5": "^7.5.2",
+    "@storybook/addon-essentials": "^7.6.3",
+    "@storybook/addon-interactions": "^7.6.3",
+    "@storybook/addon-links": "^7.6.3",
+    "@storybook/blocks": "^7.6.3",
+    "@storybook/react": "^7.6.3",
+    "@storybook/react-webpack5": "^7.6.3",
     "@storybook/testing-library": "^0.2.2",
     "@testing-library/react-hooks": "^8.0.1",
     "@typescript-eslint/eslint-plugin": "^5.59.2",
@@ -192,7 +199,7 @@
     "msw": "^1.2.2",
     "msw-storybook-addon": "^1.10.0",
     "prettier": "^2.8.8",
-    "storybook": "^7.5.2",
+    "storybook": "^7.6.3",
     "storybook-addon-cookie": "^3.1.0"
   },
   "msw": {
