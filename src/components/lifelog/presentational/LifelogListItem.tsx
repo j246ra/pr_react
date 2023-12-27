@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Button, Intent } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import { Lifelog } from '@providers/LifelogProvider';
@@ -20,10 +20,15 @@ const LifelogListItem = ({
   onDeleteButtonClick,
   onActionClick,
 }: LifelogListItemProps) => {
+  const startedAt = useMemo(
+    () => days(log.startedAt).format(DISPLAY_DATETIME),
+    [log.startedAt]
+  );
+
   return (
     <tr>
       <td className={`${log.finishedAt ? styles.tdStartedAtBold : ''}`}>
-        {days(log.startedAt).format(DISPLAY_DATETIME)}
+        {startedAt}
       </td>
       <td
         data-testid={TEST_ID.LINK_TEXT + log.id}
@@ -62,4 +67,6 @@ const LifelogListItem = ({
   );
 };
 
-export default LifelogListItem;
+export default React.memo(LifelogListItem, (prevProps, nextProps) => {
+  return prevProps.log === nextProps.log;
+});

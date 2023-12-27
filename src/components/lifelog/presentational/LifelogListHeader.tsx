@@ -21,4 +21,4 @@ export const LifelogListHeader = ({
   );
 };
 
-export default LifelogListHeader;
+export default React.memo(LifelogListHeader);
