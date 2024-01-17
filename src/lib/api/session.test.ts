@@ -91,7 +91,7 @@ describe('session APIの呼び出し検証', () => {
 
     expect(mockedClient.post).toHaveBeenCalledWith(ENDPOINT.PASSWORD_RESET, {
       email,
-      redirect_url: `${COMMON.HOST_URL}/app/password_edit`,
+      redirect_url: `${COMMON.APP_URL.HOST_URL}${COMMON.APP_URL.BASE_DIR}/password_edit`,
     });
   });
 

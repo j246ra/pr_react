@@ -1,7 +1,10 @@
 import env from '@lib/appEnv';
 
 export const COMMON = {
-  HOST_URL: env('host_url', 'http://localhost:3001'),
+  APP_URL: {
+    HOST_URL: env('host_url', 'http://localhost:3001'),
+    BASE_DIR: '/app',
+  },
   MESSAGE: {
     ERROR: {
       GENERAL: '想定外のエラーが発生しました',
