@@ -3,6 +3,7 @@ import { useCookies } from 'react-cookie/cjs';
 import { CookiesProvider } from 'react-cookie';
 import { AxiosResponse } from 'axios';
 import { expires } from '@lib/dateUtil';
+import { COMMON } from '@lib/consts/common';
 
 type SessionContextType = {
   initializeByUid: (uid: string) => void;
@@ -25,6 +26,10 @@ export type SessionProviderProps = {
   children: ReactNode;
 };
 
+const defaultOptions = {
+  path: COMMON.APP_URL.BASE_DIR,
+};
+
 const SessionProvider = ({ children }: SessionProviderProps) => {
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
 
@@ -37,7 +42,7 @@ const SessionProvider = ({ children }: SessionProviderProps) => {
 
   const initializeByUid = (uid: string): void => {
     const token: Headers = { uid };
-    setCookie('token', token, { expires: expires() });
+    setCookie('token', token, { ...defaultOptions, expires: expires() });
   };
 
   const getHeaders = (): Headers => {
@@ -66,7 +71,10 @@ const SessionProvider = ({ children }: SessionProviderProps) => {
     )
       return;
     else if (typeof headersToSet['access-token'] === 'string') {
-      setCookie('token', headersToSet, { expires: expires() });
+      setCookie('token', headersToSet, {
+        ...defaultOptions,
+        expires: expires(),
+      });
     } else {
       const error = new TypeError();
       error.name = 'SessionProvider';
@@ -78,7 +86,7 @@ const SessionProvider = ({ children }: SessionProviderProps) => {
   const removeHeaders = (): void => removeCookie('token');
 
   return (
-    <CookiesProvider>
+    <CookiesProvider defaultSetOptions={defaultOptions}>
       <SessionContext.Provider
         value={{
           initializeByUid,
