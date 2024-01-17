@@ -7,6 +7,7 @@ import AuthApiProvider from './providers/AuthApiProvider';
 import RootRouterProvider from './providers/RootRouterProvider';
 import SessionProvider from './providers/SessionProvider';
 import LifelogProvider from '@providers/LifelogProvider';
+import { COMMON } from '@lib/consts/common';
 
 const container = document.getElementById('root');
 if (!container) {
@@ -15,7 +16,7 @@ if (!container) {
 const root = createRoot(container);
 
 root.render(
-  <BrowserRouter basename={'/app'}>
+  <BrowserRouter basename={COMMON.APP_URL.BASE_DIR}>
     <SessionProvider>
       <UserProvider>
         <AuthApiProvider>
