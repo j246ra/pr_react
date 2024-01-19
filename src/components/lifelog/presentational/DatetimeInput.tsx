@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 import { FormGroup } from '@blueprintjs/core';
-import { DateInput, TimePrecision } from '@blueprintjs/datetime';
 import { days, DISPLAY_DATETIME_FULL } from '@lib/dateUtil';
 import { DATETIME_INPUT } from '@lib/consts/component';
+import { DateInput3, TimePrecision } from '@blueprintjs/datetime2';
 
 export type DatetimeInputProps = {
   label: string;
@@ -19,7 +19,7 @@ const DatetimeInput = ({
 }: DatetimeInputProps) => {
   return (
     <FormGroup label={label}>
-      <DateInput
+      <DateInput3
         defaultValue={value}
         value={value}
         placeholder={placeholder}
@@ -29,11 +29,6 @@ const DatetimeInput = ({
         )}
         parseDate={useCallback((date: string) => days(date).toDate(), [])}
         locale={DATETIME_INPUT.LOCALE}
-        dayPickerProps={{
-          months: DATETIME_INPUT.MONTHS,
-          weekdaysShort: DATETIME_INPUT.WEEKDAYS_SHORT,
-          weekdaysLong: DATETIME_INPUT.WEEKDAYS_LONG,
-        }}
         timePrecision={TimePrecision.MINUTE}
         showTimezoneSelect={false}
         onChange={(newDate) => onChange(newDate)}

@@ -1,22 +1,22 @@
 import React, { ChangeEvent, FormEvent } from 'react';
 import { Button, ControlGroup, InputGroup, Intent } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
-import styles from './ContextInput.module.scss';
+import styles from './ContextInputForm.module.scss';
 import { CONTEXT_INPUT } from '@lib/consts/component';
 
-export type ContextInputProps = {
+export type ContextInputFormProps = {
   onSubmit: (e: FormEvent) => void;
   value?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
 };
 
-export const ContextInput = ({
+export const ContextInputForm = ({
   onSubmit,
   value,
   onChange,
   placeholder = CONTEXT_INPUT.PLACEHOLDER,
-}: ContextInputProps) => {
+}: ContextInputFormProps) => {
   return (
     <div className={styles.base}>
       <form onSubmit={onSubmit}>
@@ -40,4 +40,4 @@ export const ContextInput = ({
   );
 };
 
-export default ContextInput;
+export default ContextInputForm;
