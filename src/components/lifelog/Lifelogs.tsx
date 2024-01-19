@@ -15,16 +15,20 @@ const Lifelogs: React.FC = () => {
   useEffect(() => {
     if (!isLogin()) {
       notify.error(LIFELOGS.MESSAGE.ERROR);
-      return navigate('/login');
+      navigate('/login');
     }
-  }, [isLogin]);
+  }, [isLogin, navigate]);
 
   return (
     <>
-      <LifelogDetailDialog />
-      <LifelogEditDialog />
-      <ContextInput />
-      <LifelogList />
+      {isLogin() ? (
+        <>
+          <LifelogDetailDialog />
+          <LifelogEditDialog />
+          <ContextInput />
+          <LifelogList />
+        </>
+      ) : null}
     </>
   );
 };
