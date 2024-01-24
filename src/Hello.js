@@ -10,7 +10,7 @@ import notify from './lib/toast';
 import { useSession } from '@providers/SessionProvider';
 
 const Hello = () => {
-  const { user, clearUser, isLogin } = useUser();
+  const { user, clearUser, isLoggedIn } = useUser();
   const { getHeaders, removeHeaders } = useSession();
   const { authApi } = useAuth();
   const [valid, setValid] = useState(false);
@@ -18,7 +18,7 @@ const Hello = () => {
   const cookie = getHeaders();
 
   useEffect(() => {
-    if (!isLogin()) {
+    if (!isLoggedIn()) {
       notify.error('ログインしてください。');
       return navigate('/login');
     }

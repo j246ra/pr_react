@@ -32,7 +32,7 @@ describe('Lifelogs component.', () => {
   describe('ログイン状態の時', () => {
     beforeEach(() => {
       mockUseUser.mockReturnValue({
-        isLogin: jest.fn().mockReturnValue(true),
+        isLoggedIn: jest.fn().mockReturnValue(true),
       });
     });
     it('子コンポーネントが表示される', () => {
@@ -52,7 +52,7 @@ describe('Lifelogs component.', () => {
   describe('未ログイン状態の時', () => {
     beforeEach(() => {
       mockUseUser.mockReturnValue({
-        isLogin: jest.fn().mockReturnValue(false),
+        isLoggedIn: jest.fn().mockReturnValue(false),
       });
     });
     it('子コンポーネントは表示されない', () => {

@@ -19,12 +19,12 @@ const Login: React.FC = () => {
   const { authApi: session } = useAuth();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const { createUser, isLogin } = useUser();
+  const { createUser, isLoggedIn } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isLogin()) return navigate(DEFAULT_PATH);
-  }, [isLogin, navigate]);
+    if (isLoggedIn()) return navigate(DEFAULT_PATH);
+  }, [isLoggedIn, navigate]);
 
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -23,7 +23,7 @@ import { HEADER_TEST_ID as TEST_ID } from '@lib/consts/testId';
 const Header = () => {
   const { removeHeaders } = useSession();
   const navigate = useNavigate();
-  const { isLogin, clearUser } = useUser();
+  const { isLoggedIn, clearUser } = useUser();
   const { authApi } = useAuth();
   const { clear: clearLifelog } = useLifelog();
 
@@ -45,7 +45,7 @@ const Header = () => {
           </Navbar.Heading>
         </Navbar.Group>
         <Navbar.Group align={Alignment.RIGHT}>
-          <SearchInput isShow={isLogin()} />
+          <SearchInput isShow={isLoggedIn()} />
           <Navbar.Divider />
           <Popover
             content={
@@ -72,14 +72,14 @@ const Header = () => {
                     icon={IconNames.EDIT}
                     text={HEADER.MENU.EDIT_ACCOUNT}
                     href={'/app/update_account'}
-                    disabled={!isLogin()}
+                    disabled={!isLoggedIn()}
                   />
                   <MenuItem
                     data-testid={TEST_ID.LOGOUT}
                     icon={IconNames.LOG_OUT}
                     text={HEADER.MENU.LOG_OUT}
                     onClick={handleLogout}
-                    disabled={!isLogin()}
+                    disabled={!isLoggedIn()}
                   />
                 </MenuItem>
               </Menu>

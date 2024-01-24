@@ -35,7 +35,7 @@ describe('Login component', () => {
       createUser: jest.fn(),
       updateUser: jest.fn(),
       clearUser: jest.fn(),
-      isLogin: jest.fn(),
+      isLoggedIn: jest.fn(),
     });
     mockUseSession.mockReturnValue({
       initializeByUid: jest.fn(),
