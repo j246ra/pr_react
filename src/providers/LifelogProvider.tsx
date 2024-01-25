@@ -32,15 +32,8 @@ export type LifelogContextType = {
   clear: () => void;
 };
 
-const LifelogContext = createContext<LifelogContextType | undefined>(undefined);
-
-export const useLifelog = (): LifelogContextType => {
-  const context = useContext(LifelogContext);
-  if (!context) {
-    throw new Error('useUser must be used within a UserProvider');
-  }
-  return context;
-};
+const LifelogContext = createContext({} as LifelogContextType);
+export const useLifelog = () => useContext(LifelogContext);
 
 export type LifelogProviderProps = {
   children: ReactNode;
@@ -83,14 +76,14 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   };
 
   const appendLogs = (lifelogs: Lifelog[]) => {
-    setLogs([...logs, ...lifelogs]);
+    setLogs((logs) => [...logs, ...lifelogs]);
   };
 
   const newLog = newLifelog;
 
   const createLog = async (params: CreatParams) => {
     const r = await api.create(params);
-    setLogs(sortLog([r.data, ...logs]));
+    setLogs((prevLogs) => sortLog([r.data, ...prevLogs]));
     return r;
   };
 
@@ -113,15 +106,13 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
 
   const updateLog = async (params: UpdateParams) => {
     const r = await api.update(params);
-    const i = logs.findIndex((log) => {
-      return log.id === r.data.id;
+    setLogs((prevLogs) => {
+      const updatedLogs = [...prevLogs];
+      const i = updatedLogs.findIndex((log) => log.id === r.data.id);
+      if (i >= 0) updatedLogs[i] = r.data;
+      else updatedLogs.unshift(r.data);
+      return sortLog(updatedLogs);
     });
-    if (i >= 0) {
-      logs[i] = r.data;
-      setLogs(sortLog(logs));
-    } else {
-      setLogs(sortLog([r.data, ...logs]));
-    }
     return r;
   };
 
@@ -133,11 +124,9 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
 
   const deleteLog = async (id: number) => {
     const r = await api.destroy(id);
-    setLogs(
-      logs.filter((log) => {
-        if (log.id !== id) return log;
-      })
-    );
+    setLogs((prevLogs) => {
+      return prevLogs.filter((log) => log.id !== id);
+    });
     return r;
   };
 
