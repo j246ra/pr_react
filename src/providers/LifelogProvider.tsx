@@ -3,7 +3,7 @@ import { useSession } from '@providers/SessionProvider';
 import { useUser } from '@providers/UserProvider';
 import { AxiosError, AxiosResponse } from 'axios';
 import lifelog, { CreatParams, UpdateParams } from '@lib/api/lifelog';
-import lifelogUtil from '@lib/lifelogUtil';
+import { blank as newLifelog, sort as sortLog } from '@lib/lifelogUtil';
 import { days, DATETIME_FULL } from '@lib/dateUtil';
 import LifelogEditDialogProvider from '@providers/LifelogEditDialogProvider';
 import LifelogDetailDialogProvider from '@providers/LifelogDetailDialogProvider';
@@ -45,7 +45,6 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   const [page, setPage] = useState(0);
   const { getHeaders, setHeaders } = useSession();
   const { clearUser } = useUser();
-  const { blank: newLifelog, sort: sortLog } = lifelogUtil();
 
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
     setHeaders(response);

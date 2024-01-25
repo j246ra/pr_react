@@ -80,7 +80,7 @@ describe('LifelogDetailDialog', () => {
       );
     });
     it('未設定の場合でも初期値で表示されること', () => {
-      mockUseLifelogDetailDialog().log = lifelogUtil().blank();
+      mockUseLifelogDetailDialog().log = lifelogUtil.blank();
       render(<LifelogDetailDialog />);
       expect(screen.getByText(LABEL.ACTION)).not.toBeUndefined();
       expect(screen.getByTestId(TEST_ID.TD_ACTION)).toHaveTextContent('');
