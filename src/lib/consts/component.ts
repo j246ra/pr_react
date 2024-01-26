@@ -40,6 +40,7 @@ export const ACCOUNT_UPDATE = {
     ERROR: 'アカウントの更新に失敗しました。',
   } as const,
   PASSWORD_CONFIRM: {
+    ID: 'password-confirm-input',
     LABEL: 'パスワード（確認用）',
     PLACEHOLDER: '新しいパスワードを入力',
   },

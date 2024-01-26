@@ -70,6 +70,7 @@ const AccountUpdate: React.FC = () => {
           required={false}
         />
         <PasswordInput
+          id={ACCOUNT_UPDATE.PASSWORD_CONFIRM.ID}
           testId={TEST_ID.PASSWORD_CONFIRM_INPUT}
           value={passwordConfirmation}
           onChange={handlePasswordConfirmationChange}
