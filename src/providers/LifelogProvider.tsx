@@ -1,4 +1,10 @@
-import React, { createContext, ReactNode, useContext, useState } from 'react';
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useReducer,
+  useState,
+} from 'react';
 import { useSession } from '@providers/SessionProvider';
 import { useUser } from '@providers/UserProvider';
 import { AxiosError, AxiosResponse } from 'axios';
@@ -39,8 +45,23 @@ export type LifelogProviderProps = {
   children: ReactNode;
 };
 
+type SetLogs = {
+  type?: string;
+  value: Lifelog[];
+};
+
 export default function LifelogProvider({ children }: LifelogProviderProps) {
-  const [logs, setLogs] = useState<Lifelog[]>([]);
+  const [logs, setLogs] = useReducer((logs: Lifelog[], action: SetLogs) => {
+    switch (action.type) {
+      case 'append':
+        return [...logs, ...action.value];
+      case 'sort':
+        return sortLog([...logs, ...action.value]);
+      default:
+        return action.value;
+    }
+  }, []);
+
   const [searchWord, setSearchWord] = useState('');
   const [page, setPage] = useState(0);
   const { getHeaders, setHeaders } = useSession();
@@ -60,7 +81,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     const nextPage = page + 1;
     const r = await api.index(nextPage, searchWord);
     if (r.data.length > 0) {
-      appendLogs(r.data);
+      setLogs({ type: 'append', value: r.data });
       setPage(nextPage);
     }
     return r;
@@ -69,20 +90,16 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   const searchLogs = async (word: string) => {
     setSearchWord(word);
     const r = await api.index(1, word);
-    setLogs(r.data);
+    setLogs({ value: r.data });
     setPage(1);
     return r;
-  };
-
-  const appendLogs = (lifelogs: Lifelog[]) => {
-    setLogs((logs) => [...logs, ...lifelogs]);
   };
 
   const newLog = newLifelog;
 
   const createLog = async (params: CreatParams) => {
     const r = await api.create(params);
-    setLogs((prevLogs) => sortLog([r.data, ...prevLogs]));
+    setLogs({ type: 'sort', value: [r.data] });
     return r;
   };
 
@@ -105,13 +122,11 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
 
   const updateLog = async (params: UpdateParams) => {
     const r = await api.update(params);
-    setLogs((prevLogs) => {
-      const updatedLogs = [...prevLogs];
-      const i = updatedLogs.findIndex((log) => log.id === r.data.id);
-      if (i >= 0) updatedLogs[i] = r.data;
-      else updatedLogs.unshift(r.data);
-      return sortLog(updatedLogs);
-    });
+    const updatedLogs = [...logs];
+    const i = updatedLogs.findIndex((log) => log.id === r.data.id);
+    if (i >= 0) updatedLogs[i] = r.data;
+    else updatedLogs.unshift(r.data);
+    setLogs({ value: updatedLogs });
     return r;
   };
 
@@ -123,14 +138,12 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
 
   const deleteLog = async (id: number) => {
     const r = await api.destroy(id);
-    setLogs((prevLogs) => {
-      return prevLogs.filter((log) => log.id !== id);
-    });
+    setLogs({ value: logs.filter((log) => log.id !== id) });
     return r;
   };
 
   const clear = () => {
-    setLogs([]);
+    setLogs({ value: [] });
     setPage(0);
     setSearchWord('');
   };
