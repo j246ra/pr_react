@@ -294,11 +294,13 @@ describe('LifelogProvider', () => {
           );
         });
         await waitFor(() => {
-          const afterLog = result.current.logs.find((log) => {
+          const afterIndex = result.current.logs.findIndex((log) => {
             return log.id === beforeLog.id;
           });
+          const afterLog = result.current.logs[afterIndex];
+
+          expect(afterIndex).toEqual(9);
           expect(afterLog).not.toBeUndefined();
-          if (afterLog === undefined) return;
           expect(afterLog.action).toEqual('ACTION');
           expect(afterLog.detail).toEqual('DETAIL');
           expect(afterLog.startedAt).toEqual(pastOneYear);
