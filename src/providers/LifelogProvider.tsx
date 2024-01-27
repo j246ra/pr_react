@@ -124,9 +124,10 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     const r = await api.update(params);
     const updatedLogs = [...logs];
     const i = updatedLogs.findIndex((log) => log.id === r.data.id);
-    if (i >= 0) updatedLogs[i] = r.data;
-    else updatedLogs.unshift(r.data);
-    setLogs({ value: updatedLogs });
+    if (i >= 0) {
+      updatedLogs[i] = r.data;
+    } else updatedLogs.unshift(r.data);
+    setLogs({ value: sortLog(updatedLogs) });
     return r;
   };
 
