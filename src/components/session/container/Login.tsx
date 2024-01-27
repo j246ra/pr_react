@@ -12,6 +12,7 @@ import { IconNames } from '@blueprintjs/icons';
 import { LOGIN_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import SessionOtherLinks from '@session/presentational/SessionOtherLinks';
 import SessionForm from '@session/presentational/SessionForm';
+import SessionLayout from '@session/SessionLayout';
 
 const DEFAULT_PATH = '/lifelogs';
 
@@ -52,29 +53,31 @@ const Login: React.FC = () => {
   };
 
   return (
-    <SessionCard>
-      <SessionForm onSubmit={handleLogin}>
-        <EmailInput
-          testId={TEST_ID.EMAIL_INPUT}
-          value={email}
-          onChange={handleEmailChange}
-        />
-        <PasswordInput
-          testId={TEST_ID.PASSWORD_INPUT}
-          value={password}
-          onChange={handlePasswordChange}
-        />
-        <Button
-          data-testid={TEST_ID.BUTTON}
-          type="submit"
-          intent={Intent.PRIMARY}
-          icon={IconNames.LOG_IN}
-          text={LOGIN.BUTTON.SUBMIT}
-          fill={true}
-        />
-      </SessionForm>
-      <SessionOtherLinks passwordForgetEnabled={true} signUpEnabled={true} />
-    </SessionCard>
+    <SessionLayout>
+      <SessionCard>
+        <SessionForm onSubmit={handleLogin}>
+          <EmailInput
+            testId={TEST_ID.EMAIL_INPUT}
+            value={email}
+            onChange={handleEmailChange}
+          />
+          <PasswordInput
+            testId={TEST_ID.PASSWORD_INPUT}
+            value={password}
+            onChange={handlePasswordChange}
+          />
+          <Button
+            data-testid={TEST_ID.BUTTON}
+            type="submit"
+            intent={Intent.PRIMARY}
+            icon={IconNames.LOG_IN}
+            text={LOGIN.BUTTON.SUBMIT}
+            fill={true}
+          />
+        </SessionForm>
+        <SessionOtherLinks passwordForgetEnabled={true} signUpEnabled={true} />
+      </SessionCard>
+    </SessionLayout>
   );
 };
 
