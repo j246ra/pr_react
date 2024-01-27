@@ -10,7 +10,7 @@ export type UserContextType = {
   createUser: (email: string) => void;
   updateUser: (email: string) => void;
   clearUser: () => void;
-  isLogin: () => boolean;
+  isLoggedIn: () => boolean;
 };
 
 const UserContext = createContext({} as UserContextType);
@@ -39,7 +39,7 @@ const UserProvider = ({ children }: UserProviderProps) => {
     setUser({ email: '' });
   };
 
-  const isLogin = (): boolean => {
+  const isLoggedIn = (): boolean => {
     return user.email !== '' && hasToken();
   };
 
@@ -50,7 +50,7 @@ const UserProvider = ({ children }: UserProviderProps) => {
         createUser,
         updateUser,
         clearUser,
-        isLogin,
+        isLoggedIn,
       }}
     >
       {children}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
-import { Button, Intent } from '@blueprintjs/core';
+import { Button, Callout, H2, Intent } from '@blueprintjs/core';
 import { useUser } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@providers/AuthApiProvider';
@@ -12,6 +12,8 @@ import { IconNames } from '@blueprintjs/icons';
 import { LOGIN_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import SessionOtherLinks from '@session/presentational/SessionOtherLinks';
 import SessionForm from '@session/presentational/SessionForm';
+import SessionLayout from '@session/SessionLayout';
+import styles from './Login.module.scss';
 
 const DEFAULT_PATH = '/lifelogs';
 
@@ -19,12 +21,12 @@ const Login: React.FC = () => {
   const { authApi: session } = useAuth();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const { createUser, isLogin } = useUser();
+  const { createUser, isLoggedIn } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isLogin()) return navigate(DEFAULT_PATH);
-  }, [isLogin, navigate]);
+    if (isLoggedIn()) return navigate(DEFAULT_PATH);
+  }, [isLoggedIn, navigate]);
 
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,29 +54,37 @@ const Login: React.FC = () => {
   };
 
   return (
-    <SessionCard>
-      <SessionForm onSubmit={handleLogin}>
-        <EmailInput
-          testId={TEST_ID.EMAIL_INPUT}
-          value={email}
-          onChange={handleEmailChange}
-        />
-        <PasswordInput
-          testId={TEST_ID.PASSWORD_INPUT}
-          value={password}
-          onChange={handlePasswordChange}
-        />
-        <Button
-          data-testid={TEST_ID.BUTTON}
-          type="submit"
-          intent={Intent.PRIMARY}
-          icon={IconNames.LOG_IN}
-          text={LOGIN.BUTTON.SUBMIT}
-          fill={true}
-        />
-      </SessionForm>
-      <SessionOtherLinks passwordForgetEnabled={true} signUpEnabled={true} />
-    </SessionCard>
+    <SessionLayout>
+      <H2 className={styles.appTitle}>LIFELOG</H2>
+      <Callout className={styles.infoContext}>
+        このサイトは日常の出来事を記録し振り返るためのライフログアプリです。
+        <br />
+        Reactを習得するためにこのWebアプリを制作しました。
+      </Callout>
+      <SessionCard>
+        <SessionForm onSubmit={handleLogin}>
+          <EmailInput
+            testId={TEST_ID.EMAIL_INPUT}
+            value={email}
+            onChange={handleEmailChange}
+          />
+          <PasswordInput
+            testId={TEST_ID.PASSWORD_INPUT}
+            value={password}
+            onChange={handlePasswordChange}
+          />
+          <Button
+            data-testid={TEST_ID.BUTTON}
+            type="submit"
+            intent={Intent.PRIMARY}
+            icon={IconNames.LOG_IN}
+            text={LOGIN.BUTTON.SUBMIT}
+            fill={true}
+          />
+        </SessionForm>
+        <SessionOtherLinks passwordForgetEnabled={true} signUpEnabled={true} />
+      </SessionCard>
+    </SessionLayout>
   );
 };
 

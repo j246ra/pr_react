@@ -3,6 +3,7 @@ import { render } from '@testing-library/react';
 import { useUser } from '@providers/UserProvider';
 import Lifelogs from '@lifelog/Lifelogs';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { mockNavigator } from '@src/tests/common';
 
 jest.mock('@providers/UserProvider');
 jest.mock('@providers/LifelogProvider');
@@ -31,10 +32,10 @@ describe('Lifelogs component.', () => {
   describe('ログイン状態の時', () => {
     beforeEach(() => {
       mockUseUser.mockReturnValue({
-        isLogin: jest.fn().mockReturnValue(true),
+        isLoggedIn: jest.fn().mockReturnValue(true),
       });
     });
-    it('LifelogList component が表示される', () => {
+    it('子コンポーネントが表示される', () => {
       const { getByText, container } = render(
         <Router>
           <Lifelogs />
@@ -51,10 +52,10 @@ describe('Lifelogs component.', () => {
   describe('未ログイン状態の時', () => {
     beforeEach(() => {
       mockUseUser.mockReturnValue({
-        isLogin: jest.fn().mockReturnValue(false),
+        isLoggedIn: jest.fn().mockReturnValue(false),
       });
     });
-    it('LifelogList component が表示される', () => {
+    it('子コンポーネントは表示されない', () => {
       const { queryByText, container } = render(
         <Router>
           <Lifelogs />
@@ -65,6 +66,9 @@ describe('Lifelogs component.', () => {
       expect(queryByText(LIFELOG_LIST)).not.toBeInTheDocument();
       expect(queryByText(CONTEXT_INPUT)).not.toBeInTheDocument();
       expect(container.childElementCount).toEqual(0);
+
+      expect(mockNavigator).toHaveBeenCalledTimes(1);
+      expect(mockNavigator).toHaveBeenCalledWith('/login');
     });
   });
 });

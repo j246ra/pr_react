@@ -21,7 +21,7 @@ export default {
   ],
 } as Meta;
 
-const { all, loading } = lifelogMocks();
+const { all, loading, empty } = lifelogMocks();
 
 export const Default: Meta<typeof LifelogList> = () => <LifelogList />;
 Default.parameters = {
@@ -31,4 +31,9 @@ Default.parameters = {
 export const Loading: Meta<typeof LifelogList> = () => <LifelogList />;
 Loading.parameters = {
   msw: loading(),
+};
+
+export const Empty: Meta<typeof LifelogList> = () => <LifelogList />;
+Empty.parameters = {
+  msw: empty(),
 };

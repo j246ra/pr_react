@@ -3,7 +3,7 @@ import lifelogUtil from '@lib/lifelogUtil';
 
 describe('lifelogUtil', () => {
   describe('sort', () => {
-    const { sort } = lifelogUtil();
+    const { sort } = lifelogUtil;
     it('Lifelog 配列を startedAt で降順に並べ替える', () => {
       const logs = lifelogs(5);
       const reversedLogs = logs.reverse();
@@ -21,7 +21,7 @@ describe('lifelogUtil', () => {
   });
 
   it('create', () => {
-    expect(lifelogUtil().blank()).toEqual({
+    expect(lifelogUtil.blank()).toEqual({
       id: -1,
       userId: -1,
       action: '',

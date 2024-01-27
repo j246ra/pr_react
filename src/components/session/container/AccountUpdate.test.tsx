@@ -43,6 +43,10 @@ describe('AccountUpdate component', () => {
     );
 
     const passwordConfirmInput = getByTestId(TEST_ID.PASSWORD_CONFIRM_INPUT);
+    expect(passwordConfirmInput).toHaveAttribute(
+      'id',
+      ACCOUNT_UPDATE.PASSWORD_CONFIRM.ID
+    );
     expect(passwordConfirmInput).toBeInTheDocument();
     expect(passwordConfirmInput).toHaveAttribute(
       'placeholder',

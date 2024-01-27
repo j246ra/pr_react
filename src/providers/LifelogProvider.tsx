@@ -1,9 +1,15 @@
-import React, { createContext, ReactNode, useContext, useState } from 'react';
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useReducer,
+  useState,
+} from 'react';
 import { useSession } from '@providers/SessionProvider';
 import { useUser } from '@providers/UserProvider';
 import { AxiosError, AxiosResponse } from 'axios';
 import lifelog, { CreatParams, UpdateParams } from '@lib/api/lifelog';
-import lifelogUtil from '@lib/lifelogUtil';
+import { blank as newLifelog, sort as sortLog } from '@lib/lifelogUtil';
 import { days, DATETIME_FULL } from '@lib/dateUtil';
 import LifelogEditDialogProvider from '@providers/LifelogEditDialogProvider';
 import LifelogDetailDialogProvider from '@providers/LifelogDetailDialogProvider';
@@ -32,27 +38,34 @@ export type LifelogContextType = {
   clear: () => void;
 };
 
-const LifelogContext = createContext<LifelogContextType | undefined>(undefined);
-
-export const useLifelog = (): LifelogContextType => {
-  const context = useContext(LifelogContext);
-  if (!context) {
-    throw new Error('useUser must be used within a UserProvider');
-  }
-  return context;
-};
+const LifelogContext = createContext({} as LifelogContextType);
+export const useLifelog = () => useContext(LifelogContext);
 
 export type LifelogProviderProps = {
   children: ReactNode;
 };
 
+type SetLogs = {
+  type?: string;
+  value: Lifelog[];
+};
+
 export default function LifelogProvider({ children }: LifelogProviderProps) {
-  const [logs, setLogs] = useState<Lifelog[]>([]);
+  const [logs, setLogs] = useReducer((logs: Lifelog[], action: SetLogs) => {
+    switch (action.type) {
+      case 'append':
+        return [...logs, ...action.value];
+      case 'sort':
+        return sortLog([...logs, ...action.value]);
+      default:
+        return action.value;
+    }
+  }, []);
+
   const [searchWord, setSearchWord] = useState('');
   const [page, setPage] = useState(0);
   const { getHeaders, setHeaders } = useSession();
   const { clearUser } = useUser();
-  const { blank: newLifelog, sort: sortLog } = lifelogUtil();
 
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
     setHeaders(response);
@@ -68,7 +81,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     const nextPage = page + 1;
     const r = await api.index(nextPage, searchWord);
     if (r.data.length > 0) {
-      appendLogs(r.data);
+      setLogs({ type: 'append', value: r.data });
       setPage(nextPage);
     }
     return r;
@@ -77,20 +90,16 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   const searchLogs = async (word: string) => {
     setSearchWord(word);
     const r = await api.index(1, word);
-    setLogs(r.data);
+    setLogs({ value: r.data });
     setPage(1);
     return r;
-  };
-
-  const appendLogs = (lifelogs: Lifelog[]) => {
-    setLogs([...logs, ...lifelogs]);
   };
 
   const newLog = newLifelog;
 
   const createLog = async (params: CreatParams) => {
     const r = await api.create(params);
-    setLogs(sortLog([r.data, ...logs]));
+    setLogs({ type: 'sort', value: [r.data] });
     return r;
   };
 
@@ -113,15 +122,11 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
 
   const updateLog = async (params: UpdateParams) => {
     const r = await api.update(params);
-    const i = logs.findIndex((log) => {
-      return log.id === r.data.id;
-    });
-    if (i >= 0) {
-      logs[i] = r.data;
-      setLogs(sortLog(logs));
-    } else {
-      setLogs(sortLog([r.data, ...logs]));
-    }
+    const updatedLogs = [...logs];
+    const i = updatedLogs.findIndex((log) => log.id === r.data.id);
+    if (i >= 0) updatedLogs[i] = r.data;
+    else updatedLogs.unshift(r.data);
+    setLogs({ value: updatedLogs });
     return r;
   };
 
@@ -133,16 +138,12 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
 
   const deleteLog = async (id: number) => {
     const r = await api.destroy(id);
-    setLogs(
-      logs.filter((log) => {
-        if (log.id !== id) return log;
-      })
-    );
+    setLogs({ value: logs.filter((log) => log.id !== id) });
     return r;
   };
 
   const clear = () => {
-    setLogs([]);
+    setLogs({ value: [] });
     setPage(0);
     setSearchWord('');
   };

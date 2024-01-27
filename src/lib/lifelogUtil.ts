@@ -1,7 +1,7 @@
 import { Lifelog } from '@providers/LifelogProvider';
 import { days } from '@lib/dateUtil';
 
-const blank = (): Lifelog => {
+export const blank = (): Lifelog => {
   return {
     id: -1,
     userId: -1,
@@ -14,14 +14,12 @@ const blank = (): Lifelog => {
   };
 };
 
-const sort = (logs: Lifelog[]) => {
+export const sort = (logs: Lifelog[]) => {
   return logs.sort((a, b) => {
     return days(b.startedAt).diff(days(a.startedAt));
   });
 };
 
-const lifelogUtil = () => {
-  return { blank, sort };
-};
+export const lifelogUtil = { blank, sort };
 
 export default lifelogUtil;

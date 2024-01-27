@@ -19,7 +19,7 @@ beforeEach(() => {
     removeHeaders: jest.fn(),
   });
   mockUseUser.mockReturnValue({
-    isLogin: jest.fn().mockReturnValue(true),
+    isLoggedIn: jest.fn().mockReturnValue(true),
     clearUser: jest.fn(),
   });
 
@@ -70,7 +70,7 @@ describe('Header', () => {
 
   describe('ログアウト時', () => {
     beforeEach(() => {
-      mockUseUser().isLogin = jest.fn().mockReturnValue(false);
+      mockUseUser().isLoggedIn = jest.fn().mockReturnValue(false);
     });
     it('ロゴが表示されていること', () => {
       render(<Header />);

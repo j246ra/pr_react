@@ -9,19 +9,19 @@ import { LIFELOGS } from '@lib/consts/component';
 import ContextInput from '@lifelog/container/ContextInput';
 
 const Lifelogs: React.FC = () => {
-  const { isLogin } = useUser();
+  const { isLoggedIn } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isLogin()) {
+    if (!isLoggedIn()) {
       notify.error(LIFELOGS.MESSAGE.ERROR);
       navigate('/login');
     }
-  }, [isLogin, navigate]);
+  }, [isLoggedIn, navigate]);
 
   return (
     <>
-      {isLogin() ? (
+      {isLoggedIn() ? (
         <>
           <LifelogDetailDialog />
           <LifelogEditDialog />

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
-import { HTMLTable } from '@blueprintjs/core';
+import { HTMLTable, NonIdealState } from '@blueprintjs/core';
 import { useLifelog } from '@providers/LifelogProvider';
 import notify from '@lib/toast';
 import LifelogListItem from '@lifelog/presentational/LifelogListItem';
@@ -11,6 +11,7 @@ import styles from './LifelogList.module.scss';
 import { useLifelogEditDialog } from '@providers/LifelogEditDialogProvider';
 import { useLifelogDetailDialog } from '@providers/LifelogDetailDialogProvider';
 import LifelogListLoader from '@lifelog/presentational/LifelogListLoader';
+import { IconNames } from '@blueprintjs/icons';
 
 const LifelogList = () => {
   const { logs, loadLogs } = useLifelog();
@@ -39,16 +40,29 @@ const LifelogList = () => {
         hasMore={hasMore}
         loader={LifelogListLoader()}
       >
-        {logs.map((log) => (
-          <LifelogListItem
-            key={log.id}
-            log={log}
-            onActionClick={() => openDetailDialog(log)}
-            onEditButtonClick={() => openEditDialog(log)}
-            onFinishButtonClick={() => handleFinishLifelog(log)}
-            onDeleteButtonClick={() => handleDeleteLifelog(log.id)}
+        {logs.length === 0 && !hasMore ? (
+          <NonIdealState
+            icon={IconNames.EDIT}
+            description={
+              <div>
+                ライフログが１件も記録されていませんね。
+                <br />
+                どんどん行動を記録していきましょう！！
+              </div>
+            }
           />
-        ))}
+        ) : (
+          logs.map((log) => (
+            <LifelogListItem
+              key={log.id}
+              log={log}
+              onActionClick={() => openDetailDialog(log)}
+              onEditButtonClick={() => openEditDialog(log)}
+              onFinishButtonClick={() => handleFinishLifelog(log)}
+              onDeleteButtonClick={() => handleDeleteLifelog(log.id)}
+            />
+          ))
+        )}
       </InfiniteScroll>
     </HTMLTable>
   );

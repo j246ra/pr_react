@@ -22,9 +22,8 @@ type LifelogDetailDialogProvider = {
 export const LifelogDetailDialogProvider = ({
   children,
 }: LifelogDetailDialogProvider) => {
-  const { blank: newLog } = lifelogUtil();
   const [isOpenDetailDialog, setIsOpenDetailDialog] = useState(false);
-  const [detailLog, setDetailLog] = useState<Lifelog>(newLog());
+  const [detailLog, setDetailLog] = useState<Lifelog>(lifelogUtil.blank());
 
   const openDetailDialog = (log: Lifelog) => {
     if (isOpenDetailDialog) return;
