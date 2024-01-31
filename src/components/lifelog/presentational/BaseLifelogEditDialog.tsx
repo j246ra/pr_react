@@ -24,14 +24,14 @@ export type BaseLifelogEditDialogProps = Omit<
   handleUpdateLifelog: () => void;
 };
 
-const BaseLifelogEditDialog = ({
+export default function BaseLifelogEditDialog({
   isOpen,
   lifelog,
   editLifelog,
   closeEditDialog,
   detailRows = 8,
   handleUpdateLifelog,
-}: BaseLifelogEditDialogProps) => {
+}: BaseLifelogEditDialogProps) {
   return (
     <Dialog isOpen={isOpen} onClose={closeEditDialog}>
       <div data-testid={TEST_ID.BASE}>
@@ -91,6 +91,4 @@ const BaseLifelogEditDialog = ({
       </div>
     </Dialog>
   );
-};
-
-export default BaseLifelogEditDialog;
+}

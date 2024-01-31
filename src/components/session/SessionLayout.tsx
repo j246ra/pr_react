@@ -4,12 +4,10 @@ import styles from './SessionLayout.module.scss';
 export type SessionLayoutProps = {
   children: ReactNode;
 };
-const SessionLayout: React.FC<SessionLayoutProps> = ({ children }) => {
+export default function SessionLayout({ children }: SessionLayoutProps) {
   return (
     <div className={styles.base}>
       <div className={styles.container}>{children}</div>
     </div>
   );
-};
-
-export default SessionLayout;
+}

@@ -5,9 +5,9 @@ import { LIFELOG_LIST_HEADER } from '@lib/consts/component';
 export type LifelogListHeaderProps = {
   enabled?: boolean;
 };
-export const LifelogListHeader = ({
+export default function LifelogListHeader({
   enabled = true,
-}: LifelogListHeaderProps) => {
+}: LifelogListHeaderProps) {
   if (!enabled) return null;
   return (
     <thead>
@@ -19,6 +19,4 @@ export const LifelogListHeader = ({
       </tr>
     </thead>
   );
-};
-
-export default React.memo(LifelogListHeader);
+}

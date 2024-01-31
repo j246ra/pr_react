@@ -4,8 +4,8 @@ import { useUser } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@providers/AuthApiProvider';
 import notify from '@lib/toast';
-import { EmailInput } from '@session/presentational/EmailInput';
-import { PasswordInput } from '@session/presentational/PasswordInput';
+import EmailInput from '@session/presentational/EmailInput';
+import PasswordInput from '@session/presentational/PasswordInput';
 import SessionCard from '@session/presentational/SessionCard';
 import { LOGIN } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
@@ -17,7 +17,7 @@ import styles from './Login.module.scss';
 
 const DEFAULT_PATH = '/lifelogs';
 
-const Login: React.FC = () => {
+export default function Login() {
   const { authApi: session } = useAuth();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -86,6 +86,4 @@ const Login: React.FC = () => {
       </SessionCard>
     </SessionLayout>
   );
-};
-
-export default Login;
+}

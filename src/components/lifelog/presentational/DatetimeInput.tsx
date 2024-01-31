@@ -11,12 +11,12 @@ export type DatetimeInputProps = {
   onChange: (newDate: string | null) => void;
 };
 
-const DatetimeInput = ({
+export default function DatetimeInput({
   label,
   placeholder,
   value,
   onChange,
-}: DatetimeInputProps) => {
+}: DatetimeInputProps) {
   return (
     <FormGroup label={label}>
       <DateInput3
@@ -35,6 +35,4 @@ const DatetimeInput = ({
       />
     </FormGroup>
   );
-};
-
-export default DatetimeInput;
+}

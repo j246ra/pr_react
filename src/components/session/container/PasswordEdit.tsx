@@ -7,13 +7,13 @@ import notify from '@lib/toast';
 import { useSession } from '@providers/SessionProvider';
 import { useAuth } from '@providers/AuthApiProvider';
 import SessionCard from '@session/presentational/SessionCard';
-import { PasswordInput } from '@session/presentational/PasswordInput';
+import PasswordInput from '@session/presentational/PasswordInput';
 import { PASSWORD_EDIT } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import SessionForm from '@session/presentational/SessionForm';
 import SessionLayout from '@session/SessionLayout';
 
-const PasswordEdit: React.FC = () => {
+export default function PasswordEdit() {
   const navigate = useNavigate();
   const { setHeaders } = useSession();
   const { authApi: api } = useAuth();
@@ -76,6 +76,4 @@ const PasswordEdit: React.FC = () => {
       </SessionCard>
     </SessionLayout>
   );
-};
-
-export default PasswordEdit;
+}

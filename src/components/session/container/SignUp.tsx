@@ -6,8 +6,8 @@ import signUpValidator from '@validators/signUp';
 import notify from '@lib/toast';
 import { useSession } from '@providers/SessionProvider';
 import { useAuth } from '@providers/AuthApiProvider';
-import { EmailInput } from '@session/presentational/EmailInput';
-import { PasswordInput } from '@session/presentational/PasswordInput';
+import EmailInput from '@session/presentational/EmailInput';
+import PasswordInput from '@session/presentational/PasswordInput';
 import SessionCard from '@session/presentational/SessionCard';
 import { SIGN_UP } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
@@ -16,7 +16,7 @@ import SessionOtherLinks from '@session/presentational/SessionOtherLinks';
 import SessionForm from '@session/presentational/SessionForm';
 import SessionLayout from '@session/SessionLayout';
 
-const SignUp = () => {
+export default function SignUp() {
   const { removeHeaders } = useSession();
   const { authApi: session } = useAuth();
   const [email, setEmail] = useState<string>('');
@@ -74,6 +74,4 @@ const SignUp = () => {
       </SessionCard>
     </SessionLayout>
   );
-};
-
-export default SignUp;
+}

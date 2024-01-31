@@ -11,27 +11,29 @@ export type EmailInputProps = {
   testId?: string;
 };
 
-export const EmailInput = ({
+export default function EmailInput({
   value,
   onChange,
   id = 'email-input',
   required = true,
   placeholder = EMAIL_INPUT.PLACEHOLDER,
   testId = id,
-}: EmailInputProps) => (
-  <FormGroup
-    label="メールアドレス"
-    labelFor={id}
-    labelInfo={required ? EMAIL_INPUT.REQUIRED : ''}
-  >
-    <InputGroup
-      id={id}
-      data-testid={testId}
-      placeholder={placeholder}
-      type="email"
-      value={value}
-      onChange={onChange}
-      required={required}
-    />
-  </FormGroup>
-);
+}: EmailInputProps) {
+  return (
+    <FormGroup
+      label="メールアドレス"
+      labelFor={id}
+      labelInfo={required ? EMAIL_INPUT.REQUIRED : ''}
+    >
+      <InputGroup
+        id={id}
+        data-testid={testId}
+        placeholder={placeholder}
+        type="email"
+        value={value}
+        onChange={onChange}
+        required={required}
+      />
+    </FormGroup>
+  );
+}

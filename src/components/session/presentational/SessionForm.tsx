@@ -6,12 +6,10 @@ type SessionFormProps = {
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 };
 
-const SessionForm: React.FC<SessionFormProps> = ({ children, onSubmit }) => {
+export default function SessionForm({ children, onSubmit }: SessionFormProps) {
   return (
     <form className={styles.sessionForm} onSubmit={onSubmit}>
       {children}
     </form>
   );
-};
-
-export default SessionForm;
+}

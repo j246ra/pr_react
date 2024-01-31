@@ -3,7 +3,7 @@ import styles from '@lifelog/container/LifelogList.module.scss';
 import { Intent, Spinner, SpinnerSize } from '@blueprintjs/core';
 import { LIFELOG_LIST_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
-const LifelogListLoader = () => {
+export default function LifelogListLoader() {
   return (
     <tr data-testid={TEST_ID.SPINNER} key={0}>
       <td className={styles.spinnerTd} colSpan={4}>
@@ -11,6 +11,4 @@ const LifelogListLoader = () => {
       </td>
     </tr>
   );
-};
-
-export default LifelogListLoader;
+}

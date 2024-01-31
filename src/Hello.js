@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import notify from './lib/toast';
 import { useSession } from '@providers/SessionProvider';
 
-const Hello = () => {
+export default function Hello() {
   const { user, clearUser, isLoggedIn } = useUser();
   const { getHeaders, removeHeaders } = useSession();
   const { authApi } = useAuth();
@@ -62,6 +62,4 @@ const Hello = () => {
       </div>
     </div>
   );
-};
-
-export default Hello;
+}

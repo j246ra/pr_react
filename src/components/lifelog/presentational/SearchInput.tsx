@@ -12,7 +12,7 @@ export type SearchInputProps = {
   width?: number;
 };
 
-const SearchInput = ({ isShow, width = 260 }: SearchInputProps) => {
+export default function SearchInput({ isShow, width = 260 }: SearchInputProps) {
   if (!isShow) return null;
 
   const { searchLogs } = useLifelog();
@@ -62,6 +62,4 @@ const SearchInput = ({ isShow, width = 260 }: SearchInputProps) => {
       />
     </div>
   );
-};
-
-export default SearchInput;
+}

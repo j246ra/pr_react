@@ -14,16 +14,16 @@ export type LifelogEditDialogContextType = {
   closeEditDialog: () => void;
 };
 
+export type Props = {
+  children: ReactNode;
+};
+
 const LifelogEditDialogContext = createContext(
   {} as LifelogEditDialogContextType
 );
 export const useLifelogEditDialog = () => useContext(LifelogEditDialogContext);
 
-export const LifelogEditDialogProvider = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+export default function LifelogEditDialogProvider({ children }: Props) {
   const { newLog, updateLog } = useLifelog();
   const [isOpen, setIsOpen] = useState(false);
   const [lifelog, setLifelog] = useState<Lifelog>(newLog());
@@ -58,6 +58,4 @@ export const LifelogEditDialogProvider = ({
       {children}
     </LifelogEditDialogContext.Provider>
   );
-};
-
-export default LifelogEditDialogProvider;
+}

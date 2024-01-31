@@ -13,7 +13,7 @@ import { useLifelogDetailDialog } from '@providers/LifelogDetailDialogProvider';
 import LifelogListLoader from '@lifelog/presentational/LifelogListLoader';
 import { IconNames } from '@blueprintjs/icons';
 
-const LifelogList = () => {
+export default function LifelogList() {
   const { logs, loadLogs } = useLifelog();
   const { openDetailDialog } = useLifelogDetailDialog();
   const { openEditDialog } = useLifelogEditDialog();
@@ -66,6 +66,4 @@ const LifelogList = () => {
       </InfiniteScroll>
     </HTMLTable>
   );
-};
-
-export default LifelogList;
+}

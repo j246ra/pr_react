@@ -20,7 +20,7 @@ import { HEADER } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import { HEADER_TEST_ID as TEST_ID } from '@lib/consts/testId';
 
-const Header = () => {
+export default function Header() {
   const { removeHeaders } = useSession();
   const navigate = useNavigate();
   const { isLoggedIn, clearUser } = useUser();
@@ -96,6 +96,4 @@ const Header = () => {
       </div>
     </Navbar>
   );
-};
-
-export default Header;
+}

@@ -9,10 +9,10 @@ type SessionOtherLinksProps = {
   signUpEnabled?: boolean;
 };
 
-export const SessionOtherLinks = ({
+export default function SessionOtherLinks({
   passwordForgetEnabled,
   signUpEnabled,
-}: SessionOtherLinksProps) => {
+}: SessionOtherLinksProps) {
   if (!passwordForgetEnabled && !signUpEnabled) return null;
   return (
     <div className={styles.links}>
@@ -36,6 +36,4 @@ export const SessionOtherLinks = ({
       )}
     </div>
   );
-};
-
-export default SessionOtherLinks;
+}

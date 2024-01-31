@@ -13,11 +13,11 @@ export type BaseLifelogDetailDialogProps = Omit<
   'openDetailDialog'
 >;
 
-const BaseLifelogDetailDialog = ({
+export default function BaseLifelogDetailDialog({
   isOpen,
   log,
   closeDetailDialog,
-}: BaseLifelogDetailDialogProps) => {
+}: BaseLifelogDetailDialogProps) {
   return (
     <Dialog isOpen={isOpen} onClose={closeDetailDialog}>
       <DialogBody>
@@ -62,6 +62,4 @@ const BaseLifelogDetailDialog = ({
       </DialogBody>
     </Dialog>
   );
-};
-
-export default BaseLifelogDetailDialog;
+}

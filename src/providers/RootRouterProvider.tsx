@@ -11,7 +11,7 @@ import ResetMailSendSuccess from '@session/container/ResetMailSendSuccess';
 import Lifelogs from '@lifelog/Lifelogs';
 import NotFound from '@src/components/NotFound';
 
-const RootRouterProvider = () => {
+export default function RootRouterProvider() {
   return (
     <Routes>
       <Route path="/" element={<App />}>
@@ -28,6 +28,4 @@ const RootRouterProvider = () => {
       </Route>
     </Routes>
   );
-};
-
-export default RootRouterProvider;
+}
