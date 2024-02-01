@@ -4,10 +4,10 @@ import './index.scss';
 import { BrowserRouter } from 'react-router-dom';
 import UserProvider from './providers/UserProvider';
 import AuthApiProvider from './providers/AuthApiProvider';
-import RootRouterProvider from './providers/RootRouterProvider';
 import SessionProvider from './providers/SessionProvider';
 import LifelogProvider from '@providers/LifelogProvider';
 import { COMMON } from '@lib/consts/common';
+import App from '@src/App';
 
 const container = document.getElementById('root');
 if (!container) {
@@ -21,7 +21,7 @@ root.render(
       <UserProvider>
         <AuthApiProvider>
           <LifelogProvider>
-            <RootRouterProvider />
+            <App />
           </LifelogProvider>
         </AuthApiProvider>
       </UserProvider>
