@@ -12,6 +12,7 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@sentry/cli": "^2.27.0",
     "@sentry/react": "^7.99.0",
+    "@sentry/webpack-plugin": "^2.13.0",
     "@storybook/addon-styling-webpack": "^0.0.5",
     "@svgr/webpack": "7.0.0",
     "@testing-library/jest-dom": "^5.14.1",
