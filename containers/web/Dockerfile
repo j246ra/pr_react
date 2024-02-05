@@ -1,7 +1,7 @@
 FROM node:20.8.1-bookworm-slim as assets
 
 RUN apt-get update -qq && apt-get install -yq --no-install-recommends\
-    ca-certificates\
+    ca-certificates
 
 ENV APP_ROOT=/app
 RUN mkdir $APP_ROOT
