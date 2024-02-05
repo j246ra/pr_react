@@ -5,6 +5,9 @@ export const COMMON = {
     HOST_URL: env('host_url', 'http://localhost:3001'),
     BASE_DIR: '/app',
   },
+  SENTRY: {
+    DSN: env('sentry_dsn'),
+  },
   MESSAGE: {
     ERROR: {
       GENERAL: '想定外のエラーが発生しました',

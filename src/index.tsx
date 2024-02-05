@@ -8,6 +8,9 @@ import SessionProvider from './providers/SessionProvider';
 import LifelogProvider from '@providers/LifelogProvider';
 import { COMMON } from '@lib/consts/common';
 import App from '@src/App';
+import initSentry from '@lib/sentry';
+
+initSentry();
 
 const container = document.getElementById('root');
 if (!container) {

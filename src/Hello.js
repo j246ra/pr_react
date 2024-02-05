@@ -58,6 +58,13 @@ export default function Hello() {
               text="トークン検証"
             />
           </form>
+          <button
+            onClick={() => {
+              throw 'Error! TEST';
+            }}
+          >
+            Sentry TEST
+          </button>
         </Card>
       </div>
     </div>
