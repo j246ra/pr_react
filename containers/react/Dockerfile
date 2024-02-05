@@ -2,6 +2,7 @@ FROM node:20.8.1-bookworm-slim as base
 
 RUN apt-get update -qq && apt-get install -yq --no-install-recommends\
     git\
+    ca-certificates\
     && apt-get clean\
     && rm -rf /var/lib/apt/lists/*
 
