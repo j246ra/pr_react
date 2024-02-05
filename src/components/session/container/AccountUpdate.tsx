@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import accountUpdateValidator from '@validators/accountUpdate';
 import { useAuth } from '@providers/AuthApiProvider';
 import { UserParams } from '@lib/api/session';
-import { EmailInput } from '@session/presentational/EmailInput';
-import { PasswordInput } from '@session/presentational/PasswordInput';
+import EmailInput from '@session/presentational/EmailInput';
+import PasswordInput from '@session/presentational/PasswordInput';
 import AccountDelete from '@session/container/AccountDelete';
 import SessionCard from '@session/presentational/SessionCard';
 import notify from '@lib/toast';
@@ -16,7 +16,7 @@ import { ACCOUNT_UPDATE_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import SessionForm from '@session/presentational/SessionForm';
 import SessionLayout from '@session/SessionLayout';
 
-const AccountUpdate: React.FC = () => {
+export default function AccountUpdate() {
   const { user, updateUser } = useUser();
   const { authApi } = useAuth();
   const [email, setEmail] = useState((user as User).email);
@@ -93,6 +93,4 @@ const AccountUpdate: React.FC = () => {
       </SessionCard>
     </SessionLayout>
   );
-};
-
-export default AccountUpdate;
+}

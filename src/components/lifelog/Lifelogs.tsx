@@ -8,7 +8,7 @@ import LifelogEditDialog from '@lifelog/container/LifelogEditDialog';
 import { LIFELOGS } from '@lib/consts/component';
 import ContextInput from '@lifelog/container/ContextInput';
 
-const Lifelogs: React.FC = () => {
+export default function Lifelogs() {
   const { isLoggedIn } = useUser();
   const navigate = useNavigate();
 
@@ -31,6 +31,4 @@ const Lifelogs: React.FC = () => {
       ) : null}
     </>
   );
-};
-
-export default Lifelogs;
+}

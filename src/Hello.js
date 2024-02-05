@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import notify from './lib/toast';
 import { useSession } from '@providers/SessionProvider';
 
-const Hello = () => {
+export default function Hello() {
   const { user, clearUser, isLoggedIn } = useUser();
   const { getHeaders, removeHeaders } = useSession();
   const { authApi } = useAuth();
@@ -58,10 +58,15 @@ const Hello = () => {
               text="トークン検証"
             />
           </form>
+          <button
+            onClick={() => {
+              throw 'Error! TEST';
+            }}
+          >
+            Sentry TEST
+          </button>
         </Card>
       </div>
     </div>
   );
-};
-
-export default Hello;
+}

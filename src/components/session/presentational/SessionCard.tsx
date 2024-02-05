@@ -7,11 +7,11 @@ export type SessionCardProps = {
   interactive?: boolean;
   elevation?: Elevation;
 };
-const SessionCard: React.FC<SessionCardProps> = ({
+export default function SessionCard({
   children,
   interactive = false,
   elevation = Elevation.TWO,
-}) => {
+}: SessionCardProps) {
   return (
     <div className={styles.sessionContainer}>
       <Card
@@ -23,6 +23,4 @@ const SessionCard: React.FC<SessionCardProps> = ({
       </Card>
     </div>
   );
-};
-
-export default SessionCard;
+}

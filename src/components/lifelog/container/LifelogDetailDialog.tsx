@@ -2,7 +2,7 @@ import React from 'react';
 import { useLifelogDetailDialog } from '@providers/LifelogDetailDialogProvider';
 import BaseLifelogDetailDialog from '@lifelog/presentational/BaseLifelogDetailDialog';
 
-const LifelogDetailDialog = () => {
+export default function LifelogDetailDialog() {
   const { isOpen, log, closeDetailDialog } = useLifelogDetailDialog();
   return (
     <BaseLifelogDetailDialog
@@ -11,6 +11,4 @@ const LifelogDetailDialog = () => {
       log={log}
     />
   );
-};
-
-export default LifelogDetailDialog;
+}

@@ -4,7 +4,7 @@ import notify from '@lib/toast';
 import { LIFELOGS } from '@lib/consts/component';
 import ContextInputForm from '@lifelog/presentational/ContextInputForm';
 
-const ContextInput: React.FC = () => {
+export default function ContextInput() {
   const { createLogByContext } = useLifelog();
   const [context, setContext] = useState<string>('');
 
@@ -25,6 +25,4 @@ const ContextInput: React.FC = () => {
       onChange={(e) => setContext(e.target.value)}
     />
   );
-};
-
-export default ContextInput;
+}

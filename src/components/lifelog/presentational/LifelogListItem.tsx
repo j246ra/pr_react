@@ -13,13 +13,13 @@ export type LifelogListItemProps = {
   onEditButtonClick: () => void;
   onActionClick: () => void;
 };
-const LifelogListItem = ({
+export function LifelogListItem({
   log,
   onFinishButtonClick,
   onEditButtonClick,
   onDeleteButtonClick,
   onActionClick,
-}: LifelogListItemProps) => {
+}: LifelogListItemProps) {
   const startedAt = useMemo(
     () => days(log.startedAt).format(DISPLAY_DATETIME),
     [log.startedAt]
@@ -65,7 +65,7 @@ const LifelogListItem = ({
       </td>
     </tr>
   );
-};
+}
 
 export default React.memo(LifelogListItem, (prevProps, nextProps) => {
   return prevProps.log === nextProps.log;

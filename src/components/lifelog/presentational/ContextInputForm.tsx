@@ -11,12 +11,12 @@ export type ContextInputFormProps = {
   placeholder?: string;
 };
 
-export const ContextInputForm = ({
+export default function ContextInputForm({
   onSubmit,
   value,
   onChange,
   placeholder = CONTEXT_INPUT.PLACEHOLDER,
-}: ContextInputFormProps) => {
+}: ContextInputFormProps) {
   return (
     <div className={styles.base}>
       <form onSubmit={onSubmit}>
@@ -38,6 +38,4 @@ export const ContextInputForm = ({
       </form>
     </div>
   );
-};
-
-export default ContextInputForm;
+}

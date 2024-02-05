@@ -2,7 +2,7 @@ import React, { useState, FormEvent, ChangeEvent } from 'react';
 import { Button, Callout, Intent } from '@blueprintjs/core';
 import notify from '@lib/toast';
 import { useAuth } from '@providers/AuthApiProvider';
-import { EmailInput } from '@session/presentational/EmailInput';
+import EmailInput from '@session/presentational/EmailInput';
 import { useNavigate } from 'react-router-dom';
 import SessionCard from '@session/presentational/SessionCard';
 import { PASSWORD_FORGET } from '@lib/consts/component';
@@ -12,7 +12,7 @@ import styles from './PasswordForget.module.scss';
 import SessionForm from '@session/presentational/SessionForm';
 import SessionLayout from '@session/SessionLayout';
 
-const PasswordForget: React.FC = () => {
+export default function PasswordForget() {
   const { authApi: session } = useAuth();
   const [email, setEmail] = useState<string>('');
   const navigate = useNavigate();
@@ -67,6 +67,4 @@ const PasswordForget: React.FC = () => {
       </SessionCard>
     </SessionLayout>
   );
-};
-
-export default PasswordForget;
+}

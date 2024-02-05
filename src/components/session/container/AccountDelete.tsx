@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { ACCOUNT_DELETE } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 
-const AccountDelete: React.FC = () => {
+export default function AccountDelete() {
   const [isOpen, setIsOpen] = useState(false);
   const { authApi: api } = useAuth();
   const { clearUser } = useUser();
@@ -60,6 +60,4 @@ const AccountDelete: React.FC = () => {
       </Alert>
     </>
   );
-};
-
-export default AccountDelete;
+}

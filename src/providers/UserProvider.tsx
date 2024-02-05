@@ -20,7 +20,7 @@ export type UserProviderProps = {
   children: ReactNode;
 };
 
-const UserProvider = ({ children }: UserProviderProps) => {
+export default function UserProvider({ children }: UserProviderProps) {
   const { initializeByUid, getHeaders, hasToken } = useSession();
   const [user, setUser] = useState<User>({
     email: getHeaders()?.uid || '',
@@ -56,6 +56,4 @@ const UserProvider = ({ children }: UserProviderProps) => {
       {children}
     </UserContext.Provider>
   );
-};
-
-export default UserProvider;
+}

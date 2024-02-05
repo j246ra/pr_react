@@ -5,7 +5,7 @@ import { useLifelogEditDialog } from '@providers/LifelogEditDialogProvider';
 import lifelogEditDialogValidator from '@validators/lifelogEditDialog';
 import BaseLifelogEditDialog from '@lifelog/presentational/BaseLifelogEditDialog';
 
-const LifelogEditDialog = () => {
+export default function LifelogEditDialog() {
   const { isOpen, lifelog, editLifelog, updateLifelog, closeEditDialog } =
     useLifelogEditDialog();
 
@@ -28,6 +28,4 @@ const LifelogEditDialog = () => {
       handleUpdateLifelog={handleUpdateLifelog}
     />
   );
-};
-
-export default LifelogEditDialog;
+}

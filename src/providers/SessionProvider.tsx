@@ -30,7 +30,7 @@ const defaultOptions = {
   path: COMMON.APP_URL.BASE_DIR,
 };
 
-const SessionProvider = ({ children }: SessionProviderProps) => {
+export default function SessionProvider({ children }: SessionProviderProps) {
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
 
   const hasToken = (): boolean => {
@@ -100,6 +100,4 @@ const SessionProvider = ({ children }: SessionProviderProps) => {
       </SessionContext.Provider>
     </CookiesProvider>
   );
-};
-
-export default SessionProvider;
+}

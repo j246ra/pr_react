@@ -14,7 +14,6 @@ import {
   mockUseSession,
   mockUseAuth,
 } from '@src/tests/baseProviders';
-import App from '@src/App';
 import PasswordForget from '@session/container/PasswordForget';
 import { useLifelog } from '@providers/LifelogProvider';
 import { EMAIL_INPUT, LOGIN, PASSWORD_INPUT } from '@lib/consts/component';
@@ -88,11 +87,9 @@ describe('Login component', () => {
       render(
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<App />}>
-              <Route index element={<Login />} />
-              <Route path="/sign_up" element={<Login />} />
-              <Route path="/password_forget" element={<PasswordForget />} />
-            </Route>
+            <Route index element={<Login />} />
+            <Route path="/sign_up" element={<Login />} />
+            <Route path="/password_forget" element={<PasswordForget />} />
           </Routes>
         </BrowserRouter>
       );
