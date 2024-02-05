@@ -17,7 +17,7 @@ ENV REACT_APP_HOST_URL=${HOST_URL} \
 ENV GENERATE_SOURCEMAP=false
 
 COPY . $APP_ROOT
-RUN yarn build --prod
+RUN yarn build
 
 FROM nginx:1.25.2-alpine-slim as nginx
 
