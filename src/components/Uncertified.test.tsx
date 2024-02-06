@@ -33,7 +33,7 @@ describe('Uncertified', () => {
     beforeEach(() => {
       mockUseUser().isLoggedIn = jest.fn().mockReturnValue(false);
     });
-    it('リダイレクトしていること', () => {
+    it('コンポーネントをレンダリングしていること', () => {
       render(<Uncertified component={child} />);
       expect(mockNavigator).not.toHaveBeenCalled();
       expect(screen.queryByText(CHILD)).toBeInTheDocument();
