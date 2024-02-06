@@ -1,5 +1,9 @@
 import CONST from '@lib/consts/common';
 
+export const CERTIFIED = {
+  ERROR: 'ログインしてください。',
+};
+
 export const EMAIL_INPUT = {
   LABEL: 'メールアドレス',
   PLACEHOLDER: 'メールアドレスを入力',
@@ -118,7 +122,6 @@ export const HEADER = {
 export const LIFELOGS = {
   MESSAGE: {
     SUCCESS: '行動を記録しました。',
-    ERROR: 'ログインしてください。',
   },
 };
 
@@ -204,6 +207,7 @@ export const NOTFOUND = {
 };
 
 export const COMPONENT = {
+  CERTIFIED,
   ACCOUNT_DELETE,
   ACCOUNT_UPDATE,
   LOGIN,

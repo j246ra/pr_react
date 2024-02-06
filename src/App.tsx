@@ -14,6 +14,7 @@ import Lifelogs from '@lifelog/Lifelogs';
 import NotFound from '@src/components/NotFound';
 import Hello from '@src/Hello';
 import Uncertified from '@src/components/Uncertified';
+import Certified from '@src/components/Certified';
 
 function App() {
   return (
@@ -31,11 +32,20 @@ function App() {
             path="/sign_up"
             element={<Uncertified component={<SignUp />} />}
           />
-          <Route path="/update_account" element={<AccountUpdate />} />
+          <Route
+            path="/update_account"
+            element={<Certified component={<AccountUpdate />} />}
+          />
           <Route path="/password_forget" element={<PasswordForget />} />
           <Route path="/send_success" element={<ResetMailSendSuccess />} />
-          <Route path="/password_edit" element={<PasswordEdit />} />
-          <Route path="/lifelogs" element={<Lifelogs />} />
+          <Route
+            path="/password_edit"
+            element={<Certified component={<PasswordEdit />} />}
+          />
+          <Route
+            path="/lifelogs"
+            element={<Certified component={<Lifelogs />} />}
+          />
           <Route path="/hello" element={<Hello />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

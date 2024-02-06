@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router';
 import App from '@src/App';
 import { NOTFOUND } from '@lib/consts/component';
 import { UncertifiedProps } from '@src/components/Uncertified';
+import { CertifiedProps } from '@src/components/Certified';
 
 const UNCERTIFIED = 'Mocked Uncertified';
 jest.mock(
@@ -13,6 +14,18 @@ jest.mock(
       (
         <>
           {UNCERTIFIED}
+          {component}
+        </>
+      )
+);
+const CERTIFIED = 'Mocked Certified';
+jest.mock(
+  '@src/components/Certified',
+  () =>
+    ({ component }: CertifiedProps) =>
+      (
+        <>
+          {CERTIFIED}
           {component}
         </>
       )
@@ -80,6 +93,7 @@ describe('正常系', () => {
         <App />
       </MemoryRouter>
     );
+    expect(screen.getByText(CERTIFIED)).toBeInTheDocument();
     expect(screen.getByText(ACCOUNT_UPDATE)).toBeInTheDocument();
   });
 
@@ -107,6 +121,7 @@ describe('正常系', () => {
         <App />
       </MemoryRouter>
     );
+    expect(screen.getByText(CERTIFIED)).toBeInTheDocument();
     expect(screen.getByText(PASSWORD_EDIT)).toBeInTheDocument();
   });
 
@@ -116,6 +131,7 @@ describe('正常系', () => {
         <App />
       </MemoryRouter>
     );
+    expect(screen.getByText(CERTIFIED)).toBeInTheDocument();
     expect(screen.getByText(LIFELOGS)).toBeInTheDocument();
   });
 });
@@ -128,6 +144,7 @@ describe('存在しないURLの場合', () => {
         <App />
       </MemoryRouter>
     );
+    expect(screen.queryByText(CERTIFIED)).not.toBeInTheDocument();
     expect(screen.getByText(NOTFOUND.CONTEXT)).toBeInTheDocument();
   });
 });
