@@ -21,6 +21,8 @@ import {
   LOGIN_TEST_ID as TEST_ID,
   SESSION_OTHER_LINKS_TEST_ID,
 } from '@lib/consts/testId';
+import { ROUTES } from '@lib/consts/common';
+import SignUp from '@session/container/SignUp';
 
 jest.mock('@providers/LifelogProvider');
 jest.mock('@lib/toast');
@@ -75,11 +77,11 @@ describe('Login component', () => {
       SESSION_OTHER_LINKS_TEST_ID.PASSWORD_FORGET
     );
     expect(passwordLinks).toBeInTheDocument();
-    expect(passwordLinks).toHaveAttribute('href', '/password_forget');
+    expect(passwordLinks).toHaveAttribute('href', ROUTES.PASSWORD_FORGET);
 
     const signUpLinks = getByTestId(SESSION_OTHER_LINKS_TEST_ID.SIGN_UP);
     expect(signUpLinks).toBeInTheDocument();
-    expect(signUpLinks).toHaveAttribute('href', '/sign_up');
+    expect(signUpLinks).toHaveAttribute('href', ROUTES.SIGN_UP);
   });
 
   describe('Link コンポーネント', () => {
@@ -88,8 +90,8 @@ describe('Login component', () => {
         <BrowserRouter>
           <Routes>
             <Route index element={<Login />} />
-            <Route path="/sign_up" element={<Login />} />
-            <Route path="/password_forget" element={<PasswordForget />} />
+            <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
+            <Route path={ROUTES.PASSWORD_FORGET} element={<PasswordForget />} />
           </Routes>
         </BrowserRouter>
       );
@@ -100,7 +102,7 @@ describe('Login component', () => {
         SESSION_OTHER_LINKS_TEST_ID.SIGN_UP
       );
       expect(signUpLink).toBeInTheDocument();
-      expect(signUpLink).toHaveAttribute('href', '/sign_up');
+      expect(signUpLink).toHaveAttribute('href', ROUTES.SIGN_UP);
     });
 
     it('Password forget', () => {
@@ -109,7 +111,7 @@ describe('Login component', () => {
         SESSION_OTHER_LINKS_TEST_ID.PASSWORD_FORGET
       );
       expect(passwordLink).toBeInTheDocument();
-      expect(passwordLink).toHaveAttribute('href', '/password_forget');
+      expect(passwordLink).toHaveAttribute('href', ROUTES.PASSWORD_FORGET);
     });
   });
 
@@ -142,7 +144,7 @@ describe('Login component', () => {
       expect(mockNotify.success).toHaveBeenCalledTimes(1);
       expect(mockNotify.success).toHaveBeenCalledWith(LOGIN.MESSAGE.SUCCESS);
       expect(mockNavigator).toHaveBeenCalledTimes(1);
-      expect(mockNavigator).toHaveBeenCalledWith('/lifelogs');
+      expect(mockNavigator).toHaveBeenCalledWith(ROUTES.LIFELOGS);
     });
   });
 });

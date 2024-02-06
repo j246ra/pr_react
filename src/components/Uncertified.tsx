@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useUser } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
+import { COMMON } from '@lib/consts/common';
 
 export type UncertifiedProps = {
   component: React.ReactNode;
@@ -9,7 +10,7 @@ export type UncertifiedProps = {
 
 function Uncertified({
   component,
-  redirectTo = '/lifelogs',
+  redirectTo = COMMON.REDIRECT_TO.UNCERTIFIED,
 }: UncertifiedProps) {
   const { isLoggedIn } = useUser();
   const navigate = useNavigate();

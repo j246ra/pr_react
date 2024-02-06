@@ -4,7 +4,7 @@ import { mockUseUser } from '@src/tests/baseProviders';
 import Certified from '@src/components/Certified';
 import toast from 'react-hot-toast';
 import { CERTIFIED } from '@lib/consts/component';
-import { NOTIFY } from '@lib/consts/common';
+import { COMMON, NOTIFY } from '@lib/consts/common';
 
 const CHILD = 'Child component';
 const child = <div>{CHILD}</div>;
@@ -23,7 +23,7 @@ describe('Certified', () => {
     it('リダイレクトしていること', () => {
       render(<Certified component={child} />);
       expect(mockNavigator).toHaveBeenCalled();
-      expect(mockNavigator).toHaveBeenCalledWith('/login');
+      expect(mockNavigator).toHaveBeenCalledWith(COMMON.REDIRECT_TO.CERTIFIED);
       expect(mockToast.error).toHaveBeenCalled();
       expect(mockToast.error).toHaveBeenCalledWith(
         CERTIFIED.ERROR,

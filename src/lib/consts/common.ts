@@ -1,5 +1,15 @@
 import env from '@lib/appEnv';
 
+export const ROUTES = {
+  LOGIN: '/login',
+  SIGN_UP: '/sign_up',
+  ACCOUNT_UPDATE: '/update_account',
+  PASSWORD_FORGET: '/password_forget',
+  RESET_MAIL_SEND_SUCCESS: '/send_success',
+  PASSWORD_EDIT: '/password_edit',
+  LIFELOGS: '/lifelogs',
+};
+
 export const COMMON = {
   APP_URL: {
     HOST_URL: env('host_url', 'http://localhost:3001'),
@@ -14,6 +24,10 @@ export const COMMON = {
     } as const,
   } as const,
   REQUIRED: '(必須)',
+  REDIRECT_TO: {
+    CERTIFIED: ROUTES.LOGIN,
+    UNCERTIFIED: ROUTES.LIFELOGS,
+  } as const,
 };
 
 export const API = {
@@ -73,6 +87,7 @@ export const VALIDATOR = {
 
 export const CONST = {
   COMMON,
+  ROUTES,
   API,
   DATE_UTIL,
   NOTIFY,

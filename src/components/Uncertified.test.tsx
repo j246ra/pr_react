@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { mockNavigator } from '@src/tests/common';
 import { mockUseUser } from '@src/tests/baseProviders';
 import Uncertified from '@src/components/Uncertified';
+import { COMMON } from '@lib/consts/common';
 
 const CHILD = 'Child component';
 const child = <div>{CHILD}</div>;
@@ -17,7 +18,9 @@ describe('Uncertified', () => {
     it('リダイレクトしていること', () => {
       render(<Uncertified component={child} />);
       expect(mockNavigator).toHaveBeenCalled();
-      expect(mockNavigator).toHaveBeenCalledWith('/lifelogs');
+      expect(mockNavigator).toHaveBeenCalledWith(
+        COMMON.REDIRECT_TO.UNCERTIFIED
+      );
       expect(screen.queryByText(CHILD)).not.toBeInTheDocument();
     });
 

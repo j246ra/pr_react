@@ -10,7 +10,7 @@ import {
   Intent,
 } from '@blueprintjs/core';
 import { useUser } from '@providers/UserProvider';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@providers/AuthApiProvider';
 import { useSession } from '@providers/SessionProvider';
 import SearchInput from '@lifelog/presentational/SearchInput';
@@ -19,6 +19,7 @@ import styles from './Header.module.scss';
 import { HEADER } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import { HEADER_TEST_ID as TEST_ID } from '@lib/consts/testId';
+import { ROUTES } from '@lib/consts/common';
 
 export default function Header() {
   const { removeHeaders } = useSession();
@@ -32,16 +33,18 @@ export default function Header() {
       clearUser();
       clearLifelog();
       removeHeaders();
-      navigate('/login');
+      navigate(ROUTES.LOGIN);
     });
   };
+
+  const handleAccountUpdate = () => navigate(ROUTES.ACCOUNT_UPDATE);
 
   return (
     <Navbar fixedToTop={true}>
       <div className={styles.base}>
         <Navbar.Group align={Alignment.LEFT}>
           <Navbar.Heading>
-            <a href="/app">Lifelog</a>
+            <Link to={'/'}>Lifelog</Link>
           </Navbar.Heading>
         </Navbar.Group>
         <Navbar.Group align={Alignment.RIGHT}>
@@ -52,12 +55,12 @@ export default function Header() {
               <Menu>
                 <MenuItem
                   disabled={true}
-                  icon="plus"
+                  icon={IconNames.PLUS}
                   text={HEADER.MENU.CREATE_LOG}
                 />
                 <MenuItem
                   disabled={true}
-                  icon="search"
+                  icon={IconNames.SEARCH}
                   text={HEADER.MENU.SEARCH}
                 />
                 <MenuDivider />
@@ -71,7 +74,7 @@ export default function Header() {
                     data-testid={TEST_ID.EDIT_ACCOUNT}
                     icon={IconNames.EDIT}
                     text={HEADER.MENU.EDIT_ACCOUNT}
-                    href={'/app/update_account'}
+                    onClick={handleAccountUpdate}
                     disabled={!isLoggedIn()}
                   />
                   <MenuItem

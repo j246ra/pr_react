@@ -5,6 +5,7 @@ import { useAuth } from '@providers/AuthApiProvider';
 import { mockNavigator } from '@src/tests/common';
 import { PASSWORD_FORGET } from '@lib/consts/component';
 import { PASSWORD_FORGET_TEST_ID as TEST_ID } from '@lib/consts/testId';
+import { ROUTES } from '@lib/consts/common';
 
 jest.mock('@providers/AuthApiProvider');
 
@@ -51,7 +52,9 @@ describe('PasswordForget コンポーネント', () => {
       expect(mockUseAuth().authApi.passwordForget).toHaveBeenCalledWith(
         'test@example.com'
       );
-      expect(mockNavigator).toHaveBeenCalledWith('/send_success');
+      expect(mockNavigator).toHaveBeenCalledWith(
+        ROUTES.RESET_MAIL_SEND_SUCCESS
+      );
     });
   });
 });

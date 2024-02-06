@@ -7,6 +7,7 @@ import { useSession } from '@providers/SessionProvider';
 import { useNavigate } from 'react-router-dom';
 import { ACCOUNT_DELETE } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
+import { ROUTES } from '@lib/consts/common';
 
 export default function AccountDelete() {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,7 +32,7 @@ export default function AccountDelete() {
         clearUser();
         removeHeaders();
         handleCloseAlert();
-        navigate('/login');
+        navigate(ROUTES.LOGIN);
       });
   };
 

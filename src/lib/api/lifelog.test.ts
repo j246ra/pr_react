@@ -26,7 +26,7 @@ describe('lifelog APIの呼び出し検証', () => {
     const { index } = lifelog(headers);
     await index(page, word);
 
-    expect(mockedClient.get).toHaveBeenCalledWith('/lifelogs', {
+    expect(mockedClient.get).toHaveBeenCalledWith(API.LIFELOG.ENDPOINT, {
       headers: headers(),
       params: { page, word },
     });

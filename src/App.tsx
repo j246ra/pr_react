@@ -15,6 +15,7 @@ import NotFound from '@src/components/NotFound';
 import Hello from '@src/Hello';
 import Uncertified from '@src/components/Uncertified';
 import Certified from '@src/components/Certified';
+import { ROUTES } from '@lib/consts/common';
 
 function App() {
   return (
@@ -25,31 +26,31 @@ function App() {
         <Routes>
           <Route index element={<Uncertified component={<Login />} />} />
           <Route
-            path="/login"
+            path={ROUTES.LOGIN}
             element={<Uncertified component={<Login />} />}
           />
           <Route
-            path="/sign_up"
+            path={ROUTES.SIGN_UP}
             element={<Uncertified component={<SignUp />} />}
           />
           <Route
-            path="/update_account"
+            path={ROUTES.ACCOUNT_UPDATE}
             element={<Certified component={<AccountUpdate />} />}
           />
           <Route
-            path="/password_forget"
+            path={ROUTES.PASSWORD_FORGET}
             element={<Uncertified component={<PasswordForget />} />}
           />
           <Route
-            path="/send_success"
+            path={ROUTES.RESET_MAIL_SEND_SUCCESS}
             element={<Uncertified component={<ResetMailSendSuccess />} />}
           />
           <Route
-            path="/password_edit"
+            path={ROUTES.PASSWORD_EDIT}
             element={<Certified component={<PasswordEdit />} />}
           />
           <Route
-            path="/lifelogs"
+            path={ROUTES.LIFELOGS}
             element={<Certified component={<Lifelogs />} />}
           />
           <Route path="/hello" element={<Hello />} />

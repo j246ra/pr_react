@@ -14,8 +14,7 @@ import SessionOtherLinks from '@session/presentational/SessionOtherLinks';
 import SessionForm from '@session/presentational/SessionForm';
 import SessionLayout from '@session/SessionLayout';
 import styles from './Login.module.scss';
-
-const DEFAULT_PATH = '/lifelogs';
+import { ROUTES } from '@lib/consts/common';
 
 export default function Login() {
   const { authApi: session } = useAuth();
@@ -32,7 +31,7 @@ export default function Login() {
       .then((r) => {
         if (r.status !== 200) return;
         notify.success(LOGIN.MESSAGE.SUCCESS);
-        navigate(DEFAULT_PATH);
+        navigate(ROUTES.LIFELOGS);
       })
       .catch((e) => {
         if (e.response.status === 401)
