@@ -9,6 +9,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import { HEADER_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import { SEARCH_INPUT } from '@lib/consts/component';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 jest.mock('@providers/LifelogProvider');
 
@@ -33,20 +34,26 @@ beforeEach(() => {
   });
 });
 
+const HeaderComponent = (
+  <Router>
+    <Header />
+  </Router>
+);
+
 describe('Header', () => {
   describe('ログイン時', () => {
     it('ロゴが表示されていること', () => {
-      render(<Header />);
+      render(HeaderComponent);
       expect(screen.getByText('Lifelog')).toBeInTheDocument();
     });
     it('SearchInput が表示されていること', () => {
-      render(<Header />);
+      render(HeaderComponent);
       expect(
         screen.getByPlaceholderText('検索（行動、詳細）')
       ).toBeInTheDocument();
     });
     it('アカウント編集ボタンが活性化していること', async () => {
-      render(<Header />);
+      render(HeaderComponent);
       fireEvent.click(screen.getByTestId(TEST_ID.BUTTON));
       userEvent.hover(screen.getByTestId(TEST_ID.SETTINGS));
       await waitFor(() => {
@@ -56,7 +63,7 @@ describe('Header', () => {
       });
     });
     it('ログアウトボタンが活性化していること', async () => {
-      render(<Header />);
+      render(HeaderComponent);
       fireEvent.click(screen.getByTestId(TEST_ID.BUTTON));
       userEvent.hover(screen.getByTestId(TEST_ID.SETTINGS));
       await waitFor(() => {
@@ -73,17 +80,17 @@ describe('Header', () => {
       mockUseUser().isLoggedIn = jest.fn().mockReturnValue(false);
     });
     it('ロゴが表示されていること', () => {
-      render(<Header />);
+      render(HeaderComponent);
       expect(screen.getByText('Lifelog')).toBeInTheDocument();
     });
     it('SearchInput が表示されていないこと', () => {
-      render(<Header />);
+      render(HeaderComponent);
       expect(
         screen.queryByPlaceholderText(SEARCH_INPUT.PLACEHOLDER)
       ).toBeNull();
     });
     it('アカウント編集ボタンが非活性であること', async () => {
-      render(<Header />);
+      render(HeaderComponent);
       fireEvent.click(screen.getByTestId(TEST_ID.BUTTON));
       userEvent.hover(screen.getByTestId(TEST_ID.SETTINGS));
       await waitFor(() => {
@@ -93,7 +100,7 @@ describe('Header', () => {
       });
     });
     it('ログアウトボタンが非活性であること', async () => {
-      render(<Header />);
+      render(HeaderComponent);
       fireEvent.click(screen.getByTestId(TEST_ID.BUTTON));
       userEvent.hover(screen.getByTestId(TEST_ID.SETTINGS));
       await waitFor(() => {

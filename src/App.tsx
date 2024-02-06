@@ -12,7 +12,9 @@ import PasswordEdit from '@session/container/PasswordEdit';
 import ResetMailSendSuccess from '@session/container/ResetMailSendSuccess';
 import Lifelogs from '@lifelog/Lifelogs';
 import NotFound from '@src/components/NotFound';
-import Hello from '@src/Hello';
+import Uncertified from '@src/components/Uncertified';
+import Certified from '@src/components/Certified';
+import { ROUTES } from '@lib/consts/common';
 
 function App() {
   return (
@@ -21,15 +23,35 @@ function App() {
       <Header />
       <BaseLayout>
         <Routes>
-          <Route index element={<Login />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/sign_up" element={<SignUp />} />
-          <Route path="/update_account" element={<AccountUpdate />} />
-          <Route path="/password_forget" element={<PasswordForget />} />
-          <Route path="/send_success" element={<ResetMailSendSuccess />} />
-          <Route path="/password_edit" element={<PasswordEdit />} />
-          <Route path="/lifelogs" element={<Lifelogs />} />
-          <Route path="/hello" element={<Hello />} />
+          <Route index element={<Uncertified component={<Login />} />} />
+          <Route
+            path={ROUTES.LOGIN}
+            element={<Uncertified component={<Login />} />}
+          />
+          <Route
+            path={ROUTES.SIGN_UP}
+            element={<Uncertified component={<SignUp />} />}
+          />
+          <Route
+            path={ROUTES.ACCOUNT_UPDATE}
+            element={<Certified component={<AccountUpdate />} />}
+          />
+          <Route
+            path={ROUTES.PASSWORD_FORGET}
+            element={<Uncertified component={<PasswordForget />} />}
+          />
+          <Route
+            path={ROUTES.RESET_MAIL_SEND_SUCCESS}
+            element={<Uncertified component={<ResetMailSendSuccess />} />}
+          />
+          <Route
+            path={ROUTES.PASSWORD_EDIT}
+            element={<Certified component={<PasswordEdit />} />}
+          />
+          <Route
+            path={ROUTES.LIFELOGS}
+            element={<Certified component={<Lifelogs />} />}
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BaseLayout>

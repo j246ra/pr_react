@@ -11,6 +11,7 @@ import { PASSWORD_FORGET_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import styles from './PasswordForget.module.scss';
 import SessionForm from '@session/presentational/SessionForm';
 import SessionLayout from '@session/SessionLayout';
+import { ROUTES } from '@lib/consts/common';
 
 export default function PasswordForget() {
   const { authApi: session } = useAuth();
@@ -23,12 +24,12 @@ export default function PasswordForget() {
       .passwordForget(email)
       .then(() => {
         notify.success(PASSWORD_FORGET.MESSAGE.SUCCESS);
-        navigate('/send_success');
+        navigate(ROUTES.RESET_MAIL_SEND_SUCCESS);
       })
       .catch((e) => {
         if (e?.response.status === 404) {
           notify.success(PASSWORD_FORGET.MESSAGE.SUCCESS);
-          navigate('/send_success');
+          navigate(ROUTES.RESET_MAIL_SEND_SUCCESS);
         } else {
           notify.error(PASSWORD_FORGET.MESSAGE.ERROR);
         }

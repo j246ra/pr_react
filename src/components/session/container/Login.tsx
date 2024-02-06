@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { Button, Callout, H2, Intent } from '@blueprintjs/core';
 import { useUser } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
@@ -14,19 +14,14 @@ import SessionOtherLinks from '@session/presentational/SessionOtherLinks';
 import SessionForm from '@session/presentational/SessionForm';
 import SessionLayout from '@session/SessionLayout';
 import styles from './Login.module.scss';
-
-const DEFAULT_PATH = '/lifelogs';
+import { ROUTES } from '@lib/consts/common';
 
 export default function Login() {
   const { authApi: session } = useAuth();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const { createUser, isLoggedIn } = useUser();
+  const { createUser } = useUser();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isLoggedIn()) return navigate(DEFAULT_PATH);
-  }, [isLoggedIn, navigate]);
 
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,7 +31,7 @@ export default function Login() {
       .then((r) => {
         if (r.status !== 200) return;
         notify.success(LOGIN.MESSAGE.SUCCESS);
-        navigate(DEFAULT_PATH);
+        navigate(ROUTES.LIFELOGS);
       })
       .catch((e) => {
         if (e.response.status === 401)

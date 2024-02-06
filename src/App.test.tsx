@@ -1,7 +1,36 @@
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import App from '@src/App';
 import { NOTFOUND } from '@lib/consts/component';
+import { UncertifiedProps } from '@src/components/Uncertified';
+import { CertifiedProps } from '@src/components/Certified';
+import { ROUTES } from '@lib/consts/common';
+
+const UNCERTIFIED = 'Mocked Uncertified';
+jest.mock(
+  '@src/components/Uncertified',
+  () =>
+    ({ component }: UncertifiedProps) =>
+      (
+        <>
+          {UNCERTIFIED}
+          {component}
+        </>
+      )
+);
+const CERTIFIED = 'Mocked Certified';
+jest.mock(
+  '@src/components/Certified',
+  () =>
+    ({ component }: CertifiedProps) =>
+      (
+        <>
+          {CERTIFIED}
+          {component}
+        </>
+      )
+);
 
 const HEADER = 'Mocked Header';
 jest.mock('@src/components/Header', () => () => <div>{HEADER}</div>);
@@ -35,69 +64,77 @@ describe('正常系', () => {
         <App />
       </MemoryRouter>
     );
+    expect(screen.getByText(UNCERTIFIED)).toBeInTheDocument();
     expect(screen.getByText(LOGIN)).toBeInTheDocument();
   });
 
-  it('/login の場合は Login をレンダリング', () => {
+  it('/login の場合は Login をレンダリング', async () => {
     render(
-      <MemoryRouter initialEntries={['/login']}>
+      <MemoryRouter initialEntries={[ROUTES.LOGIN]}>
         <App />
       </MemoryRouter>
     );
+    expect(screen.getByText(UNCERTIFIED)).toBeInTheDocument();
     expect(screen.getByText(LOGIN)).toBeInTheDocument();
   });
 
   it('/sign_up の場合は SingUp をレンダリング', () => {
     render(
-      <MemoryRouter initialEntries={['/sign_up']}>
+      <MemoryRouter initialEntries={[ROUTES.SIGN_UP]}>
         <App />
       </MemoryRouter>
     );
+    expect(screen.getByText(UNCERTIFIED)).toBeInTheDocument();
     expect(screen.getByText(SIGN_UP)).toBeInTheDocument();
   });
 
   it('/update_account の場合は UpdateAccount をレンダリング', () => {
     render(
-      <MemoryRouter initialEntries={['/update_account']}>
+      <MemoryRouter initialEntries={[ROUTES.ACCOUNT_UPDATE]}>
         <App />
       </MemoryRouter>
     );
+    expect(screen.getByText(CERTIFIED)).toBeInTheDocument();
     expect(screen.getByText(ACCOUNT_UPDATE)).toBeInTheDocument();
   });
 
   it('/password_forget の場合は PasswordForget をレンダリング', () => {
     render(
-      <MemoryRouter initialEntries={['/password_forget']}>
+      <MemoryRouter initialEntries={[ROUTES.PASSWORD_FORGET]}>
         <App />
       </MemoryRouter>
     );
+    expect(screen.getByText(UNCERTIFIED)).toBeInTheDocument();
     expect(screen.getByText(PASSWORD_FORGET)).toBeInTheDocument();
   });
 
   it('/send_success の場合は ResetMailSendSuccess をレンダリング', () => {
     render(
-      <MemoryRouter initialEntries={['/send_success']}>
+      <MemoryRouter initialEntries={[ROUTES.RESET_MAIL_SEND_SUCCESS]}>
         <App />
       </MemoryRouter>
     );
+    expect(screen.getByText(UNCERTIFIED)).toBeInTheDocument();
     expect(screen.getByText(RESET_MAIL_SEND_SUCCESS)).toBeInTheDocument();
   });
 
   it('/password_edit の場合は PasswordEdit をレンダリング', () => {
     render(
-      <MemoryRouter initialEntries={['/password_edit']}>
+      <MemoryRouter initialEntries={[ROUTES.PASSWORD_EDIT]}>
         <App />
       </MemoryRouter>
     );
+    expect(screen.getByText(CERTIFIED)).toBeInTheDocument();
     expect(screen.getByText(PASSWORD_EDIT)).toBeInTheDocument();
   });
 
   it('/lifelogs の場合は Lifelogs をレンダリング', () => {
     render(
-      <MemoryRouter initialEntries={['/lifelogs']}>
+      <MemoryRouter initialEntries={[ROUTES.LIFELOGS]}>
         <App />
       </MemoryRouter>
     );
+    expect(screen.getByText(CERTIFIED)).toBeInTheDocument();
     expect(screen.getByText(LIFELOGS)).toBeInTheDocument();
   });
 });
@@ -110,6 +147,7 @@ describe('存在しないURLの場合', () => {
         <App />
       </MemoryRouter>
     );
+    expect(screen.queryByText(CERTIFIED)).not.toBeInTheDocument();
     expect(screen.getByText(NOTFOUND.CONTEXT)).toBeInTheDocument();
   });
 });
