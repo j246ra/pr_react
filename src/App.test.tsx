@@ -103,6 +103,7 @@ describe('正常系', () => {
         <App />
       </MemoryRouter>
     );
+    expect(screen.getByText(UNCERTIFIED)).toBeInTheDocument();
     expect(screen.getByText(PASSWORD_FORGET)).toBeInTheDocument();
   });
 
@@ -112,6 +113,7 @@ describe('正常系', () => {
         <App />
       </MemoryRouter>
     );
+    expect(screen.getByText(UNCERTIFIED)).toBeInTheDocument();
     expect(screen.getByText(RESET_MAIL_SEND_SUCCESS)).toBeInTheDocument();
   });
 

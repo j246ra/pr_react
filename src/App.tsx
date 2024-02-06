@@ -36,8 +36,14 @@ function App() {
             path="/update_account"
             element={<Certified component={<AccountUpdate />} />}
           />
-          <Route path="/password_forget" element={<PasswordForget />} />
-          <Route path="/send_success" element={<ResetMailSendSuccess />} />
+          <Route
+            path="/password_forget"
+            element={<Uncertified component={<PasswordForget />} />}
+          />
+          <Route
+            path="/send_success"
+            element={<Uncertified component={<ResetMailSendSuccess />} />}
+          />
           <Route
             path="/password_edit"
             element={<Certified component={<PasswordEdit />} />}
