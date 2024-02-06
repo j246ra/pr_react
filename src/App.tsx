@@ -12,7 +12,6 @@ import PasswordEdit from '@session/container/PasswordEdit';
 import ResetMailSendSuccess from '@session/container/ResetMailSendSuccess';
 import Lifelogs from '@lifelog/Lifelogs';
 import NotFound from '@src/components/NotFound';
-import Hello from '@src/Hello';
 import Uncertified from '@src/components/Uncertified';
 import Certified from '@src/components/Certified';
 import { ROUTES } from '@lib/consts/common';
@@ -53,7 +52,6 @@ function App() {
             path={ROUTES.LIFELOGS}
             element={<Certified component={<Lifelogs />} />}
           />
-          <Route path="/hello" element={<Hello />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BaseLayout>
