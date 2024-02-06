@@ -1,7 +1,22 @@
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import App from '@src/App';
 import { NOTFOUND } from '@lib/consts/component';
+import { UncertifiedProps } from '@src/components/Uncertified';
+
+const UNCERTIFIED = 'Mocked Uncertified';
+jest.mock(
+  '@src/components/Uncertified',
+  () =>
+    ({ component }: UncertifiedProps) =>
+      (
+        <>
+          {UNCERTIFIED}
+          {component}
+        </>
+      )
+);
 
 const HEADER = 'Mocked Header';
 jest.mock('@src/components/Header', () => () => <div>{HEADER}</div>);
@@ -35,15 +50,17 @@ describe('正常系', () => {
         <App />
       </MemoryRouter>
     );
+    expect(screen.getByText(UNCERTIFIED)).toBeInTheDocument();
     expect(screen.getByText(LOGIN)).toBeInTheDocument();
   });
 
-  it('/login の場合は Login をレンダリング', () => {
+  it('/login の場合は Login をレンダリング', async () => {
     render(
       <MemoryRouter initialEntries={['/login']}>
         <App />
       </MemoryRouter>
     );
+    expect(screen.getByText(UNCERTIFIED)).toBeInTheDocument();
     expect(screen.getByText(LOGIN)).toBeInTheDocument();
   });
 
@@ -53,6 +70,7 @@ describe('正常系', () => {
         <App />
       </MemoryRouter>
     );
+    expect(screen.getByText(UNCERTIFIED)).toBeInTheDocument();
     expect(screen.getByText(SIGN_UP)).toBeInTheDocument();
   });
 

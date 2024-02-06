@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { Button, Callout, H2, Intent } from '@blueprintjs/core';
 import { useUser } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
@@ -21,12 +21,8 @@ export default function Login() {
   const { authApi: session } = useAuth();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const { createUser, isLoggedIn } = useUser();
+  const { createUser } = useUser();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isLoggedIn()) return navigate(DEFAULT_PATH);
-  }, [isLoggedIn, navigate]);
 
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
