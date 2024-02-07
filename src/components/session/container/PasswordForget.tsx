@@ -27,7 +27,7 @@ export default function PasswordForget() {
         navigate(ROUTES.RESET_MAIL_SEND_SUCCESS);
       })
       .catch((e) => {
-        if (e?.response.status === 404) {
+        if (e.response?.status === 404) {
           notify.success(PASSWORD_FORGET.MESSAGE.SUCCESS);
           navigate(ROUTES.RESET_MAIL_SEND_SUCCESS);
         } else {
