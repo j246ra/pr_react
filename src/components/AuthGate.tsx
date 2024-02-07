@@ -21,7 +21,7 @@ function AuthGate({
 
   useEffect(() => {
     if (!passingCondition(isLoggedIn())) {
-      if (fallbackMessage) notify.error(fallbackMessage);
+      notify.error(fallbackMessage);
       navigate(fallbackPath);
       return;
     }
