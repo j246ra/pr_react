@@ -10,17 +10,6 @@ export type AuthGateProps = {
   fallbackMessage?: string;
 };
 
-export type UnauthenticatedOnlyProps = Pick<
-  AuthGateProps,
-  'children' | 'fallbackMessage'
-> &
-  Partial<Pick<AuthGateProps, 'fallbackPath'>>;
-// export type UnauthenticatedOnlyProps = {
-//   children: React.ReactNode;
-//   fallbackPath?: string;
-//   fallbackMessage?: string;
-// }
-
 function AuthGate({
   children,
   passingCondition,

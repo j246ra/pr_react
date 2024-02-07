@@ -26,7 +26,6 @@ export const COMMON = {
   REQUIRED: '(必須)',
   REDIRECT_TO: {
     CERTIFIED: ROUTES.LOGIN,
-    UNCERTIFIED: ROUTES.LIFELOGS,
   } as const,
 };
 

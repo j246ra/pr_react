@@ -3,19 +3,19 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import App from '@src/App';
 import { NOTFOUND } from '@lib/consts/component';
-import { UncertifiedProps } from '@src/components/Uncertified';
+import { UnauthenticatedOnlyProps } from '@src/components/UnauthenticatedOnly';
 import { CertifiedProps } from '@src/components/Certified';
 import { ROUTES } from '@lib/consts/common';
 
-const UNCERTIFIED = 'Mocked Uncertified';
+const UNCERTIFIED = 'Mocked UnauthenticatedOnly';
 jest.mock(
-  '@src/components/Uncertified',
+  '@src/components/UnauthenticatedOnly',
   () =>
-    ({ component }: UncertifiedProps) =>
+    ({ children }: UnauthenticatedOnlyProps) =>
       (
         <>
           {UNCERTIFIED}
-          {component}
+          {children}
         </>
       )
 );

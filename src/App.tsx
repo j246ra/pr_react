@@ -12,7 +12,7 @@ import PasswordEdit from '@session/container/PasswordEdit';
 import ResetMailSendSuccess from '@session/container/ResetMailSendSuccess';
 import Lifelogs from '@lifelog/Lifelogs';
 import NotFound from '@src/components/NotFound';
-import Uncertified from '@src/components/Uncertified';
+import UnauthenticatedOnly from '@src/components/UnauthenticatedOnly';
 import Certified from '@src/components/Certified';
 import { ROUTES } from '@lib/consts/common';
 
@@ -23,14 +23,14 @@ function App() {
       <Header />
       <BaseLayout>
         <Routes>
-          <Route index element={<Uncertified component={<Login />} />} />
+          <Route index element={<UnauthenticatedOnly children={<Login />} />} />
           <Route
             path={ROUTES.LOGIN}
-            element={<Uncertified component={<Login />} />}
+            element={<UnauthenticatedOnly children={<Login />} />}
           />
           <Route
             path={ROUTES.SIGN_UP}
-            element={<Uncertified component={<SignUp />} />}
+            element={<UnauthenticatedOnly children={<SignUp />} />}
           />
           <Route
             path={ROUTES.ACCOUNT_UPDATE}
@@ -38,11 +38,13 @@ function App() {
           />
           <Route
             path={ROUTES.PASSWORD_FORGET}
-            element={<Uncertified component={<PasswordForget />} />}
+            element={<UnauthenticatedOnly children={<PasswordForget />} />}
           />
           <Route
             path={ROUTES.RESET_MAIL_SEND_SUCCESS}
-            element={<Uncertified component={<ResetMailSendSuccess />} />}
+            element={
+              <UnauthenticatedOnly children={<ResetMailSendSuccess />} />
+            }
           />
           <Route
             path={ROUTES.PASSWORD_EDIT}

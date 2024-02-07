@@ -4,6 +4,10 @@ export const CERTIFIED = {
   ERROR: 'ログインしてください。',
 };
 
+export const UNAUTHENTICATED_ONLY = {
+  FALLBACK_PATH: CONST.ROUTES.LIFELOGS,
+};
+
 export const EMAIL_INPUT = {
   LABEL: 'メールアドレス',
   PLACEHOLDER: 'メールアドレスを入力',
@@ -208,6 +212,7 @@ export const NOTFOUND = {
 
 export const COMPONENT = {
   CERTIFIED,
+  UNAUTHENTICATED_ONLY,
   ACCOUNT_DELETE,
   ACCOUNT_UPDATE,
   LOGIN,
