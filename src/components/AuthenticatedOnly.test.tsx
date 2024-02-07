@@ -1,13 +1,13 @@
 import { render, screen } from '@testing-library/react';
 import { mockNavigator } from '@src/tests/common';
 import { mockUseUser } from '@src/tests/baseProviders';
-import Certified from '@src/components/Certified';
+import AuthenticatedOnly from '@src/components/AuthenticatedOnly';
 import toast from 'react-hot-toast';
-import { CERTIFIED } from '@lib/consts/component';
-import { COMMON, NOTIFY } from '@lib/consts/common';
+import { AUTHENTICATED_ONLY } from '@lib/consts/component';
+import { NOTIFY } from '@lib/consts/common';
 
-const CHILD = 'Child component';
-const child = <div>{CHILD}</div>;
+const CHILDREN = 'Child component';
+const children = <div>{CHILDREN}</div>;
 
 jest.mock('react-hot-toast');
 const mockToast = jest.mocked(toast);
@@ -21,27 +21,29 @@ beforeEach(() => {
 describe('Certified', () => {
   describe('未認証のとき', () => {
     it('リダイレクトしていること', () => {
-      render(<Certified component={child} />);
+      render(<AuthenticatedOnly children={children} />);
       expect(mockNavigator).toHaveBeenCalled();
-      expect(mockNavigator).toHaveBeenCalledWith(COMMON.REDIRECT_TO.CERTIFIED);
+      expect(mockNavigator).toHaveBeenCalledWith(
+        AUTHENTICATED_ONLY.FALLBACK_PATH
+      );
       expect(mockToast.error).toHaveBeenCalled();
       expect(mockToast.error).toHaveBeenCalledWith(
-        CERTIFIED.ERROR,
+        AUTHENTICATED_ONLY.MESSAGE.ERROR,
         NOTIFY.STYLE.ERROR
       );
-      expect(screen.queryByText(CHILD)).not.toBeInTheDocument();
+      expect(screen.queryByText(CHILDREN)).not.toBeInTheDocument();
     });
 
     it('任意のパスでリダイレクトしていること', () => {
-      render(<Certified component={child} redirectTo={'/nis'} />);
+      render(<AuthenticatedOnly children={children} fallbackPath={'/nis'} />);
       expect(mockNavigator).toHaveBeenCalled();
       expect(mockNavigator).toHaveBeenCalledWith('/nis');
       expect(mockToast.error).toHaveBeenCalled();
       expect(mockToast.error).toHaveBeenCalledWith(
-        CERTIFIED.ERROR,
+        AUTHENTICATED_ONLY.MESSAGE.ERROR,
         NOTIFY.STYLE.ERROR
       );
-      expect(screen.queryByText(CHILD)).not.toBeInTheDocument();
+      expect(screen.queryByText(CHILDREN)).not.toBeInTheDocument();
     });
   });
 
@@ -50,9 +52,9 @@ describe('Certified', () => {
       mockUseUser().isLoggedIn = jest.fn().mockReturnValue(true);
     });
     it('コンポーネントをレンダリングしていること', () => {
-      render(<Certified component={child} />);
+      render(<AuthenticatedOnly children={children} />);
       expect(mockNavigator).not.toHaveBeenCalled();
-      expect(screen.queryByText(CHILD)).toBeInTheDocument();
+      expect(screen.queryByText(CHILDREN)).toBeInTheDocument();
     });
   });
 });

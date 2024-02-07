@@ -12,8 +12,8 @@ import PasswordEdit from '@session/container/PasswordEdit';
 import ResetMailSendSuccess from '@session/container/ResetMailSendSuccess';
 import Lifelogs from '@lifelog/Lifelogs';
 import NotFound from '@src/components/NotFound';
-import Uncertified from '@src/components/Uncertified';
-import Certified from '@src/components/Certified';
+import UnauthenticatedOnly from '@src/components/UnauthenticatedOnly';
+import AuthenticatedOnly from '@src/components/AuthenticatedOnly';
 import { ROUTES } from '@lib/consts/common';
 
 function App() {
@@ -23,34 +23,36 @@ function App() {
       <Header />
       <BaseLayout>
         <Routes>
-          <Route index element={<Uncertified component={<Login />} />} />
+          <Route index element={<UnauthenticatedOnly children={<Login />} />} />
           <Route
             path={ROUTES.LOGIN}
-            element={<Uncertified component={<Login />} />}
+            element={<UnauthenticatedOnly children={<Login />} />}
           />
           <Route
             path={ROUTES.SIGN_UP}
-            element={<Uncertified component={<SignUp />} />}
+            element={<UnauthenticatedOnly children={<SignUp />} />}
           />
           <Route
             path={ROUTES.ACCOUNT_UPDATE}
-            element={<Certified component={<AccountUpdate />} />}
+            element={<AuthenticatedOnly children={<AccountUpdate />} />}
           />
           <Route
             path={ROUTES.PASSWORD_FORGET}
-            element={<Uncertified component={<PasswordForget />} />}
+            element={<UnauthenticatedOnly children={<PasswordForget />} />}
           />
           <Route
             path={ROUTES.RESET_MAIL_SEND_SUCCESS}
-            element={<Uncertified component={<ResetMailSendSuccess />} />}
+            element={
+              <UnauthenticatedOnly children={<ResetMailSendSuccess />} />
+            }
           />
           <Route
             path={ROUTES.PASSWORD_EDIT}
-            element={<Certified component={<PasswordEdit />} />}
+            element={<AuthenticatedOnly children={<PasswordEdit />} />}
           />
           <Route
             path={ROUTES.LIFELOGS}
-            element={<Certified component={<Lifelogs />} />}
+            element={<AuthenticatedOnly children={<Lifelogs />} />}
           />
           <Route path="*" element={<NotFound />} />
         </Routes>

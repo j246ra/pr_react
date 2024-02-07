@@ -1,7 +1,14 @@
 import CONST from '@lib/consts/common';
 
-export const CERTIFIED = {
-  ERROR: 'ログインしてください。',
+export const AUTHENTICATED_ONLY = {
+  MESSAGE: {
+    ERROR: 'ログインしてください。',
+  } as const,
+  FALLBACK_PATH: CONST.ROUTES.LOGIN,
+};
+
+export const UNAUTHENTICATED_ONLY = {
+  FALLBACK_PATH: CONST.ROUTES.LIFELOGS,
 };
 
 export const EMAIL_INPUT = {
@@ -207,7 +214,8 @@ export const NOTFOUND = {
 };
 
 export const COMPONENT = {
-  CERTIFIED,
+  CERTIFIED: AUTHENTICATED_ONLY,
+  UNAUTHENTICATED_ONLY,
   ACCOUNT_DELETE,
   ACCOUNT_UPDATE,
   LOGIN,
