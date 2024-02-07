@@ -11,6 +11,7 @@ import {
 } from '@src/tests/baseProviders';
 import { EMAIL_INPUT, PASSWORD_INPUT, SIGN_UP } from '@lib/consts/component';
 import { SIGN_UP_TEST_ID as TEST_ID } from '@lib/consts/testId';
+import { ROUTES } from '@lib/consts/common';
 
 jest.mock('@lib/toast');
 const mockNotify = jest.mocked(notify);
@@ -85,7 +86,7 @@ describe('SignUp component', () => {
       expect(mockNotify.success).toHaveBeenCalledTimes(1);
       expect(mockNotify.success).toHaveBeenCalledWith(SIGN_UP.MESSAGE.SUCCESS);
       expect(mockNavigator).toHaveBeenCalledTimes(1);
-      expect(mockNavigator).toHaveBeenCalledWith('/');
+      expect(mockNavigator).toHaveBeenCalledWith(ROUTES.LIFELOGS);
     });
   });
 });
