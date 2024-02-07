@@ -4,30 +4,30 @@ import { MemoryRouter } from 'react-router';
 import App from '@src/App';
 import { NOTFOUND } from '@lib/consts/component';
 import { UnauthenticatedOnlyProps } from '@src/components/UnauthenticatedOnly';
-import { CertifiedProps } from '@src/components/Certified';
+import { AuthenticatedOnlyProps } from '@src/components/AuthenticatedOnly';
 import { ROUTES } from '@lib/consts/common';
 
-const UNCERTIFIED = 'Mocked UnauthenticatedOnly';
+const UNAUTHENTICATED_ONLY = 'Mocked UnauthenticatedOnly';
 jest.mock(
   '@src/components/UnauthenticatedOnly',
   () =>
     ({ children }: UnauthenticatedOnlyProps) =>
       (
         <>
-          {UNCERTIFIED}
+          {UNAUTHENTICATED_ONLY}
           {children}
         </>
       )
 );
-const CERTIFIED = 'Mocked Certified';
+const AUTHENTICATED_ONLY = 'Mocked AuthenticatedOnly';
 jest.mock(
-  '@src/components/Certified',
+  '@src/components/AuthenticatedOnly',
   () =>
-    ({ component }: CertifiedProps) =>
+    ({ children }: AuthenticatedOnlyProps) =>
       (
         <>
-          {CERTIFIED}
-          {component}
+          {AUTHENTICATED_ONLY}
+          {children}
         </>
       )
 );
@@ -64,7 +64,7 @@ describe('正常系', () => {
         <App />
       </MemoryRouter>
     );
-    expect(screen.getByText(UNCERTIFIED)).toBeInTheDocument();
+    expect(screen.getByText(UNAUTHENTICATED_ONLY)).toBeInTheDocument();
     expect(screen.getByText(LOGIN)).toBeInTheDocument();
   });
 
@@ -74,7 +74,7 @@ describe('正常系', () => {
         <App />
       </MemoryRouter>
     );
-    expect(screen.getByText(UNCERTIFIED)).toBeInTheDocument();
+    expect(screen.getByText(UNAUTHENTICATED_ONLY)).toBeInTheDocument();
     expect(screen.getByText(LOGIN)).toBeInTheDocument();
   });
 
@@ -84,7 +84,7 @@ describe('正常系', () => {
         <App />
       </MemoryRouter>
     );
-    expect(screen.getByText(UNCERTIFIED)).toBeInTheDocument();
+    expect(screen.getByText(UNAUTHENTICATED_ONLY)).toBeInTheDocument();
     expect(screen.getByText(SIGN_UP)).toBeInTheDocument();
   });
 
@@ -94,7 +94,7 @@ describe('正常系', () => {
         <App />
       </MemoryRouter>
     );
-    expect(screen.getByText(CERTIFIED)).toBeInTheDocument();
+    expect(screen.getByText(AUTHENTICATED_ONLY)).toBeInTheDocument();
     expect(screen.getByText(ACCOUNT_UPDATE)).toBeInTheDocument();
   });
 
@@ -104,7 +104,7 @@ describe('正常系', () => {
         <App />
       </MemoryRouter>
     );
-    expect(screen.getByText(UNCERTIFIED)).toBeInTheDocument();
+    expect(screen.getByText(UNAUTHENTICATED_ONLY)).toBeInTheDocument();
     expect(screen.getByText(PASSWORD_FORGET)).toBeInTheDocument();
   });
 
@@ -114,7 +114,7 @@ describe('正常系', () => {
         <App />
       </MemoryRouter>
     );
-    expect(screen.getByText(UNCERTIFIED)).toBeInTheDocument();
+    expect(screen.getByText(UNAUTHENTICATED_ONLY)).toBeInTheDocument();
     expect(screen.getByText(RESET_MAIL_SEND_SUCCESS)).toBeInTheDocument();
   });
 
@@ -124,7 +124,7 @@ describe('正常系', () => {
         <App />
       </MemoryRouter>
     );
-    expect(screen.getByText(CERTIFIED)).toBeInTheDocument();
+    expect(screen.getByText(AUTHENTICATED_ONLY)).toBeInTheDocument();
     expect(screen.getByText(PASSWORD_EDIT)).toBeInTheDocument();
   });
 
@@ -134,7 +134,7 @@ describe('正常系', () => {
         <App />
       </MemoryRouter>
     );
-    expect(screen.getByText(CERTIFIED)).toBeInTheDocument();
+    expect(screen.getByText(AUTHENTICATED_ONLY)).toBeInTheDocument();
     expect(screen.getByText(LIFELOGS)).toBeInTheDocument();
   });
 });
@@ -147,7 +147,7 @@ describe('存在しないURLの場合', () => {
         <App />
       </MemoryRouter>
     );
-    expect(screen.queryByText(CERTIFIED)).not.toBeInTheDocument();
+    expect(screen.queryByText(AUTHENTICATED_ONLY)).not.toBeInTheDocument();
     expect(screen.getByText(NOTFOUND.CONTEXT)).toBeInTheDocument();
   });
 });

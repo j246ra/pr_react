@@ -24,9 +24,6 @@ export const COMMON = {
     } as const,
   } as const,
   REQUIRED: '(必須)',
-  REDIRECT_TO: {
-    CERTIFIED: ROUTES.LOGIN,
-  } as const,
 };
 
 export const API = {

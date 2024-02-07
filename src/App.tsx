@@ -13,7 +13,7 @@ import ResetMailSendSuccess from '@session/container/ResetMailSendSuccess';
 import Lifelogs from '@lifelog/Lifelogs';
 import NotFound from '@src/components/NotFound';
 import UnauthenticatedOnly from '@src/components/UnauthenticatedOnly';
-import Certified from '@src/components/Certified';
+import AuthenticatedOnly from '@src/components/AuthenticatedOnly';
 import { ROUTES } from '@lib/consts/common';
 
 function App() {
@@ -34,7 +34,7 @@ function App() {
           />
           <Route
             path={ROUTES.ACCOUNT_UPDATE}
-            element={<Certified component={<AccountUpdate />} />}
+            element={<AuthenticatedOnly children={<AccountUpdate />} />}
           />
           <Route
             path={ROUTES.PASSWORD_FORGET}
@@ -48,11 +48,11 @@ function App() {
           />
           <Route
             path={ROUTES.PASSWORD_EDIT}
-            element={<Certified component={<PasswordEdit />} />}
+            element={<AuthenticatedOnly children={<PasswordEdit />} />}
           />
           <Route
             path={ROUTES.LIFELOGS}
-            element={<Certified component={<Lifelogs />} />}
+            element={<AuthenticatedOnly children={<Lifelogs />} />}
           />
           <Route path="*" element={<NotFound />} />
         </Routes>
