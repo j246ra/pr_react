@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
-import { useUser } from '@providers/UserProvider';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import { COMMON } from '@lib/consts/common';
+import AuthGate from '@src/components/AuthGate';
 
 export type UncertifiedProps = {
   component: React.ReactNode;
@@ -12,16 +11,13 @@ function Uncertified({
   component,
   redirectTo = COMMON.REDIRECT_TO.UNCERTIFIED,
 }: UncertifiedProps) {
-  const { isLoggedIn } = useUser();
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (isLoggedIn()) {
-      navigate(redirectTo);
-      return;
-    }
-  }, []);
-  if (isLoggedIn()) return;
-  return component;
+  return (
+    <AuthGate
+      children={component}
+      passingCondition={(isLoggedIn) => !isLoggedIn}
+      fallbackPath={redirectTo}
+    />
+  );
 }
 
 export default Uncertified;
