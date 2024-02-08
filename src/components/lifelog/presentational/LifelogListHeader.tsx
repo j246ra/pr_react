@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './LifelogListHeader.module.scss';
 import { LIFELOG_LIST_HEADER } from '@lib/consts/component';
+import { EmptyComponent } from '@src/components/EmptyComponent';
 
 export type LifelogListHeaderProps = {
   enabled?: boolean;
@@ -8,7 +9,7 @@ export type LifelogListHeaderProps = {
 export default function LifelogListHeader({
   enabled = true,
 }: LifelogListHeaderProps) {
-  if (!enabled) return null;
+  if (!enabled) return <EmptyComponent />;
   return (
     <thead>
       <tr>

@@ -6,6 +6,7 @@ import { SEARCH_INPUT } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import { SEARCH_INPUT_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import styles from './SearchInput.module.scss';
+import { EmptyComponent } from '@src/components/EmptyComponent';
 
 export type SearchInputProps = {
   isShow: boolean;
@@ -13,7 +14,7 @@ export type SearchInputProps = {
 };
 
 export default function SearchInput({ isShow, width = 260 }: SearchInputProps) {
-  if (!isShow) return null;
+  if (!isShow) return <EmptyComponent />;
 
   const { searchLogs } = useLifelog();
   const [word, setWord] = useState('');
