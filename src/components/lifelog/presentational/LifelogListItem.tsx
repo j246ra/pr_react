@@ -1,10 +1,11 @@
 import React, { useMemo } from 'react';
-import { Button, EntityTitle, Intent } from '@blueprintjs/core';
+import { Button, EntityTitle, Intent, Tooltip } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import { Lifelog } from '@providers/LifelogProvider';
 import styles from './LifelogListItem.module.scss';
-import { days, DISPLAY_DATETIME } from '@lib/dateUtil';
+import { days, DISPLAY_DATETIME, DISPLAY_TIME } from '@lib/dateUtil';
 import { LIFELOG_LIST_ITEM_TEST_ID as TEST_ID } from '@lib/consts/testId';
+import { top } from '@popperjs/core';
 
 export type LifelogListItemProps = {
   log: Lifelog;
@@ -20,8 +21,12 @@ export function LifelogListItem({
   onDeleteButtonClick,
   onActionClick,
 }: LifelogListItemProps) {
-  const startedAt = useMemo(
+  const startedDatetime = useMemo(
     () => days(log.startedAt).format(DISPLAY_DATETIME),
+    [log.startedAt]
+  );
+  const startedTime = useMemo(
+    () => days(log.startedAt).format(DISPLAY_TIME),
     [log.startedAt]
   );
 
@@ -30,7 +35,9 @@ export function LifelogListItem({
       <td
         className={log.finishedAt ? styles.tdStartedAtBold : styles.tdStartedAt}
       >
-        {startedAt}
+        <Tooltip content={startedDatetime} placement={top} compact={true}>
+          {startedTime}
+        </Tooltip>
       </td>
       <td
         data-testid={TEST_ID.LINK_TEXT + log.id}
