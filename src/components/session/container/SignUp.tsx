@@ -22,7 +22,7 @@ export default function SignUp() {
   const { authApi: session } = useAuth();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const { clearUser, updateUser } = useUser();
+  const { clearUser } = useUser();
   const navigate = useNavigate();
 
   const handleSignUp = (e: FormEvent) => {
@@ -32,7 +32,6 @@ export default function SignUp() {
       .signUp(email, password)
       .then((r) => {
         if (r.status !== 200) return;
-        updateUser(email);
         notify.success(SIGN_UP.MESSAGE.SUCCESS);
         navigate(ROUTES.LIFELOGS);
       })
