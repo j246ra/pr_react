@@ -1,5 +1,13 @@
 @import "src/App";
 
+.trItem {
+  height: 55px;
+}
+
+.trItem td {
+  vertical-align: middle!important;
+}
+
 .tdAction {
   @include appLinkText();
   color: $pt-link-color!important;
@@ -18,6 +26,14 @@
 
 .tdOperation {
   text-align: center!important;
+}
+
+.button {
+  display: none;
+}
+
+tr:hover .button {
+  display: inline-flex;
 }
 
 .editButton {

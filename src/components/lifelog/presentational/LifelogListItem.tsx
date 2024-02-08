@@ -26,7 +26,7 @@ export function LifelogListItem({
   );
 
   return (
-    <tr>
+    <tr className={styles.trItem}>
       <td className={`${log.finishedAt ? styles.tdStartedAtBold : ''}`}>
         {startedAt}
       </td>
@@ -40,6 +40,7 @@ export function LifelogListItem({
       <td className={styles.tdDetail}>{log.detail}</td>
       <td className={styles.tdOperation}>
         <Button
+          className={styles.button}
           data-testid={TEST_ID.FINISH_BUTTON + log.id}
           intent={Intent.PRIMARY}
           icon={IconNames.STOPWATCH}
@@ -47,7 +48,7 @@ export function LifelogListItem({
           onClick={onFinishButtonClick}
         />
         <Button
-          className={styles.editButton}
+          className={`${styles.editButton} ${styles.button}`}
           data-testid={TEST_ID.EDIT_BUTTON + log.id}
           intent={Intent.SUCCESS}
           icon={IconNames.EDIT}
@@ -55,7 +56,7 @@ export function LifelogListItem({
           onClick={onEditButtonClick}
         />
         <Button
-          className={styles.deleteButton}
+          className={`${styles.deleteButton} ${styles.button}`}
           data-testid={TEST_ID.DELETE_BUTTON + log.id}
           intent={Intent.DANGER}
           icon={IconNames.DELETE}
