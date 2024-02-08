@@ -15,13 +15,14 @@ import { SIGN_UP_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import SessionOtherLinks from '@session/presentational/SessionOtherLinks';
 import SessionForm from '@session/presentational/SessionForm';
 import SessionLayout from '@session/SessionLayout';
+import { ROUTES } from '@lib/consts/common';
 
 export default function SignUp() {
   const { removeHeaders } = useSession();
   const { authApi: session } = useAuth();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const { clearUser, updateUser } = useUser();
+  const { clearUser } = useUser();
   const navigate = useNavigate();
 
   const handleSignUp = (e: FormEvent) => {
@@ -31,9 +32,8 @@ export default function SignUp() {
       .signUp(email, password)
       .then((r) => {
         if (r.status !== 200) return;
-        updateUser(email);
         notify.success(SIGN_UP.MESSAGE.SUCCESS);
-        navigate('/');
+        navigate(ROUTES.LIFELOGS);
       })
       .catch(() => {
         clearUser();

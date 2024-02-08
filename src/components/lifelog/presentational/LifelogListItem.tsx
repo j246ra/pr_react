@@ -1,10 +1,11 @@
 import React, { useMemo } from 'react';
-import { Button, Intent } from '@blueprintjs/core';
+import { Button, EntityTitle, Intent, Tooltip } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import { Lifelog } from '@providers/LifelogProvider';
 import styles from './LifelogListItem.module.scss';
-import { days, DISPLAY_DATETIME } from '@lib/dateUtil';
+import { days, DISPLAY_DATETIME, DISPLAY_TIME } from '@lib/dateUtil';
 import { LIFELOG_LIST_ITEM_TEST_ID as TEST_ID } from '@lib/consts/testId';
+import { top } from '@popperjs/core';
 
 export type LifelogListItemProps = {
   log: Lifelog;
@@ -20,26 +21,34 @@ export function LifelogListItem({
   onDeleteButtonClick,
   onActionClick,
 }: LifelogListItemProps) {
-  const startedAt = useMemo(
+  const startedDatetime = useMemo(
     () => days(log.startedAt).format(DISPLAY_DATETIME),
+    [log.startedAt]
+  );
+  const startedTime = useMemo(
+    () => days(log.startedAt).format(DISPLAY_TIME),
     [log.startedAt]
   );
 
   return (
-    <tr>
-      <td className={`${log.finishedAt ? styles.tdStartedAtBold : ''}`}>
-        {startedAt}
+    <tr className={styles.trItem}>
+      <td
+        className={log.finishedAt ? styles.tdStartedAtBold : styles.tdStartedAt}
+      >
+        <Tooltip content={startedDatetime} placement={top} compact={true}>
+          {startedTime}
+        </Tooltip>
       </td>
       <td
         data-testid={TEST_ID.LINK_TEXT + log.id}
         className={styles.tdAction}
         onClick={onActionClick}
       >
-        {log.action}
+        <EntityTitle title={log.action} subtitle={log.detail} />
       </td>
-      <td className={styles.tdDetail}>{log.detail}</td>
       <td className={styles.tdOperation}>
         <Button
+          className={styles.button}
           data-testid={TEST_ID.FINISH_BUTTON + log.id}
           intent={Intent.PRIMARY}
           icon={IconNames.STOPWATCH}
@@ -47,7 +56,7 @@ export function LifelogListItem({
           onClick={onFinishButtonClick}
         />
         <Button
-          className={styles.editButton}
+          className={`${styles.editButton} ${styles.button}`}
           data-testid={TEST_ID.EDIT_BUTTON + log.id}
           intent={Intent.SUCCESS}
           icon={IconNames.EDIT}
@@ -55,7 +64,7 @@ export function LifelogListItem({
           onClick={onEditButtonClick}
         />
         <Button
-          className={styles.deleteButton}
+          className={`${styles.deleteButton} ${styles.button}`}
           data-testid={TEST_ID.DELETE_BUTTON + log.id}
           intent={Intent.DANGER}
           icon={IconNames.DELETE}

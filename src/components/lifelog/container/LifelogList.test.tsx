@@ -10,7 +10,6 @@ import {
   mockUseUser,
 } from '@src/tests/baseProviders';
 import toast from 'react-hot-toast';
-import COMPONENT from '@lib/consts/component';
 import {
   LIFELOG_LIST_ITEM_TEST_ID as TEST_ID,
   LIFELOG_LIST_TEST_ID,
@@ -60,12 +59,6 @@ describe('LifelogList component', () => {
       openEditDialog: jest.fn(),
     });
   });
-  it('LifelogListHeader component.', () => {
-    render(<LifelogList />);
-    expect(
-      screen.getByText(COMPONENT.LIFELOG_LIST_HEADER.STARTED_AT)
-    ).toBeInTheDocument();
-  });
   it('spinner', () => {
     mockUseLifelog().logs = [];
     render(<LifelogList />);
@@ -79,7 +72,7 @@ describe('LifelogList component', () => {
     expect(links).toHaveLength(10);
     const contexts = links.map((td) => td.textContent);
     mockLogs.forEach((log) => {
-      expect(contexts).toContain(log.action);
+      expect(contexts).toContain(log.action + log.detail);
     });
     mockUseLifelog().logs = [...mockLogs, ...lifelogs(10, 10)];
     rerender(<LifelogList />);

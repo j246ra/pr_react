@@ -9,7 +9,6 @@ import AuthGate, { AuthGateProps } from '@src/components/AuthGate';
  * @property [fallbackPath] 未認証の場合のリダイレクト先、未指定の場合は AUTHENTICATED_ONLY.FALLBACK_PATH
  * @property [fallbackMessage] 未認証の場合に表示するエラーメッセージ
  */
-
 export type AuthenticatedOnlyProps = Pick<
   AuthGateProps,
   'children' | 'fallbackMessage'

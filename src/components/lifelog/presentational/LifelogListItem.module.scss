@@ -1,23 +1,46 @@
 @import "src/App";
 
+.trItem {
+  height: 55px;
+}
+
+.trItem td {
+  vertical-align: middle!important;
+}
+
 .tdAction {
   @include appLinkText();
   color: $pt-link-color!important;
+  box-shadow: none!important;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.tdStartedAt {
+  width: 50px;
+  box-shadow: none!important;
 }
 
 .tdStartedAtBold {
+  width: 50px;
   font-weight: bold;
-}
-
-.tdDetail {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  max-width: 0;
+  box-shadow: none!important;
 }
 
 .tdOperation {
   text-align: center!important;
+  width: 150px;
+  box-shadow: none!important;
+}
+
+.button {
+  display: none;
+}
+
+tr:hover .button {
+  display: inline-flex;
 }
 
 .editButton {

@@ -31,7 +31,7 @@ describe('LifelogListItem', () => {
       </table>
     );
 
-    expect(getByText('23/07/05 12:34')).toBeInTheDocument();
+    expect(getByText('12:34')).toBeInTheDocument();
     expect(getByText('Test action')).toBeInTheDocument();
     expect(getByText('Test detail')).toBeInTheDocument();
   });

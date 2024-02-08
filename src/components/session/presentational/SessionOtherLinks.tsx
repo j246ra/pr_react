@@ -4,6 +4,7 @@ import { LOGIN } from '@lib/consts/component';
 import styles from './SessionOtherLinks.module.scss';
 import { SESSION_OTHER_LINKS_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import { ROUTES } from '@lib/consts/common';
+import { EmptyComponent } from '@src/components/EmptyComponent';
 
 type SessionOtherLinksProps = {
   passwordForgetEnabled?: boolean;
@@ -14,7 +15,7 @@ export default function SessionOtherLinks({
   passwordForgetEnabled,
   signUpEnabled,
 }: SessionOtherLinksProps) {
-  if (!passwordForgetEnabled && !signUpEnabled) return null;
+  if (!passwordForgetEnabled && !signUpEnabled) return <EmptyComponent />;
   return (
     <div className={styles.links}>
       {passwordForgetEnabled && (
