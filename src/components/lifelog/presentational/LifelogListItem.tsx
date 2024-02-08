@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Button, Intent } from '@blueprintjs/core';
+import { Button, EntityTitle, Intent } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import { Lifelog } from '@providers/LifelogProvider';
 import styles from './LifelogListItem.module.scss';
@@ -27,7 +27,9 @@ export function LifelogListItem({
 
   return (
     <tr className={styles.trItem}>
-      <td className={`${log.finishedAt ? styles.tdStartedAtBold : ''}`}>
+      <td
+        className={log.finishedAt ? styles.tdStartedAtBold : styles.tdStartedAt}
+      >
         {startedAt}
       </td>
       <td
@@ -35,9 +37,8 @@ export function LifelogListItem({
         className={styles.tdAction}
         onClick={onActionClick}
       >
-        {log.action}
+        <EntityTitle title={log.action} subtitle={log.detail} />
       </td>
-      <td className={styles.tdDetail}>{log.detail}</td>
       <td className={styles.tdOperation}>
         <Button
           className={styles.button}

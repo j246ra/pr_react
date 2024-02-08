@@ -11,21 +11,28 @@
 .tdAction {
   @include appLinkText();
   color: $pt-link-color!important;
+  box-shadow: none!important;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.tdStartedAt {
+  width: 100px;
+  box-shadow: none!important;
 }
 
 .tdStartedAtBold {
+  width: 100px;
   font-weight: bold;
-}
-
-.tdDetail {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  max-width: 0;
+  box-shadow: none!important;
 }
 
 .tdOperation {
   text-align: center!important;
+  width: 150px;
+  box-shadow: none!important;
 }
 
 .button {

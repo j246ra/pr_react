@@ -4,7 +4,6 @@ import { HTMLTable, NonIdealState } from '@blueprintjs/core';
 import { useLifelog } from '@providers/LifelogProvider';
 import notify from '@lib/toast';
 import LifelogListItem from '@lifelog/presentational/LifelogListItem';
-import LifelogListHeader from '@lifelog/presentational/LifelogListHeader';
 import useDeleteLifelog from '@src/hooks/useDeleteLifelog';
 import useFinishAction from '@src/hooks/useFinishAction';
 import styles from './LifelogList.module.scss';
@@ -33,7 +32,6 @@ export default function LifelogList() {
 
   return (
     <HTMLTable className={styles.baseTable} bordered={false}>
-      <LifelogListHeader enabled={logs.length > 0} />
       <InfiniteScroll
         element={'tbody'}
         loadMore={lifelogLoader}
