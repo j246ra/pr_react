@@ -31,7 +31,7 @@ export default function LifelogList() {
   };
 
   return (
-    <HTMLTable className={styles.baseTable} bordered={false}>
+    <HTMLTable className={styles.baseTable} bordered={false} interactive={true}>
       <InfiniteScroll
         element={'tbody'}
         loadMore={lifelogLoader}
