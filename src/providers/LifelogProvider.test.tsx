@@ -72,7 +72,7 @@ describe('LifelogProvider', () => {
         });
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(10);
-          expect(mockSetHeaders).toBeCalled();
+          expect(mockSetHeaders).toHaveBeenCalled();
         });
       });
 
@@ -87,7 +87,7 @@ describe('LifelogProvider', () => {
 
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(0);
-          expect(mockClearUser).toBeCalled();
+          expect(mockClearUser).toHaveBeenCalled();
         });
       });
 
@@ -102,7 +102,7 @@ describe('LifelogProvider', () => {
 
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(0);
-          expect(mockClearUser).not.toBeCalled();
+          expect(mockClearUser).not.toHaveBeenCalled();
         });
       });
     });
