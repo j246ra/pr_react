@@ -103,9 +103,9 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   };
 
   const createLogByContext = (context: string) => {
-    const params = {
+    const params: CreatParams = {
       action: context,
-      detail: '',
+      detail: null,
       startedAt: days().format(DATETIME_FULL),
     };
 
@@ -114,7 +114,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     const index = context.search(regex);
     if (index !== -1) {
       params.action = context.slice(0, index);
-      params.detail = context.slice(index + 1);
+      params.detail = context.slice(index + 1) || null;
     }
     return createLog(params);
   };
