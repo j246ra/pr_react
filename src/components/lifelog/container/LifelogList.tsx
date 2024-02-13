@@ -11,9 +11,10 @@ import { useLifelogEditDialog } from '@providers/LifelogEditDialogProvider';
 import { useLifelogDetailDialog } from '@providers/LifelogDetailDialogProvider';
 import LifelogListLoader from '@lifelog/presentational/LifelogListLoader';
 import { IconNames } from '@blueprintjs/icons';
+import { LIFELOG_LIST } from '@lib/consts/component';
 
 export default function LifelogList() {
-  const { logs, loadLogs } = useLifelog();
+  const { lifelogs, loadLogs } = useLifelog();
   const { openDetailDialog } = useLifelogDetailDialog();
   const { openEditDialog } = useLifelogEditDialog();
   const handleFinishLifelog = useFinishAction();
@@ -23,7 +24,10 @@ export default function LifelogList() {
   const lifelogLoader = () => {
     loadLogs()
       .then((r) => {
-        if (r.data.length === 0) setHasMore(false);
+        if (r.data?.validData.length === 0) setHasMore(false);
+        if (r.data?.invalidData.length > 0) {
+          notify.error(LIFELOG_LIST.MESSAGE.INVALID_DATA);
+        }
       })
       .catch((e) => {
         notify.error(e.message);
@@ -31,14 +35,14 @@ export default function LifelogList() {
   };
 
   return (
-    <HTMLTable className={styles.baseTable} bordered={false}>
+    <HTMLTable className={styles.baseTable} bordered={false} interactive={true}>
       <InfiniteScroll
         element={'tbody'}
         loadMore={lifelogLoader}
         hasMore={hasMore}
         loader={LifelogListLoader()}
       >
-        {logs.length === 0 && !hasMore ? (
+        {lifelogs.length === 0 && !hasMore ? (
           <NonIdealState
             icon={IconNames.EDIT}
             description={
@@ -50,7 +54,7 @@ export default function LifelogList() {
             }
           />
         ) : (
-          logs.map((log) => (
+          lifelogs.map((log) => (
             <LifelogListItem
               key={log.id}
               log={log}

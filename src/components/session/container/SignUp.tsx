@@ -70,7 +70,7 @@ export default function SignUp() {
             fill={true}
           />
         </SessionForm>
-        <SessionOtherLinks signUpEnabled={true} />
+        <SessionOtherLinks passwordForgetEnabled={true} />
       </SessionCard>
     </SessionLayout>
   );

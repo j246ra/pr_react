@@ -46,7 +46,7 @@ describe('LifelogList component', () => {
       updateUser: jest.fn(),
     });
     mockUseLifelog.mockReturnValue({
-      logs: mockLogs,
+      lifelogs: mockLogs,
       loadLogs: jest.fn(),
       newLog: lifelog,
       deleteLog: jest.fn().mockReturnValue(Promise.resolve()),
@@ -74,7 +74,7 @@ describe('LifelogList component', () => {
     mockLogs.forEach((log) => {
       expect(contexts).toContain(log.action + log.detail);
     });
-    mockUseLifelog().logs = [...mockLogs, ...lifelogs(10, 10)];
+    mockUseLifelog().lifelogs = [...mockLogs, ...lifelogs(10, 10)];
     rerender(<LifelogList />);
     const beforeLinks = screen.getAllByTestId(new RegExp(TEST_ID.LINK_TEXT));
     expect(beforeLinks).toHaveLength(20);

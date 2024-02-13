@@ -9,8 +9,16 @@ import {
   mockUseSession,
   mockUseUser,
 } from '@src/tests/baseProviders';
-import { EMAIL_INPUT, PASSWORD_INPUT, SIGN_UP } from '@lib/consts/component';
-import { SIGN_UP_TEST_ID as TEST_ID } from '@lib/consts/testId';
+import {
+  EMAIL_INPUT,
+  PASSWORD_FORGET,
+  PASSWORD_INPUT,
+  SIGN_UP,
+} from '@lib/consts/component';
+import {
+  SESSION_OTHER_LINKS_TEST_ID,
+  SIGN_UP_TEST_ID as TEST_ID,
+} from '@lib/consts/testId';
 import { ROUTES } from '@lib/consts/common';
 
 jest.mock('@lib/toast');
@@ -55,6 +63,11 @@ describe('SignUp component', () => {
     const signUpButton = getByTestId(TEST_ID.BUTTON);
     expect(signUpButton).toBeInTheDocument();
     expect(signUpButton).toHaveTextContent(SIGN_UP.BUTTON.SUBMIT);
+
+    const passwordForgetLink = getByTestId(
+      SESSION_OTHER_LINKS_TEST_ID.PASSWORD_FORGET
+    );
+    expect(passwordForgetLink).toHaveTextContent(PASSWORD_FORGET.GUIDANCE);
   });
 
   it('ユーザーがフォームを入力して登録できる', async () => {

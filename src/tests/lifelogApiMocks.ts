@@ -1,6 +1,6 @@
 import { rest } from 'msw';
 import { Lifelog } from '@providers/LifelogProvider';
-import { lifelogs, OptionalLifelog } from '@lib/faker/lifelog';
+import { lifelog, lifelogs, OptionalLifelog } from '@lib/faker/lifelog';
 import { apiHost } from '@lib/storybook/util';
 import { API } from '@lib/consts/common';
 
@@ -40,7 +40,7 @@ const lifelogApiMocks = () => {
   const create = ({ status = 200 }: RestCreateOptions = {}) => {
     return rest.post(apiHost(API.LIFELOG.ENDPOINT), async (req, res, ctx) => {
       const data = await req.json().then((body) => body.data);
-      return res(ctx.status(status), ctx.json(data));
+      return res(ctx.status(status), ctx.json(lifelog(data)));
     });
   };
 

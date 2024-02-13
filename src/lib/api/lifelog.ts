@@ -17,9 +17,9 @@ export type UpdateParams = {
   id: number;
   userId: number;
   action: string;
-  detail?: string;
-  startedAt?: string;
-  finishedAt?: string | null;
+  detail: string | null;
+  startedAt: string;
+  finishedAt: string | null;
 };
 
 const ENDPOINT = API.LIFELOG.ENDPOINT;

@@ -51,7 +51,7 @@ export default function BaseLifelogEditDialog({
               placeholder={Defs.DETAIL.PLACEHOLDER}
               fill={true}
               rows={detailRows}
-              value={lifelog.detail}
+              value={lifelog.detail || undefined}
               onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
                 editLifelog({ detail: e.target.value })
               }

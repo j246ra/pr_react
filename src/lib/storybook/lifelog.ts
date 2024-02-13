@@ -16,7 +16,7 @@ const lifelogs = (page = 1) => {
       ...lifelog(),
       id: i,
       startedAt: datetime,
-      finishedAt: undefined,
+      finishedAt: null,
     };
     list.push(log);
   }

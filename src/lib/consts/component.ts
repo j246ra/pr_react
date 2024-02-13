@@ -171,6 +171,12 @@ export const LIFELOG_LIST_HEADER = {
   OPERATION: '操作',
 };
 
+export const LIFELOG_LIST = {
+  MESSAGE: {
+    INVALID_DATA: '一部、データ取得に失敗しました。',
+  },
+};
+
 export const SEARCH_INPUT = {
   PLACEHOLDER: '検索（行動、詳細）',
 };
@@ -230,6 +236,7 @@ export const COMPONENT = {
   CONTEXT_INPUT,
   DATETIME_INPUT,
   LIFELOG_LIST_HEADER,
+  LIFELOG_LIST,
   SEARCH_INPUT,
   LIFELOG_DETAIL_DIALOG,
   LIFELOG_EDIT_DIALOG,
