@@ -29,6 +29,9 @@ export function LifelogListItem({
     () => days(log.startedAt).format(DISPLAY_TIME),
     [log.startedAt]
   );
+  const displayDatetime = useMemo(() => {
+    return log.isDateChanged ? startedDatetime : startedTime;
+  }, [log.isDateChanged, log.startedAt]);
 
   return (
     <tr className={styles.trItem}>
@@ -36,7 +39,7 @@ export function LifelogListItem({
         className={log.finishedAt ? styles.tdStartedAtBold : styles.tdStartedAt}
       >
         <Tooltip content={startedDatetime} placement={top} compact={true}>
-          {startedTime}
+          {displayDatetime}
         </Tooltip>
       </td>
       <td
@@ -44,7 +47,7 @@ export function LifelogListItem({
         className={styles.tdAction}
         onClick={onActionClick}
       >
-        <EntityTitle title={log.action} subtitle={log.detail} />
+        <EntityTitle title={log.action} subtitle={log.detail || ''} />
       </td>
       <td className={styles.tdOperation}>
         <Button
@@ -76,6 +79,4 @@ export function LifelogListItem({
   );
 }
 
-export default React.memo(LifelogListItem, (prevProps, nextProps) => {
-  return prevProps.log === nextProps.log;
-});
+export default LifelogListItem;

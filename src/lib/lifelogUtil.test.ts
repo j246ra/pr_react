@@ -25,11 +25,12 @@ describe('lifelogUtil', () => {
       id: -1,
       userId: -1,
       action: '',
-      detail: undefined,
+      detail: null,
       startedAt: '',
-      finishedAt: undefined,
+      finishedAt: null,
       createdAt: '',
       updatedAt: '',
+      isDateChanged: false,
     });
   });
 });

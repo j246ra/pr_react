@@ -15,6 +15,7 @@ export const lifelog = (log?: OptionalLifelog): Lifelog => {
     finishedAt: log?.finishedAt || now.format(DATETIME_FULL),
     createdAt: log?.createdAt || now.format(DATETIME_FULL),
     updatedAt: log?.updatedAt || now.format(DATETIME_FULL),
+    isDateChanged: log?.isDateChanged || false,
   };
 };
 
@@ -26,7 +27,7 @@ export const lifelogs = (length = 1, offset = 0) => {
       lifelog({
         id: i + offset + 1,
         startedAt: datetime,
-        finishedAt: undefined,
+        finishedAt: null,
       })
     );
   }

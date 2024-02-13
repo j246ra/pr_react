@@ -66,12 +66,12 @@ describe('LifelogProvider', () => {
       it('status 200 の場合、setHeaders() にてセッション情報を更新する', async () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });
 
-        expect(result.current.logs).toHaveLength(0);
+        expect(result.current.lifelogs).toHaveLength(0);
         act(() => {
           result.current.loadLogs();
         });
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(10);
+          expect(result.current.lifelogs).toHaveLength(10);
           expect(mockSetHeaders).toBeCalled();
         });
       });
@@ -80,13 +80,13 @@ describe('LifelogProvider', () => {
         server.use(restIndex({ status: 401 }));
         const { result } = renderHook(() => useLifelog(), { wrapper });
 
-        expect(result.current.logs).toHaveLength(0);
+        expect(result.current.lifelogs).toHaveLength(0);
         act(() => {
           expect(result.current.loadLogs()).rejects.toBeInstanceOf(AxiosError);
         });
 
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(0);
+          expect(result.current.lifelogs).toHaveLength(0);
           expect(mockClearUser).toBeCalled();
         });
       });
@@ -95,75 +95,75 @@ describe('LifelogProvider', () => {
         server.use(restIndex({ status: 500 }));
         const { result } = renderHook(() => useLifelog(), { wrapper });
 
-        expect(result.current.logs).toHaveLength(0);
+        expect(result.current.lifelogs).toHaveLength(0);
         act(() => {
           expect(result.current.loadLogs()).rejects.toBeInstanceOf(AxiosError);
         });
 
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(0);
+          expect(result.current.lifelogs).toHaveLength(0);
           expect(mockClearUser).not.toBeCalled();
         });
       });
     });
 
     describe('loadLogs 検証', () => {
-      it('複数回呼び出すごとに logs にデータが追記されている', async () => {
+      it('複数回呼び出すごとに lifelogs にデータが追記されている', async () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });
-        expect(result.current.logs).toHaveLength(0);
+        expect(result.current.lifelogs).toHaveLength(0);
         act(() => {
           result.current.loadLogs();
         });
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(10);
-        });
-        act(() => {
-          result.current.loadLogs();
-        });
-        await waitFor(() => {
-          expect(result.current.logs).toHaveLength(20);
+          expect(result.current.lifelogs).toHaveLength(10);
         });
         act(() => {
           result.current.loadLogs();
         });
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(20);
+          expect(result.current.lifelogs).toHaveLength(20);
+        });
+        act(() => {
+          result.current.loadLogs();
+        });
+        await waitFor(() => {
+          expect(result.current.lifelogs).toHaveLength(20);
         });
       });
 
       it('データが 0 件の場合でも正常にレンダリングする', async () => {
         server.use(restIndex({ maxPage: 1, length: 0 }));
         const { result } = renderHook(() => useLifelog(), { wrapper });
-        expect(result.current.logs).toHaveLength(0);
+        expect(result.current.lifelogs).toHaveLength(0);
         act(() => {
           result.current.loadLogs();
         });
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(0);
+          expect(result.current.lifelogs).toHaveLength(0);
         });
       });
     });
 
     describe('searchLogs 検証', () => {
-      it('呼び出されるごとに logs が上書きされる', async () => {
+      it('呼び出されるごとに lifelogs が上書きされる', async () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });
         act(() => {
           result.current.searchLogs('TEST1');
         });
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(10);
+          expect(result.current.lifelogs).toHaveLength(10);
         });
         act(() => {
           result.current.searchLogs('TEST2');
         });
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(10);
+          expect(result.current.lifelogs).toHaveLength(10);
         });
         act(() => {
           result.current.searchLogs('TEST3');
         });
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(10);
+          expect(result.current.lifelogs).toHaveLength(10);
         });
       });
       it('loadLogs で続きのデータを取得できる', async () => {
@@ -173,30 +173,30 @@ describe('LifelogProvider', () => {
           result.current.searchLogs('TEST1');
         });
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(10);
+          expect(result.current.lifelogs).toHaveLength(10);
         });
         act(() => {
           result.current.loadLogs();
         });
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(20);
+          expect(result.current.lifelogs).toHaveLength(20);
         });
         act(() => {
           result.current.loadLogs();
         });
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(30);
+          expect(result.current.lifelogs).toHaveLength(30);
         });
       });
       it('データが 0 件でも正常にレンダリングする', async () => {
         server.use(restIndex({ maxPage: 1, length: 0 }));
         const { result } = renderHook(() => useLifelog(), { wrapper });
-        expect(result.current.logs).toHaveLength(0);
+        expect(result.current.lifelogs).toHaveLength(0);
         act(() => {
           result.current.searchLogs('TEST999');
         });
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(0);
+          expect(result.current.lifelogs).toHaveLength(0);
         });
       });
     });
@@ -208,11 +208,12 @@ describe('LifelogProvider', () => {
           id: -1,
           userId: -1,
           action: '',
-          detail: undefined,
+          detail: null,
           startedAt: '',
-          finishedAt: undefined,
+          finishedAt: null,
           createdAt: '',
           updatedAt: '',
+          isDateChanged: false,
         });
       });
     });
@@ -224,24 +225,24 @@ describe('LifelogProvider', () => {
           result.current.createLogByContext('My name is ELITE.');
         });
         await waitFor(() => {
-          expect(result.current.logs[0].action).toEqual('My');
-          expect(result.current.logs[0].detail).toEqual('name is ELITE.');
+          expect(result.current.lifelogs[0].action).toEqual('My');
+          expect(result.current.lifelogs[0].detail).toEqual('name is ELITE.');
         });
       });
-      it('認証エラー以外で失敗時は logs に変化はない', async () => {
+      it('認証エラー以外で失敗時は lifelogs に変化はない', async () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });
         server.use(restIndex(), restCreate({ status: 500 }));
         act(() => {
           result.current.loadLogs();
         });
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(10);
+          expect(result.current.lifelogs).toHaveLength(10);
         });
         await expect(
           result.current.createLogByContext('STELLAR STELLAR.')
         ).rejects.toBeInstanceOf(AxiosError);
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(10);
+          expect(result.current.lifelogs).toHaveLength(10);
         });
       });
     });
@@ -254,8 +255,8 @@ describe('LifelogProvider', () => {
         });
         let beforeLog: Lifelog;
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(10);
-          beforeLog = result.current.logs[5];
+          expect(result.current.lifelogs).toHaveLength(10);
+          beforeLog = result.current.lifelogs[5];
         });
         act(() => {
           result.current.updateLog(
@@ -263,7 +264,7 @@ describe('LifelogProvider', () => {
           );
         });
         await waitFor(() => {
-          const afterLog = result.current.logs[5];
+          const afterLog = result.current.lifelogs[5];
           expect(afterLog.id).toEqual(beforeLog.id);
           expect(afterLog.action).toEqual('ACTION');
           expect(afterLog.detail).toEqual('DETAIL');
@@ -276,9 +277,9 @@ describe('LifelogProvider', () => {
           result.current.loadLogs();
         });
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(10);
+          expect(result.current.lifelogs).toHaveLength(10);
         });
-        const logs = result.current.logs;
+        const logs = result.current.lifelogs;
         const pastOneYear = days(logs[9].startedAt)
           .subtract(1, 'year')
           .format(DATETIME_FULL);
@@ -294,10 +295,10 @@ describe('LifelogProvider', () => {
           );
         });
         await waitFor(() => {
-          const afterIndex = result.current.logs.findIndex((log) => {
+          const afterIndex = result.current.lifelogs.findIndex((log) => {
             return log.id === beforeLog.id;
           });
-          const afterLog = result.current.logs[afterIndex];
+          const afterLog = result.current.lifelogs[afterIndex];
 
           expect(afterIndex).toEqual(9);
           expect(afterLog).not.toBeUndefined();
@@ -312,7 +313,7 @@ describe('LifelogProvider', () => {
           result.current.loadLogs();
         });
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(10);
+          expect(result.current.lifelogs).toHaveLength(10);
         });
 
         const log = lifelog({ id: 99 });
@@ -320,14 +321,17 @@ describe('LifelogProvider', () => {
           result.current.updateLog(log);
         });
         await waitFor(() => {
-          const afterLog = result.current.logs.find((l) => {
+          const afterLog = result.current.lifelogs.find((l) => {
             return l.id === log.id;
           });
-          expect(afterLog).toEqual(log);
+          expect({ ...afterLog, isDateChanged: false }).toEqual({
+            ...log,
+            isDateChanged: false,
+          });
         });
       });
 
-      it('認証エラー以外で失敗時は logs に変化はない', async () => {
+      it('認証エラー以外で失敗時は lifelogs に変化はない', async () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });
         server.use(restIndex({ maxPage: 5, length: 9 }), restUpdate(500));
         act(() => {
@@ -335,15 +339,15 @@ describe('LifelogProvider', () => {
         });
         let beforeLog: Lifelog;
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(9);
-          beforeLog = result.current.logs[5];
+          expect(result.current.lifelogs).toHaveLength(9);
+          beforeLog = result.current.lifelogs[5];
         });
         await expect(
           result.current.updateLog(lifelog())
         ).rejects.toBeInstanceOf(AxiosError);
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(9);
-          const afterLog = result.current.logs[5];
+          expect(result.current.lifelogs).toHaveLength(9);
+          const afterLog = result.current.lifelogs[5];
           expect(afterLog).toEqual(beforeLog);
         });
       });
@@ -357,14 +361,14 @@ describe('LifelogProvider', () => {
         });
         let beforeLog: Lifelog;
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(10);
-          beforeLog = result.current.logs[5];
+          expect(result.current.lifelogs).toHaveLength(10);
+          beforeLog = result.current.lifelogs[5];
         });
         act(() => {
           result.current.finishLog(beforeLog);
         });
         await waitFor(() => {
-          const afterLog = result.current.logs[5];
+          const afterLog = result.current.lifelogs[5];
           expect(afterLog.id).toEqual(beforeLog.id);
           expect(afterLog.action).toEqual(beforeLog.action);
           expect(afterLog.detail).toEqual(beforeLog.detail);
@@ -383,16 +387,16 @@ describe('LifelogProvider', () => {
           result.current.loadLogs();
         });
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(10);
+          expect(result.current.lifelogs).toHaveLength(10);
         });
-        const afterLog = result.current.logs[5];
+        const afterLog = result.current.lifelogs[5];
         act(() => {
           result.current.deleteLog(afterLog.id);
         });
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(9);
+          expect(result.current.lifelogs).toHaveLength(9);
           expect(
-            result.current.logs.find((log) => {
+            result.current.lifelogs.find((log) => {
               return log.id === afterLog.id;
             })
           ).toBeUndefined();
@@ -404,56 +408,56 @@ describe('LifelogProvider', () => {
           result.current.loadLogs();
         });
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(10);
+          expect(result.current.lifelogs).toHaveLength(10);
         });
         const deletedLog = lifelog({ id: 999 });
         act(() => {
           result.current.deleteLog(deletedLog.id);
         });
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(10);
+          expect(result.current.lifelogs).toHaveLength(10);
           expect(
-            result.current.logs.find((log) => {
+            result.current.lifelogs.find((log) => {
               return log.id === deletedLog.id;
             })
           ).toBeUndefined();
         });
       });
-      it('認証エラー以外で失敗時は logs に変化はない', async () => {
+      it('認証エラー以外で失敗時は lifelogs に変化はない', async () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });
         server.use(restIndex(), restDelete(500));
         act(() => {
           result.current.loadLogs();
         });
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(10);
+          expect(result.current.lifelogs).toHaveLength(10);
         });
-        const deletedLog = result.current.logs[4];
+        const deletedLog = result.current.lifelogs[4];
         await expect(
           result.current.deleteLog(deletedLog.id)
         ).rejects.toBeInstanceOf(AxiosError);
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(10);
-          const afterLog = result.current.logs[4];
+          expect(result.current.lifelogs).toHaveLength(10);
+          const afterLog = result.current.lifelogs[4];
           expect(afterLog).toEqual(deletedLog);
         });
       });
     });
 
     describe('clear 検証', () => {
-      it('logs が初期化されている', async () => {
+      it('lifelogs が初期化されている', async () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });
         act(() => {
           result.current.loadLogs();
         });
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(10);
+          expect(result.current.lifelogs).toHaveLength(10);
         });
         act(() => {
           result.current.clear();
         });
         await waitFor(() => {
-          expect(result.current.logs).toHaveLength(0);
+          expect(result.current.lifelogs).toHaveLength(0);
         });
       });
     });
