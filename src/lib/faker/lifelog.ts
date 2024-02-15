@@ -10,9 +10,15 @@ export const lifelog = (log?: OptionalLifelog): Lifelog => {
     id: log?.id || 1,
     userId: log?.userId || 1,
     action: log?.action || fakerJA.lorem.word(),
-    detail: log?.detail || fakerJA.lorem.paragraph({ min: 2, max: 8 }),
+    detail:
+      log?.detail === undefined
+        ? fakerJA.lorem.paragraph({ min: 2, max: 8 })
+        : log.detail,
     startedAt: log?.startedAt || now.subtract(30, 'm').format(DATETIME_FULL),
-    finishedAt: log?.finishedAt || now.format(DATETIME_FULL),
+    finishedAt:
+      log?.finishedAt === undefined
+        ? now.format(DATETIME_FULL)
+        : log.finishedAt,
     createdAt: log?.createdAt || now.format(DATETIME_FULL),
     updatedAt: log?.updatedAt || now.format(DATETIME_FULL),
     isDateChanged: log?.isDateChanged || false,

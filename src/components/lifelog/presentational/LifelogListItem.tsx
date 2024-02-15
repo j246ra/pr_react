@@ -21,17 +21,28 @@ export function LifelogListItem({
   onDeleteButtonClick,
   onActionClick,
 }: LifelogListItemProps) {
+  const startedDay = useMemo(() => days(log.startedAt), [log.startedAt]);
   const startedDatetime = useMemo(
-    () => days(log.startedAt).format(DISPLAY_DATETIME),
-    [log.startedAt]
+    () => startedDay.format(DISPLAY_DATETIME),
+    [startedDay]
   );
   const startedTime = useMemo(
-    () => days(log.startedAt).format(DISPLAY_TIME),
-    [log.startedAt]
+    () => startedDay.format(DISPLAY_TIME),
+    [startedDay]
   );
-  const displayDatetime = useMemo(() => {
-    return log.isDateChanged ? startedDatetime : startedTime;
-  }, [log.isDateChanged, log.startedAt]);
+  const actionTime = useMemo(() => {
+    if (log.finishedAt) {
+      const minutesDiff = days(log.finishedAt).diff(startedDay, 'minutes');
+      const displayMinutes = minutesDiff > 1000 ? 999 : minutesDiff;
+      return ` (${displayMinutes})`;
+    }
+    return '';
+  }, [log.finishedAt, startedDay]);
+
+  const displayDatetime = useMemo(
+    () => (log.isDateChanged ? startedDatetime : startedTime),
+    [log.isDateChanged, startedDatetime, startedTime]
+  );
 
   return (
     <tr className={styles.trItem}>
@@ -39,7 +50,7 @@ export function LifelogListItem({
         className={log.finishedAt ? styles.tdStartedAtBold : styles.tdStartedAt}
       >
         <Tooltip content={startedDatetime} placement={top} compact={true}>
-          {displayDatetime}
+          {displayDatetime + actionTime}
         </Tooltip>
       </td>
       <td
