@@ -33,18 +33,52 @@ export default {
 
 const { all } = lifelogMocks();
 
+const args = {
+  onFinishButtonClick: () => {
+    notify.success('Finish Button Clicked.');
+  },
+  onEditButtonClick: () => {
+    notify.success('Edit Button Clicked.');
+  },
+  onDeleteButtonClick: () => {
+    notify.success('Delete Button Clicked.');
+  },
+};
+
 export const Default = {
   args: {
     log: lifelog(),
-    onFinishButtonClick: () => {
-      notify.success('Finish Button Clicked.');
-    },
-    onEditButtonClick: () => {
-      notify.success('Edit Button Clicked.');
-    },
-    onDeleteButtonClick: () => {
-      notify.success('Delete Button Clicked.');
-    },
+    ...args,
+  },
+  parameters: {
+    msw: all(),
+  },
+};
+
+export const TopOfDay = {
+  args: {
+    log: lifelog({ isDateChanged: true }),
+    ...args,
+  },
+  parameters: {
+    msw: all(),
+  },
+};
+
+export const NotFinish = {
+  args: {
+    log: lifelog({ finishedAt: null }),
+    ...args,
+  },
+  parameters: {
+    msw: all(),
+  },
+};
+
+export const TopOfDayNotFinish = {
+  args: {
+    log: lifelog({ finishedAt: null, isDateChanged: true }),
+    ...args,
   },
   parameters: {
     msw: all(),
