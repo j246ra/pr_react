@@ -33,7 +33,7 @@ export function LifelogListItem({
   const actionTime = useMemo(() => {
     if (log.finishedAt) {
       const minutesDiff = days(log.finishedAt).diff(startedDay, 'minutes');
-      const displayMinutes = minutesDiff > 1000 ? 999 : minutesDiff;
+      const displayMinutes = minutesDiff > 999 ? 999 : minutesDiff;
       return ` (${displayMinutes})`;
     }
     return '';
@@ -47,6 +47,7 @@ export function LifelogListItem({
   return (
     <tr className={styles.trItem}>
       <td
+        data-testid={TEST_ID.TD_STARTED_AT}
         className={log.finishedAt ? styles.tdStartedAtBold : styles.tdStartedAt}
       >
         <Tooltip content={startedDatetime} placement={top} compact={true}>

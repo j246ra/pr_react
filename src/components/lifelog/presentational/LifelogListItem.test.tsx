@@ -1,55 +1,107 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import LifelogListItem from './LifelogListItem';
 import userEvent from '@testing-library/user-event';
 import { lifelog } from '@lib/faker/lifelog';
 import { LIFELOG_LIST_ITEM_TEST_ID as TEST_ID } from '@lib/consts/testId';
+import { days, DISPLAY_DATETIME } from '@lib/dateUtil';
+import styles from './LifelogListItem.module.scss';
+import { Lifelog } from '@providers/LifelogProvider';
 
 describe('LifelogListItem', () => {
-  const mockLog = lifelog({
-    startedAt: new Date(2023, 6, 5, 12, 34).toISOString(),
-    finishedAt: null,
-    action: 'Test action',
-    detail: 'Test detail',
-  });
   const mockOnFinish = jest.fn();
   const mockOnEdit = jest.fn();
   const mockOnDelete = jest.fn();
   const mockOnAction = jest.fn();
 
-  it('プロパティが正しくレンダリングされる', () => {
-    const { getByText } = render(
-      <table>
-        <tbody>
-          <LifelogListItem
-            log={mockLog}
-            onFinishButtonClick={mockOnFinish}
-            onEditButtonClick={mockOnEdit}
-            onDeleteButtonClick={mockOnDelete}
-            onActionClick={mockOnAction}
-          />
-        </tbody>
-      </table>
-    );
+  const startedAt = days('2023-07-05 12:34');
+  const baseLog = {
+    startedAt: startedAt.toISOString(),
+    action: 'Test action',
+    detail: 'Test detail',
+  };
 
-    expect(getByText('12:34')).toBeInTheDocument();
-    expect(getByText('Test action')).toBeInTheDocument();
-    expect(getByText('Test detail')).toBeInTheDocument();
+  const lifelogListItemComponent = (mockLifelog: Lifelog) => (
+    <table>
+      <tbody>
+        <LifelogListItem
+          log={mockLifelog}
+          onFinishButtonClick={mockOnFinish}
+          onEditButtonClick={mockOnEdit}
+          onDeleteButtonClick={mockOnDelete}
+          onActionClick={mockOnAction}
+        />
+      </tbody>
+    </table>
+  );
+
+  it('プロパティが正しくレンダリングされる', () => {
+    const mockLog = lifelog({
+      ...baseLog,
+      finishedAt: null,
+    });
+
+    const { getByText } = render(lifelogListItemComponent(mockLog));
+
+    expect(getByText(startedAt.format('HH:mm'))).toBeInTheDocument();
+    expect(getByText(baseLog.action)).toBeInTheDocument();
+    expect(getByText(baseLog.detail)).toBeInTheDocument();
+  });
+
+  it('日付が変更された際には日付が表示される', () => {
+    const mockLog = lifelog({
+      ...baseLog,
+      isDateChanged: true,
+    });
+
+    render(lifelogListItemComponent(mockLog));
+
+    expect(
+      screen.getByText(new RegExp(`^${startedAt.format(DISPLAY_DATETIME)}`))
+    ).toBeInTheDocument();
+  });
+
+  describe('終了時間が設定されている', () => {
+    it('経過分が表示される', () => {
+      const elapsedMinutes = 999;
+      const mockLog = lifelog({
+        ...baseLog,
+        finishedAt: startedAt.add(elapsedMinutes, 'minutes').toISOString(),
+      });
+
+      render(lifelogListItemComponent(mockLog));
+
+      expect(
+        screen.getByText(new RegExp(` \\(${elapsedMinutes}\\)$`))
+      ).toBeInTheDocument();
+      expect(screen.getByTestId(TEST_ID.TD_STARTED_AT)).toHaveClass(
+        styles.tdStartedAtBold
+      );
+    });
+  });
+  it('1000分以上経過している場合は999と表示される', () => {
+    const elapsedMinutes = 1000;
+    const mockLog = lifelog({
+      ...baseLog,
+      finishedAt: startedAt.add(elapsedMinutes, 'minutes').toISOString(),
+    });
+
+    render(lifelogListItemComponent(mockLog));
+
+    expect(screen.getByText(/ \(999\)$/)).toBeInTheDocument();
+    expect(screen.getByTestId(TEST_ID.TD_STARTED_AT)).toHaveClass(
+      styles.tdStartedAtBold
+    );
   });
 
   it('イベントハンドラが正しく呼び出される', () => {
+    const mockLog = lifelog({
+      ...baseLog,
+      finishedAt: null,
+    });
+
     const { getByText, getByTestId } = render(
-      <table>
-        <tbody>
-          <LifelogListItem
-            log={mockLog}
-            onFinishButtonClick={mockOnFinish}
-            onEditButtonClick={mockOnEdit}
-            onDeleteButtonClick={mockOnDelete}
-            onActionClick={mockOnAction}
-          />
-        </tbody>
-      </table>
+      lifelogListItemComponent(mockLog)
     );
 
     userEvent.click(getByText('Test action'));
