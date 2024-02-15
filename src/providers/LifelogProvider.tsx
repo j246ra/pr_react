@@ -11,6 +11,9 @@ import {
   convertResponseData,
   validateResponseData,
 } from '@lib/api/lifelogResponse';
+import * as Sentry from '@sentry/react';
+import notify from '@lib/toast';
+import { COMMON } from '@lib/consts/common';
 
 export type BaseLifelog = {
   id: number;
@@ -66,7 +69,24 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     return response;
   };
   const errorInterceptor = (error: AxiosError): Promise<never> => {
-    if (error.response?.status === 401) clearUser();
+    switch (error.response?.status) {
+      case 401:
+        clearUser();
+        notify.error(COMMON.MESSAGE.ERROR.EXPIRED);
+        break;
+      case 500:
+      case 501:
+      case 502:
+      case 503:
+        notify.error(COMMON.MESSAGE.ERROR.STATUS_5XX);
+        break;
+      default:
+        notify.error(COMMON.MESSAGE.ERROR.GENERAL);
+    }
+    Sentry.addBreadcrumb({
+      message: 'lifelogs api request error.',
+      data: error,
+    });
     return Promise.reject(error);
   };
   const api = lifelog(getHeaders, responseInterceptor, errorInterceptor);

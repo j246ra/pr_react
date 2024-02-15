@@ -21,6 +21,8 @@ export const COMMON = {
   MESSAGE: {
     ERROR: {
       GENERAL: '想定外のエラーが発生しました',
+      EXPIRED: '認証期限切れの為、再度ログインしてください。',
+      STATUS_5XX: 'サーバーエラーの為、一時的に情報が取得できません。',
     } as const,
   } as const,
   REQUIRED: '(必須)',
