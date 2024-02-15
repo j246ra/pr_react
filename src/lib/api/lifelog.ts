@@ -8,9 +8,9 @@ type ErrorInterceptor = (error: AxiosError) => Promise<never>;
 
 export type CreatParams = {
   action?: string;
-  detail?: string;
+  detail?: string | null;
   startedAt?: string;
-  finishedAt?: string;
+  finishedAt?: string | null;
 };
 
 export type UpdateParams = {

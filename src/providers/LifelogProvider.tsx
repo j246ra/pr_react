@@ -3,15 +3,17 @@ import { useSession } from '@providers/SessionProvider';
 import { useUser } from '@providers/UserProvider';
 import { AxiosError, AxiosResponse } from 'axios';
 import lifelog, { CreatParams, UpdateParams } from '@lib/api/lifelog';
-import {
-  blank as newLifelog,
-  sort as sortLog,
-  validateResponseData,
-  convertResponseData,
-} from '@lib/lifelogUtil';
+import { blank as newLifelog, sort as sortLog } from '@lib/lifelogUtil';
 import { days, DATETIME_FULL } from '@lib/dateUtil';
 import LifelogEditDialogProvider from '@providers/LifelogEditDialogProvider';
 import LifelogDetailDialogProvider from '@providers/LifelogDetailDialogProvider';
+import {
+  convertResponseData,
+  validateResponseData,
+} from '@lib/api/lifelogResponse';
+import * as Sentry from '@sentry/react';
+import notify from '@lib/toast';
+import { COMMON } from '@lib/consts/common';
 
 export type BaseLifelog = {
   id: number;
@@ -67,7 +69,24 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     return response;
   };
   const errorInterceptor = (error: AxiosError): Promise<never> => {
-    if (error.response?.status === 401) clearUser();
+    switch (error.response?.status) {
+      case 401:
+        clearUser();
+        notify.error(COMMON.MESSAGE.ERROR.EXPIRED);
+        break;
+      case 500:
+      case 501:
+      case 502:
+      case 503:
+        notify.error(COMMON.MESSAGE.ERROR.STATUS_5XX);
+        break;
+      default:
+        notify.error(COMMON.MESSAGE.ERROR.GENERAL);
+    }
+    Sentry.addBreadcrumb({
+      message: 'lifelogs api request error.',
+      data: error,
+    });
     return Promise.reject(error);
   };
   const api = lifelog(getHeaders, responseInterceptor, errorInterceptor);
@@ -103,9 +122,9 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   };
 
   const createLogByContext = (context: string) => {
-    const params = {
+    const params: CreatParams = {
       action: context,
-      detail: '',
+      detail: null,
       startedAt: days().format(DATETIME_FULL),
     };
 
@@ -114,7 +133,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     const index = context.search(regex);
     if (index !== -1) {
       params.action = context.slice(0, index);
-      params.detail = context.slice(index + 1);
+      params.detail = context.slice(index + 1) || null;
     }
     return createLog(params);
   };

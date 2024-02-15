@@ -21,17 +21,12 @@ export default function LifelogList() {
   const handleDeleteLifelog = useDeleteLifelog();
   const [hasMore, setHasMore] = useState(true);
 
-  const lifelogLoader = () => {
-    loadLogs()
-      .then((r) => {
-        if (r.data?.validData.length === 0) setHasMore(false);
-        if (r.data?.invalidData.length > 0) {
-          notify.error(LIFELOG_LIST.MESSAGE.INVALID_DATA);
-        }
-      })
-      .catch((e) => {
-        notify.error(e.message);
-      });
+  const lifelogLoader = async () => {
+    const res = await loadLogs();
+    if (res.data?.validData.length === 0) setHasMore(false);
+    if (res.data?.invalidData.length > 0) {
+      notify.error(LIFELOG_LIST.MESSAGE.INVALID_DATA);
+    }
   };
 
   return (
