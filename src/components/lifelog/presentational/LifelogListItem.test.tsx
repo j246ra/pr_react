@@ -8,6 +8,7 @@ import { LIFELOG_LIST_ITEM_TEST_ID as TEST_ID } from '@lib/consts/testId';
 describe('LifelogListItem', () => {
   const mockLog = lifelog({
     startedAt: new Date(2023, 6, 5, 12, 34).toISOString(),
+    finishedAt: null,
     action: 'Test action',
     detail: 'Test detail',
   });
