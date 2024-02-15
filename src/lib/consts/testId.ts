@@ -80,6 +80,7 @@ export const LIFELOG_LIST_TEST_ID = {
 applyPrefixedValues({ LIFELOG_LIST_TEST_ID });
 
 export const LIFELOG_LIST_ITEM_TEST_ID = {
+  TD_STARTED_AT: '',
   LINK_TEXT: '',
   FINISH_BUTTON: '',
   EDIT_BUTTON: '',
