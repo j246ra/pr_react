@@ -22,39 +22,42 @@ describe('SearchInput', () => {
   beforeEach(() => {
     mockUseLifelog.mockReturnValue({
       searchLogs: jest.fn().mockReturnValue(Promise.resolve()),
+      searchWord: jest.fn().mockReturnValue('ABC'),
     });
   });
   describe('props検証', () => {
-    it('isShow が true の場合、表示され指定の width であること', () => {
-      render(<SearchInput isShow={true} width={300} />);
+    it('isShown が true の場合、表示され指定の width であること', () => {
+      render(<SearchInput isShown={true} width={300} />);
       const input = screen.getByTestId(TEST_ID.BASE);
       expect(input).toBeInTheDocument();
       expect(input).toHaveStyle({ '--container-width': '300px' });
     });
 
-    it('isShow が true で width 未指定の場合、260px であること', () => {
-      render(<SearchInput isShow={true} />);
+    it('isShown が true で width 未指定の場合、260px であること', () => {
+      render(<SearchInput isShown={true} />);
       const input = screen.getByTestId(TEST_ID.BASE);
       expect(input).toBeInTheDocument();
       expect(input).toHaveStyle({ '--container-width': '260px' });
     });
 
-    it('isShow が false の場合、非表示であること', () => {
-      render(<SearchInput isShow={false} />);
+    it('isShown が false の場合、非表示であること', () => {
+      render(<SearchInput isShown={false} />);
       expect(screen.queryByTestId(TEST_ID.BASE)).toBeNull();
     });
   });
 
   describe('操作関連', () => {
     beforeEach(() => {
-      render(<SearchInput isShow={true} />);
+      render(<SearchInput isShown={true} />);
     });
     describe('文字入力', () => {
       it('日本語入力中でない場合 Enter を押すと検索すること', async () => {
         const input = screen.getByPlaceholderText(
           SEARCH_INPUT.PLACEHOLDER
         ) as HTMLInputElement;
+        expect(input.value).toEqual('ABC');
         act(() => {
+          userEvent.clear(input);
           userEvent.type(input, 'running');
           fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
         });
@@ -70,6 +73,7 @@ describe('SearchInput', () => {
         ) as HTMLInputElement;
         act(() => {
           fireEvent.compositionStart(input);
+          userEvent.clear(input);
           userEvent.type(input, 'こんにちは');
           fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
           fireEvent.compositionEnd(input);
@@ -88,6 +92,7 @@ describe('SearchInput', () => {
         ) as HTMLInputElement;
         const button = screen.getByTestId(TEST_ID.BUTTON);
         act(() => {
+          userEvent.clear(input);
           userEvent.type(input, 'walking');
           userEvent.click(button);
         });
@@ -104,6 +109,7 @@ describe('SearchInput', () => {
         const button = screen.getByTestId(TEST_ID.BUTTON);
         act(() => {
           fireEvent.compositionStart(input);
+          userEvent.clear(input);
           userEvent.type(input, 'にほんごにゅうりょくちゅう');
           userEvent.click(button);
         });
@@ -119,7 +125,7 @@ describe('SearchInput', () => {
         useLifelog().searchLogs = jest
           .fn()
           .mockReturnValue(Promise.reject(new Error('Very dangerous error.')));
-        render(<SearchInput isShow={true} />);
+        render(<SearchInput isShown={true} />);
       });
       it('検索エラー時に toast を表示していること', async () => {
         const input = screen.getAllByPlaceholderText(
@@ -127,6 +133,7 @@ describe('SearchInput', () => {
         )[0] as HTMLInputElement;
         const button = screen.getAllByTestId(TEST_ID.BUTTON)[0];
         act(() => {
+          userEvent.clear(input);
           userEvent.type(input, 'searching');
           userEvent.click(button);
         });

@@ -48,7 +48,7 @@ export default function Header() {
           </Navbar.Heading>
         </Navbar.Group>
         <Navbar.Group align={Alignment.RIGHT}>
-          <SearchInput isShow={isLoggedIn()} />
+          <SearchInput isShown={isLoggedIn()} />
           <Navbar.Divider />
           <Popover
             content={

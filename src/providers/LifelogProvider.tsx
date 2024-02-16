@@ -36,6 +36,7 @@ export type LifelogContextType = {
   lifelogs: Lifelog[];
   loadLogs: () => Promise<AxiosResponse>;
   searchLogs: (word: string) => Promise<AxiosResponse>;
+  searchWord: string;
   newLog: () => Lifelog;
   createLog: (params: CreatParams) => Promise<AxiosResponse>;
   createLogByContext: (context: string) => Promise<AxiosResponse>;
@@ -175,6 +176,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
         lifelogs,
         loadLogs,
         searchLogs,
+        searchWord,
         newLog,
         createLog,
         createLogByContext,

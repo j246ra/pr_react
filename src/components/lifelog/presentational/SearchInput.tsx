@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, InputGroup } from '@blueprintjs/core';
 import { useLifelog } from '@providers/LifelogProvider';
 import notify from '@lib/toast';
@@ -9,16 +9,21 @@ import styles from './SearchInput.module.scss';
 import { EmptyComponent } from '@src/components/EmptyComponent';
 
 export type SearchInputProps = {
-  isShow: boolean;
+  isShown: boolean;
   width?: number;
 };
 
-export default function SearchInput({ isShow, width = 260 }: SearchInputProps) {
-  if (!isShow) return <EmptyComponent />;
+export default function SearchInput({
+  isShown,
+  width = 260,
+}: SearchInputProps) {
+  if (!isShown) return <EmptyComponent />;
 
-  const { searchLogs } = useLifelog();
-  const [word, setWord] = useState('');
+  const { searchLogs, searchWord } = useLifelog();
+  const [word, setWord] = useState(searchWord);
   const [isComposing, setIsComposing] = useState(false);
+
+  useEffect(() => setWord(searchWord), [searchWord]);
 
   const handleSearch = () => {
     searchLogs(word).catch((e) => {
