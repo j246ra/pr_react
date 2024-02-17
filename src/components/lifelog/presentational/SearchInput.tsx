@@ -26,6 +26,7 @@ export default function SearchInput({
   useEffect(() => setWord(searchWord), [searchWord]);
 
   const handleSearch = () => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
     searchLogs(word).catch((e) => {
       notify.error(e.message);
     });

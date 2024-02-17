@@ -18,12 +18,17 @@ jest.mock('@providers/LifelogProvider');
 const mockUseLifelog = useLifelog as jest.MockedFunction<any>;
 const mockToast = jest.mocked(toast);
 
+window.scrollTo = jest.fn();
+
 describe('SearchInput', () => {
   beforeEach(() => {
     mockUseLifelog.mockReturnValue({
       searchLogs: jest.fn().mockReturnValue(Promise.resolve()),
       searchWord: jest.fn().mockReturnValue('ABC'),
     });
+  });
+  afterEach(() => {
+    jest.clearAllMocks();
   });
   describe('props検証', () => {
     it('isShown が true の場合、表示され指定の width であること', () => {
