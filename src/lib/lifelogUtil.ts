@@ -1,5 +1,6 @@
 import { Lifelog } from '@providers/LifelogProvider';
-import { days } from '@lib/dateUtil';
+import { DATETIME_FULL, days } from '@lib/dateUtil';
+import { CreatParams } from '@lib/api/lifelog';
 
 export const blank = (): Lifelog => {
   return {
@@ -30,9 +31,26 @@ export const sort = (logs: Lifelog[]) => {
   return sortedLogs;
 };
 
+export const buildCreateParamsByContext = (context: string) => {
+  const params: CreatParams = {
+    action: context,
+    detail: null,
+    startedAt: days().format(DATETIME_FULL),
+  };
+  // 正規表現で全角半角の空白を検出
+  const regex = /[\s\u3000]/;
+  const index = context.search(regex);
+  if (index !== -1) {
+    params.action = context.slice(0, index);
+    params.detail = context.slice(index + 1) || null;
+  }
+  return params;
+};
+
 export const lifelogUtil = {
   blank,
   sort,
+  buildCreateParamsByContext,
 };
 
 export default lifelogUtil;

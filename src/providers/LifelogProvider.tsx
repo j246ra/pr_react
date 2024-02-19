@@ -3,7 +3,11 @@ import { useSession } from '@providers/SessionProvider';
 import { useUser } from '@providers/UserProvider';
 import { AxiosError, AxiosResponse } from 'axios';
 import lifelog, { CreatParams, UpdateParams } from '@lib/api/lifelog';
-import { blank as newLifelog, sort as sortLog } from '@lib/lifelogUtil';
+import {
+  blank as newLifelog,
+  buildCreateParamsByContext,
+  sort as sortLog,
+} from '@lib/lifelogUtil';
 import { days, DATETIME_FULL } from '@lib/dateUtil';
 import LifelogEditDialogProvider from '@providers/LifelogEditDialogProvider';
 import LifelogDetailDialogProvider from '@providers/LifelogDetailDialogProvider';
@@ -126,20 +130,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   };
 
   const createLogByContext = (context: string) => {
-    const params: CreatParams = {
-      action: context,
-      detail: null,
-      startedAt: days().format(DATETIME_FULL),
-    };
-
-    // 正規表現で全角半角の空白を検出
-    const regex = /[\s\u3000]/;
-    const index = context.search(regex);
-    if (index !== -1) {
-      params.action = context.slice(0, index);
-      params.detail = context.slice(index + 1) || null;
-    }
-    return createLog(params);
+    return createLog(buildCreateParamsByContext(context));
   };
 
   const updateLog = async (params: UpdateParams) => {
