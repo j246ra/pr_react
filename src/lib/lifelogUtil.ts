@@ -32,10 +32,11 @@ export const sort = (logs: Lifelog[]) => {
 };
 
 export const buildCreateParamsByContext = (context: string) => {
-  const params: CreatParams = {
+  const params: Required<CreatParams> = {
     action: context,
     detail: null,
     startedAt: days().format(DATETIME_FULL),
+    finishedAt: null,
   };
   // 正規表現で全角半角の空白を検出
   const regex = /[\s\u3000]/;
