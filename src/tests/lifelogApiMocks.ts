@@ -2,7 +2,7 @@ import { rest } from 'msw';
 import { Lifelog } from '@providers/LifelogProvider';
 import { lifelog, lifelogs, OptionalLifelog } from '@lib/faker/lifelog';
 import { apiHost } from '@lib/storybook/util';
-import { API } from '@lib/consts/common';
+import { API, LIFELOG_API_MOCKS } from '@lib/consts/common';
 
 type RestIndexOptions = {
   maxPage?: number;
@@ -27,7 +27,11 @@ const lifelogApiMocks = () => {
           const page = Number(req.url.searchParams.get('page'));
           const offset = length * (page - 1);
           let logs: Lifelog[] = [];
-          if (page <= maxPage) {
+          let word = req.url.searchParams.get('word');
+          if (
+            word !== LIFELOG_API_MOCKS.PARAMS.WORD.NO_DATA &&
+            page <= maxPage
+          ) {
             logs = lifelogs(length, offset);
           }
           return res(ctx.status(status), ctx.json(logs));

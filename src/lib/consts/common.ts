@@ -85,6 +85,14 @@ export const VALIDATOR = {
   } as const,
 };
 
+export const LIFELOG_API_MOCKS = {
+  PARAMS: {
+    WORD: {
+      NO_DATA: 'empty',
+    },
+  },
+};
+
 export const CONST = {
   COMMON,
   ROUTES,
@@ -94,6 +102,7 @@ export const CONST = {
   USE_DELETE_LIFELOG,
   USE_FINISH_ACTION,
   VALIDATOR,
+  LIFELOG_API_MOCKS,
 };
 
 export default CONST;

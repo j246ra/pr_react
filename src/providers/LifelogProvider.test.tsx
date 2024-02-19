@@ -11,6 +11,7 @@ import { lifelog } from '@lib/faker/lifelog';
 import { AxiosError } from 'axios';
 import { DATETIME_FULL, days } from '@lib/dateUtil';
 import lifelogApiMocks from '@src/tests/lifelogApiMocks';
+import { LIFELOG_API_MOCKS } from '@lib/consts/common';
 
 let mockSetHeaders: jest.SpyInstance<unknown>;
 let mockClearUser: jest.SpyInstance<unknown>;
@@ -117,14 +118,14 @@ describe('LifelogProvider', () => {
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(10);
         });
-        act(() => {
-          result.current.loadLogs();
+        await act(async () => {
+          await result.current.loadLogs();
         });
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(20);
         });
-        act(() => {
-          result.current.loadLogs();
+        await act(async () => {
+          await result.current.loadLogs();
         });
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(20);
@@ -153,8 +154,8 @@ describe('LifelogProvider', () => {
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(10);
         });
-        act(() => {
-          result.current.searchLogs('TEST2');
+        await act(async () => {
+          await result.current.searchLogs('TEST2');
         });
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(10);
@@ -186,6 +187,14 @@ describe('LifelogProvider', () => {
         });
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(30);
+          expect(result.current.isTerminated).toEqual(false);
+        });
+        act(() => {
+          result.current.loadLogs();
+        });
+        await waitFor(() => {
+          expect(result.current.lifelogs).toHaveLength(30);
+          expect(result.current.isTerminated).toEqual(true);
         });
       });
       it('データが 0 件でも正常にレンダリングする', async () => {
@@ -197,6 +206,39 @@ describe('LifelogProvider', () => {
         });
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(0);
+        });
+      });
+      it('データが 0 件後に、別の条件で複数ページ分データ取得できる', async () => {
+        const { result } = renderHook(() => useLifelog(), { wrapper });
+        expect(result.current.lifelogs).toHaveLength(0);
+        expect(result.current.isTerminated).toEqual(false);
+        act(() => {
+          result.current.searchLogs(LIFELOG_API_MOCKS.PARAMS.WORD.NO_DATA);
+        });
+        await waitFor(() => {
+          expect(result.current.lifelogs).toHaveLength(0);
+          expect(result.current.isTerminated).toEqual(true);
+        });
+        act(() => {
+          result.current.searchLogs('');
+        });
+        await waitFor(() => {
+          expect(result.current.lifelogs).toHaveLength(10);
+          expect(result.current.isTerminated).toEqual(false);
+        });
+        act(() => {
+          result.current.loadLogs();
+        });
+        await waitFor(() => {
+          expect(result.current.lifelogs).toHaveLength(20);
+          expect(result.current.isTerminated).toEqual(false);
+        });
+        act(() => {
+          result.current.loadLogs();
+        });
+        await waitFor(() => {
+          expect(result.current.lifelogs).toHaveLength(20);
+          expect(result.current.isTerminated).toEqual(true);
         });
       });
     });

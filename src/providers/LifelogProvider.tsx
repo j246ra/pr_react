@@ -37,6 +37,7 @@ export type LifelogContextType = {
   loadLogs: () => Promise<AxiosResponse>;
   searchLogs: (word: string) => Promise<AxiosResponse>;
   searchWord: string;
+  isTerminated: boolean;
   newLog: () => Lifelog;
   createLog: (params: CreatParams) => Promise<AxiosResponse>;
   createLogByContext: (context: string) => Promise<AxiosResponse>;
@@ -62,11 +63,13 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
 
   const [searchWord, setSearchWord] = useState('');
   const [page, setPage] = useState(0);
+  const [isTerminated, setIsTerminated] = useState(false);
   const { getHeaders, setHeaders } = useSession();
   const { clearUser } = useUser();
 
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
     setHeaders(response);
+    setIsTerminated(response.data?.length === 0);
     return response;
   };
   const errorInterceptor = (error: AxiosError): Promise<never> => {
@@ -177,6 +180,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
         loadLogs,
         searchLogs,
         searchWord,
+        isTerminated,
         newLog,
         createLog,
         createLogByContext,
