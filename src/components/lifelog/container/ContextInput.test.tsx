@@ -45,6 +45,9 @@ describe('ContextInput', () => {
       fireEvent.submit(button);
     });
 
-    expect(createLogByContext).toHaveBeenCalledWith(testInput);
+    expect(createLogByContext).toHaveBeenCalledWith(
+      testInput,
+      CONTEXT_INPUT.MESSAGE.ERROR
+    );
   });
 });

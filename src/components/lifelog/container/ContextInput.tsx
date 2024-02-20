@@ -1,7 +1,7 @@
 import React, { FormEvent, useState } from 'react';
 import { useLifelog } from '@providers/LifelogProvider';
 import notify from '@lib/toast';
-import { LIFELOGS } from '@lib/consts/component';
+import { CONTEXT_INPUT, LIFELOGS } from '@lib/consts/component';
 import ContextInputForm from '@lifelog/presentational/ContextInputForm';
 
 export default function ContextInput() {
@@ -10,12 +10,10 @@ export default function ContextInput() {
 
   const handleCreateLifelog = (e: FormEvent) => {
     e.preventDefault();
-    createLogByContext(context)
-      .then(() => {
-        setContext('');
-        notify.success(LIFELOGS.MESSAGE.SUCCESS);
-      })
-      .catch((e) => notify.error(e.message));
+    createLogByContext(context, CONTEXT_INPUT.MESSAGE.ERROR).then(() => {
+      setContext('');
+      notify.success(LIFELOGS.MESSAGE.SUCCESS);
+    });
   };
 
   return (

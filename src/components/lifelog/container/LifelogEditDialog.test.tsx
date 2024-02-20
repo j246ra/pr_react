@@ -154,16 +154,5 @@ describe('LifelogEditDialog', () => {
         );
       });
     });
-    it('誤った Lifelog の場合はエラー通知されていること', async () => {
-      useLifelogEditDialog().updateLifelog = jest
-        .fn()
-        .mockRejectedValue({ message: 'エラーですぞ' });
-      render(<LifelogEditDialog />);
-      userEvent.click(screen.getByTestId(TEST_ID.BUTTON));
-      await waitFor(() => {
-        expect(useLifelogEditDialog().updateLifelog).toHaveBeenCalled();
-        expect(notifySpyError).toHaveBeenCalledWith('エラーですぞ');
-      });
-    });
   });
 });

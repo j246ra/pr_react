@@ -11,10 +11,12 @@ import { lifelog } from '@lib/faker/lifelog';
 import { AxiosError } from 'axios';
 import { DATETIME_FULL, days } from '@lib/dateUtil';
 import lifelogApiMocks from '@src/tests/lifelogApiMocks';
-import { LIFELOG_API_MOCKS } from '@lib/consts/common';
+import { COMMON, LIFELOG_API_MOCKS } from '@lib/consts/common';
+import notify from '@lib/toast';
 
 let mockSetHeaders: jest.SpyInstance<unknown>;
 let mockClearUser: jest.SpyInstance<unknown>;
+let notifySpy: jest.SpyInstance<unknown>;
 
 const {
   index: restIndex,
@@ -34,9 +36,11 @@ describe('LifelogProvider', () => {
     mockUseUser.mockReturnValue({
       clearUser: mockClearUser,
     });
+    notifySpy = jest.spyOn(notify, 'error');
   });
   afterEach(() => {
     mockSetHeaders.mockClear();
+    notifySpy.mockClear();
   });
 
   it('子要素がレンダリングされる', () => {
@@ -69,7 +73,7 @@ describe('LifelogProvider', () => {
 
         expect(result.current.lifelogs).toHaveLength(0);
         act(() => {
-          result.current.loadLogs();
+          result.current.loadLogs('error message');
         });
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(10);
@@ -89,10 +93,11 @@ describe('LifelogProvider', () => {
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(0);
           expect(mockClearUser).toHaveBeenCalled();
+          expect(notifySpy).toHaveBeenCalledWith(COMMON.MESSAGE.ERROR.EXPIRED);
         });
       });
 
-      it('status 401 以外のエラーの場合、AxiosError を返却する', async () => {
+      it('サーバーエラー(50x)の場合、AxiosError を返却する', async () => {
         server.use(restIndex({ status: 500 }));
         const { result } = renderHook(() => useLifelog(), { wrapper });
 
@@ -104,6 +109,49 @@ describe('LifelogProvider', () => {
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(0);
           expect(mockClearUser).not.toHaveBeenCalled();
+          expect(notifySpy).toHaveBeenCalledWith(
+            COMMON.MESSAGE.ERROR.STATUS_5XX
+          );
+        });
+      });
+
+      describe('想定外の status エラー', () => {
+        beforeEach(() => {
+          server.use(restIndex({ status: 499 }));
+        });
+        it('メッセージ未指定の場合デフォルトメッセージが表示される', async () => {
+          const { result } = renderHook(() => useLifelog(), { wrapper });
+
+          expect(result.current.lifelogs).toHaveLength(0);
+          act(() => {
+            expect(result.current.loadLogs()).rejects.toBeInstanceOf(
+              AxiosError
+            );
+          });
+
+          await waitFor(() => {
+            expect(result.current.lifelogs).toHaveLength(0);
+            expect(mockClearUser).not.toHaveBeenCalled();
+            expect(notifySpy).toHaveBeenCalledWith(
+              COMMON.MESSAGE.ERROR.GENERAL
+            );
+          });
+        });
+        it('指定メッセージが表示される', async () => {
+          const { result } = renderHook(() => useLifelog(), { wrapper });
+
+          expect(result.current.lifelogs).toHaveLength(0);
+          act(() => {
+            expect(
+              result.current.loadLogs('エラーなのです。')
+            ).rejects.toBeInstanceOf(AxiosError);
+          });
+
+          await waitFor(() => {
+            expect(result.current.lifelogs).toHaveLength(0);
+            expect(mockClearUser).not.toHaveBeenCalled();
+            expect(notifySpy).toHaveBeenCalledWith('エラーなのです。');
+          });
         });
       });
     });
@@ -136,8 +184,8 @@ describe('LifelogProvider', () => {
         server.use(restIndex({ maxPage: 1, length: 0 }));
         const { result } = renderHook(() => useLifelog(), { wrapper });
         expect(result.current.lifelogs).toHaveLength(0);
-        act(() => {
-          result.current.loadLogs();
+        await act(async () => {
+          await result.current.loadLogs();
         });
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(0);
@@ -160,8 +208,8 @@ describe('LifelogProvider', () => {
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(10);
         });
-        act(() => {
-          result.current.searchLogs('TEST3');
+        await act(async () => {
+          await result.current.searchLogs('TEST3');
         });
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(10);
