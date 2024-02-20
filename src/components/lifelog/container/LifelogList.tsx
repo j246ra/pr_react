@@ -21,7 +21,7 @@ export default function LifelogList() {
   const handleDeleteLifelog = useDeleteLifelog();
 
   const lifelogLoader = async () => {
-    const res = await loadLogs();
+    const res = await loadLogs(LIFELOG_LIST.MESSAGE.ERROR);
     if (res.data?.invalidData.length > 0) {
       notify.error(LIFELOG_LIST.MESSAGE.INVALID_DATA);
     }

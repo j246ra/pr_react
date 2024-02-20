@@ -11,7 +11,7 @@ export default function LifelogEditDialog() {
 
   const handleUpdateLifelog = () => {
     if (lifelogEditDialogValidator(lifelog).isInvalid) return;
-    updateLifelog(lifelog).then(() => {
+    updateLifelog(lifelog, Defs.MESSAGE.ERROR).then(() => {
       notify.success(Defs.MESSAGE.SUCCESS);
       closeEditDialog();
     });

@@ -134,6 +134,9 @@ export const LIFELOGS = {
 
 export const CONTEXT_INPUT = {
   PLACEHOLDER: '行動を入力(空白以降は詳細として記録されます)',
+  MESSAGE: {
+    ERROR: 'データの更新に失敗しました。',
+  },
 };
 
 export const DATETIME_INPUT = {
@@ -173,6 +176,7 @@ export const LIFELOG_LIST_HEADER = {
 
 export const LIFELOG_LIST = {
   MESSAGE: {
+    ERROR: 'データ取得に失敗しました。',
     INVALID_DATA: '一部、データ取得に失敗しました。',
   },
 };
@@ -195,6 +199,7 @@ export const LIFELOG_DETAIL_DIALOG = {
 export const LIFELOG_EDIT_DIALOG = {
   MESSAGE: {
     SUCCESS: '行動を保存しました。',
+    ERROR: 'ダータの更新に失敗しました。',
   } as const,
   ACTION: {
     LABEL: '行動内容',
