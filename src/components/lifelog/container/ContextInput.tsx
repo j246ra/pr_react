@@ -10,12 +10,10 @@ export default function ContextInput() {
 
   const handleCreateLifelog = (e: FormEvent) => {
     e.preventDefault();
-    createLogByContext(context)
-      .then(() => {
-        setContext('');
-        notify.success(LIFELOGS.MESSAGE.SUCCESS);
-      })
-      .catch((e) => notify.error(e.message));
+    createLogByContext(context).then(() => {
+      setContext('');
+      notify.success(LIFELOGS.MESSAGE.SUCCESS);
+    });
   };
 
   return (

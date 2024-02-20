@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, InputGroup } from '@blueprintjs/core';
 import { useLifelog } from '@providers/LifelogProvider';
-import notify from '@lib/toast';
 import { SEARCH_INPUT } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import { SEARCH_INPUT_TEST_ID as TEST_ID } from '@lib/consts/testId';
@@ -26,10 +25,9 @@ export default function SearchInput({
   useEffect(() => setWord(searchWord), [searchWord]);
 
   const handleSearch = () => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
-    searchLogs(word).catch((e) => {
-      notify.error(e.message);
-    });
+    searchLogs(word).then(() =>
+      window.scrollTo({ top: 0, behavior: 'instant' })
+    );
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {

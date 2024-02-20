@@ -38,16 +38,34 @@ export type Lifelog = Omit<BaseLifelog, 'detail' | 'finishedAt'> & {
 
 export type LifelogContextType = {
   lifelogs: Lifelog[];
-  loadLogs: () => Promise<AxiosResponse>;
-  searchLogs: (word: string) => Promise<AxiosResponse>;
+  loadLogs: (defaultErrorMessage?: string) => Promise<AxiosResponse>;
+  searchLogs: (
+    word: string,
+    defaultErrorMessage?: string
+  ) => Promise<AxiosResponse>;
   searchWord: string;
   isTerminated: boolean;
   newLog: () => Lifelog;
-  createLog: (params: CreatParams) => Promise<AxiosResponse>;
-  createLogByContext: (context: string) => Promise<AxiosResponse>;
-  finishLog: (log: Lifelog) => Promise<AxiosResponse>;
-  updateLog: (params: UpdateParams) => Promise<AxiosResponse>;
-  deleteLog: (id: number) => Promise<AxiosResponse>;
+  createLog: (
+    params: CreatParams,
+    defaultErrorMessage?: string
+  ) => Promise<AxiosResponse>;
+  createLogByContext: (
+    context: string,
+    defaultErrorMessage?: string
+  ) => Promise<AxiosResponse>;
+  finishLog: (
+    log: Lifelog,
+    defaultErrorMessage?: string
+  ) => Promise<AxiosResponse>;
+  updateLog: (
+    params: UpdateParams,
+    defaultErrorMessage?: string
+  ) => Promise<AxiosResponse>;
+  deleteLog: (
+    id: number,
+    defaultErrorMessage?: string
+  ) => Promise<AxiosResponse>;
   clear: () => void;
 };
 
@@ -77,13 +95,13 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     return response;
   };
 
-  const errorInterceptorBuilder = (responseStatusHandler?: () => void) => {
+  const errorInterceptorBuilder = (defaultErrorMessage?: string) => {
     return (error: AxiosError) => {
       const status = error.response?.status;
-      if (status === 401) clearUser();
-      if (!responseStatusHandler) {
+      if (status) {
         switch (error.response?.status) {
           case 401:
+            clearUser();
             notify.error(COMMON.MESSAGE.ERROR.EXPIRED);
             break;
           case 500:
@@ -93,10 +111,8 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
             notify.error(COMMON.MESSAGE.ERROR.STATUS_5XX);
             break;
           default:
-            notify.error(COMMON.MESSAGE.ERROR.GENERAL);
+            notify.error(defaultErrorMessage || COMMON.MESSAGE.ERROR.GENERAL);
         }
-      } else {
-        responseStatusHandler();
       }
       Sentry.addBreadcrumb({
         message: 'lifelogs api request error.',
@@ -106,17 +122,17 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     };
   };
 
-  const api = (errorStatusHandler?: () => void) => {
+  const api = (defaultErrorMessage?: string) => {
     return lifelog(
       getHeaders,
       responseInterceptor,
-      errorInterceptorBuilder(errorStatusHandler)
+      errorInterceptorBuilder(defaultErrorMessage)
     );
   };
 
-  const loadLogs = async () => {
+  const loadLogs = async (defaultErrorMessage?: string) => {
     const nextPage = page + 1;
-    const r = await api().index(nextPage, searchWord);
+    const r = await api(defaultErrorMessage).index(nextPage, searchWord);
     const res = validateResponseData(r.data);
     if (res.validData.length > 0) {
       addLifelogs(convertResponseData(res.validData));
@@ -126,9 +142,9 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     return r;
   };
 
-  const searchLogs = async (word: string) => {
+  const searchLogs = async (word: string, defaultErrorMessage?: string) => {
     setSearchWord(word);
-    const r = await api().index(1, word);
+    const r = await api(defaultErrorMessage).index(1, word);
     const res = validateResponseData(r.data);
     setLifelogs(convertResponseData(res.validData));
     setPage(1);
@@ -137,19 +153,28 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
 
   const newLog = newLifelog;
 
-  const createLog = async (params: CreatParams) => {
-    const r = await api().create(params);
+  const createLog = async (
+    params: CreatParams,
+    defaultErrorMessage?: string
+  ) => {
+    const r = await api(defaultErrorMessage).create(params);
     const res = validateResponseData(r.data);
     addLifelogs(convertResponseData(res.validData));
     return r;
   };
 
-  const createLogByContext = (context: string) => {
-    return createLog(buildCreateParamsByContext(context));
+  const createLogByContext = (
+    context: string,
+    defaultErrorMessage?: string
+  ) => {
+    return createLog(buildCreateParamsByContext(context), defaultErrorMessage);
   };
 
-  const updateLog = async (params: UpdateParams) => {
-    const r = await api().update(params);
+  const updateLog = async (
+    params: UpdateParams,
+    defaultErrorMessage?: string
+  ) => {
+    const r = await api(defaultErrorMessage).update(params);
     const updatedLogs = [...lifelogs];
     const res = validateResponseData(r.data);
     const _log = convertResponseData(res.validData)[0];
@@ -161,14 +186,14 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     return r;
   };
 
-  const finishLog = (log: Lifelog) => {
+  const finishLog = (log: Lifelog, defaultErrorMessage?: string) => {
     const params: UpdateParams = { ...log };
     params.finishedAt = days().format(DATETIME_FULL);
-    return updateLog(params);
+    return updateLog(params, defaultErrorMessage);
   };
 
-  const deleteLog = async (id: number) => {
-    const r = await api().destroy(id);
+  const deleteLog = async (id: number, defaultErrorMessage?: string) => {
+    const r = await api(defaultErrorMessage).destroy(id);
     setLifelogs(lifelogs.filter((log) => log.id !== id));
     return r;
   };

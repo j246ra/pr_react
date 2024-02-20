@@ -8,15 +8,12 @@ import {
 import SearchInput from '@lifelog/presentational/SearchInput';
 import { useLifelog } from '@providers/LifelogProvider';
 import userEvent from '@testing-library/user-event';
-import toast from 'react-hot-toast';
 import { SEARCH_INPUT } from '@lib/consts/component';
 import { SEARCH_INPUT_TEST_ID as TEST_ID } from '@lib/consts/testId';
-import { NOTIFY } from '@lib/consts/common';
 
 jest.mock('react-hot-toast');
 jest.mock('@providers/LifelogProvider');
 const mockUseLifelog = useLifelog as jest.MockedFunction<any>;
-const mockToast = jest.mocked(toast);
 
 window.scrollTo = jest.fn();
 
@@ -121,35 +118,6 @@ describe('SearchInput', () => {
         await waitFor(() => {
           expect(mockUseLifelog().searchLogs).toHaveBeenCalledTimes(1);
           expect(input.value).toEqual('にほんごにゅうりょくちゅう');
-        });
-      });
-    });
-
-    describe('エラー検証', () => {
-      beforeEach(() => {
-        useLifelog().searchLogs = jest
-          .fn()
-          .mockReturnValue(Promise.reject(new Error('Very dangerous error.')));
-        render(<SearchInput isShown={true} />);
-      });
-      it('検索エラー時に toast を表示していること', async () => {
-        const input = screen.getAllByPlaceholderText(
-          SEARCH_INPUT.PLACEHOLDER
-        )[0] as HTMLInputElement;
-        const button = screen.getAllByTestId(TEST_ID.BUTTON)[0];
-        act(() => {
-          userEvent.clear(input);
-          userEvent.type(input, 'searching');
-          userEvent.click(button);
-        });
-        await waitFor(() => {
-          expect(mockUseLifelog().searchLogs).toHaveBeenCalledTimes(1);
-          expect(input.value).toEqual('searching');
-          expect(mockToast.error).toHaveBeenCalled();
-          expect(mockToast.error).toHaveBeenCalledWith(
-            'Very dangerous error.',
-            NOTIFY.STYLE.ERROR
-          );
         });
       });
     });

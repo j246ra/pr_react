@@ -11,12 +11,10 @@ export default function LifelogEditDialog() {
 
   const handleUpdateLifelog = () => {
     if (lifelogEditDialogValidator(lifelog).isInvalid) return;
-    updateLifelog(lifelog)
-      .then(() => {
-        notify.success(Defs.MESSAGE.SUCCESS);
-        closeEditDialog();
-      })
-      .catch((e) => notify.error(e.message));
+    updateLifelog(lifelog).then(() => {
+      notify.success(Defs.MESSAGE.SUCCESS);
+      closeEditDialog();
+    });
   };
 
   return (
