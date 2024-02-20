@@ -76,32 +76,47 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     setIsTerminated(response.data?.length === 0);
     return response;
   };
-  const errorInterceptor = (error: AxiosError): Promise<never> => {
-    switch (error.response?.status) {
-      case 401:
-        clearUser();
-        notify.error(COMMON.MESSAGE.ERROR.EXPIRED);
-        break;
-      case 500:
-      case 501:
-      case 502:
-      case 503:
-        notify.error(COMMON.MESSAGE.ERROR.STATUS_5XX);
-        break;
-      default:
-        notify.error(COMMON.MESSAGE.ERROR.GENERAL);
-    }
-    Sentry.addBreadcrumb({
-      message: 'lifelogs api request error.',
-      data: error,
-    });
-    return Promise.reject(error);
+
+  const errorInterceptorBuilder = (responseStatusHandler?: () => void) => {
+    return (error: AxiosError) => {
+      const status = error.response?.status;
+      if (status === 401) clearUser();
+      if (!responseStatusHandler) {
+        switch (error.response?.status) {
+          case 401:
+            notify.error(COMMON.MESSAGE.ERROR.EXPIRED);
+            break;
+          case 500:
+          case 501:
+          case 502:
+          case 503:
+            notify.error(COMMON.MESSAGE.ERROR.STATUS_5XX);
+            break;
+          default:
+            notify.error(COMMON.MESSAGE.ERROR.GENERAL);
+        }
+      } else {
+        responseStatusHandler();
+      }
+      Sentry.addBreadcrumb({
+        message: 'lifelogs api request error.',
+        data: error,
+      });
+      return Promise.reject(error);
+    };
   };
-  const api = lifelog(getHeaders, responseInterceptor, errorInterceptor);
+
+  const api = (errorStatusHandler?: () => void) => {
+    return lifelog(
+      getHeaders,
+      responseInterceptor,
+      errorInterceptorBuilder(errorStatusHandler)
+    );
+  };
 
   const loadLogs = async () => {
     const nextPage = page + 1;
-    const r = await api.index(nextPage, searchWord);
+    const r = await api().index(nextPage, searchWord);
     const res = validateResponseData(r.data);
     if (res.validData.length > 0) {
       addLifelogs(convertResponseData(res.validData));
@@ -113,7 +128,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
 
   const searchLogs = async (word: string) => {
     setSearchWord(word);
-    const r = await api.index(1, word);
+    const r = await api().index(1, word);
     const res = validateResponseData(r.data);
     setLifelogs(convertResponseData(res.validData));
     setPage(1);
@@ -123,7 +138,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   const newLog = newLifelog;
 
   const createLog = async (params: CreatParams) => {
-    const r = await api.create(params);
+    const r = await api().create(params);
     const res = validateResponseData(r.data);
     addLifelogs(convertResponseData(res.validData));
     return r;
@@ -134,7 +149,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   };
 
   const updateLog = async (params: UpdateParams) => {
-    const r = await api.update(params);
+    const r = await api().update(params);
     const updatedLogs = [...lifelogs];
     const res = validateResponseData(r.data);
     const _log = convertResponseData(res.validData)[0];
@@ -153,7 +168,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   };
 
   const deleteLog = async (id: number) => {
-    const r = await api.destroy(id);
+    const r = await api().destroy(id);
     setLifelogs(lifelogs.filter((log) => log.id !== id));
     return r;
   };

@@ -136,8 +136,8 @@ describe('LifelogProvider', () => {
         server.use(restIndex({ maxPage: 1, length: 0 }));
         const { result } = renderHook(() => useLifelog(), { wrapper });
         expect(result.current.lifelogs).toHaveLength(0);
-        act(() => {
-          result.current.loadLogs();
+        await act(async () => {
+          await result.current.loadLogs();
         });
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(0);
@@ -160,8 +160,8 @@ describe('LifelogProvider', () => {
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(10);
         });
-        act(() => {
-          result.current.searchLogs('TEST3');
+        await act(async () => {
+          await result.current.searchLogs('TEST3');
         });
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(10);
