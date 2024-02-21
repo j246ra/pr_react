@@ -13,6 +13,7 @@ import LifelogListLoader from '@lifelog/presentational/LifelogListLoader';
 import { IconNames } from '@blueprintjs/icons';
 import { LIFELOG_LIST } from '@lib/consts/component';
 import useMediaQuery, { mediaQuery } from '@src/hooks/useMediaQuery';
+import LifelogListItemSp from '@lifelog/presentational/LifelogListItemSp';
 
 export default function LifelogList() {
   const { lifelogs, loadLogs, isTerminated } = useLifelog();
@@ -51,7 +52,16 @@ export default function LifelogList() {
         ) : (
           lifelogs.map((log) => {
             if (isSp) {
-              return <div key={log.id}>{log.action}</div>;
+              return (
+                <LifelogListItemSp
+                  key={log.id}
+                  log={log}
+                  onActionClick={() => openDetailDialog(log)}
+                  onEditButtonClick={() => openEditDialog(log)}
+                  onFinishButtonClick={() => handleFinishLifelog(log)}
+                  onDeleteButtonClick={() => handleDeleteLifelog(log.id)}
+                />
+              );
             } else {
               return (
                 <LifelogListItem
