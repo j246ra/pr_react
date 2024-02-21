@@ -4,10 +4,13 @@ import { LIFELOG_EDIT_DIALOG as Defs } from '@lib/consts/component';
 import { useLifelogEditDialog } from '@providers/LifelogEditDialogProvider';
 import lifelogEditDialogValidator from '@validators/lifelogEditDialog';
 import BaseLifelogEditDialog from '@lifelog/presentational/BaseLifelogEditDialog';
+import useDeleteLifelog from '@src/hooks/useDeleteLifelog';
 
 export default function LifelogEditDialog() {
   const { isOpen, lifelog, editLifelog, updateLifelog, closeEditDialog } =
     useLifelogEditDialog();
+
+  const deleteLifelog = useDeleteLifelog();
 
   const handleUpdateLifelog = () => {
     if (lifelogEditDialogValidator(lifelog).isInvalid) return;
@@ -17,6 +20,11 @@ export default function LifelogEditDialog() {
     });
   };
 
+  const handleDeleteLifelog = (id: number) => {
+    deleteLifelog(id);
+    closeEditDialog();
+  };
+
   return (
     <BaseLifelogEditDialog
       lifelog={lifelog}
@@ -24,6 +32,7 @@ export default function LifelogEditDialog() {
       isOpen={isOpen}
       closeEditDialog={closeEditDialog}
       handleUpdateLifelog={handleUpdateLifelog}
+      handleDeleteLifelog={handleDeleteLifelog}
     />
   );
 }
