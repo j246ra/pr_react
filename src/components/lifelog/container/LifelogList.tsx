@@ -12,6 +12,8 @@ import { useLifelogDetailDialog } from '@providers/LifelogDetailDialogProvider';
 import LifelogListLoader from '@lifelog/presentational/LifelogListLoader';
 import { IconNames } from '@blueprintjs/icons';
 import { LIFELOG_LIST } from '@lib/consts/component';
+import useMediaQuery, { mediaQuery } from '@src/hooks/useMediaQuery';
+import LifelogListItemSp from '@lifelog/presentational/LifelogListItemSp';
 
 export default function LifelogList() {
   const { lifelogs, loadLogs, isTerminated } = useLifelog();
@@ -19,6 +21,7 @@ export default function LifelogList() {
   const { openEditDialog } = useLifelogEditDialog();
   const handleFinishLifelog = useFinishAction();
   const handleDeleteLifelog = useDeleteLifelog();
+  const isSp = useMediaQuery(mediaQuery.sp);
 
   const lifelogLoader = async () => {
     const res = await loadLogs(LIFELOG_LIST.MESSAGE.ERROR);
@@ -47,16 +50,31 @@ export default function LifelogList() {
             }
           />
         ) : (
-          lifelogs.map((log) => (
-            <LifelogListItem
-              key={log.id}
-              log={log}
-              onActionClick={() => openDetailDialog(log)}
-              onEditButtonClick={() => openEditDialog(log)}
-              onFinishButtonClick={() => handleFinishLifelog(log)}
-              onDeleteButtonClick={() => handleDeleteLifelog(log.id)}
-            />
-          ))
+          lifelogs.map((log) => {
+            if (isSp) {
+              return (
+                <LifelogListItemSp
+                  key={log.id}
+                  log={log}
+                  onActionClick={() => openDetailDialog(log)}
+                  onEditButtonClick={() => openEditDialog(log)}
+                  onFinishButtonClick={() => handleFinishLifelog(log)}
+                  onDeleteButtonClick={() => handleDeleteLifelog(log.id)}
+                />
+              );
+            } else {
+              return (
+                <LifelogListItem
+                  key={log.id}
+                  log={log}
+                  onActionClick={() => openDetailDialog(log)}
+                  onEditButtonClick={() => openEditDialog(log)}
+                  onFinishButtonClick={() => handleFinishLifelog(log)}
+                  onDeleteButtonClick={() => handleDeleteLifelog(log.id)}
+                />
+              );
+            }
+          })
         )}
       </InfiniteScroll>
     </HTMLTable>
