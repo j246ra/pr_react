@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { LifelogListItemProps } from '@lifelog/presentational/LifelogListItem';
 import { EntityTitle } from '@blueprintjs/core';
-import { days, DISPLAY_DATETIME, DISPLAY_TIME } from '@lib/dateUtil';
+import { days, DISPLAY_TIME } from '@lib/dateUtil';
 import styles from './LifelogListItem.module.scss';
 
 export function LifelogListItemSp({
@@ -11,25 +11,27 @@ export function LifelogListItemSp({
   onDeleteButtonClick,
   onActionClick,
 }: LifelogListItemProps) {
-  const startedDay = useMemo(() => days(log.startedAt), [log.startedAt]);
-  const startedDatetime = useMemo(
-    () => startedDay.format(DISPLAY_DATETIME),
-    [startedDay]
-  );
+  const startedAt = useMemo(() => days(log.startedAt), [log.startedAt]);
+  const startedDay = useMemo(() => startedAt.format('YY/MM/DD'), [startedAt]);
   const startedTime = useMemo(
-    () => startedDay.format(DISPLAY_TIME),
-    [startedDay]
+    () => startedAt.format(DISPLAY_TIME),
+    [startedAt]
   );
-  const displayDatetime = useMemo(
-    () => (log.isDateChanged ? startedDatetime : startedTime),
-    [log.isDateChanged, startedDatetime, startedTime]
-  );
+  const actionTime = useMemo(() => {
+    if (log.finishedAt) {
+      const minutesDiff = days(log.finishedAt).diff(startedAt, 'minutes');
+      const displayMinutes = minutesDiff > 999 ? 999 : minutesDiff;
+      return ` (${displayMinutes})`;
+    }
+    return '';
+  }, [log.finishedAt, startedAt]);
 
   return (
     <tr className={styles.trItem}>
       <td className={styles.tdAction} onClick={onEditButtonClick}>
+        {log.isDateChanged ? startedDay : ''}
         <EntityTitle
-          title={`${displayDatetime} ${log.action}`}
+          title={`${startedTime}${actionTime} ${log.action}`}
           subtitle={log.detail || ''}
         />
       </td>
