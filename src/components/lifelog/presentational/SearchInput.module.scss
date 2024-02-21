@@ -1,8 +1,10 @@
+@import "src/variables";
+
 .container {
   width: var(--container-width, auto);
 }
 
-@media (max-width: 767px) {
+@media (max-width: $SpMaxWidth) {
   .container {
     width: auto;
   }
