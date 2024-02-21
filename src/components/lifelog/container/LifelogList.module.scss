@@ -1,6 +1,12 @@
+@import "src/variables";
+
 .baseTable {
   width: 80%;
   margin: 0 auto;
+
+  @media (max-width: $SpMaxWidth) {
+    width: 100%;
+  }
 }
 
 .spinnerTd {
