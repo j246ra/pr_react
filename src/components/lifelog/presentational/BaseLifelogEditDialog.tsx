@@ -15,6 +15,7 @@ import styles from './BaseLifelogEditDialog.module.scss';
 import { LIFELOG_EDIT_DIALOG as Defs } from '@lib/consts/component';
 import { LIFELOG_EDIT_DIALOG_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import { LifelogEditDialogContextType } from '@providers/LifelogEditDialogProvider';
+import { days, DISPLAY_DATETIME_FULL } from '@lib/dateUtil';
 
 export type BaseLifelogEditDialogProps = Omit<
   LifelogEditDialogContextType,
@@ -22,6 +23,7 @@ export type BaseLifelogEditDialogProps = Omit<
 > & {
   detailRows?: number;
   handleUpdateLifelog: () => void;
+  handleDeleteLifelog: (id: number) => void;
 };
 
 export default function BaseLifelogEditDialog({
@@ -31,6 +33,7 @@ export default function BaseLifelogEditDialog({
   closeEditDialog,
   detailRows = 8,
   handleUpdateLifelog,
+  handleDeleteLifelog,
 }: BaseLifelogEditDialogProps) {
   return (
     <Dialog isOpen={isOpen} onClose={closeEditDialog}>
@@ -78,14 +81,36 @@ export default function BaseLifelogEditDialog({
         </DialogBody>
         <DialogFooter
           actions={
-            <Button
-              data-testid={TEST_ID.BUTTON}
-              className={styles.saveButton}
-              icon={IconNames.FLOPPY_DISK}
-              onClick={handleUpdateLifelog}
-              intent={Intent.PRIMARY}
-              text={Defs.BUTTON}
-            />
+            <>
+              <Button
+                outlined={true}
+                intent={Intent.DANGER}
+                icon={IconNames.TRASH}
+                text={'削除'}
+                onClick={() => {
+                  handleDeleteLifelog(lifelog.id);
+                }}
+              />
+              <Button
+                outlined={true}
+                intent={Intent.PRIMARY}
+                text={'完了時間を設定'}
+                icon={IconNames.STOPWATCH}
+                onClick={() => {
+                  editLifelog({
+                    finishedAt: days().format(DISPLAY_DATETIME_FULL),
+                  });
+                }}
+              />
+              <Button
+                data-testid={TEST_ID.BUTTON}
+                className={styles.saveButton}
+                icon={IconNames.FLOPPY_DISK}
+                onClick={handleUpdateLifelog}
+                intent={Intent.PRIMARY}
+                text={Defs.BUTTON}
+              />
+            </>
           }
         />
       </div>
