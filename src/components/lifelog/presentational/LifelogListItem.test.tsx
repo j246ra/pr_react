@@ -107,13 +107,7 @@ describe('LifelogListItem', () => {
     userEvent.click(getByText('Test action'));
     expect(mockOnAction).toHaveBeenCalled();
 
-    userEvent.click(getByTestId(new RegExp(TEST_ID.FINISH_BUTTON)));
-    expect(mockOnFinish).toHaveBeenCalled();
-
     userEvent.click(getByTestId(new RegExp(TEST_ID.EDIT_BUTTON)));
     expect(mockOnEdit).toHaveBeenCalled();
-
-    userEvent.click(getByTestId(new RegExp(TEST_ID.DELETE_BUTTON)));
-    expect(mockOnDelete).toHaveBeenCalled();
   });
 });

@@ -63,28 +63,12 @@ export function LifelogListItem({
       </td>
       <td className={styles.tdOperation}>
         <Button
-          className={styles.button}
-          data-testid={TEST_ID.FINISH_BUTTON + log.id}
-          intent={Intent.PRIMARY}
-          icon={IconNames.STOPWATCH}
-          minimal={true}
-          onClick={onFinishButtonClick}
-        />
-        <Button
           className={`${styles.editButton} ${styles.button}`}
           data-testid={TEST_ID.EDIT_BUTTON + log.id}
           intent={Intent.SUCCESS}
           icon={IconNames.EDIT}
           minimal={true}
           onClick={onEditButtonClick}
-        />
-        <Button
-          className={`${styles.deleteButton} ${styles.button}`}
-          data-testid={TEST_ID.DELETE_BUTTON + log.id}
-          intent={Intent.DANGER}
-          icon={IconNames.DELETE}
-          minimal={true}
-          onClick={onDeleteButtonClick}
         />
       </td>
     </tr>
