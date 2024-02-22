@@ -25,14 +25,26 @@ export function LifelogListItemSp({
     }
     return '';
   }, [log.finishedAt, startedAt]);
+  const detail = useMemo(() => {
+    if (log.detail)
+      return log.detail.length > 52 ? `${log.detail?.slice(0, 52)}...` : '';
+    return null;
+  }, [log.detail]);
 
   return (
     <tr className={styles.trItem}>
-      <td className={styles.tdAction} onClick={onEditButtonClick}>
-        {log.isDateChanged ? startedDay : ''}
+      <td
+        className={log.finishedAt ? styles.tdStartedAtBold : styles.tdStartedAt}
+        style={{ padding: '3px' }}
+        onClick={onEditButtonClick}
+      >
+        {log.isDateChanged ? `${startedDay} ` : ''}
+        {startedTime}
+        {actionTime}
         <EntityTitle
-          title={`${startedTime}${actionTime} ${log.action}`}
-          subtitle={log.detail || ''}
+          className={styles.tdAction}
+          title={log.action}
+          subtitle={detail || ''}
         />
       </td>
     </tr>
