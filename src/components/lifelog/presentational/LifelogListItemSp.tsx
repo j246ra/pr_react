@@ -27,7 +27,9 @@ export function LifelogListItemSp({
   }, [log.finishedAt, startedAt]);
   const detail = useMemo(() => {
     if (log.detail)
-      return log.detail.length > 52 ? `${log.detail?.slice(0, 52)}...` : '';
+      return log.detail.length > 52
+        ? `${log.detail?.slice(0, 52)}...`
+        : log.detail;
     return null;
   }, [log.detail]);
 
