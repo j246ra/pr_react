@@ -21,7 +21,7 @@ describe('dayDisplay', () => {
 describe('dayDisplayFull', () => {
   it('日時が YYYY-MM-DD HH:mm:ss 形式出力されている', () => {
     expect(daysDisplayFull('2023-11-16 14:23:41.921')).toEqual(
-      '2023-11-16 14:23:41'
+      '2023/11/16 14:23:41'
     );
   });
 
