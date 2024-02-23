@@ -1,52 +1,63 @@
 @import "src/App";
 
-.trItem {
-  height: 55px;
-}
-
-.trItem td {
-  vertical-align: middle!important;
-  border-bottom: 1px solid $pt-divider-black;
-}
-
-.tdAction {
-  @include appLinkText();
-  color: $pt-link-color!important;
-  box-shadow: none!important;
-
-  &:hover {
-    text-decoration: none;
+table tbody {
+  .trItem {
+    height: 55px;
   }
-}
 
-.tdStartedAt {
-  width: 107px;
-  box-shadow: none!important;
-}
+  .trItem td {
+    vertical-align: middle;
+    border-bottom: 1px solid $pt-divider-black;
+  }
 
-.tdStartedAtBold {
-  width: 107px;
-  font-weight: bold;
-  box-shadow: none!important;
-}
+  tr:first-child.trItem td {
+    box-shadow: none;
+  }
 
-.tdOperation {
-  text-align: center!important;
-  box-shadow: none!important;
-}
+  td.tdAction {
+    @include appLinkText();
+    color: $pt-link-color;
+    &:hover {
+      text-decoration: none;
+    }
+  }
 
-.button {
-  display: none;
-}
+  td.tdStartedAt {
+    width: 120px;
+  }
 
-tr:hover .button {
-  display: inline-flex;
-}
+  td.bold {
+    font-weight: bold;
+  }
 
-.editButton {
-  margin-left: 3px;
-}
+  .action {
+    @include appLinkText();
+    color: $pt-link-color;
+    &:hover {
+      text-decoration: none;
+    }
+  }
 
-.deleteButton {
-  margin-left: 3px;
+  .button {
+    display: none;
+  }
+
+
+  tr:first-child.trItemSp td {
+    box-shadow: none;
+  }
+
+  .trItemSp {
+    height: 45px;
+
+    td {
+      vertical-align: middle;
+      border-bottom: 1px solid $pt-divider-black;
+      padding: 3px;
+    }
+  }
+
+  tr:hover .button {
+    display: inline-flex;
+  }
 }

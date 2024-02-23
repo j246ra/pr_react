@@ -1,50 +1,32 @@
 import React, { useMemo } from 'react';
 import { LifelogListItemProps } from '@lifelog/presentational/LifelogListItem';
 import { EntityTitle } from '@blueprintjs/core';
-import { days, DISPLAY_TIME } from '@lib/dateUtil';
 import styles from './LifelogListItem.module.scss';
+import useActionTimeDisplay from '@src/hooks/useActionTimeDisplay';
+import { truncate } from '@lib/stringUtil';
+import { LIFELOG_LIST_ITEM_SP as Defs } from '@lib/consts/component';
+
+type LifelogListItemSpProps = Omit<LifelogListItemProps, 'onActionClick'>;
 
 export function LifelogListItemSp({
   log,
-  onFinishButtonClick,
   onEditButtonClick,
-  onDeleteButtonClick,
-  onActionClick,
-}: LifelogListItemProps) {
-  const startedAt = useMemo(() => days(log.startedAt), [log.startedAt]);
-  const startedDay = useMemo(() => startedAt.format('YY/MM/DD'), [startedAt]);
-  const startedTime = useMemo(
-    () => startedAt.format(DISPLAY_TIME),
-    [startedAt]
+}: LifelogListItemSpProps) {
+  const { displayDatetime, displayActionTime } = useActionTimeDisplay(log);
+  const detail = useMemo(
+    () => truncate(log.detail, Defs.DETAIL_TRUNCATE_LENGTH),
+    [log.detail]
   );
-  const actionTime = useMemo(() => {
-    if (log.finishedAt) {
-      const minutesDiff = days(log.finishedAt).diff(startedAt, 'minutes');
-      const displayMinutes = minutesDiff > 999 ? 999 : minutesDiff;
-      return ` (${displayMinutes})`;
-    }
-    return '';
-  }, [log.finishedAt, startedAt]);
-  const detail = useMemo(() => {
-    if (log.detail)
-      return log.detail.length > 52
-        ? `${log.detail?.slice(0, 52)}...`
-        : log.detail;
-    return null;
-  }, [log.detail]);
 
   return (
-    <tr className={styles.trItem}>
+    <tr className={styles.trItemSp}>
       <td
-        className={log.finishedAt ? styles.tdStartedAtBold : styles.tdStartedAt}
-        style={{ padding: '3px' }}
+        className={log.finishedAt ? styles.bold : ''}
         onClick={onEditButtonClick}
       >
-        {log.isDateChanged ? `${startedDay} ` : ''}
-        {startedTime}
-        {actionTime}
+        {displayDatetime + displayActionTime}
         <EntityTitle
-          className={styles.tdAction}
+          className={styles.action}
           title={log.action}
           subtitle={detail || ''}
         />

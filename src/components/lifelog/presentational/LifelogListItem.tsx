@@ -3,55 +3,32 @@ import { Button, EntityTitle, Intent, Tooltip } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import { Lifelog } from '@providers/LifelogProvider';
 import styles from './LifelogListItem.module.scss';
-import { days, DISPLAY_DATETIME, DISPLAY_TIME } from '@lib/dateUtil';
 import { LIFELOG_LIST_ITEM_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import { top } from '@popperjs/core';
+import useActionTimeDisplay from '@src/hooks/useActionTimeDisplay';
 
 export type LifelogListItemProps = {
   log: Lifelog;
-  onFinishButtonClick: () => void;
-  onDeleteButtonClick: () => void;
   onEditButtonClick: () => void;
   onActionClick: () => void;
 };
 export function LifelogListItem({
   log,
-  onFinishButtonClick,
   onEditButtonClick,
-  onDeleteButtonClick,
   onActionClick,
 }: LifelogListItemProps) {
-  const startedDay = useMemo(() => days(log.startedAt), [log.startedAt]);
-  const startedDatetime = useMemo(
-    () => startedDay.format(DISPLAY_DATETIME),
-    [startedDay]
-  );
-  const startedTime = useMemo(
-    () => startedDay.format(DISPLAY_TIME),
-    [startedDay]
-  );
-  const actionTime = useMemo(() => {
-    if (log.finishedAt) {
-      const minutesDiff = days(log.finishedAt).diff(startedDay, 'minutes');
-      const displayMinutes = minutesDiff > 999 ? 999 : minutesDiff;
-      return ` (${displayMinutes})`;
-    }
-    return '';
-  }, [log.finishedAt, startedDay]);
-
-  const displayDatetime = useMemo(
-    () => (log.isDateChanged ? startedDatetime : startedTime),
-    [log.isDateChanged, startedDatetime, startedTime]
-  );
+  const { startedDatetime, displayActionTime, displayDatetime } =
+    useActionTimeDisplay(log);
+  const classNameTdStartedAT = useMemo(() => {
+    if (log.finishedAt) return `${styles.bold} ${styles.tdStartedAt}`;
+    else return styles.tdStartedAt;
+  }, [log.finishedAt]);
 
   return (
     <tr className={styles.trItem}>
-      <td
-        data-testid={TEST_ID.TD_STARTED_AT}
-        className={log.finishedAt ? styles.tdStartedAtBold : styles.tdStartedAt}
-      >
+      <td data-testid={TEST_ID.TD_STARTED_AT} className={classNameTdStartedAT}>
         <Tooltip content={startedDatetime} placement={top} compact={true}>
-          {displayDatetime + actionTime}
+          {displayDatetime + displayActionTime}
         </Tooltip>
       </td>
       <td
@@ -61,9 +38,9 @@ export function LifelogListItem({
       >
         <EntityTitle title={log.action} subtitle={log.detail || ''} />
       </td>
-      <td className={styles.tdOperation}>
+      <td>
         <Button
-          className={`${styles.editButton} ${styles.button}`}
+          className={styles.button}
           data-testid={TEST_ID.EDIT_BUTTON + log.id}
           intent={Intent.SUCCESS}
           icon={IconNames.EDIT}

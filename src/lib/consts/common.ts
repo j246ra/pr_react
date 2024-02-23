@@ -51,9 +51,12 @@ export const DATE_UTIL = {
     DATETIME_FULL: 'YYYY-MM-DD HH:mm:ss.SSS',
     DISPLAY_TIME: 'HH:mm',
     DISPLAY_TIME_FULL: 'HH:mm',
+    DISPLAY_DATE: 'YY/MM/DD',
+    DISPLAY_DATE_FULL: 'YYYY/MM/DD',
     DISPLAY_DATETIME: 'YY/MM/DD HH:mm',
     DISPLAY_DATETIME_FULL: 'YYYY/MM/DD HH:mm:ss',
   } as const,
+  MAX_ACTION_MINUTES: 999,
 };
 
 export const NOTIFY = {

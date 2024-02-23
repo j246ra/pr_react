@@ -9,9 +9,7 @@ import styles from './LifelogListItem.module.scss';
 import { Lifelog } from '@providers/LifelogProvider';
 
 describe('LifelogListItem', () => {
-  const mockOnFinish = jest.fn();
   const mockOnEdit = jest.fn();
-  const mockOnDelete = jest.fn();
   const mockOnAction = jest.fn();
 
   const startedAt = days('2023-07-05 12:34');
@@ -26,9 +24,7 @@ describe('LifelogListItem', () => {
       <tbody>
         <LifelogListItem
           log={mockLifelog}
-          onFinishButtonClick={mockOnFinish}
           onEditButtonClick={mockOnEdit}
-          onDeleteButtonClick={mockOnDelete}
           onActionClick={mockOnAction}
         />
       </tbody>
@@ -75,10 +71,11 @@ describe('LifelogListItem', () => {
         screen.getByText(new RegExp(` \\(${elapsedMinutes}\\)$`))
       ).toBeInTheDocument();
       expect(screen.getByTestId(TEST_ID.TD_STARTED_AT)).toHaveClass(
-        styles.tdStartedAtBold
+        styles.bold
       );
     });
   });
+
   it('1000分以上経過している場合は999と表示される', () => {
     const elapsedMinutes = 1000;
     const mockLog = lifelog({
@@ -88,10 +85,8 @@ describe('LifelogListItem', () => {
 
     render(lifelogListItemComponent(mockLog));
 
-    expect(screen.getByText(/ \(999\)$/)).toBeInTheDocument();
-    expect(screen.getByTestId(TEST_ID.TD_STARTED_AT)).toHaveClass(
-      styles.tdStartedAtBold
-    );
+    expect(screen.getByText(/ \(999\+\)$/)).toBeInTheDocument();
+    expect(screen.getByTestId(TEST_ID.TD_STARTED_AT)).toHaveClass(styles.bold);
   });
 
   it('イベントハンドラが正しく呼び出される', () => {
