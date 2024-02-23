@@ -4,13 +4,12 @@ import { EntityTitle } from '@blueprintjs/core';
 import { days, DISPLAY_TIME } from '@lib/dateUtil';
 import styles from './LifelogListItem.module.scss';
 
+type LifelogListItemSpProps = Omit<LifelogListItemProps, 'onActionClick'>;
+
 export function LifelogListItemSp({
   log,
-  onFinishButtonClick,
   onEditButtonClick,
-  onDeleteButtonClick,
-  onActionClick,
-}: LifelogListItemProps) {
+}: LifelogListItemSpProps) {
   const startedAt = useMemo(() => days(log.startedAt), [log.startedAt]);
   const startedDay = useMemo(() => startedAt.format('YY/MM/DD'), [startedAt]);
   const startedTime = useMemo(

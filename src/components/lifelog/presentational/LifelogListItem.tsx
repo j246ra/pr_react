@@ -9,16 +9,12 @@ import { top } from '@popperjs/core';
 
 export type LifelogListItemProps = {
   log: Lifelog;
-  onFinishButtonClick: () => void;
-  onDeleteButtonClick: () => void;
   onEditButtonClick: () => void;
   onActionClick: () => void;
 };
 export function LifelogListItem({
   log,
-  onFinishButtonClick,
   onEditButtonClick,
-  onDeleteButtonClick,
   onActionClick,
 }: LifelogListItemProps) {
   const startedDay = useMemo(() => days(log.startedAt), [log.startedAt]);

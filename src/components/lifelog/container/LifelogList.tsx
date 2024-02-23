@@ -4,8 +4,6 @@ import { HTMLTable, NonIdealState } from '@blueprintjs/core';
 import { useLifelog } from '@providers/LifelogProvider';
 import notify from '@lib/toast';
 import LifelogListItem from '@lifelog/presentational/LifelogListItem';
-import useDeleteLifelog from '@src/hooks/useDeleteLifelog';
-import useFinishAction from '@src/hooks/useFinishAction';
 import styles from './LifelogList.module.scss';
 import { useLifelogEditDialog } from '@providers/LifelogEditDialogProvider';
 import { useLifelogDetailDialog } from '@providers/LifelogDetailDialogProvider';
@@ -19,8 +17,6 @@ export default function LifelogList() {
   const { lifelogs, loadLogs, isTerminated } = useLifelog();
   const { openDetailDialog } = useLifelogDetailDialog();
   const { openEditDialog } = useLifelogEditDialog();
-  const handleFinishLifelog = useFinishAction();
-  const handleDeleteLifelog = useDeleteLifelog();
   const isSp = useMediaQuery(mediaQuery.sp);
 
   const lifelogLoader = async () => {
@@ -56,10 +52,7 @@ export default function LifelogList() {
                 <LifelogListItemSp
                   key={log.id}
                   log={log}
-                  onActionClick={() => openDetailDialog(log)}
                   onEditButtonClick={() => openEditDialog(log)}
-                  onFinishButtonClick={() => handleFinishLifelog(log)}
-                  onDeleteButtonClick={() => handleDeleteLifelog(log.id)}
                 />
               );
             } else {
@@ -69,8 +62,6 @@ export default function LifelogList() {
                   log={log}
                   onActionClick={() => openDetailDialog(log)}
                   onEditButtonClick={() => openEditDialog(log)}
-                  onFinishButtonClick={() => handleFinishLifelog(log)}
-                  onDeleteButtonClick={() => handleDeleteLifelog(log.id)}
                 />
               );
             }

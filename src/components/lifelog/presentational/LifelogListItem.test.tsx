@@ -9,9 +9,7 @@ import styles from './LifelogListItem.module.scss';
 import { Lifelog } from '@providers/LifelogProvider';
 
 describe('LifelogListItem', () => {
-  const mockOnFinish = jest.fn();
   const mockOnEdit = jest.fn();
-  const mockOnDelete = jest.fn();
   const mockOnAction = jest.fn();
 
   const startedAt = days('2023-07-05 12:34');
@@ -26,9 +24,7 @@ describe('LifelogListItem', () => {
       <tbody>
         <LifelogListItem
           log={mockLifelog}
-          onFinishButtonClick={mockOnFinish}
           onEditButtonClick={mockOnEdit}
-          onDeleteButtonClick={mockOnDelete}
           onActionClick={mockOnAction}
         />
       </tbody>
