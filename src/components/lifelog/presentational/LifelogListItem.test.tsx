@@ -84,7 +84,7 @@ describe('LifelogListItem', () => {
 
     render(lifelogListItemComponent(mockLog));
 
-    expect(screen.getByText(/ \(999\)$/)).toBeInTheDocument();
+    expect(screen.getByText(/ \(999\+\)$/)).toBeInTheDocument();
     expect(screen.getByTestId(TEST_ID.TD_STARTED_AT)).toHaveClass(
       styles.tdStartedAtBold
     );
