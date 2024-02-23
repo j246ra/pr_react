@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { LifelogListItemProps } from '@lifelog/presentational/LifelogListItem';
 import { EntityTitle } from '@blueprintjs/core';
-import { days, DISPLAY_TIME } from '@lib/dateUtil';
 import styles from './LifelogListItem.module.scss';
+import useActionTimeDisplay from '@src/hooks/useActionTimeDisplay';
 
 type LifelogListItemSpProps = Omit<LifelogListItemProps, 'onActionClick'>;
 
@@ -10,20 +10,7 @@ export function LifelogListItemSp({
   log,
   onEditButtonClick,
 }: LifelogListItemSpProps) {
-  const startedAt = useMemo(() => days(log.startedAt), [log.startedAt]);
-  const startedDay = useMemo(() => startedAt.format('YY/MM/DD'), [startedAt]);
-  const startedTime = useMemo(
-    () => startedAt.format(DISPLAY_TIME),
-    [startedAt]
-  );
-  const actionTime = useMemo(() => {
-    if (log.finishedAt) {
-      const minutesDiff = days(log.finishedAt).diff(startedAt, 'minutes');
-      const displayMinutes = minutesDiff > 999 ? 999 : minutesDiff;
-      return ` (${displayMinutes})`;
-    }
-    return '';
-  }, [log.finishedAt, startedAt]);
+  const { displayDatetime, displayActionTime } = useActionTimeDisplay(log);
   const detail = useMemo(() => {
     if (log.detail)
       return log.detail.length > 52
@@ -39,9 +26,7 @@ export function LifelogListItemSp({
         style={{ padding: '3px' }}
         onClick={onEditButtonClick}
       >
-        {log.isDateChanged ? `${startedDay} ` : ''}
-        {startedTime}
-        {actionTime}
+        {displayDatetime + displayActionTime}
         <EntityTitle
           className={styles.tdAction}
           title={log.action}
