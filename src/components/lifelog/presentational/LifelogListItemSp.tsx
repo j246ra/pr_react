@@ -19,15 +19,14 @@ export function LifelogListItemSp({
   );
 
   return (
-    <tr className={styles.trItem}>
+    <tr className={styles.trItemSp}>
       <td
-        className={log.finishedAt ? styles.tdStartedAtBold : styles.tdStartedAt}
-        style={{ padding: '3px' }}
+        className={log.finishedAt ? styles.bold : ''}
         onClick={onEditButtonClick}
       >
         {displayDatetime + displayActionTime}
         <EntityTitle
-          className={styles.tdAction}
+          className={styles.action}
           title={log.action}
           subtitle={detail || ''}
         />

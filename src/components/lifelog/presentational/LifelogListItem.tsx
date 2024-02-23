@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Button, EntityTitle, Intent, Tooltip } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import { Lifelog } from '@providers/LifelogProvider';
@@ -19,13 +19,14 @@ export function LifelogListItem({
 }: LifelogListItemProps) {
   const { startedDatetime, displayActionTime, displayDatetime } =
     useActionTimeDisplay(log);
+  const classNameTdStartedAT = useMemo(() => {
+    if (log.finishedAt) return `${styles.bold} ${styles.tdStartedAt}`;
+    else return styles.tdStartedAt;
+  }, [log.finishedAt]);
 
   return (
     <tr className={styles.trItem}>
-      <td
-        data-testid={TEST_ID.TD_STARTED_AT}
-        className={log.finishedAt ? styles.tdStartedAtBold : styles.tdStartedAt}
-      >
+      <td data-testid={TEST_ID.TD_STARTED_AT} className={classNameTdStartedAT}>
         <Tooltip content={startedDatetime} placement={top} compact={true}>
           {displayDatetime + displayActionTime}
         </Tooltip>
@@ -37,9 +38,9 @@ export function LifelogListItem({
       >
         <EntityTitle title={log.action} subtitle={log.detail || ''} />
       </td>
-      <td className={styles.tdOperation}>
+      <td>
         <Button
-          className={`${styles.editButton} ${styles.button}`}
+          className={styles.button}
           data-testid={TEST_ID.EDIT_BUTTON + log.id}
           intent={Intent.SUCCESS}
           icon={IconNames.EDIT}

@@ -71,10 +71,11 @@ describe('LifelogListItem', () => {
         screen.getByText(new RegExp(` \\(${elapsedMinutes}\\)$`))
       ).toBeInTheDocument();
       expect(screen.getByTestId(TEST_ID.TD_STARTED_AT)).toHaveClass(
-        styles.tdStartedAtBold
+        styles.bold
       );
     });
   });
+
   it('1000分以上経過している場合は999と表示される', () => {
     const elapsedMinutes = 1000;
     const mockLog = lifelog({
@@ -85,9 +86,7 @@ describe('LifelogListItem', () => {
     render(lifelogListItemComponent(mockLog));
 
     expect(screen.getByText(/ \(999\+\)$/)).toBeInTheDocument();
-    expect(screen.getByTestId(TEST_ID.TD_STARTED_AT)).toHaveClass(
-      styles.tdStartedAtBold
-    );
+    expect(screen.getByTestId(TEST_ID.TD_STARTED_AT)).toHaveClass(styles.bold);
   });
 
   it('イベントハンドラが正しく呼び出される', () => {
