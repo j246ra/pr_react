@@ -16,6 +16,7 @@ import { LIFELOG_EDIT_DIALOG as Defs } from '@lib/consts/component';
 import { LIFELOG_EDIT_DIALOG_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import { LifelogEditDialogContextType } from '@providers/LifelogEditDialogProvider';
 import { days, DISPLAY_DATETIME_FULL } from '@lib/dateUtil';
+import { doFunctionWhenCmdOrCtrlEnter } from '@lib/keyEventUtil';
 
 export type BaseLifelogEditDialogProps = Omit<
   LifelogEditDialogContextType,
@@ -57,6 +58,9 @@ export default function BaseLifelogEditDialog({
               value={lifelog.detail || undefined}
               onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
                 editLifelog({ detail: e.target.value })
+              }
+              onKeyDown={(e) =>
+                doFunctionWhenCmdOrCtrlEnter(e, handleUpdateLifelog)
               }
             />
           </FormGroup>
