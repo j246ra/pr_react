@@ -28,6 +28,9 @@ applyPrefixedValues({ LIFELOG_DETAIL_DIALOG_TEST_ID });
 export const LIFELOG_EDIT_DIALOG_TEST_ID = {
   BASE: '',
   BUTTON: '',
+  DELETE: '',
+  FINISH: '',
+  SAVE: '',
 };
 applyPrefixedValues({ LIFELOG_EDIT_DIALOG_TEST_ID });
 

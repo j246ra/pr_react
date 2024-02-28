@@ -221,7 +221,11 @@ export const LIFELOG_EDIT_DIALOG = {
     LABEL: '終了日時',
     PLACEHOLDER: '終了日時',
   } as const,
-  BUTTON: '保存',
+  BUTTONS: {
+    SAVE: '保存',
+    FINISH: '完了時間を設定',
+    DELETE: '削除',
+  },
 };
 
 export const NOTFOUND = {

@@ -145,7 +145,7 @@ describe('LifelogEditDialog', () => {
   describe('ライフログ更新(保存ボタンクリック)検証', () => {
     it('正しい Lifelog の場合は更新処理が実行されていること', async () => {
       render(<LifelogEditDialog />);
-      userEvent.click(screen.getByTestId(TEST_ID.BUTTON));
+      userEvent.click(screen.getByTestId(TEST_ID.SAVE));
       await waitFor(() => {
         expect(useLifelogEditDialog().updateLifelog).toHaveBeenCalled();
         expect(useLifelogEditDialog().closeEditDialog).toHaveBeenCalled();
