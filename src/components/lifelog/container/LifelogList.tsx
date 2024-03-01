@@ -17,6 +17,7 @@ export default function LifelogList() {
   const { openDetailDialog } = useLifelogDetailDialog();
   const { openEditDialog } = useLifelogEditDialog();
   const isSp = useMediaQuery(mediaQuery.sp);
+  const loaderKey = useId();
 
   return !hasMore ? (
     <NonIdealState
@@ -35,7 +36,7 @@ export default function LifelogList() {
         element={'tbody'}
         loadMore={lifelogLoader}
         hasMore={hasMore}
-        loader={<LifelogListLoader key={useId()} />}
+        loader={<LifelogListLoader key={loaderKey} />}
       >
         {lifelogs.map((log) => {
           if (isSp) {
