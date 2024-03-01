@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { HTMLTable, NonIdealState } from '@blueprintjs/core';
 import { useLifelog } from '@providers/LifelogProvider';
@@ -44,7 +44,7 @@ export default function LifelogList() {
         element={'tbody'}
         loadMore={lifelogLoader}
         hasMore={!isTerminated}
-        loader={LifelogListLoader()}
+        loader={<LifelogListLoader key={useId()} />}
       >
         {lifelogs.map((log) => {
           if (isSp) {
