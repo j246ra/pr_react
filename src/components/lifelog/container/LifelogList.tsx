@@ -19,18 +19,7 @@ export default function LifelogList() {
   const isSp = useMediaQuery(mediaQuery.sp);
   const loaderKey = useId();
 
-  return !hasMore ? (
-    <NonIdealState
-      icon={IconNames.EDIT}
-      description={
-        <div data-testid={LIFELOG_LIST_TEST_ID.NON_IDEA_STATE}>
-          ライフログが１件も記録されていませんね。
-          <br />
-          どんどん行動を記録していきましょう！！
-        </div>
-      }
-    />
-  ) : (
+  return hasMore ? (
     <HTMLTable className={styles.baseTable} bordered={false} interactive={true}>
       <InfiniteScroll
         element={'tbody'}
@@ -60,5 +49,16 @@ export default function LifelogList() {
         })}
       </InfiniteScroll>
     </HTMLTable>
+  ) : (
+    <NonIdealState
+      icon={IconNames.EDIT}
+      description={
+        <div data-testid={LIFELOG_LIST_TEST_ID.NON_IDEA_STATE}>
+          ライフログが１件も記録されていませんね。
+          <br />
+          どんどん行動を記録していきましょう！！
+        </div>
+      }
+    />
   );
 }
