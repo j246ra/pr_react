@@ -5,6 +5,7 @@ import styles from './LifelogListItem.module.scss';
 import useActionTimeDisplay from '@src/hooks/useActionTimeDisplay';
 import { truncate } from '@lib/stringUtil';
 import { LIFELOG_LIST_ITEM_SP as Defs } from '@lib/consts/component';
+import { LIFELOG_LIST_ITEM_SP_TEST_ID } from '@lib/consts/testId';
 
 type LifelogListItemSpProps = Omit<LifelogListItemProps, 'onActionClick'>;
 
@@ -19,7 +20,10 @@ export function LifelogListItemSp({
   );
 
   return (
-    <tr className={styles.trItemSp}>
+    <tr
+      data-testid={LIFELOG_LIST_ITEM_SP_TEST_ID.TR}
+      className={styles.trItemSp}
+    >
       <td
         className={log.finishedAt ? styles.bold : ''}
         onClick={onEditButtonClick}

@@ -12,6 +12,7 @@ import { IconNames } from '@blueprintjs/icons';
 import { LIFELOG_LIST } from '@lib/consts/component';
 import useMediaQuery, { mediaQuery } from '@src/hooks/useMediaQuery';
 import LifelogListItemSp from '@lifelog/presentational/LifelogListItemSp';
+import { LIFELOG_LIST_TEST_ID } from '@lib/consts/testId';
 
 export default function LifelogList() {
   const { lifelogs, loadLogs, isTerminated } = useLifelog();
@@ -26,7 +27,18 @@ export default function LifelogList() {
     }
   };
 
-  return (
+  return lifelogs.length === 0 && isTerminated ? (
+    <NonIdealState
+      icon={IconNames.EDIT}
+      description={
+        <div data-testid={LIFELOG_LIST_TEST_ID.NON_IDEA_STATE}>
+          ライフログが１件も記録されていませんね。
+          <br />
+          どんどん行動を記録していきましょう！！
+        </div>
+      }
+    />
+  ) : (
     <HTMLTable className={styles.baseTable} bordered={false} interactive={true}>
       <InfiniteScroll
         element={'tbody'}
@@ -34,39 +46,26 @@ export default function LifelogList() {
         hasMore={!isTerminated}
         loader={LifelogListLoader()}
       >
-        {lifelogs.length === 0 && isTerminated ? (
-          <NonIdealState
-            icon={IconNames.EDIT}
-            description={
-              <div>
-                ライフログが１件も記録されていませんね。
-                <br />
-                どんどん行動を記録していきましょう！！
-              </div>
-            }
-          />
-        ) : (
-          lifelogs.map((log) => {
-            if (isSp) {
-              return (
-                <LifelogListItemSp
-                  key={log.id}
-                  log={log}
-                  onEditButtonClick={() => openEditDialog(log)}
-                />
-              );
-            } else {
-              return (
-                <LifelogListItem
-                  key={log.id}
-                  log={log}
-                  onActionClick={() => openDetailDialog(log)}
-                  onEditButtonClick={() => openEditDialog(log)}
-                />
-              );
-            }
-          })
-        )}
+        {lifelogs.map((log) => {
+          if (isSp) {
+            return (
+              <LifelogListItemSp
+                key={log.id}
+                log={log}
+                onEditButtonClick={() => openEditDialog(log)}
+              />
+            );
+          } else {
+            return (
+              <LifelogListItem
+                key={log.id}
+                log={log}
+                onActionClick={() => openDetailDialog(log)}
+                onEditButtonClick={() => openEditDialog(log)}
+              />
+            );
+          }
+        })}
       </InfiniteScroll>
     </HTMLTable>
   );
