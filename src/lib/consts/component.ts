@@ -178,6 +178,8 @@ export const LIFELOG_LIST = {
   MESSAGE: {
     ERROR: 'データ取得に失敗しました。',
     INVALID_DATA: '一部、データ取得に失敗しました。',
+    NO_DATA:
+      'ライフログが１件も記録されていませんね。\nどんどん行動を記録していきましょう！！',
   },
 };
 

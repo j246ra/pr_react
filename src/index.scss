@@ -5,6 +5,7 @@
 @import '@blueprintjs/select/lib/css/blueprint-select.css';
 @import "@blueprintjs/core/lib/scss/variables";
 @import "@blueprintjs/core/lib/scss/variables.scss";
+@import "variables";
 
 html {
   height: 100%;
@@ -14,9 +15,7 @@ html {
     padding: $pt-navbar-height 0 0;
     height: 100%;
     box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+    font-family: $AppFontFamily;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
