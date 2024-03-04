@@ -178,11 +178,9 @@ export const LIFELOG_LIST = {
   MESSAGE: {
     ERROR: 'データ取得に失敗しました。',
     INVALID_DATA: '一部、データ取得に失敗しました。',
+    NO_DATA:
+      'ライフログが１件も記録されていませんね。\nどんどん行動を記録していきましょう！！',
   },
-};
-
-export const LIFELOG_LIST_ITEM_SP = {
-  DETAIL_TRUNCATE_LENGTH: 52,
 };
 
 export const SEARCH_INPUT = {
@@ -221,7 +219,11 @@ export const LIFELOG_EDIT_DIALOG = {
     LABEL: '終了日時',
     PLACEHOLDER: '終了日時',
   } as const,
-  BUTTON: '保存',
+  BUTTONS: {
+    SAVE: '保存',
+    FINISH: '完了時間を設定',
+    DELETE: '削除',
+  },
 };
 
 export const NOTFOUND = {
@@ -246,7 +248,6 @@ export const COMPONENT = {
   DATETIME_INPUT,
   LIFELOG_LIST_HEADER,
   LIFELOG_LIST,
-  LIFELOG_LIST_ITEM_SP,
   SEARCH_INPUT,
   LIFELOG_DETAIL_DIALOG,
   LIFELOG_EDIT_DIALOG,

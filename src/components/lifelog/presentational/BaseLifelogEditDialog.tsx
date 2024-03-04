@@ -18,9 +18,9 @@ import { LifelogEditDialogContextType } from '@providers/LifelogEditDialogProvid
 import { days, DISPLAY_DATETIME_FULL } from '@lib/dateUtil';
 import { doFunctionWhenCmdOrCtrlEnter } from '@lib/keyEventUtil';
 
-export type BaseLifelogEditDialogProps = Omit<
+export type BaseLifelogEditDialogProps = Pick<
   LifelogEditDialogContextType,
-  'openEditDialog' | 'updateLifelog'
+  'isOpen' | 'lifelog' | 'editLifelog' | 'closeEditDialog'
 > & {
   detailRows?: number;
   handleUpdateLifelog: () => void;
@@ -87,18 +87,20 @@ export default function BaseLifelogEditDialog({
           actions={
             <>
               <Button
+                data-testid={TEST_ID.DELETE}
                 outlined={true}
                 intent={Intent.DANGER}
                 icon={IconNames.TRASH}
-                text={'削除'}
+                text={Defs.BUTTONS.DELETE}
                 onClick={() => {
                   handleDeleteLifelog(lifelog.id);
                 }}
               />
               <Button
+                data-testid={TEST_ID.FINISH}
                 outlined={true}
                 intent={Intent.PRIMARY}
-                text={'完了時間を設定'}
+                text={Defs.BUTTONS.FINISH}
                 icon={IconNames.STOPWATCH}
                 onClick={() => {
                   editLifelog({
@@ -107,12 +109,12 @@ export default function BaseLifelogEditDialog({
                 }}
               />
               <Button
-                data-testid={TEST_ID.BUTTON}
+                data-testid={TEST_ID.SAVE}
                 className={styles.saveButton}
                 icon={IconNames.FLOPPY_DISK}
                 onClick={handleUpdateLifelog}
                 intent={Intent.PRIMARY}
-                text={Defs.BUTTON}
+                text={Defs.BUTTONS.SAVE}
               />
             </>
           }

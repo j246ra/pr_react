@@ -13,9 +13,9 @@ const useMediaQuery = (query: string) => {
   useEffect(() => {
     const mql = matchMedia(formattedQuery);
 
-    if (mql.media === 'not all' || mql.media === 'invalid') {
-      console.error(`useMediaQuery Error: Invalid media query`);
-    }
+    // if (mql.media === 'not all' || mql.media === 'invalid') {
+    //   console.error(`useMediaQuery Error: Invalid media query`);
+    // }
 
     mql.onchange = (e) => {
       setMatch(e.matches);

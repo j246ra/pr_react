@@ -23,7 +23,7 @@ table tbody {
   }
 
   td.tdStartedAt {
-    width: 120px;
+    width: 105px;
   }
 
   td.bold {
@@ -36,6 +36,14 @@ table tbody {
     &:hover {
       text-decoration: none;
     }
+  }
+
+  .detail {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .button {

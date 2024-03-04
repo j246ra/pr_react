@@ -69,6 +69,7 @@ export const USE_DELETE_LIFELOG = {
   MESSAGE: {
     CONFIRM: '本当に削除しますか？',
     SUCCESS: '削除成功',
+    ERROR: '削除に失敗しました。',
   } as const,
 };
 

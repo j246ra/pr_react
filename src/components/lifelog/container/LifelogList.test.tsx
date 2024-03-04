@@ -9,15 +9,17 @@ import {
   mockUseSession,
   mockUseUser,
 } from '@src/tests/baseProviders';
-import toast from 'react-hot-toast';
+
 import {
   LIFELOG_LIST_ITEM_TEST_ID as TEST_ID,
+  LIFELOG_LIST_ITEM_SP_TEST_ID as TEST_ID_SP,
   LIFELOG_LIST_TEST_ID,
 } from '@lib/consts/testId';
 import { useLifelogEditDialog } from '@providers/LifelogEditDialogProvider';
 import { useLifelogDetailDialog } from '@providers/LifelogDetailDialogProvider';
+import { matchMediaObject } from '@src/tests/matchMedia';
+import { days, DISPLAY_TIME } from '@lib/dateUtil';
 
-jest.mock('react-hot-toast');
 jest.mock('@providers/LifelogProvider');
 jest.mock('@providers/LifelogDetailDialogProvider');
 jest.mock('@providers/LifelogEditDialogProvider');
@@ -49,6 +51,7 @@ describe('LifelogList component', () => {
       newLog: lifelog,
       deleteLog: jest.fn().mockReturnValue(Promise.resolve()),
       finishLog: jest.fn().mockReturnValue(Promise.resolve()),
+      isTerminated: false,
     });
     mockUseLifelogDetailDialog.mockReturnValue({
       openDetailDialog: jest.fn(),
@@ -56,30 +59,24 @@ describe('LifelogList component', () => {
     mockUseLifelogEditDialog.mockReturnValue({
       openEditDialog: jest.fn(),
     });
-
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      value: jest.fn().mockImplementation((query) => ({
-        matches: false,
-        media: query,
-        onchange: null,
-        addListener: jest.fn(),
-        removeListener: jest.fn(),
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
-      })),
-    });
+    matchMediaObject({ matches: false });
   });
 
   it('spinner', () => {
-    mockUseLifelog().logs = [];
     render(<LifelogList />);
     expect(
       screen.getByTestId(LIFELOG_LIST_TEST_ID.SPINNER)
     ).toBeInTheDocument();
   });
-  it('LifelogItem component', () => {
+  it('NonIdeaState', () => {
+    mockUseLifelog().lifelogs = [];
+    mockUseLifelog().isTerminated = true;
+    render(<LifelogList />);
+    expect(
+      screen.getByTestId(LIFELOG_LIST_TEST_ID.NON_IDEA_STATE)
+    ).toBeInTheDocument();
+  });
+  it('LifelogListItem component', () => {
     const { rerender } = render(<LifelogList />);
     const links = screen.getAllByTestId(new RegExp(TEST_ID.LINK_TEXT));
     expect(links).toHaveLength(10);
@@ -91,6 +88,22 @@ describe('LifelogList component', () => {
     rerender(<LifelogList />);
     const beforeLinks = screen.getAllByTestId(new RegExp(TEST_ID.LINK_TEXT));
     expect(beforeLinks).toHaveLength(20);
+  });
+  it('LifelogListItemSp component', () => {
+    matchMediaObject({ matches: true });
+    const { rerender } = render(<LifelogList />);
+    const items = screen.getAllByTestId(new RegExp(TEST_ID_SP.TR));
+    expect(items).toHaveLength(10);
+    const contexts = items.map((td) => td.textContent);
+    mockLogs.forEach((log) => {
+      expect(contexts).toContain(
+        days(log.startedAt).format(DISPLAY_TIME) + log.action + log.detail
+      );
+    });
+    mockUseLifelog().lifelogs = [...mockLogs, ...lifelogs(10, 10)];
+    rerender(<LifelogList />);
+    const beforeItems = screen.getAllByTestId(new RegExp(TEST_ID_SP.TR));
+    expect(beforeItems).toHaveLength(20);
   });
   it('LifelogDetailDialog', async () => {
     render(<LifelogList />);

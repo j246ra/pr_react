@@ -28,6 +28,9 @@ applyPrefixedValues({ LIFELOG_DETAIL_DIALOG_TEST_ID });
 export const LIFELOG_EDIT_DIALOG_TEST_ID = {
   BASE: '',
   BUTTON: '',
+  DELETE: '',
+  FINISH: '',
+  SAVE: '',
 };
 applyPrefixedValues({ LIFELOG_EDIT_DIALOG_TEST_ID });
 
@@ -76,6 +79,7 @@ applyPrefixedValues({ SESSION_OTHER_LINKS_TEST_ID });
 
 export const LIFELOG_LIST_TEST_ID = {
   SPINNER: '',
+  NON_IDEA_STATE: '',
 };
 applyPrefixedValues({ LIFELOG_LIST_TEST_ID });
 
@@ -87,6 +91,11 @@ export const LIFELOG_LIST_ITEM_TEST_ID = {
   DELETE_BUTTON: '',
 };
 applyPrefixedValues({ LIFELOG_LIST_ITEM_TEST_ID });
+
+export const LIFELOG_LIST_ITEM_SP_TEST_ID = {
+  TR: '',
+};
+applyPrefixedValues({ LIFELOG_LIST_ITEM_SP_TEST_ID });
 
 export const SEARCH_INPUT_TEST_ID = {
   BASE: '',
@@ -105,6 +114,7 @@ export const TEST_IDS = {
   SESSION_OTHER_LINKS: SESSION_OTHER_LINKS_TEST_ID,
   LIFELOG_LIST: LIFELOG_LIST_TEST_ID,
   LIFELOG_LIST_ITEM: LIFELOG_LIST_ITEM_TEST_ID,
+  LIFELOG_LIST_ITEM_SP: LIFELOG_LIST_ITEM_SP_TEST_ID,
   SEARCH_INPUT: SEARCH_INPUT_TEST_ID,
 };
 
