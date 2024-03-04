@@ -19,8 +19,6 @@ import { useLifelogEditDialog } from '@providers/LifelogEditDialogProvider';
 import { useLifelogDetailDialog } from '@providers/LifelogDetailDialogProvider';
 import { matchMediaObject } from '@src/tests/matchMedia';
 import { days, DISPLAY_TIME } from '@lib/dateUtil';
-import { truncate } from '@lib/stringUtil';
-import { LIFELOG_LIST_ITEM_SP } from '@lib/consts/component';
 
 jest.mock('@providers/LifelogProvider');
 jest.mock('@providers/LifelogDetailDialogProvider');
@@ -99,9 +97,7 @@ describe('LifelogList component', () => {
     const contexts = items.map((td) => td.textContent);
     mockLogs.forEach((log) => {
       expect(contexts).toContain(
-        days(log.startedAt).format(DISPLAY_TIME) +
-          log.action +
-          truncate(log.detail, LIFELOG_LIST_ITEM_SP.DETAIL_TRUNCATE_LENGTH)
+        days(log.startedAt).format(DISPLAY_TIME) + log.action + log.detail
       );
     });
     mockUseLifelog().lifelogs = [...mockLogs, ...lifelogs(10, 10)];

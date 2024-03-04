@@ -36,7 +36,12 @@ export function LifelogListItem({
         className={styles.tdAction}
         onClick={onActionClick}
       >
-        <EntityTitle title={log.action} subtitle={log.detail || ''} />
+        <EntityTitle
+          title={log.action}
+          subtitle={
+            log.detail ? <div className={styles.detail}>{log.detail}</div> : ''
+          }
+        />
       </td>
       <td>
         <Button
