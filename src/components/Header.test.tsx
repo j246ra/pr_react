@@ -10,6 +10,8 @@ import userEvent from '@testing-library/user-event';
 import { HEADER_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import { SEARCH_INPUT } from '@lib/consts/component';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { mockNavigator } from '@src/tests/common';
+import { ROUTES } from '@lib/consts/common';
 
 jest.mock('@providers/LifelogProvider');
 
@@ -60,6 +62,11 @@ describe('Header', () => {
         expect(screen.getByTestId(TEST_ID.EDIT_ACCOUNT).className).not.toMatch(
           'disabled'
         );
+      });
+      fireEvent.click(screen.getByTestId(TEST_ID.EDIT_ACCOUNT));
+      await waitFor(() => {
+        expect(mockNavigator).toHaveBeenCalledTimes(1);
+        expect(mockNavigator).toHaveBeenCalledWith(ROUTES.ACCOUNT_UPDATE);
       });
     });
     it('ログアウトボタンが活性化していること', async () => {

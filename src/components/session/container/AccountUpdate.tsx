@@ -4,7 +4,6 @@ import { useUser, User } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import accountUpdateValidator from '@validators/accountUpdate';
 import { useAuth } from '@providers/AuthApiProvider';
-import { UserParams } from '@lib/api/session';
 import EmailInput from '@session/presentational/EmailInput';
 import PasswordInput from '@session/presentational/PasswordInput';
 import AccountDelete from '@session/container/AccountDelete';
@@ -17,7 +16,7 @@ import SessionForm from '@session/presentational/SessionForm';
 import SessionLayout from '@session/SessionLayout';
 
 export default function AccountUpdate() {
-  const { user, updateUser } = useUser();
+  const { user } = useUser();
   const { authApi } = useAuth();
   const [email, setEmail] = useState((user as User).email);
   const [password, setPassword] = useState('');
@@ -28,15 +27,9 @@ export default function AccountUpdate() {
     e.preventDefault();
     const columns = { email, password, passwordConfirmation };
     if (accountUpdateValidator(columns).isInvalid) return;
-
-    let params: UserParams = {};
-    if (email !== '') params = { ...params, email };
-    if (password !== '') params = { ...params, password };
     authApi
-      .updateUser(params)
-      .then((r) => {
-        if (r.status !== 200) return;
-        updateUser(email);
+      .updateUser({ email, password })
+      .then(() => {
         navigate('/');
       })
       .catch(() => {

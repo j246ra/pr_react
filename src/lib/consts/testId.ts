@@ -94,6 +94,7 @@ applyPrefixedValues({ LIFELOG_LIST_ITEM_TEST_ID });
 
 export const LIFELOG_LIST_ITEM_SP_TEST_ID = {
   TR: '',
+  TD: '',
 };
 applyPrefixedValues({ LIFELOG_LIST_ITEM_SP_TEST_ID });
 

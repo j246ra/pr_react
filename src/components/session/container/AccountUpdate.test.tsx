@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import AccountUpdate from './AccountUpdate';
 import { mockNavigator } from '@src/tests/common';
 import {
@@ -9,6 +9,9 @@ import {
 } from '@src/tests/baseProviders';
 import { ACCOUNT_UPDATE, PASSWORD_INPUT } from '@lib/consts/component';
 import { ACCOUNT_UPDATE_TEST_ID as TEST_ID } from '@lib/consts/testId';
+import notify from '@lib/toast';
+jest.mock('@lib/toast');
+const mockNotify = jest.mocked(notify);
 
 describe('AccountUpdate component', () => {
   beforeEach(() => {
@@ -57,36 +60,74 @@ describe('AccountUpdate component', () => {
     ).toBeInTheDocument();
   });
 
-  it('ユーザーがフォームに情報を入力し、アカウントを更新する', async () => {
-    const { getByTestId } = render(<AccountUpdate />);
+  describe('フォーム入力処理', () => {
+    let emailInput: HTMLElement;
+    let passwordInput: HTMLElement;
+    let passwordConfirmationInput: HTMLElement;
+    let updateButton: HTMLElement;
 
-    const emailInput = getByTestId(TEST_ID.EMAIL_INPUT);
-    const passwordInput = getByTestId(TEST_ID.PASSWORD_INPUT);
-    const passwordConfirmationInput = getByTestId(
-      TEST_ID.PASSWORD_CONFIRM_INPUT
-    );
-    const updateButton = getByTestId(TEST_ID.BUTTON);
-
-    fireEvent.change(emailInput, {
-      target: { value: 'newemail@example.com' },
-    });
-    fireEvent.change(passwordInput, {
-      target: { value: 'newpassword' },
-    });
-    fireEvent.change(passwordConfirmationInput, {
-      target: { value: 'newpassword' },
-    });
-    fireEvent.click(updateButton);
-
-    await waitFor(() => {
-      expect(emailInput).toHaveValue('newemail@example.com');
-      expect(passwordInput).toHaveValue('newpassword');
-      expect(mockUseAuth().authApi.updateUser).toHaveBeenCalledWith({
-        email: 'newemail@example.com',
-        password: 'newpassword',
+    type inputParams = {
+      email?: string;
+      password?: string;
+      confirmedPass?: string;
+    };
+    const formInput = ({ email, password, confirmedPass }: inputParams) => {
+      emailInput = screen.getByTestId(TEST_ID.EMAIL_INPUT);
+      passwordInput = screen.getByTestId(TEST_ID.PASSWORD_INPUT);
+      passwordConfirmationInput = screen.getByTestId(
+        TEST_ID.PASSWORD_CONFIRM_INPUT
+      );
+      updateButton = screen.getByTestId(TEST_ID.BUTTON);
+      fireEvent.change(emailInput, {
+        target: { value: email || 'newemail@example.com' },
       });
-      expect(mockNavigator).toHaveBeenCalledTimes(1);
-      expect(mockNavigator).toHaveBeenCalledWith('/');
+      fireEvent.change(passwordInput, {
+        target: { value: password || 'newpassword' },
+      });
+      fireEvent.change(passwordConfirmationInput, {
+        target: { value: confirmedPass || 'newpassword' },
+      });
+      fireEvent.click(updateButton);
+    };
+
+    it('バリデーションエラー時は API をリクエストしない', async () => {
+      render(<AccountUpdate />);
+      formInput({ confirmedPass: 'invalidPassword' });
+      await waitFor(() => {
+        expect(emailInput).toHaveValue('newemail@example.com');
+        expect(passwordInput).toHaveValue('newpassword');
+        expect(passwordConfirmationInput).toHaveValue('invalidPassword');
+        expect(mockUseAuth().authApi.updateUser).not.toHaveBeenCalled();
+      });
+    });
+
+    it('ユーザーがフォームに情報を入力し、アカウントを更新する', async () => {
+      render(<AccountUpdate />);
+      formInput({});
+      await waitFor(() => {
+        expect(emailInput).toHaveValue('newemail@example.com');
+        expect(passwordInput).toHaveValue('newpassword');
+        expect(mockUseAuth().authApi.updateUser).toHaveBeenCalledWith({
+          email: 'newemail@example.com',
+          password: 'newpassword',
+        });
+        expect(mockNavigator).toHaveBeenCalledTimes(1);
+        expect(mockNavigator).toHaveBeenCalledWith('/');
+      });
+    });
+    it('更新APIエラー時、エラーメッセージを通知している', async () => {
+      mockUseAuth.mockReturnValue({
+        ...mockUseAuth.authApi,
+        authApi: { updateUser: jest.fn().mockRejectedValue({ status: 500 }) },
+      });
+      render(<AccountUpdate />);
+      formInput({});
+
+      await waitFor(() => {
+        expect(mockNotify.error).toHaveBeenCalledWith(
+          ACCOUNT_UPDATE.MESSAGE.ERROR
+        );
+      });
     });
   });
 });

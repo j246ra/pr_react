@@ -1,7 +1,5 @@
 import { Meta } from '@storybook/react';
 import LifelogList from './LifelogList';
-import Header from '@src/components/Header';
-import { Toaster } from 'react-hot-toast';
 import BaseLayout from '@src/components/BaseLayout';
 import { lifelogMocks } from '@lib/storybook/lifelog';
 
@@ -11,8 +9,6 @@ export default {
   decorators: [
     (Story) => (
       <div className={'App'}>
-        <Toaster />
-        <Header />
         <BaseLayout>
           <Story />
         </BaseLayout>
