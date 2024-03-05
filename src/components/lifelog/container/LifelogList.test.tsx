@@ -14,6 +14,7 @@ import {
   LIFELOG_LIST_ITEM_TEST_ID as TEST_ID,
   LIFELOG_LIST_ITEM_SP_TEST_ID as TEST_ID_SP,
   LIFELOG_LIST_TEST_ID,
+  LIFELOG_LIST_ITEM_SP_TEST_ID,
 } from '@lib/consts/testId';
 import { useLifelogEditDialog } from '@providers/LifelogEditDialogProvider';
 import { useLifelogDetailDialog } from '@providers/LifelogDetailDialogProvider';
@@ -130,6 +131,16 @@ describe('LifelogList component', () => {
     act(() => {
       userEvent.click(button);
     });
+    await waitFor(() => {
+      expect(mockUseLifelogEditDialog().openEditDialog).toHaveBeenCalled();
+    });
+  });
+  it('Open LifelogEditDialog by LifelogListItemSp', async () => {
+    matchMediaObject({ matches: true });
+    render(<LifelogList />);
+    const log = mockLogs[1];
+    const td = screen.getByTestId(LIFELOG_LIST_ITEM_SP_TEST_ID.TD + log.id);
+    act(() => userEvent.click(td));
     await waitFor(() => {
       expect(mockUseLifelogEditDialog().openEditDialog).toHaveBeenCalled();
     });

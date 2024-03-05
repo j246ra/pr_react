@@ -19,6 +19,7 @@ export function LifelogListItemSp({
       className={styles.trItemSp}
     >
       <td
+        data-testid={LIFELOG_LIST_ITEM_SP_TEST_ID.TD + log.id}
         className={log.finishedAt ? styles.bold : ''}
         onClick={onEditButtonClick}
       >
