@@ -68,13 +68,22 @@ describe('LifelogList component', () => {
       screen.getByTestId(LIFELOG_LIST_TEST_ID.SPINNER)
     ).toBeInTheDocument();
   });
-  it('NonIdeaState', () => {
-    mockUseLifelog().lifelogs = [];
-    mockUseLifelog().isTerminated = true;
-    render(<LifelogList />);
-    expect(
-      screen.getByTestId(LIFELOG_LIST_TEST_ID.NON_IDEA_STATE)
-    ).toBeInTheDocument();
+  describe('NonIdeaState', () => {
+    it('取得件数が 0 件の場合は表示する', () => {
+      mockUseLifelog().lifelogs = [];
+      mockUseLifelog().isTerminated = true;
+      render(<LifelogList />);
+      expect(
+        screen.getByTestId(LIFELOG_LIST_TEST_ID.NON_IDEA_STATE)
+      ).toBeInTheDocument();
+    });
+    it('取得件数が 0 件以上でデータをすべて取得した場合は表示しない', () => {
+      mockUseLifelog().isTerminated = true;
+      render(<LifelogList />);
+      expect(
+        screen.queryByTestId(LIFELOG_LIST_TEST_ID.NON_IDEA_STATE)
+      ).not.toBeInTheDocument();
+    });
   });
   it('LifelogListItem component', () => {
     const { rerender } = render(<LifelogList />);
