@@ -13,7 +13,7 @@ export default function LifelogList() {
   const { lifelogs, lifelogLoader, hasMore } = useLifelogList();
   const loaderKey = useId();
 
-  return hasMore ? (
+  return hasMore || lifelogs.length > 0 ? (
     <HTMLTable className={styles.baseTable} bordered={false} interactive={true}>
       <InfiniteScroll
         element={'tbody'}
