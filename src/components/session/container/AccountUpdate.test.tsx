@@ -2,16 +2,15 @@ import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import AccountUpdate from './AccountUpdate';
 import { mockNavigator } from '@src/tests/common';
-import {
-  mockUseAuth,
-  mockUseSession,
-  mockUseUser,
-} from '@src/tests/baseProviders';
+import { mockUseSession, mockUseUser } from '@src/tests/baseProviders';
 import { ACCOUNT_UPDATE, PASSWORD_INPUT } from '@lib/consts/component';
 import { ACCOUNT_UPDATE_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import notify from '@lib/toast';
+import useAuthApi from '@src/hooks/useAuthApi';
 jest.mock('@lib/toast');
+jest.mock('@src/hooks/useAuthApi');
 const mockNotify = jest.mocked(notify);
+const mockUseAuthApi = useAuthApi as jest.MockedFunction<any>;
 
 describe('AccountUpdate component', () => {
   beforeEach(() => {
@@ -22,11 +21,9 @@ describe('AccountUpdate component', () => {
       clearUser: jest.fn(),
       isLogin: jest.fn(),
     });
-    mockUseAuth.mockReturnValue({
-      authApi: {
-        updateUser: jest.fn().mockResolvedValue({ status: 200 }),
-        deleteUser: jest.fn().mockResolvedValue({}),
-      },
+    mockUseAuthApi.mockReturnValue({
+      updateUser: jest.fn().mockResolvedValue({ status: 200 }),
+      deleteUser: jest.fn().mockResolvedValue({}),
     });
     mockUseSession.mockReturnValue({
       initializeByUid: jest.fn(),
@@ -97,7 +94,7 @@ describe('AccountUpdate component', () => {
         expect(emailInput).toHaveValue('newemail@example.com');
         expect(passwordInput).toHaveValue('newpassword');
         expect(passwordConfirmationInput).toHaveValue('invalidPassword');
-        expect(mockUseAuth().authApi.updateUser).not.toHaveBeenCalled();
+        expect(mockUseAuthApi().updateUser).not.toHaveBeenCalled();
       });
     });
 
@@ -107,7 +104,7 @@ describe('AccountUpdate component', () => {
       await waitFor(() => {
         expect(emailInput).toHaveValue('newemail@example.com');
         expect(passwordInput).toHaveValue('newpassword');
-        expect(mockUseAuth().authApi.updateUser).toHaveBeenCalledWith({
+        expect(mockUseAuthApi().updateUser).toHaveBeenCalledWith({
           email: 'newemail@example.com',
           password: 'newpassword',
         });
@@ -116,9 +113,9 @@ describe('AccountUpdate component', () => {
       });
     });
     it('更新APIエラー時、エラーメッセージを通知している', async () => {
-      mockUseAuth.mockReturnValue({
-        ...mockUseAuth.authApi,
-        authApi: { updateUser: jest.fn().mockRejectedValue({ status: 500 }) },
+      mockUseAuthApi.mockReturnValue({
+        ...mockUseAuthApi,
+        updateUser: jest.fn().mockRejectedValue({ status: 500 }),
       });
       render(<AccountUpdate />);
       formInput({});

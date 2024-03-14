@@ -1,21 +1,20 @@
 import { useLifelog } from '@providers/LifelogProvider';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import Header from '@src/components/Header';
-import {
-  mockUseAuth,
-  mockUseSession,
-  mockUseUser,
-} from '@src/tests/baseProviders';
+import { mockUseSession, mockUseUser } from '@src/tests/baseProviders';
 import userEvent from '@testing-library/user-event';
 import { HEADER_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import { SEARCH_INPUT } from '@lib/consts/component';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { mockNavigator } from '@src/tests/common';
 import { ROUTES } from '@lib/consts/common';
+import useAuthApi from '@src/hooks/useAuthApi';
 
 jest.mock('@providers/LifelogProvider');
+jest.mock('@src/hooks/useAuthApi');
 
 const mockUseLifelog = useLifelog as jest.MockedFunction<any>;
+const mockUseAuthApi = useAuthApi as jest.MockedFunction<any>;
 
 beforeEach(() => {
   mockUseSession.mockReturnValue({
@@ -26,10 +25,8 @@ beforeEach(() => {
     clearUser: jest.fn(),
   });
 
-  mockUseAuth.mockReturnValue({
-    authApi: {
-      signOut: jest.fn().mockResolvedValue({}),
-    },
+  mockUseAuthApi.mockReturnValue({
+    signOut: jest.fn().mockResolvedValue({}),
   });
   mockUseLifelog.mockReturnValue({
     clear: jest.fn(),
@@ -77,7 +74,7 @@ describe('Header', () => {
         const logoutButton = screen.getByTestId(TEST_ID.LOGOUT);
         expect(logoutButton.className).not.toMatch('disabled');
         fireEvent.click(logoutButton);
-        expect(mockUseAuth().authApi.signOut).toHaveBeenCalled();
+        expect(mockUseAuthApi().signOut).toHaveBeenCalled();
       });
     });
   });
@@ -114,7 +111,7 @@ describe('Header', () => {
         const logoutButton = screen.getByTestId(TEST_ID.LOGOUT);
         expect(logoutButton.className).toMatch('disabled');
         fireEvent.click(logoutButton);
-        expect(mockUseAuth().authApi.signOut).not.toHaveBeenCalled();
+        expect(mockUseAuthApi().signOut).not.toHaveBeenCalled();
       });
     });
   });

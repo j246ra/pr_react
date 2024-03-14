@@ -4,11 +4,7 @@ import LifelogList from './LifelogList';
 import { Lifelog, useLifelog } from '@providers/LifelogProvider';
 import { lifelog, lifelogs } from '@lib/faker/lifelog';
 import userEvent from '@testing-library/user-event';
-import {
-  mockUseAuth,
-  mockUseSession,
-  mockUseUser,
-} from '@src/tests/baseProviders';
+import { mockUseSession, mockUseUser } from '@src/tests/baseProviders';
 
 import {
   LIFELOG_LIST_ITEM_TEST_ID as TEST_ID,
@@ -38,9 +34,6 @@ describe('LifelogList component', () => {
 
     mockUseSession.mockReturnValue({
       removeToken: jest.fn(),
-    });
-    mockUseAuth.mockReturnValue({
-      authApi: jest.fn(),
     });
     mockUseUser.mockReturnValue({
       clearUser: jest.fn(),

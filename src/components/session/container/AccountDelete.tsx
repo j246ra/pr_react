@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Alert, Button, Intent } from '@blueprintjs/core';
-import { useAuth } from '@providers/AuthApiProvider';
+import useAuthApi from '@src/hooks/useAuthApi';
 import notify from '@lib/toast';
 import { useUser } from '@providers/UserProvider';
 import { useSession } from '@providers/SessionProvider';
@@ -11,7 +11,7 @@ import { ROUTES } from '@lib/consts/common';
 
 export default function AccountDelete() {
   const [isOpen, setIsOpen] = useState(false);
-  const { authApi: api } = useAuth();
+  const api = useAuthApi();
   const { clearUser } = useUser();
   const { removeHeaders } = useSession();
   const navigate = useNavigate();

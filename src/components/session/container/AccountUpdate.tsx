@@ -3,7 +3,7 @@ import { Button, Intent } from '@blueprintjs/core';
 import { useUser, User } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import accountUpdateValidator from '@validators/accountUpdate';
-import { useAuth } from '@providers/AuthApiProvider';
+import useAuthApi from '@src/hooks/useAuthApi';
 import EmailInput from '@session/presentational/EmailInput';
 import PasswordInput from '@session/presentational/PasswordInput';
 import AccountDelete from '@session/container/AccountDelete';
@@ -17,7 +17,7 @@ import SessionLayout from '@session/SessionLayout';
 
 export default function AccountUpdate() {
   const { user } = useUser();
-  const { authApi } = useAuth();
+  const authApi = useAuthApi();
   const [email, setEmail] = useState((user as User).email);
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');

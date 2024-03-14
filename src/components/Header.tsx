@@ -11,7 +11,7 @@ import {
 } from '@blueprintjs/core';
 import { useUser } from '@providers/UserProvider';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '@providers/AuthApiProvider';
+import useAuthApi from '@src/hooks/useAuthApi';
 import { useSession } from '@providers/SessionProvider';
 import SearchInput from '@lifelog/presentational/SearchInput';
 import { useLifelog } from '@providers/LifelogProvider';
@@ -25,7 +25,7 @@ export default function Header() {
   const { removeHeaders } = useSession();
   const navigate = useNavigate();
   const { isLoggedIn, clearUser } = useUser();
-  const { authApi } = useAuth();
+  const authApi = useAuthApi();
   const { clear: clearLifelog } = useLifelog();
 
   const handleLogout = () => {

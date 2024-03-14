@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import signUpValidator from '@validators/signUp';
 import notify from '@lib/toast';
 import { useSession } from '@providers/SessionProvider';
-import { useAuth } from '@providers/AuthApiProvider';
+import useAuthApi from '@src/hooks/useAuthApi';
 import EmailInput from '@session/presentational/EmailInput';
 import PasswordInput from '@session/presentational/PasswordInput';
 import SessionCard from '@session/presentational/SessionCard';
@@ -19,7 +19,7 @@ import { ROUTES } from '@lib/consts/common';
 
 export default function SignUp() {
   const { removeHeaders } = useSession();
-  const { authApi: session } = useAuth();
+  const session = useAuthApi();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const { clearUser } = useUser();

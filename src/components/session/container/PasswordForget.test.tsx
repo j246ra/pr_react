@@ -1,15 +1,15 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import PasswordForget from './PasswordForget';
-import { useAuth } from '@providers/AuthApiProvider';
+import useAuthApi from '@src/hooks/useAuthApi';
 import { mockNavigator } from '@src/tests/common';
 import { PASSWORD_FORGET } from '@lib/consts/component';
 import { PASSWORD_FORGET_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import { NOTIFY, ROUTES } from '@lib/consts/common';
 import toast from 'react-hot-toast';
 
-jest.mock('@providers/AuthApiProvider');
-const mockUseAuth = useAuth as jest.MockedFunction<any>;
+jest.mock('@src/hooks/useAuthApi');
+const mockUseAuthApi = useAuthApi as jest.MockedFunction<any>;
 
 jest.mock('react-hot-toast');
 const mockToast = jest.mocked(toast);
@@ -17,10 +17,8 @@ const mockToast = jest.mocked(toast);
 describe('PasswordForget コンポーネント', () => {
   describe('正常系', () => {
     beforeEach(() => {
-      mockUseAuth.mockReturnValue({
-        authApi: {
-          passwordForget: jest.fn().mockResolvedValue({ status: 200 }),
-        },
+      mockUseAuthApi.mockReturnValue({
+        passwordForget: jest.fn().mockResolvedValue({ status: 200 }),
       });
     });
 
@@ -53,7 +51,7 @@ describe('PasswordForget コンポーネント', () => {
       fireEvent.click(submitButton);
 
       await waitFor(() => {
-        expect(mockUseAuth().authApi.passwordForget).toHaveBeenCalledWith(
+        expect(mockUseAuthApi().passwordForget).toHaveBeenCalledWith(
           'test@example.com'
         );
         expect(mockNavigator).toHaveBeenCalledWith(
@@ -66,10 +64,8 @@ describe('PasswordForget コンポーネント', () => {
   describe('異常系', () => {
     describe('レスポンスボディが存在しない', () => {
       beforeEach(() => {
-        mockUseAuth.mockReturnValue({
-          authApi: {
-            passwordForget: jest.fn().mockRejectedValue({}),
-          },
+        mockUseAuthApi.mockReturnValue({
+          passwordForget: jest.fn().mockRejectedValue({}),
         });
       });
       it('エラーメッセージを表示している', async () => {
@@ -84,7 +80,7 @@ describe('PasswordForget コンポーネント', () => {
         fireEvent.click(submitButton);
 
         await waitFor(() => {
-          expect(mockUseAuth().authApi.passwordForget).toHaveBeenCalledWith(
+          expect(mockUseAuthApi().passwordForget).toHaveBeenCalledWith(
             'test@example.com'
           );
           expect(mockToast.error).toHaveBeenCalled();

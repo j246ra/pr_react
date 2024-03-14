@@ -2,19 +2,17 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import AccountDelete from './AccountDelete';
-import {
-  mockUseAuth,
-  mockUseSession,
-  mockUseUser,
-} from '@src/tests/baseProviders';
+import { mockUseSession, mockUseUser } from '@src/tests/baseProviders';
 import { ACCOUNT_DELETE } from '@lib/consts/component';
+import useAuthApi from '@src/hooks/useAuthApi';
+
+jest.mock('@src/hooks/useAuthApi');
+const mockUseAuthApi = useAuthApi as jest.MockedFunction<any>;
 
 describe('AccountDelete component', () => {
   beforeEach(() => {
-    mockUseAuth.mockReturnValue({
-      authApi: {
-        deleteUser: jest.fn().mockResolvedValue({}),
-      },
+    mockUseAuthApi.mockReturnValue({
+      deleteUser: jest.fn().mockResolvedValue({}),
     });
     mockUseUser.mockReturnValue({
       user: { email: '' },
@@ -48,7 +46,7 @@ describe('AccountDelete component', () => {
     fireEvent.click(getByText(ACCOUNT_DELETE.ALERT.CONFIRM));
 
     await waitFor(() => {
-      expect(mockUseAuth().authApi.deleteUser).toHaveBeenCalled();
+      expect(mockUseAuthApi().deleteUser).toHaveBeenCalled();
       expect(mockUseUser().clearUser).toHaveBeenCalled();
       expect(mockUseSession().removeHeaders).toHaveBeenCalled();
     });

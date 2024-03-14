@@ -2,7 +2,7 @@ import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { Button, Callout, H2, Intent } from '@blueprintjs/core';
 import { useUser } from '@providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@providers/AuthApiProvider';
+import useAuthApi from '@src/hooks/useAuthApi';
 import notify from '@lib/toast';
 import EmailInput from '@session/presentational/EmailInput';
 import PasswordInput from '@session/presentational/PasswordInput';
@@ -17,7 +17,7 @@ import styles from './Login.module.scss';
 import { ROUTES } from '@lib/consts/common';
 
 export default function Login() {
-  const { authApi: session } = useAuth();
+  const session = useAuthApi();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const { createUser } = useUser();

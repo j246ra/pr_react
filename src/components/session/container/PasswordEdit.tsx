@@ -5,7 +5,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import passwordEditValidator from '@validators/passwordEdit';
 import notify from '@lib/toast';
 import { useSession } from '@providers/SessionProvider';
-import { useAuth } from '@providers/AuthApiProvider';
+import useAuthApi from '@src/hooks/useAuthApi';
 import SessionCard from '@session/presentational/SessionCard';
 import PasswordInput from '@session/presentational/PasswordInput';
 import { PASSWORD_EDIT } from '@lib/consts/component';
@@ -16,7 +16,7 @@ import SessionLayout from '@session/SessionLayout';
 export default function PasswordEdit() {
   const navigate = useNavigate();
   const { setHeaders } = useSession();
-  const { authApi: api } = useAuth();
+  const api = useAuthApi();
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
 

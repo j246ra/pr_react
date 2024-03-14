@@ -9,11 +9,7 @@ import {
 import Login from './Login';
 import notify from '@lib/toast';
 import { mockNavigator } from '@src/tests/common';
-import {
-  mockUseUser,
-  mockUseSession,
-  mockUseAuth,
-} from '@src/tests/baseProviders';
+import { mockUseUser, mockUseSession } from '@src/tests/baseProviders';
 import PasswordForget from '@session/container/PasswordForget';
 import { useLifelog } from '@providers/LifelogProvider';
 import { EMAIL_INPUT, LOGIN, PASSWORD_INPUT } from '@lib/consts/component';
@@ -23,11 +19,14 @@ import {
 } from '@lib/consts/testId';
 import { ROUTES } from '@lib/consts/common';
 import SignUp from '@session/container/SignUp';
+import useAuthApi from '@src/hooks/useAuthApi';
 
 jest.mock('@providers/LifelogProvider');
 jest.mock('@lib/toast');
+jest.mock('@src/hooks/useAuthApi');
 const mockUseLifelog = useLifelog as jest.MockedFunction<any>;
 const mockNotify = jest.mocked(notify);
+const mockUseAuthApi = useAuthApi as jest.MockedFunction<any>;
 
 describe('Login component', () => {
   beforeEach(() => {
@@ -41,10 +40,8 @@ describe('Login component', () => {
     mockUseSession.mockReturnValue({
       initializeByUid: jest.fn(),
     });
-    mockUseAuth.mockReturnValue({
-      authApi: {
-        signIn: jest.fn().mockResolvedValue({ status: 200 }),
-      },
+    mockUseAuthApi.mockReturnValue({
+      signIn: jest.fn().mockResolvedValue({ status: 200 }),
     });
     mockUseLifelog.mockReturnValue({
       clear: jest.fn(),
@@ -137,7 +134,7 @@ describe('Login component', () => {
     await waitFor(() => {
       expect(emailInput).toHaveValue('test@example.com');
       expect(passwordInput).toHaveValue('password');
-      expect(mockUseAuth().authApi.signIn).toHaveBeenCalledWith(
+      expect(mockUseAuthApi().signIn).toHaveBeenCalledWith(
         'test@example.com',
         'password'
       );

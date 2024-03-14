@@ -1,7 +1,7 @@
 import React, { useState, FormEvent, ChangeEvent } from 'react';
 import { Button, Callout, Intent } from '@blueprintjs/core';
 import notify from '@lib/toast';
-import { useAuth } from '@providers/AuthApiProvider';
+import useAuthApi from '@src/hooks/useAuthApi';
 import EmailInput from '@session/presentational/EmailInput';
 import { useNavigate } from 'react-router-dom';
 import SessionCard from '@session/presentational/SessionCard';
@@ -14,7 +14,7 @@ import SessionLayout from '@session/SessionLayout';
 import { ROUTES } from '@lib/consts/common';
 
 export default function PasswordForget() {
-  const { authApi: session } = useAuth();
+  const session = useAuthApi();
   const [email, setEmail] = useState<string>('');
   const navigate = useNavigate();
 
