@@ -1,9 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { Button, Callout, H2, Intent } from '@blueprintjs/core';
-import { useUser } from '@providers/UserProvider';
-import { useNavigate } from 'react-router-dom';
-import useAuthApi from '@src/hooks/useAuthApi';
-import notify from '@lib/toast';
 import EmailInput from '@session/presentational/EmailInput';
 import PasswordInput from '@session/presentational/PasswordInput';
 import SessionCard from '@session/presentational/SessionCard';
@@ -14,30 +10,16 @@ import SessionOtherLinks from '@session/presentational/SessionOtherLinks';
 import SessionForm from '@session/presentational/SessionForm';
 import SessionLayout from '@session/SessionLayout';
 import styles from './Login.module.scss';
-import { ROUTES } from '@lib/consts/common';
+import useAccount from '@src/hooks/useAccount';
 
 export default function Login() {
-  const session = useAuthApi();
+  const { login } = useAccount();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const { createUser } = useUser();
-  const navigate = useNavigate();
 
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createUser(email);
-    session
-      .signIn(email, password)
-      .then((r) => {
-        if (r.status !== 200) return;
-        notify.success(LOGIN.MESSAGE.SUCCESS);
-        navigate(ROUTES.LIFELOGS);
-      })
-      .catch((e) => {
-        if (e.response.status === 401)
-          notify.error(LOGIN.MESSAGE.ERROR.STATUS_401);
-        else notify.error(LOGIN.MESSAGE.ERROR.NORMAL);
-      });
+    login(email, password);
   };
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
