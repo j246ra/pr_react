@@ -1,22 +1,19 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Button, Intent } from '@blueprintjs/core';
 import { Headers } from '@providers/SessionProvider';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import passwordEditValidator from '@validators/passwordEdit';
-import notify from '@lib/toast';
+import { useSearchParams } from 'react-router-dom';
 import { useSession } from '@providers/SessionProvider';
-import useAuthApi from '@src/hooks/useAuthApi';
 import SessionCard from '@session/presentational/SessionCard';
 import PasswordInput from '@session/presentational/PasswordInput';
 import { PASSWORD_EDIT } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import SessionForm from '@session/presentational/SessionForm';
 import SessionLayout from '@session/SessionLayout';
+import useAccount from '@src/hooks/useAccount';
 
 export default function PasswordEdit() {
-  const navigate = useNavigate();
   const { setHeaders } = useSession();
-  const api = useAuthApi();
+  const { passwordChange } = useAccount();
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
 
@@ -32,16 +29,7 @@ export default function PasswordEdit() {
 
   const handlePasswordConfirmation = (e: FormEvent) => {
     e.preventDefault();
-    if (passwordEditValidator(password, passwordConfirmation).isInvalid) return;
-    api
-      .passwordReset(password, passwordConfirmation)
-      .then(() => {
-        notify.success(PASSWORD_EDIT.MESSAGE.SUCCESS);
-        navigate('/');
-      })
-      .catch(() => {
-        notify.error(PASSWORD_EDIT.MESSAGE.ERROR);
-      });
+    passwordChange(password, passwordConfirmation);
   };
 
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) =>

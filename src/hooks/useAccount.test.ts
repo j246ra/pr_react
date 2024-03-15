@@ -8,6 +8,7 @@ import {
   ACCOUNT_UPDATE,
   LOGIN,
   LOGOUT,
+  PASSWORD_EDIT,
 } from '@lib/consts/component';
 import { mockNavigator } from '@src/tests/common';
 import { ROUTES } from '@lib/consts/common';
@@ -36,6 +37,7 @@ describe('useAccount', () => {
         status: 200,
       }),
       updateUser: jest.fn().mockResolvedValue({ status: 200 }),
+      passwordReset: jest.fn().mockResolvedValue({ state: 200 }),
       deleteUser: jest.fn().mockResolvedValue({ status: 200 }),
     });
     mockUseLifelog.mockReturnValue({
@@ -176,6 +178,71 @@ describe('useAccount', () => {
         );
       });
     });
+  });
+
+  describe('passwordChange', () => {
+    const password = 'password-0123';
+    it('リクエスト成功時', async () => {
+      const { result } = renderHook(useAccount);
+      result.current.passwordChange(password, password);
+      await waitFor(() => {
+        expect(mockUseAuthApi().passwordReset).toHaveBeenCalledTimes(1);
+        expect(mockUseAuthApi().passwordReset).toHaveBeenCalledWith(
+          password,
+          password
+        );
+        expect(mockNotify.success).toHaveBeenCalledTimes(1);
+        expect(mockNotify.success).toHaveBeenCalledWith(
+          PASSWORD_EDIT.MESSAGE.SUCCESS
+        );
+        expect(mockNavigator).toHaveBeenCalledTimes(1);
+        expect(mockNavigator).toHaveBeenCalledWith('/');
+      });
+    });
+    it('リクエスト失敗時', async () => {
+      mockUseAuthApi.mockReturnValue({
+        passwordReset: jest
+          .fn()
+          .mockRejectedValue({ response: { status: 500 } }),
+      });
+      const { result } = renderHook(useAccount);
+      result.current.passwordChange(password, password);
+      await waitFor(() => {
+        expect(mockUseAuthApi().passwordReset).toHaveBeenCalledTimes(1);
+        expect(mockUseAuthApi().passwordReset).toHaveBeenCalledWith(
+          password,
+          password
+        );
+        expect(mockNotify.error).toHaveBeenCalledTimes(1);
+        expect(mockNotify.error).toHaveBeenCalledWith(
+          PASSWORD_EDIT.MESSAGE.ERROR
+        );
+        expect(mockNotify.success).not.toHaveBeenCalled();
+        expect(mockNavigator).not.toHaveBeenCalled();
+      });
+    });
+    it('バリデーションエラー時', async () => {
+      const { result } = renderHook(useAccount);
+      result.current.passwordChange(password, 'password-9999');
+      await waitFor(() => {
+        expect(mockNotify.error).toHaveBeenCalledTimes(1);
+        expect(mockNotify.error).toHaveBeenCalledWith(
+          INVALID_MESSAGES.PASSWORD_NO_MATCH
+        );
+        expect(mockUseAuthApi().passwordReset).not.toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('passwordForget', () => {
+    it.todo('リクエスト成功時');
+    it.todo('リクエスト失敗時');
+  });
+
+  describe('signUp', () => {
+    it.todo('リクエスト成功時');
+    it.todo('リクエスト失敗時');
+    it.todo('バリデーションエラー時');
   });
 
   describe('remove', () => {
