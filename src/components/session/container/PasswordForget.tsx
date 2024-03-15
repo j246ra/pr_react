@@ -1,9 +1,6 @@
 import React, { useState, FormEvent, ChangeEvent } from 'react';
 import { Button, Callout, Intent } from '@blueprintjs/core';
-import notify from '@lib/toast';
-import useAuthApi from '@src/hooks/useAuthApi';
 import EmailInput from '@session/presentational/EmailInput';
-import { useNavigate } from 'react-router-dom';
 import SessionCard from '@session/presentational/SessionCard';
 import { PASSWORD_FORGET } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
@@ -11,29 +8,15 @@ import { PASSWORD_FORGET_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import styles from './PasswordForget.module.scss';
 import SessionForm from '@session/presentational/SessionForm';
 import SessionLayout from '@session/SessionLayout';
-import { ROUTES } from '@lib/consts/common';
+import useAccount from '@src/hooks/useAccount';
 
 export default function PasswordForget() {
-  const session = useAuthApi();
+  const { passwordForget } = useAccount();
   const [email, setEmail] = useState<string>('');
-  const navigate = useNavigate();
 
   const handlePasswordForget = (e: FormEvent) => {
     e.preventDefault();
-    session
-      .passwordForget(email)
-      .then(() => {
-        notify.success(PASSWORD_FORGET.MESSAGE.SUCCESS);
-        navigate(ROUTES.RESET_MAIL_SEND_SUCCESS);
-      })
-      .catch((e) => {
-        if (e.response?.status === 404) {
-          notify.success(PASSWORD_FORGET.MESSAGE.SUCCESS);
-          navigate(ROUTES.RESET_MAIL_SEND_SUCCESS);
-        } else {
-          notify.error(PASSWORD_FORGET.MESSAGE.ERROR);
-        }
-      });
+    passwordForget(email);
   };
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) =>

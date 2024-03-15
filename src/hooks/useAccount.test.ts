@@ -9,6 +9,7 @@ import {
   LOGIN,
   LOGOUT,
   PASSWORD_EDIT,
+  PASSWORD_FORGET,
 } from '@lib/consts/component';
 import { mockNavigator } from '@src/tests/common';
 import { ROUTES } from '@lib/consts/common';
@@ -38,6 +39,7 @@ describe('useAccount', () => {
       }),
       updateUser: jest.fn().mockResolvedValue({ status: 200 }),
       passwordReset: jest.fn().mockResolvedValue({ state: 200 }),
+      passwordForget: jest.fn().mockResolvedValue({ status: 200 }),
       deleteUser: jest.fn().mockResolvedValue({ status: 200 }),
     });
     mockUseLifelog.mockReturnValue({
@@ -235,8 +237,56 @@ describe('useAccount', () => {
   });
 
   describe('passwordForget', () => {
-    it.todo('リクエスト成功時');
-    it.todo('リクエスト失敗時');
+    const email = 'test@example.com';
+    it('リクエスト成功時', async () => {
+      const { result } = renderHook(useAccount);
+      result.current.passwordForget(email);
+      await waitFor(() => {
+        expect(mockUseAuthApi().passwordForget).toHaveBeenCalledTimes(1);
+        expect(mockUseAuthApi().passwordForget).toHaveBeenCalledWith(email);
+        expect(mockNotify.success).toHaveBeenCalledTimes(1);
+        expect(mockNotify.success).toHaveBeenCalledWith(
+          PASSWORD_FORGET.MESSAGE.SUCCESS
+        );
+        expect(mockNavigator).toHaveBeenCalledTimes(1);
+        expect(mockNavigator).toHaveBeenCalledWith(
+          ROUTES.RESET_MAIL_SEND_SUCCESS
+        );
+      });
+    });
+    describe('リクエスト失敗時', () => {
+      it('Not Found(404) の場合、成功メッセージを表示する', async () => {
+        mockUseAuthApi().passwordForget.mockRejectedValue({
+          response: { status: 404 },
+        });
+        const { result } = renderHook(useAccount);
+        result.current.passwordForget(email);
+        await waitFor(() => {
+          expect(mockUseAuthApi().passwordForget).toHaveBeenCalledWith(email);
+          expect(mockNotify.success).toHaveBeenCalledWith(
+            PASSWORD_FORGET.MESSAGE.SUCCESS
+          );
+          expect(mockNavigator).toHaveBeenCalledWith(
+            ROUTES.RESET_MAIL_SEND_SUCCESS
+          );
+        });
+      });
+      it('404 以外のエラーの場合はエラーメッセージを表示する', async () => {
+        mockUseAuthApi().passwordForget.mockRejectedValue({
+          response: { status: 500 },
+        });
+        const { result } = renderHook(useAccount);
+        result.current.passwordForget(email);
+        await waitFor(() => {
+          expect(mockUseAuthApi().passwordForget).toHaveBeenCalledTimes(1);
+          expect(mockUseAuthApi().passwordForget).toHaveBeenCalledWith(email);
+          expect(mockNotify.error).toHaveBeenCalledTimes(1);
+          expect(mockNotify.error).toHaveBeenCalledWith(
+            PASSWORD_FORGET.MESSAGE.ERROR
+          );
+        });
+      });
+    });
   });
 
   describe('signUp', () => {
