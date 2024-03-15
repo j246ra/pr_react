@@ -35,9 +35,7 @@ describe('useAccount', () => {
       clearUser: jest.fn(),
     });
     mockUseAuthApi.mockReturnValue({
-      signIn: jest.fn().mockResolvedValue({
-        status: 200,
-      }),
+      signIn: jest.fn().mockResolvedValue({ status: 200 }),
       signOut: jest.fn().mockResolvedValue({ status: 200 }),
       updateUser: jest.fn().mockResolvedValue({ status: 200 }),
       passwordReset: jest.fn().mockResolvedValue({ state: 200 }),
