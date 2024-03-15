@@ -48,6 +48,7 @@ export const ACCOUNT_DELETE = {
 
 export const ACCOUNT_UPDATE = {
   MESSAGE: {
+    SUCCESS: 'アカウントを更新しました。',
     ERROR: 'アカウントの更新に失敗しました。',
   } as const,
   PASSWORD_CONFIRM: {

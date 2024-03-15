@@ -3,10 +3,11 @@ import { renderHook, waitFor } from '@testing-library/react';
 import useAccount from '@src/hooks/useAccount';
 import useAuthApi from '@src/hooks/useAuthApi';
 import notify from '@lib/toast';
-import { LOGIN, LOGOUT } from '@lib/consts/component';
+import { ACCOUNT_UPDATE, LOGIN, LOGOUT } from '@lib/consts/component';
 import { mockNavigator } from '@src/tests/common';
 import { ROUTES } from '@lib/consts/common';
 import { useLifelog } from '@providers/LifelogProvider';
+import { INVALID_MESSAGES } from '@validators/validator';
 
 jest.mock('@src/hooks/useAuthApi');
 const mockUseAuthApi = useAuthApi as jest.MockedFunction<any>;
@@ -28,6 +29,7 @@ describe('useAccount', () => {
       signIn: jest.fn().mockResolvedValue({
         status: 200,
       }),
+      updateUser: jest.fn().mockResolvedValue({ status: 200 }),
     });
     mockUseLifelog.mockReturnValue({
       clear: jest.fn(),
@@ -117,6 +119,54 @@ describe('useAccount', () => {
         expect(mockNavigator).not.toHaveBeenCalled();
         expect(mockNotify.error).toHaveBeenCalledTimes(1);
         expect(mockNotify.error).toHaveBeenCalledWith(LOGOUT.MESSAGE.ERROR);
+      });
+    });
+  });
+
+  describe('update', () => {
+    const params: [string, string, string] = [
+      'test@example.com',
+      'password01',
+      'password01',
+    ];
+    it('リクエスト成功時', async () => {
+      const { result } = renderHook(useAccount);
+      result.current.update(...params);
+      await waitFor(() => {
+        expect(mockUseAuthApi().updateUser).toHaveBeenCalled();
+        expect(mockNavigator).toHaveBeenCalledTimes(1);
+        expect(mockNavigator).toHaveBeenCalledWith('/');
+        expect(mockNotify.success).toHaveBeenCalledTimes(1);
+        expect(mockNotify.success).toHaveBeenCalledWith(
+          ACCOUNT_UPDATE.MESSAGE.SUCCESS
+        );
+      });
+    });
+    it('リクエスト失敗時', async () => {
+      mockUseAuthApi.mockReturnValue({
+        updateUser: jest.fn().mockRejectedValue({ response: { status: 500 } }),
+      });
+      const { result } = renderHook(useAccount);
+      result.current.update(...params);
+      await waitFor(() => {
+        expect(mockUseAuthApi().updateUser).toHaveBeenCalled();
+        expect(mockNavigator).not.toHaveBeenCalled();
+        expect(mockNotify.error).toHaveBeenCalledTimes(1);
+        expect(mockNotify.error).toHaveBeenCalledWith(
+          ACCOUNT_UPDATE.MESSAGE.ERROR
+        );
+      });
+    });
+    it('バリデーションエラー時', async () => {
+      params[2] = 'passwrod01';
+      const { result } = renderHook(useAccount);
+      result.current.update(...params);
+      await waitFor(() => {
+        expect(mockUseAuthApi().updateUser).not.toHaveBeenCalled();
+        expect(mockNotify.error).toHaveBeenCalledTimes(1);
+        expect(mockNotify.error).toHaveBeenCalledWith(
+          INVALID_MESSAGES.PASSWORD_NO_MATCH
+        );
       });
     });
   });

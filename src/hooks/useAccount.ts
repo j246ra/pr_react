@@ -65,6 +65,7 @@ const useAccount = () => {
     api
       .updateUser({ email, password })
       .then(() => {
+        notify.success(ACCOUNT_UPDATE.MESSAGE.SUCCESS);
         navigate('/');
       })
       .catch(() => {
