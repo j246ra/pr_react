@@ -38,6 +38,7 @@ describe('useAccount', () => {
       signIn: jest.fn().mockResolvedValue({
         status: 200,
       }),
+      signOut: jest.fn().mockResolvedValue({ status: 200 }),
       updateUser: jest.fn().mockResolvedValue({ status: 200 }),
       passwordReset: jest.fn().mockResolvedValue({ state: 200 }),
       passwordForget: jest.fn().mockResolvedValue({ status: 200 }),
@@ -64,7 +65,7 @@ describe('useAccount', () => {
     });
     describe('失敗した場合', () => {
       it('認証エラーの場合にメッセージを通知している', async () => {
-        mockUseAuthApi().signIn = jest.fn().mockRejectedValue({
+        mockUseAuthApi().signIn.mockRejectedValue({
           response: {
             status: 401,
           },
@@ -82,7 +83,7 @@ describe('useAccount', () => {
         });
       });
       it('それ以外のエラーの場合にメッセージを通知している', async () => {
-        mockUseAuthApi().signIn = jest.fn().mockRejectedValue({
+        mockUseAuthApi().signIn.mockRejectedValue({
           response: {
             status: 500,
           },
@@ -104,9 +105,6 @@ describe('useAccount', () => {
 
   describe('logout ', () => {
     it('リクエスト成功時', async () => {
-      mockUseAuthApi.mockReturnValue({
-        signOut: jest.fn().mockResolvedValue({ status: 200 }),
-      });
       const { result } = renderHook(useAccount);
       result.current.logout();
       await waitFor(() => {
@@ -120,9 +118,7 @@ describe('useAccount', () => {
       });
     });
     it('リクエスト失敗時', async () => {
-      mockUseAuthApi.mockReturnValue({
-        signOut: jest.fn().mockRejectedValue({ response: { status: 500 } }),
-      });
+      mockUseAuthApi().signOut.mockRejectedValue({ response: { status: 500 } });
       const { result } = renderHook(useAccount);
       result.current.logout();
       await waitFor(() => {
@@ -156,8 +152,8 @@ describe('useAccount', () => {
       });
     });
     it('リクエスト失敗時', async () => {
-      mockUseAuthApi.mockReturnValue({
-        updateUser: jest.fn().mockRejectedValue({ response: { status: 500 } }),
+      mockUseAuthApi().updateUser.mockRejectedValue({
+        response: { status: 500 },
       });
       const { result } = renderHook(useAccount);
       result.current.update(...params);
@@ -171,7 +167,7 @@ describe('useAccount', () => {
       });
     });
     it('バリデーションエラー時', async () => {
-      params[2] = 'passwrod01';
+      params[2] = 'password-666';
       const { result } = renderHook(useAccount);
       result.current.update(...params);
       await waitFor(() => {
@@ -204,10 +200,8 @@ describe('useAccount', () => {
       });
     });
     it('リクエスト失敗時', async () => {
-      mockUseAuthApi.mockReturnValue({
-        passwordReset: jest
-          .fn()
-          .mockRejectedValue({ response: { status: 500 } }),
+      mockUseAuthApi().passwordReset.mockRejectedValue({
+        response: { status: 500 },
       });
       const { result } = renderHook(useAccount);
       result.current.passwordChange(password, password);
@@ -350,8 +344,8 @@ describe('useAccount', () => {
       });
     });
     it('リクエスト失敗時', async () => {
-      mockUseAuthApi.mockReturnValue({
-        deleteUser: jest.fn().mockRejectedValue({ response: { status: 500 } }),
+      mockUseAuthApi().deleteUser.mockRejectedValue({
+        response: { status: 500 },
       });
       const { result } = renderHook(useAccount);
       result.current.remove();
