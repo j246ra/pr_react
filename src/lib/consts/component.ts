@@ -35,6 +35,7 @@ export const PASSWORD_FORGET = {
 export const ACCOUNT_DELETE = {
   MESSAGE: {
     SUCCESS: 'アカウントを削除しました。',
+    ERROR: 'アカウントの削除に失敗しました。',
   } as const,
   BUTTON: {
     DELETE: 'アカウント削除',

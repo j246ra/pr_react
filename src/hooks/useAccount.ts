@@ -121,13 +121,13 @@ const useAccount = () => {
   const remove = () => {
     api
       .deleteUser()
-      .then(() => notify.success(ACCOUNT_DELETE.MESSAGE.SUCCESS))
-      .finally(() => {
+      .then(() => {
         clearUser();
         removeHeaders();
-        // handleCloseAlert();
         navigate(ROUTES.LOGIN);
-      });
+        notify.success(ACCOUNT_DELETE.MESSAGE.SUCCESS);
+      })
+      .catch(() => notify.error(ACCOUNT_DELETE.MESSAGE.ERROR));
   };
 
   return {

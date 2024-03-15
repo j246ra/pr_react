@@ -3,11 +3,17 @@ import { renderHook, waitFor } from '@testing-library/react';
 import useAccount from '@src/hooks/useAccount';
 import useAuthApi from '@src/hooks/useAuthApi';
 import notify from '@lib/toast';
-import { ACCOUNT_UPDATE, LOGIN, LOGOUT } from '@lib/consts/component';
+import {
+  ACCOUNT_DELETE,
+  ACCOUNT_UPDATE,
+  LOGIN,
+  LOGOUT,
+} from '@lib/consts/component';
 import { mockNavigator } from '@src/tests/common';
 import { ROUTES } from '@lib/consts/common';
 import { useLifelog } from '@providers/LifelogProvider';
 import { INVALID_MESSAGES } from '@validators/validator';
+import { expect } from '@storybook/jest';
 
 jest.mock('@src/hooks/useAuthApi');
 const mockUseAuthApi = useAuthApi as jest.MockedFunction<any>;
@@ -30,6 +36,7 @@ describe('useAccount', () => {
         status: 200,
       }),
       updateUser: jest.fn().mockResolvedValue({ status: 200 }),
+      deleteUser: jest.fn().mockResolvedValue({ status: 200 }),
     });
     mockUseLifelog.mockReturnValue({
       clear: jest.fn(),
@@ -167,6 +174,41 @@ describe('useAccount', () => {
         expect(mockNotify.error).toHaveBeenCalledWith(
           INVALID_MESSAGES.PASSWORD_NO_MATCH
         );
+      });
+    });
+  });
+
+  describe('remove', () => {
+    it('リクエスト成功時', async () => {
+      const { result } = renderHook(useAccount);
+      result.current.remove();
+      await waitFor(() => {
+        expect(mockUseAuthApi().deleteUser).toHaveBeenCalledTimes(1);
+        expect(mockNotify.success).toHaveBeenCalledTimes(1);
+        expect(mockNotify.success).toHaveBeenCalledWith(
+          ACCOUNT_DELETE.MESSAGE.SUCCESS
+        );
+        expect(mockUseUser().clearUser).toHaveBeenCalledTimes(1);
+        expect(mockUseSession().removeHeaders).toHaveBeenCalledTimes(1);
+        expect(mockNavigator).toHaveBeenCalledTimes(1);
+        expect(mockNavigator).toHaveBeenCalledWith(ROUTES.LOGIN);
+      });
+    });
+    it('リクエスト失敗時', async () => {
+      mockUseAuthApi.mockReturnValue({
+        deleteUser: jest.fn().mockRejectedValue({ response: { status: 500 } }),
+      });
+      const { result } = renderHook(useAccount);
+      result.current.remove();
+      await waitFor(() => {
+        expect(mockUseAuthApi().deleteUser).toHaveBeenCalledTimes(1);
+        expect(mockNotify.error).toHaveBeenCalledTimes(1);
+        expect(mockNotify.error).toHaveBeenCalledWith(
+          ACCOUNT_DELETE.MESSAGE.ERROR
+        );
+        expect(mockUseUser().clearUser).not.toHaveBeenCalled();
+        expect(mockUseSession().removeHeaders).not.toHaveBeenCalled();
+        expect(mockNavigator).not.toHaveBeenCalled();
       });
     });
   });
