@@ -1,35 +1,23 @@
-import { useLifelog } from '@providers/LifelogProvider';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import Header from '@src/components/Header';
-import { mockUseSession, mockUseUser } from '@src/tests/baseProviders';
+import { mockUseUser } from '@src/tests/baseProviders';
 import userEvent from '@testing-library/user-event';
 import { HEADER_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import { SEARCH_INPUT } from '@lib/consts/component';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { mockNavigator } from '@src/tests/common';
 import { ROUTES } from '@lib/consts/common';
-import useAuthApi from '@src/hooks/useAuthApi';
+import useAccount from '@src/hooks/useAccount';
 
-jest.mock('@providers/LifelogProvider');
-jest.mock('@src/hooks/useAuthApi');
-
-const mockUseLifelog = useLifelog as jest.MockedFunction<any>;
-const mockUseAuthApi = useAuthApi as jest.MockedFunction<any>;
+jest.mock('@src/hooks/useAccount');
+const mockUseAccount = useAccount as jest.MockedFunction<any>;
 
 beforeEach(() => {
-  mockUseSession.mockReturnValue({
-    removeHeaders: jest.fn(),
-  });
   mockUseUser.mockReturnValue({
     isLoggedIn: jest.fn().mockReturnValue(true),
-    clearUser: jest.fn(),
   });
-
-  mockUseAuthApi.mockReturnValue({
-    signOut: jest.fn().mockResolvedValue({}),
-  });
-  mockUseLifelog.mockReturnValue({
-    clear: jest.fn(),
+  mockUseAccount.mockReturnValue({
+    logout: jest.fn().mockResolvedValue({}),
   });
 });
 
@@ -74,7 +62,7 @@ describe('Header', () => {
         const logoutButton = screen.getByTestId(TEST_ID.LOGOUT);
         expect(logoutButton.className).not.toMatch('disabled');
         fireEvent.click(logoutButton);
-        expect(mockUseAuthApi().signOut).toHaveBeenCalled();
+        expect(mockUseAccount().logout).toHaveBeenCalledTimes(1);
       });
     });
   });
@@ -111,7 +99,7 @@ describe('Header', () => {
         const logoutButton = screen.getByTestId(TEST_ID.LOGOUT);
         expect(logoutButton.className).toMatch('disabled');
         fireEvent.click(logoutButton);
-        expect(mockUseAuthApi().signOut).not.toHaveBeenCalled();
+        expect(mockUseAccount().logout).not.toHaveBeenCalled();
       });
     });
   });

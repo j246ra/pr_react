@@ -3,14 +3,17 @@ import { renderHook, waitFor } from '@testing-library/react';
 import useAccount from '@src/hooks/useAccount';
 import useAuthApi from '@src/hooks/useAuthApi';
 import notify from '@lib/toast';
-import { LOGIN } from '@lib/consts/component';
+import { LOGIN, LOGOUT } from '@lib/consts/component';
 import { mockNavigator } from '@src/tests/common';
 import { ROUTES } from '@lib/consts/common';
+import { useLifelog } from '@providers/LifelogProvider';
 
 jest.mock('@src/hooks/useAuthApi');
 const mockUseAuthApi = useAuthApi as jest.MockedFunction<any>;
 jest.mock('@lib/toast');
 const mockNotify = jest.mocked(notify);
+jest.mock('@providers/LifelogProvider');
+const mockUseLifelog = useLifelog as jest.MockedFunction<any>;
 
 describe('useAccount', () => {
   beforeEach(() => {
@@ -19,11 +22,15 @@ describe('useAccount', () => {
     });
     mockUseUser.mockReturnValue({
       createUser: jest.fn(),
+      clearUser: jest.fn(),
     });
     mockUseAuthApi.mockReturnValue({
       signIn: jest.fn().mockResolvedValue({
         status: 200,
       }),
+    });
+    mockUseLifelog.mockReturnValue({
+      clear: jest.fn(),
     });
   });
   describe('login リクエストが', () => {
@@ -76,6 +83,40 @@ describe('useAccount', () => {
           );
           expect(mockNavigator).not.toHaveBeenCalled();
         });
+      });
+    });
+  });
+
+  describe('logout ', () => {
+    it('リクエスト成功時', async () => {
+      mockUseAuthApi.mockReturnValue({
+        signOut: jest.fn().mockResolvedValue({ status: 200 }),
+      });
+      const { result } = renderHook(useAccount);
+      result.current.logout();
+      await waitFor(() => {
+        expect(mockUseUser().clearUser).toHaveBeenCalledTimes(1);
+        expect(mockUseLifelog().clear).toHaveBeenCalledTimes(1);
+        expect(mockUseSession().removeHeaders).toHaveBeenCalledTimes(1);
+        expect(mockNavigator).toHaveBeenCalledTimes(1);
+        expect(mockNavigator).toHaveBeenCalledWith(ROUTES.LOGIN);
+        expect(mockNotify.success).toHaveBeenCalledTimes(1);
+        expect(mockNotify.success).toHaveBeenCalledWith(LOGOUT.MESSAGE.SUCCESS);
+      });
+    });
+    it('リクエスト失敗時', async () => {
+      mockUseAuthApi.mockReturnValue({
+        signOut: jest.fn().mockRejectedValue({ response: { status: 500 } }),
+      });
+      const { result } = renderHook(useAccount);
+      result.current.logout();
+      await waitFor(() => {
+        expect(mockUseUser().clearUser).not.toHaveBeenCalled();
+        expect(mockUseLifelog().clear).not.toHaveBeenCalled();
+        expect(mockUseSession().removeHeaders).not.toHaveBeenCalled();
+        expect(mockNavigator).not.toHaveBeenCalled();
+        expect(mockNotify.error).toHaveBeenCalledTimes(1);
+        expect(mockNotify.error).toHaveBeenCalledWith(LOGOUT.MESSAGE.ERROR);
       });
     });
   });

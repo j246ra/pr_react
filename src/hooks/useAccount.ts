@@ -4,6 +4,7 @@ import {
   ACCOUNT_DELETE,
   ACCOUNT_UPDATE,
   LOGIN,
+  LOGOUT,
   PASSWORD_EDIT,
   PASSWORD_FORGET,
   SIGN_UP,
@@ -40,12 +41,18 @@ const useAccount = () => {
   };
 
   const logout = () => {
-    api.signOut().finally(() => {
-      clearUser();
-      clearLifelog();
-      removeHeaders();
-      navigate(ROUTES.LOGIN);
-    });
+    api
+      .signOut()
+      .then(() => {
+        clearUser();
+        clearLifelog();
+        removeHeaders();
+        navigate(ROUTES.LOGIN);
+        notify.success(LOGOUT.MESSAGE.SUCCESS);
+      })
+      .catch(() => {
+        notify.error(LOGOUT.MESSAGE.ERROR);
+      });
   };
 
   const update = (

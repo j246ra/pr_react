@@ -11,30 +11,21 @@ import {
 } from '@blueprintjs/core';
 import { useUser } from '@providers/UserProvider';
 import { Link, useNavigate } from 'react-router-dom';
-import useAuthApi from '@src/hooks/useAuthApi';
-import { useSession } from '@providers/SessionProvider';
 import SearchInput from '@lifelog/presentational/SearchInput';
-import { useLifelog } from '@providers/LifelogProvider';
 import styles from './Header.module.scss';
 import { HEADER } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import { HEADER_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import { ROUTES } from '@lib/consts/common';
+import useAccount from '@src/hooks/useAccount';
 
 export default function Header() {
-  const { removeHeaders } = useSession();
   const navigate = useNavigate();
-  const { isLoggedIn, clearUser } = useUser();
-  const authApi = useAuthApi();
-  const { clear: clearLifelog } = useLifelog();
+  const { isLoggedIn } = useUser();
+  const { logout } = useAccount();
 
   const handleLogout = () => {
-    authApi.signOut().finally(() => {
-      clearUser();
-      clearLifelog();
-      removeHeaders();
-      navigate(ROUTES.LOGIN);
-    });
+    logout();
   };
 
   const handleAccountUpdate = () => navigate(ROUTES.ACCOUNT_UPDATE);

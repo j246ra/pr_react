@@ -77,6 +77,14 @@ export const LOGIN = {
   } as const,
 };
 
+export const LOGOUT = {
+  MESSAGE: {
+    SUCCESS: 'ログアウトしました。',
+    ERROR:
+      'ログアウトに失敗しました。しばらくしてからサイドログアウトしてください。',
+  },
+};
+
 export const PASSWORD_INPUT = {
   LABEL: 'パスワード',
   PLACEHOLDER: 'パスワードを入力',
@@ -236,6 +244,7 @@ export const COMPONENT = {
   ACCOUNT_DELETE,
   ACCOUNT_UPDATE,
   LOGIN,
+  LOGOUT,
   PASSWORD_INPUT,
   PASSWORD_EDIT,
   PASSWORD_FORGET,
