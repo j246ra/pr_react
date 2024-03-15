@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import AccountUpdate from './AccountUpdate';
-import { mockUseSession, mockUseUser } from '@src/tests/baseProviders';
+import { mockUseUser } from '@src/tests/baseProviders';
 import { ACCOUNT_UPDATE, PASSWORD_INPUT } from '@lib/consts/component';
 import { ACCOUNT_UPDATE_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import useAccount from '@src/hooks/useAccount';
@@ -14,12 +14,9 @@ describe('AccountUpdate component', () => {
     mockUseUser.mockReturnValue({
       user: { email: 'test@example.com' },
     });
-    mockUseSession.mockReturnValue({
-      initializeByUid: jest.fn(),
-      removeToken: jest.fn(),
-    });
     mockUseAccount.mockReturnValue({
       update: jest.fn().mockResolvedValue({ status: 200 }),
+      remove: jest.fn().mockResolvedValue({ status: 200 }),
     });
   });
 
