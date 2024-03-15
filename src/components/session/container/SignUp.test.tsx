@@ -2,8 +2,6 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import SignUp from './SignUp';
-import { mockNavigator } from '@src/tests/common';
-import notify from '@lib/toast';
 import { mockUseSession, mockUseUser } from '@src/tests/baseProviders';
 import {
   EMAIL_INPUT,
@@ -15,14 +13,10 @@ import {
   SESSION_OTHER_LINKS_TEST_ID,
   SIGN_UP_TEST_ID as TEST_ID,
 } from '@lib/consts/testId';
-import { ROUTES } from '@lib/consts/common';
-import useAuthApi from '@src/hooks/useAuthApi';
+import useAccount from '@src/hooks/useAccount';
 
-jest.mock('@lib/toast');
-const mockNotify = jest.mocked(notify);
-
-jest.mock('@src/hooks/useAuthApi');
-const mockUseAuthApi = useAuthApi as jest.MockedFunction<any>;
+jest.mock('@src/hooks/useAccount');
+const mockUseAccount = useAccount as jest.MockedFunction<any>;
 
 describe('SignUp component', () => {
   beforeEach(() => {
@@ -36,7 +30,7 @@ describe('SignUp component', () => {
     mockUseSession.mockReturnValue({
       removeToken: jest.fn(),
     });
-    mockUseAuthApi.mockReturnValue({
+    mockUseAccount.mockReturnValue({
       signUp: jest.fn().mockResolvedValue({ status: 200 }),
     });
   });
@@ -90,14 +84,10 @@ describe('SignUp component', () => {
     await waitFor(() => {
       expect(emailInput).toHaveValue('test@example.com');
       expect(passwordInput).toHaveValue('password');
-      expect(mockUseAuthApi().signUp).toHaveBeenCalledWith(
+      expect(mockUseAccount().signUp).toHaveBeenCalledWith(
         'test@example.com',
         'password'
       );
-      expect(mockNotify.success).toHaveBeenCalledTimes(1);
-      expect(mockNotify.success).toHaveBeenCalledWith(SIGN_UP.MESSAGE.SUCCESS);
-      expect(mockNavigator).toHaveBeenCalledTimes(1);
-      expect(mockNavigator).toHaveBeenCalledWith(ROUTES.LIFELOGS);
     });
   });
 });

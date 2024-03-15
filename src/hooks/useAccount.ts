@@ -107,12 +107,12 @@ const useAccount = () => {
     if (signUpValidator(email, password).isInvalid) return;
     api
       .signUp(email, password)
-      .then((r) => {
-        if (r.status !== 200) return;
+      .then(() => {
         notify.success(SIGN_UP.MESSAGE.SUCCESS);
         navigate(ROUTES.LIFELOGS);
       })
       .catch(() => {
+        notify.error(SIGN_UP.MESSAGE.ERROR);
         clearUser();
         removeHeaders();
       });

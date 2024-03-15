@@ -1,11 +1,6 @@
 import React, { useState, FormEvent, ChangeEvent } from 'react';
 import { Button, Intent } from '@blueprintjs/core';
-import { useUser } from '@providers/UserProvider';
-import { useNavigate } from 'react-router-dom';
-import signUpValidator from '@validators/signUp';
-import notify from '@lib/toast';
-import { useSession } from '@providers/SessionProvider';
-import useAuthApi from '@src/hooks/useAuthApi';
+import useAccount from '@src/hooks/useAccount';
 import EmailInput from '@session/presentational/EmailInput';
 import PasswordInput from '@session/presentational/PasswordInput';
 import SessionCard from '@session/presentational/SessionCard';
@@ -15,30 +10,15 @@ import { SIGN_UP_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import SessionOtherLinks from '@session/presentational/SessionOtherLinks';
 import SessionForm from '@session/presentational/SessionForm';
 import SessionLayout from '@session/SessionLayout';
-import { ROUTES } from '@lib/consts/common';
 
 export default function SignUp() {
-  const { removeHeaders } = useSession();
-  const session = useAuthApi();
+  const { signUp } = useAccount();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const { clearUser } = useUser();
-  const navigate = useNavigate();
 
   const handleSignUp = (e: FormEvent) => {
     e.preventDefault();
-    if (signUpValidator(email, password).isInvalid) return;
-    session
-      .signUp(email, password)
-      .then((r) => {
-        if (r.status !== 200) return;
-        notify.success(SIGN_UP.MESSAGE.SUCCESS);
-        navigate(ROUTES.LIFELOGS);
-      })
-      .catch(() => {
-        clearUser();
-        removeHeaders();
-      });
+    signUp(email, password);
   };
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) =>

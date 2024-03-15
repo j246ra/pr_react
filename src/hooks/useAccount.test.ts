@@ -10,6 +10,7 @@ import {
   LOGOUT,
   PASSWORD_EDIT,
   PASSWORD_FORGET,
+  SIGN_UP,
 } from '@lib/consts/component';
 import { mockNavigator } from '@src/tests/common';
 import { ROUTES } from '@lib/consts/common';
@@ -40,6 +41,7 @@ describe('useAccount', () => {
       updateUser: jest.fn().mockResolvedValue({ status: 200 }),
       passwordReset: jest.fn().mockResolvedValue({ state: 200 }),
       passwordForget: jest.fn().mockResolvedValue({ status: 200 }),
+      signUp: jest.fn().mockResolvedValue({ status: 200 }),
       deleteUser: jest.fn().mockResolvedValue({ status: 200 }),
     });
     mockUseLifelog.mockReturnValue({
@@ -290,9 +292,45 @@ describe('useAccount', () => {
   });
 
   describe('signUp', () => {
-    it.todo('リクエスト成功時');
-    it.todo('リクエスト失敗時');
-    it.todo('バリデーションエラー時');
+    const email = 'test@example.com';
+    const password = 'password-7777';
+    it('リクエスト成功時', async () => {
+      const { result } = renderHook(useAccount);
+      result.current.signUp(email, password);
+      await waitFor(() => {
+        expect(mockUseAuthApi().signUp).toHaveBeenCalledTimes(1);
+        expect(mockUseAuthApi().signUp).toHaveBeenCalledWith(email, password);
+        expect(mockNotify.success).toHaveBeenCalledTimes(1);
+        expect(mockNotify.success).toHaveBeenCalledWith(
+          SIGN_UP.MESSAGE.SUCCESS
+        );
+        expect(mockNavigator).toHaveBeenCalledTimes(1);
+        expect(mockNavigator).toHaveBeenCalledWith(ROUTES.LIFELOGS);
+      });
+    });
+    it('リクエスト失敗時', async () => {
+      mockUseAuthApi().signUp.mockRejectedValue({ response: { status: 500 } });
+      const { result } = renderHook(useAccount);
+      result.current.signUp(email, password);
+      await waitFor(() => {
+        expect(mockUseAuthApi().signUp).toHaveBeenCalledTimes(1);
+        expect(mockUseAuthApi().signUp).toHaveBeenCalledWith(email, password);
+        expect(mockNotify.error).toHaveBeenCalledTimes(1);
+        expect(mockNotify.error).toHaveBeenCalledWith(SIGN_UP.MESSAGE.ERROR);
+        expect(mockUseUser().clearUser).toHaveBeenCalledTimes(1);
+        expect(mockUseSession().removeHeaders).toHaveBeenCalledTimes(1);
+      });
+    });
+    it('バリデーションエラー時', async () => {
+      const { result } = renderHook(useAccount);
+      result.current.signUp(email, 'a');
+      await waitFor(() => {
+        expect(mockUseAuthApi().signUp).not.toHaveBeenCalled();
+        expect(mockNotify.error).toHaveBeenCalledWith(
+          INVALID_MESSAGES.PASSWORD_LENGTH
+        );
+      });
+    });
   });
 
   describe('remove', () => {

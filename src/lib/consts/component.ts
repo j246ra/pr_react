@@ -117,6 +117,7 @@ export const RESET_MAIL_SUCCESS = {
 export const SIGN_UP = {
   MESSAGE: {
     SUCCESS: 'アカウント作成に成功しました',
+    ERROR: 'アカウント作成に失敗しました。',
   } as const,
   BUTTON: {
     SUBMIT: '登録',
