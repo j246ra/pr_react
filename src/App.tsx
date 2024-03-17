@@ -48,7 +48,7 @@ function App() {
           />
           <Route
             path={ROUTES.PASSWORD_EDIT}
-            element={<AuthenticatedOnly children={<PasswordEdit />} />}
+            element={<UnauthenticatedOnly children={<PasswordEdit />} />}
           />
           <Route
             path={ROUTES.LIFELOGS}

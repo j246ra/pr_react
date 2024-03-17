@@ -124,7 +124,7 @@ describe('正常系', () => {
         <App />
       </MemoryRouter>
     );
-    expect(screen.getByText(AUTHENTICATED_ONLY)).toBeInTheDocument();
+    expect(screen.getByText(UNAUTHENTICATED_ONLY)).toBeInTheDocument();
     expect(screen.getByText(PASSWORD_EDIT)).toBeInTheDocument();
   });
 
