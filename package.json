@@ -206,6 +206,7 @@
     "@typescript-eslint/parser": "^5.59.2",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-storybook": "^0.6.15",
+    "history": "^5.3.0",
     "msw": "^1.2.2",
     "msw-storybook-addon": "^1.10.0",
     "prettier": "^2.8.8",
