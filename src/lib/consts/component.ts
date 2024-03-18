@@ -35,6 +35,7 @@ export const PASSWORD_FORGET = {
 export const ACCOUNT_DELETE = {
   MESSAGE: {
     SUCCESS: 'アカウントを削除しました。',
+    ERROR: 'アカウントの削除に失敗しました。',
   } as const,
   BUTTON: {
     DELETE: 'アカウント削除',
@@ -48,6 +49,7 @@ export const ACCOUNT_DELETE = {
 
 export const ACCOUNT_UPDATE = {
   MESSAGE: {
+    SUCCESS: 'アカウントを更新しました。',
     ERROR: 'アカウントの更新に失敗しました。',
   } as const,
   PASSWORD_CONFIRM: {
@@ -75,6 +77,14 @@ export const LOGIN = {
     PASSWORD_FORGET: PASSWORD_FORGET.GUIDANCE,
     SIGN_UP: '新規登録',
   } as const,
+};
+
+export const LOGOUT = {
+  MESSAGE: {
+    SUCCESS: 'ログアウトしました。',
+    ERROR:
+      'ログアウトに失敗しました。しばらくしてからサイドログアウトしてください。',
+  },
 };
 
 export const PASSWORD_INPUT = {
@@ -107,6 +117,7 @@ export const RESET_MAIL_SUCCESS = {
 export const SIGN_UP = {
   MESSAGE: {
     SUCCESS: 'アカウント作成に成功しました',
+    ERROR: 'アカウント作成に失敗しました。',
   } as const,
   BUTTON: {
     SUBMIT: '登録',
@@ -236,6 +247,7 @@ export const COMPONENT = {
   ACCOUNT_DELETE,
   ACCOUNT_UPDATE,
   LOGIN,
+  LOGOUT,
   PASSWORD_INPUT,
   PASSWORD_EDIT,
   PASSWORD_FORGET,

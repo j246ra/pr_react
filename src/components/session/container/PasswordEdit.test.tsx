@@ -3,14 +3,13 @@ import { render, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import PasswordEdit from './PasswordEdit';
 import { useSession } from '@providers/SessionProvider';
-import { useAuth } from '@providers/AuthApiProvider';
 import { PASSWORD_EDIT } from '@lib/consts/component';
+import useAccount from '@src/hooks/useAccount';
 
 jest.mock('@providers/SessionProvider');
-jest.mock('@providers/AuthApiProvider');
-
 const mockUseSession = useSession as jest.MockedFunction<any>;
-const mockUseAuth = useAuth as jest.MockedFunction<any>;
+jest.mock('@src/hooks/useAccount');
+const mockUseAccount = useAccount as jest.MockedFunction<any>;
 
 describe('PasswordEdit component', () => {
   beforeEach(() => {
@@ -18,10 +17,8 @@ describe('PasswordEdit component', () => {
       setHeaders: jest.fn(),
     });
 
-    mockUseAuth.mockReturnValue({
-      authApi: {
-        passwordReset: jest.fn().mockResolvedValue({ status: 200 }),
-      },
+    mockUseAccount.mockReturnValue({
+      passwordChange: jest.fn(),
     });
   });
 
@@ -62,7 +59,7 @@ describe('PasswordEdit component', () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(mockUseAuth().authApi.passwordReset).toHaveBeenCalledWith(
+      expect(mockUseAccount().passwordChange).toHaveBeenCalledWith(
         'newpassword',
         'newpassword'
       );

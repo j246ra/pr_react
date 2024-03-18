@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client';
 import './index.scss';
 import { BrowserRouter } from 'react-router-dom';
 import UserProvider from './providers/UserProvider';
-import AuthApiProvider from './providers/AuthApiProvider';
 import SessionProvider from './providers/SessionProvider';
 import LifelogProvider from '@providers/LifelogProvider';
 import { COMMON } from '@lib/consts/common';
@@ -22,11 +21,9 @@ root.render(
   <BrowserRouter basename={COMMON.APP_URL.BASE_DIR}>
     <SessionProvider>
       <UserProvider>
-        <AuthApiProvider>
-          <LifelogProvider>
-            <App />
-          </LifelogProvider>
-        </AuthApiProvider>
+        <LifelogProvider>
+          <App />
+        </LifelogProvider>
       </UserProvider>
     </SessionProvider>
   </BrowserRouter>

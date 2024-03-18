@@ -1,40 +1,27 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { Button, Intent } from '@blueprintjs/core';
 import { useUser, User } from '@providers/UserProvider';
-import { useNavigate } from 'react-router-dom';
-import accountUpdateValidator from '@validators/accountUpdate';
-import { useAuth } from '@providers/AuthApiProvider';
 import EmailInput from '@session/presentational/EmailInput';
 import PasswordInput from '@session/presentational/PasswordInput';
 import AccountDelete from '@session/container/AccountDelete';
 import SessionCard from '@session/presentational/SessionCard';
-import notify from '@lib/toast';
 import { ACCOUNT_UPDATE } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import { ACCOUNT_UPDATE_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import SessionForm from '@session/presentational/SessionForm';
 import SessionLayout from '@session/SessionLayout';
+import useAccount from '@src/hooks/useAccount';
 
 export default function AccountUpdate() {
   const { user } = useUser();
-  const { authApi } = useAuth();
+  const { update: updateUser } = useAccount();
   const [email, setEmail] = useState((user as User).email);
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
-  const navigate = useNavigate();
 
   const handleAccountUpdate = (e: FormEvent) => {
     e.preventDefault();
-    const columns = { email, password, passwordConfirmation };
-    if (accountUpdateValidator(columns).isInvalid) return;
-    authApi
-      .updateUser({ email, password })
-      .then(() => {
-        navigate('/');
-      })
-      .catch(() => {
-        notify.error(ACCOUNT_UPDATE.MESSAGE.ERROR);
-      });
+    updateUser(email, password, passwordConfirmation);
   };
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {

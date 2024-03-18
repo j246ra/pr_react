@@ -7,15 +7,7 @@ import {
   Routes,
 } from 'react-router-dom';
 import Login from './Login';
-import notify from '@lib/toast';
-import { mockNavigator } from '@src/tests/common';
-import {
-  mockUseUser,
-  mockUseSession,
-  mockUseAuth,
-} from '@src/tests/baseProviders';
 import PasswordForget from '@session/container/PasswordForget';
-import { useLifelog } from '@providers/LifelogProvider';
 import { EMAIL_INPUT, LOGIN, PASSWORD_INPUT } from '@lib/consts/component';
 import {
   LOGIN_TEST_ID as TEST_ID,
@@ -23,31 +15,15 @@ import {
 } from '@lib/consts/testId';
 import { ROUTES } from '@lib/consts/common';
 import SignUp from '@session/container/SignUp';
+import useAccount from '@src/hooks/useAccount';
 
-jest.mock('@providers/LifelogProvider');
-jest.mock('@lib/toast');
-const mockUseLifelog = useLifelog as jest.MockedFunction<any>;
-const mockNotify = jest.mocked(notify);
+jest.mock('@src/hooks/useAccount');
+const mockUseAccount = useAccount as jest.MockedFunction<any>;
 
 describe('Login component', () => {
   beforeEach(() => {
-    mockUseUser.mockReturnValue({
-      user: { email: '' },
-      createUser: jest.fn(),
-      updateUser: jest.fn(),
-      clearUser: jest.fn(),
-      isLoggedIn: jest.fn(),
-    });
-    mockUseSession.mockReturnValue({
-      initializeByUid: jest.fn(),
-    });
-    mockUseAuth.mockReturnValue({
-      authApi: {
-        signIn: jest.fn().mockResolvedValue({ status: 200 }),
-      },
-    });
-    mockUseLifelog.mockReturnValue({
-      clear: jest.fn(),
+    mockUseAccount.mockReturnValue({
+      login: jest.fn(),
     });
   });
 
@@ -137,14 +113,10 @@ describe('Login component', () => {
     await waitFor(() => {
       expect(emailInput).toHaveValue('test@example.com');
       expect(passwordInput).toHaveValue('password');
-      expect(mockUseAuth().authApi.signIn).toHaveBeenCalledWith(
+      expect(mockUseAccount().login).toHaveBeenCalledWith(
         'test@example.com',
         'password'
       );
-      expect(mockNotify.success).toHaveBeenCalledTimes(1);
-      expect(mockNotify.success).toHaveBeenCalledWith(LOGIN.MESSAGE.SUCCESS);
-      expect(mockNavigator).toHaveBeenCalledTimes(1);
-      expect(mockNavigator).toHaveBeenCalledWith(ROUTES.LIFELOGS);
     });
   });
 });

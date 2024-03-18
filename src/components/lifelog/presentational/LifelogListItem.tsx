@@ -43,7 +43,7 @@ export function LifelogListItem({
           }
         />
       </td>
-      <td>
+      <td className={styles.tdEdit}>
         <Button
           className={styles.button}
           data-testid={TEST_ID.EDIT_BUTTON + log.id}
