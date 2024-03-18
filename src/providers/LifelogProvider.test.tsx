@@ -544,10 +544,25 @@ describe('LifelogProvider', () => {
           expect(result.current.lifelogs).toHaveLength(10);
         });
         act(() => {
+          result.current.loadLogs();
+        });
+        await waitFor(() => {
+          expect(result.current.lifelogs).toHaveLength(20);
+        });
+        act(() => {
+          result.current.loadLogs();
+        });
+        await waitFor(() => {
+          expect(result.current.lifelogs).toHaveLength(20);
+          expect(result.current.isTerminated).toEqual(true);
+        });
+        act(() => {
           result.current.clear();
         });
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(0);
+          expect(result.current.isTerminated).toEqual(false);
+          expect(result.current.searchWord).toEqual('');
         });
       });
     });

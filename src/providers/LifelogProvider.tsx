@@ -200,7 +200,8 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   };
 
   const clear = () => {
-    setLifelogs([]);
+    _setLifelogs([]);
+    setIsTerminated(false);
     setPage(0);
     setSearchWord('');
   };
