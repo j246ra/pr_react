@@ -91,7 +91,6 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
 
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
     setHeaders(response);
-    setIsTerminated(response.data?.length === 0);
     return response;
   };
 
@@ -133,6 +132,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   const loadLogs = async (defaultErrorMessage?: string) => {
     const nextPage = page + 1;
     const r = await api(defaultErrorMessage).index(nextPage, searchWord);
+    setIsTerminated(r.data?.length === 0);
     const res = validateResponseData(r.data);
     if (res.validData.length > 0) {
       addLifelogs(convertResponseData(res.validData));
@@ -145,6 +145,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   const searchLogs = async (word: string, defaultErrorMessage?: string) => {
     setSearchWord(word);
     const r = await api(defaultErrorMessage).index(1, word);
+    setIsTerminated(r.data?.length === 0);
     const res = validateResponseData(r.data);
     setLifelogs(convertResponseData(res.validData));
     setPage(1);
