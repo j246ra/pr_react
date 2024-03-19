@@ -87,7 +87,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   const [page, setPage] = useState(0);
   const [isTerminated, setIsTerminated] = useState(false);
   const { getHeaders, setHeaders } = useSession();
-  const { clearUser } = useUser();
+  const { user, clearUser } = useUser();
 
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
     setHeaders(response);
@@ -122,6 +122,12 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   };
 
   const api = (defaultErrorMessage?: string) => {
+    if (getHeaders().uid !== user.email) {
+      clear();
+      window.location.reload();
+      throw 'Invalid Token';
+    }
+
     return lifelog(
       getHeaders,
       responseInterceptor,
