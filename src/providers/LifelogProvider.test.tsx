@@ -30,10 +30,13 @@ describe('LifelogProvider', () => {
     mockSetHeaders = jest.fn();
     mockClearUser = jest.fn();
     mockUseSession.mockReturnValue({
-      getHeaders: jest.fn(),
+      getHeaders: jest.fn().mockReturnValue({
+        uid: 'test@example.com',
+      }),
       setHeaders: mockSetHeaders,
     });
     mockUseUser.mockReturnValue({
+      user: { email: 'test@example.com' },
       clearUser: mockClearUser,
     });
     notifySpy = jest.spyOn(notify, 'error');
