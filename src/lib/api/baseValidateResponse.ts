@@ -16,35 +16,45 @@ export type ConfigValueType =
 
 export type ConfigValue = [ConfigValueType, boolean];
 
-const convertConfigToObject = (
-  config: ConfigValue
-): {
+type ConfigObject = {
+  key: string;
   expectedType: ConfigValueType;
   isNullable: boolean;
-} => {
-  const [expectedType, isNullable] = config;
-  return { expectedType, isNullable };
+};
+
+const convertConfigObject = (
+  configValues: Record<string, ConfigValue>
+): ConfigObject[] => {
+  const configObjects: ConfigObject[] = [];
+  for (const [key, config] of Object.entries(configValues)) {
+    const [expectedType, isNullable] = config;
+    configObjects.push({ key, expectedType, isNullable });
+  }
+  return configObjects;
 };
 
 export const buildTypeGuard = <T>(
-  typeCheckConfigurations: Record<string, ConfigValue>
+  typeGuardConfigurations: Record<string, ConfigValue>
 ): ((data?: unknown) => { validData: T[]; invalidData: DataWithErrors[] }) => {
   return (data?: unknown) => {
     const validData: T[] = [];
     const invalidData: DataWithErrors[] = [];
     if (!data) return { validData, invalidData };
+
+    const configObjects = convertConfigObject(typeGuardConfigurations);
     const items = Array.isArray(data) ? data : [data];
     for (const item of items) {
       const errors: string[] = [];
-      Object.entries(typeCheckConfigurations).forEach(([key, config]) => {
-        const { expectedType, isNullable } = convertConfigToObject(config);
-        const value = (item as any)[key];
+      configObjects.forEach((config) => {
+        const { key, expectedType, isNullable } = config;
+        const value = item[key];
         if ((value || !isNullable) && typeof value !== expectedType)
           errors.push(`Invalid ${key} [${value}]`);
       });
       if (errors.length > 0) invalidData.push({ data: item, errors });
       else validData.push(item as T);
     }
+
     if (invalidData.length > 0) {
       Sentry.addBreadcrumb({
         message: 'api invalidData',
