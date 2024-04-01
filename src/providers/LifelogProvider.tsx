@@ -13,7 +13,7 @@ import LifelogEditDialogProvider from '@providers/LifelogEditDialogProvider';
 import LifelogDetailDialogProvider from '@providers/LifelogDetailDialogProvider';
 import {
   convertResponseData,
-  validateResponseData,
+  validateLifelogResponse,
 } from '@lib/api/lifelogResponse';
 import * as Sentry from '@sentry/react';
 import notify from '@lib/toast';
@@ -139,7 +139,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     const nextPage = page + 1;
     const r = await api(defaultErrorMessage).index(nextPage, searchWord);
     setIsTerminated(r.data?.length === 0);
-    const res = validateResponseData(r.data);
+    const res = validateLifelogResponse(r.data);
     if (res.validData.length > 0) {
       addLifelogs(convertResponseData(res.validData));
       setPage(nextPage);
@@ -152,7 +152,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     setSearchWord(word);
     const r = await api(defaultErrorMessage).index(1, word);
     setIsTerminated(r.data?.length === 0);
-    const res = validateResponseData(r.data);
+    const res = validateLifelogResponse(r.data);
     setLifelogs(convertResponseData(res.validData));
     setPage(1);
     return r;
@@ -165,7 +165,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     defaultErrorMessage?: string
   ) => {
     const r = await api(defaultErrorMessage).create(params);
-    const res = validateResponseData(r.data);
+    const res = validateLifelogResponse(r.data);
     addLifelogs(convertResponseData(res.validData));
     return r;
   };
@@ -183,7 +183,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   ) => {
     const r = await api(defaultErrorMessage).update(params);
     const updatedLogs = [...lifelogs];
-    const res = validateResponseData(r.data);
+    const res = validateLifelogResponse(r.data);
     const _log = convertResponseData(res.validData)[0];
     const i = updatedLogs.findIndex((log) => log.id === _log.id);
     if (i >= 0) {
