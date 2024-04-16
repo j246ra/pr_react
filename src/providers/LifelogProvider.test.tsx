@@ -157,6 +157,28 @@ describe('LifelogProvider', () => {
           });
         });
       });
+
+      describe('status が存在しない場合', () => {
+        beforeEach(() => {
+          server.use(restIndex({ status: null }));
+        });
+        it('エラーメッセージが表示される', async () => {
+          const { result } = renderHook(() => useLifelog(), { wrapper });
+
+          expect(result.current.lifelogs).toHaveLength(0);
+          act(() => {
+            expect(result.current.loadLogs()).rejects.toBeInstanceOf(
+              AxiosError
+            );
+          });
+
+          await waitFor(() => {
+            expect(notifySpy).toHaveBeenCalledWith(
+              COMMON.MESSAGE.ERROR.GENERAL
+            );
+          });
+        });
+      });
     });
 
     describe('loadLogs 検証', () => {

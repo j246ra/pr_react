@@ -96,22 +96,19 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
 
   const errorInterceptorBuilder = (defaultErrorMessage?: string) => {
     return (error: AxiosError) => {
-      const status = error.response?.status;
-      if (status) {
-        switch (error.response?.status) {
-          case 401:
-            clearUser();
-            notify.error(COMMON.MESSAGE.ERROR.EXPIRED);
-            break;
-          case 500:
-          case 501:
-          case 502:
-          case 503:
-            notify.error(COMMON.MESSAGE.ERROR.STATUS_5XX);
-            break;
-          default:
-            notify.error(defaultErrorMessage || COMMON.MESSAGE.ERROR.GENERAL);
-        }
+      switch (error.response?.status) {
+        case 401:
+          clearUser();
+          notify.error(COMMON.MESSAGE.ERROR.EXPIRED);
+          break;
+        case 500:
+        case 501:
+        case 502:
+        case 503:
+          notify.error(COMMON.MESSAGE.ERROR.STATUS_5XX);
+          break;
+        default:
+          notify.error(defaultErrorMessage || COMMON.MESSAGE.ERROR.GENERAL);
       }
       Sentry.addBreadcrumb({
         message: 'lifelogs api request error.',
