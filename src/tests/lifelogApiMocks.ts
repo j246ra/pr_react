@@ -7,7 +7,7 @@ import { API, LIFELOG_API_MOCKS } from '@lib/consts/common';
 type RestIndexOptions = {
   maxPage?: number;
   length?: number;
-  status?: number;
+  status?: number | null;
 };
 
 type RestCreateOptions = {
@@ -35,6 +35,8 @@ const lifelogApiMocks = () => {
             logs = lifelogs(length, offset);
           }
           return res(ctx.status(status), ctx.json(logs));
+        case null:
+          return res.networkError('network error.');
         default:
           return res(ctx.status(status));
       }
