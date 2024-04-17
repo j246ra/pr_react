@@ -274,8 +274,8 @@ describe('LifelogProvider', () => {
         server.use(restIndex({ maxPage: 1, length: 0 }));
         const { result } = renderHook(() => useLifelog(), { wrapper });
         expect(result.current.lifelogs).toHaveLength(0);
-        act(() => {
-          result.current.searchLogs('TEST999');
+        await act(async () => {
+          await result.current.searchLogs('TEST999');
         });
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(0);
@@ -526,8 +526,8 @@ describe('LifelogProvider', () => {
           expect(result.current.lifelogs).toHaveLength(10);
         });
         const deletedLog = lifelog({ id: 999 });
-        act(() => {
-          result.current.deleteLog(deletedLog.id);
+        await act(async () => {
+          await result.current.deleteLog(deletedLog.id);
         });
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(10);
