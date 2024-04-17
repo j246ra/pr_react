@@ -3,32 +3,32 @@ import lifelog, { CreatParams, UpdateParams } from './lifelog';
 import { days, DATETIME_FULL } from '@lib/dateUtil';
 import { API } from '@lib/consts/common';
 
-const mockClient = {
-  post: jest.fn().mockResolvedValue({
-    data: {},
-  }),
-  put: jest.fn().mockResolvedValue({
-    data: {},
-  }),
-  delete: jest.fn().mockResolvedValue({
-    data: {},
-  }),
-  get: jest.fn().mockResolvedValue({
-    data: {},
-  }),
-  interceptors: {
-    response: {
-      use: jest.fn(),
-    },
-  },
-};
-
-jest.mock('./client', () => ({
-  __esModule: true, // this property makes it work
-  default: () => mockClient,
-}));
+jest.mock('./client');
+const mockCreateClient = createClient as jest.MockedFunction<any>;
 
 describe('lifelog APIの呼び出し検証', () => {
+  beforeEach(() => {
+    mockCreateClient.mockReturnValue({
+      post: jest.fn().mockResolvedValue({
+        data: {},
+      }),
+      put: jest.fn().mockResolvedValue({
+        data: {},
+      }),
+      delete: jest.fn().mockResolvedValue({
+        data: {},
+      }),
+      get: jest.fn().mockResolvedValue({
+        data: {},
+      }),
+      interceptors: {
+        response: {
+          use: jest.fn(),
+        },
+      },
+    });
+  });
+
   const headers = () => {
     return { 'access-token': 'token', client: 'client', uid: 'uid' };
   };
@@ -40,7 +40,7 @@ describe('lifelog APIの呼び出し検証', () => {
     const { index } = lifelog(headers);
     await index(page, word);
 
-    expect(createClient().get).toHaveBeenCalledWith(API.LIFELOG.ENDPOINT, {
+    expect(mockCreateClient().get).toHaveBeenCalledWith(API.LIFELOG.ENDPOINT, {
       headers: headers(),
       params: { page, word },
     });
@@ -57,7 +57,7 @@ describe('lifelog APIの呼び出し検証', () => {
     const { create } = lifelog(headers);
     await create(params);
 
-    expect(createClient().post).toHaveBeenCalledWith(
+    expect(mockCreateClient().post).toHaveBeenCalledWith(
       API.LIFELOG.ENDPOINT,
       {
         data: params,
@@ -79,7 +79,7 @@ describe('lifelog APIの呼び出し検証', () => {
     const { update } = lifelog(headers);
     await update(params);
 
-    expect(createClient().put).toHaveBeenCalledWith(
+    expect(mockCreateClient().put).toHaveBeenCalledWith(
       `${API.LIFELOG.ENDPOINT}/${params.id}`,
       {
         data: params,
@@ -94,7 +94,7 @@ describe('lifelog APIの呼び出し検証', () => {
     const { destroy } = lifelog(headers);
     await destroy(id);
 
-    expect(createClient().delete).toHaveBeenCalledWith(
+    expect(mockCreateClient().delete).toHaveBeenCalledWith(
       `${API.LIFELOG.ENDPOINT}/${id}`,
       { headers: headers() }
     );

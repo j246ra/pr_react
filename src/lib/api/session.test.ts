@@ -2,34 +2,34 @@ import createClient from './client';
 import session from './session';
 import { API, COMMON } from '@lib/consts/common';
 
-const mockClient = {
-  post: jest.fn().mockResolvedValue({
-    data: {},
-  }),
-  put: jest.fn().mockResolvedValue({
-    data: {},
-  }),
-  delete: jest.fn().mockResolvedValue({
-    data: {},
-  }),
-  get: jest.fn().mockResolvedValue({
-    data: {},
-  }),
-  interceptors: {
-    response: {
-      use: jest.fn(),
-    },
-  },
-};
-
-jest.mock('./client', () => ({
-  __esModule: true, // this property makes it work
-  default: () => mockClient,
-}));
+jest.mock('./client');
+const mockCreateClient = createClient as jest.MockedFunction<any>;
 
 const ENDPOINT = API.SESSION.ENDPOINT;
 
 describe('session APIの呼び出し検証', () => {
+  beforeEach(() => {
+    mockCreateClient.mockReturnValue({
+      post: jest.fn().mockResolvedValue({
+        data: {},
+      }),
+      put: jest.fn().mockResolvedValue({
+        data: {},
+      }),
+      delete: jest.fn().mockResolvedValue({
+        data: {},
+      }),
+      get: jest.fn().mockResolvedValue({
+        data: {},
+      }),
+      interceptors: {
+        response: {
+          use: jest.fn(),
+        },
+      },
+    });
+  });
+
   const headers = () => {
     return { 'access-token': 'token', client: 'client', uid: 'uid' };
   };
@@ -41,7 +41,7 @@ describe('session APIの呼び出し検証', () => {
     const { signIn } = session(headers);
     await signIn(email, password);
 
-    expect(createClient().post).toHaveBeenCalledWith(ENDPOINT.SIGN_IN, {
+    expect(mockCreateClient().post).toHaveBeenCalledWith(ENDPOINT.SIGN_IN, {
       email,
       password,
     });
@@ -54,7 +54,7 @@ describe('session APIの呼び出し検証', () => {
     const { signUp } = session(headers);
     await signUp(email, password);
 
-    expect(createClient().post).toHaveBeenCalledWith(ENDPOINT.USER, {
+    expect(mockCreateClient().post).toHaveBeenCalledWith(ENDPOINT.USER, {
       email,
       password,
     });
@@ -66,16 +66,20 @@ describe('session APIの呼び出し検証', () => {
     const { updateUser } = session(headers);
     await updateUser(userParams);
 
-    expect(createClient().put).toHaveBeenCalledWith(ENDPOINT.USER, userParams, {
-      headers: headers(),
-    });
+    expect(mockCreateClient().put).toHaveBeenCalledWith(
+      ENDPOINT.USER,
+      userParams,
+      {
+        headers: headers(),
+      }
+    );
   });
 
   it('singOut', async () => {
     const { signOut } = session(headers);
     await signOut();
 
-    expect(createClient().delete).toHaveBeenCalledWith(ENDPOINT.SIGN_OUT, {
+    expect(mockCreateClient().delete).toHaveBeenCalledWith(ENDPOINT.SIGN_OUT, {
       headers: headers(),
     });
   });
@@ -84,7 +88,7 @@ describe('session APIの呼び出し検証', () => {
     const { deleteUser } = session(headers);
     await deleteUser();
 
-    expect(createClient().delete).toHaveBeenCalledWith(ENDPOINT.USER, {
+    expect(mockCreateClient().delete).toHaveBeenCalledWith(ENDPOINT.USER, {
       headers: headers(),
     });
   });
@@ -93,7 +97,7 @@ describe('session APIの呼び出し検証', () => {
     const { validate } = session(headers);
     await validate();
 
-    expect(createClient().get).toHaveBeenCalledWith(ENDPOINT.VALIDATE, {
+    expect(mockCreateClient().get).toHaveBeenCalledWith(ENDPOINT.VALIDATE, {
       headers: headers(),
     });
   });
@@ -103,10 +107,13 @@ describe('session APIの呼び出し検証', () => {
     const { passwordForget } = session(headers);
     await passwordForget(email);
 
-    expect(createClient().post).toHaveBeenCalledWith(ENDPOINT.PASSWORD_RESET, {
-      email,
-      redirect_url: `${COMMON.APP_URL.HOST_URL}${COMMON.APP_URL.BASE_DIR}/password_edit`,
-    });
+    expect(mockCreateClient().post).toHaveBeenCalledWith(
+      ENDPOINT.PASSWORD_RESET,
+      {
+        email,
+        redirect_url: `${COMMON.APP_URL.HOST_URL}${COMMON.APP_URL.BASE_DIR}/password_edit`,
+      }
+    );
   });
 
   it('passwordReset', async () => {
@@ -115,7 +122,7 @@ describe('session APIの呼び出し検証', () => {
     const { passwordReset } = session(headers);
     await passwordReset(password, passwordConfirmation);
 
-    expect(createClient().put).toHaveBeenCalledWith(
+    expect(mockCreateClient().put).toHaveBeenCalledWith(
       ENDPOINT.PASSWORD_RESET,
       {
         password: password,
