@@ -1,5 +1,5 @@
 import applyCaseMiddleware from 'axios-case-converter';
-import axios, { AxiosInstance } from 'axios';
+import axios from 'axios';
 import { API } from '@lib/consts/common';
 
 type Options = {
@@ -12,11 +12,13 @@ const options: Options = {
 
 export const baseUrl = `${API.SCHEME}://${API.HOST}`;
 
-const client: AxiosInstance = applyCaseMiddleware(
-  axios.create({
-    baseURL: `${baseUrl}/${API.VERSION}`,
-  }),
-  options
-);
+export const createClient = () => {
+  return applyCaseMiddleware(
+    axios.create({
+      baseURL: `${baseUrl}/${API.VERSION}`,
+    }),
+    options
+  );
+};
 
-export default client;
+export default createClient;

@@ -1,5 +1,5 @@
 import { AxiosResponse, AxiosError } from 'axios';
-import client from './client';
+import createClient from './client';
 import { Headers } from '@providers/SessionProvider';
 import Defs from '@lib/consts';
 
@@ -18,6 +18,7 @@ export default function session(
   responseInterceptor?: ResponseInterceptor,
   errorInterceptor?: ErrorInterceptor
 ) {
+  const client = createClient();
   if (responseInterceptor !== undefined && errorInterceptor !== undefined)
     client.interceptors.response.use(responseInterceptor, errorInterceptor);
 

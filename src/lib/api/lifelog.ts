@@ -1,5 +1,5 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import client from '@lib/api/client';
+import createClient from '@lib/api/client';
 import { Headers } from '@providers/SessionProvider';
 import { API } from '@lib/consts/common';
 
@@ -29,6 +29,8 @@ export default function lifelog(
   responseInterceptor?: ResponseInterceptor,
   errorInterceptor?: ErrorInterceptor
 ) {
+  const client = createClient();
+
   if (responseInterceptor !== undefined && errorInterceptor !== undefined)
     client.interceptors.response.use(responseInterceptor, errorInterceptor);
 
