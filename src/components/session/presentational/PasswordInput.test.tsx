@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { PasswordInput } from './PasswordInput';
+import PasswordInput from './PasswordInput';
 import { PASSWORD_INPUT } from '@lib/consts/component';
 
 describe('ContextInput', () => {

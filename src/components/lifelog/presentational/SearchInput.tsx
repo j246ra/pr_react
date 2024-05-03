@@ -1,28 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, InputGroup } from '@blueprintjs/core';
 import { useLifelog } from '@providers/LifelogProvider';
-import notify from '@lib/toast';
-import { SEARCH_INPUT } from '@lib/consts/component';
+import { LIFELOG_LIST, SEARCH_INPUT } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import { SEARCH_INPUT_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import styles from './SearchInput.module.scss';
+import { EmptyComponent } from '@src/components/EmptyComponent';
 
 export type SearchInputProps = {
-  isShow: boolean;
+  isShown: boolean;
   width?: number;
 };
 
-const SearchInput = ({ isShow, width = 260 }: SearchInputProps) => {
-  if (!isShow) return null;
+export default function SearchInput({
+  isShown,
+  width = 260,
+}: SearchInputProps) {
+  if (!isShown) return <EmptyComponent />;
 
-  const { searchLogs } = useLifelog();
-  const [word, setWord] = useState('');
+  const { searchLogs, searchWord } = useLifelog();
+  const [word, setWord] = useState(searchWord);
   const [isComposing, setIsComposing] = useState(false);
 
+  useEffect(() => setWord(searchWord), [searchWord]);
+
   const handleSearch = () => {
-    searchLogs(word).catch((e) => {
-      notify.error(e.message);
-    });
+    searchLogs(word, LIFELOG_LIST.MESSAGE.ERROR).then(() =>
+      window.scrollTo({ top: 0, behavior: 'instant' })
+    );
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -62,6 +67,4 @@ const SearchInput = ({ isShow, width = 260 }: SearchInputProps) => {
       />
     </div>
   );
-};
-
-export default SearchInput;
+}

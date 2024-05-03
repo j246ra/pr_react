@@ -1,23 +1,16 @@
 import React from 'react';
-import notify from '@lib/toast';
-import { LIFELOG_EDIT_DIALOG as Defs } from '@lib/consts/component';
 import { useLifelogEditDialog } from '@providers/LifelogEditDialogProvider';
-import lifelogEditDialogValidator from '@validators/lifelogEditDialog';
 import BaseLifelogEditDialog from '@lifelog/presentational/BaseLifelogEditDialog';
 
-const LifelogEditDialog = () => {
-  const { isOpen, lifelog, editLifelog, updateLifelog, closeEditDialog } =
-    useLifelogEditDialog();
-
-  const handleUpdateLifelog = () => {
-    if (lifelogEditDialogValidator(lifelog).isInvalid) return;
-    updateLifelog(lifelog)
-      .then(() => {
-        notify.success(Defs.MESSAGE.SUCCESS);
-        closeEditDialog();
-      })
-      .catch((e) => notify.error(e.message));
-  };
+export default function LifelogEditDialog() {
+  const {
+    isOpen,
+    lifelog,
+    editLifelog,
+    handleUpdateLifelog,
+    handleDeleteLifelog,
+    closeEditDialog,
+  } = useLifelogEditDialog();
 
   return (
     <BaseLifelogEditDialog
@@ -26,8 +19,7 @@ const LifelogEditDialog = () => {
       isOpen={isOpen}
       closeEditDialog={closeEditDialog}
       handleUpdateLifelog={handleUpdateLifelog}
+      handleDeleteLifelog={handleDeleteLifelog}
     />
   );
-};
-
-export default LifelogEditDialog;
+}

@@ -1,7 +1,18 @@
+@import "src/variables";
+
 .baseTable {
-  width: 100%;
+  width: 80%;
+  margin: 0 auto;
+
+  @media (max-width: $SpMaxWidth) {
+    width: 100%;
+  }
 }
 
 .spinnerTd {
   box-shadow: none!important;
+}
+
+pre.nonIdeaState {
+  font-family: $AppFontFamily;
 }

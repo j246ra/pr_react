@@ -1,6 +1,8 @@
-@import "@blueprintjs/core/lib/scss/variables";
+@import "variables";
 
-$AppMaxWidth: 1280px;
+.App {
+  height: 100%;
+}
 
 @mixin appLinkText {
   cursor: pointer;

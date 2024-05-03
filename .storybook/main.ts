@@ -1,4 +1,6 @@
 import type { StorybookConfig } from '@storybook/react-webpack5';
+import path from 'path';
+import paths from '../config/paths';
 
 const config: StorybookConfig = {
   staticDirs: ['../public'],
@@ -39,6 +41,19 @@ const config: StorybookConfig = {
   },
   docs: {
     autodocs: 'tag',
+  },
+  webpackFinal: async (config) => {
+    config.resolve ??= {};
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@src': paths.appSrc,
+      '@lib': path.resolve(paths.appSrc, 'lib'),
+      '@providers': path.resolve(paths.appSrc, 'providers'),
+      '@validators': path.resolve(paths.appSrc, 'validators'),
+      '@session': path.resolve(paths.appSrc, 'components/session'),
+      '@lifelog': path.resolve(paths.appSrc, 'components/lifelog'),
+    };
+    return config;
   },
 };
 export default config;

@@ -1,10 +1,28 @@
 import env from '@lib/appEnv';
 
+export const ROUTES = {
+  LOGIN: '/login',
+  SIGN_UP: '/sign_up',
+  ACCOUNT_UPDATE: '/update_account',
+  PASSWORD_FORGET: '/password_forget',
+  RESET_MAIL_SEND_SUCCESS: '/send_success',
+  PASSWORD_EDIT: '/password_edit',
+  LIFELOGS: '/lifelogs',
+};
+
 export const COMMON = {
-  HOST_URL: env('host_url', 'http://localhost:3001'),
+  APP_URL: {
+    HOST_URL: env('host_url', 'http://localhost:3001'),
+    BASE_DIR: '/app',
+  },
+  SENTRY: {
+    DSN: env('sentry_dsn'),
+  },
   MESSAGE: {
     ERROR: {
       GENERAL: '想定外のエラーが発生しました',
+      EXPIRED: '認証期限切れの為、再度ログインしてください。',
+      STATUS_5XX: 'サーバーエラーの為、一時的に情報が取得できません。',
     } as const,
   } as const,
   REQUIRED: '(必須)',
@@ -31,9 +49,14 @@ export const API = {
 export const DATE_UTIL = {
   FORMAT: {
     DATETIME_FULL: 'YYYY-MM-DD HH:mm:ss.SSS',
+    DISPLAY_TIME: 'HH:mm',
+    DISPLAY_TIME_FULL: 'HH:mm',
+    DISPLAY_DATE: 'YY/MM/DD',
+    DISPLAY_DATE_FULL: 'YYYY/MM/DD',
     DISPLAY_DATETIME: 'YY/MM/DD HH:mm',
-    DISPLAY_DATETIME_FULL: 'YYYY-MM-DD HH:mm:ss',
+    DISPLAY_DATETIME_FULL: 'YYYY/MM/DD HH:mm:ss',
   } as const,
+  MAX_ACTION_MINUTES: 999,
 };
 
 export const NOTIFY = {
@@ -46,6 +69,7 @@ export const USE_DELETE_LIFELOG = {
   MESSAGE: {
     CONFIRM: '本当に削除しますか？',
     SUCCESS: '削除成功',
+    ERROR: '削除に失敗しました。',
   } as const,
 };
 
@@ -65,14 +89,24 @@ export const VALIDATOR = {
   } as const,
 };
 
+export const LIFELOG_API_MOCKS = {
+  PARAMS: {
+    WORD: {
+      NO_DATA: 'empty',
+    },
+  },
+};
+
 export const CONST = {
   COMMON,
+  ROUTES,
   API,
   DATE_UTIL,
   NOTIFY,
   USE_DELETE_LIFELOG,
   USE_FINISH_ACTION,
   VALIDATOR,
+  LIFELOG_API_MOCKS,
 };
 
 export default CONST;

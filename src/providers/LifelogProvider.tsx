@@ -3,146 +3,208 @@ import { useSession } from '@providers/SessionProvider';
 import { useUser } from '@providers/UserProvider';
 import { AxiosError, AxiosResponse } from 'axios';
 import lifelog, { CreatParams, UpdateParams } from '@lib/api/lifelog';
-import lifelogUtil from '@lib/lifelogUtil';
+import {
+  blank as newLifelog,
+  buildCreateParamsByContext,
+  sort as sortLog,
+} from '@lib/lifelogUtil';
 import { days, DATETIME_FULL } from '@lib/dateUtil';
 import LifelogEditDialogProvider from '@providers/LifelogEditDialogProvider';
 import LifelogDetailDialogProvider from '@providers/LifelogDetailDialogProvider';
+import {
+  convertResponseData,
+  validateLifelogResponse,
+} from '@lib/api/lifelogResponse';
+import * as Sentry from '@sentry/react';
+import notify from '@lib/toast';
+import { COMMON } from '@lib/consts/common';
 
-export type Lifelog = {
+export type BaseLifelog = {
   id: number;
   userId: number;
   action: string;
-  detail?: string;
+  detail?: string | null;
   startedAt: string;
   finishedAt?: string | null;
   createdAt: string;
   updatedAt: string;
 };
 
+export type Lifelog = Omit<BaseLifelog, 'detail' | 'finishedAt'> & {
+  detail: string | null;
+  finishedAt: string | null;
+  isDateChanged: boolean;
+};
+
 export type LifelogContextType = {
-  logs: Lifelog[];
-  loadLogs: () => Promise<AxiosResponse>;
-  searchLogs: (word: string) => Promise<AxiosResponse>;
+  lifelogs: Lifelog[];
+  loadLogs: (defaultErrorMessage?: string) => Promise<AxiosResponse>;
+  searchLogs: (
+    word: string,
+    defaultErrorMessage?: string
+  ) => Promise<AxiosResponse>;
+  searchWord: string;
+  isTerminated: boolean;
   newLog: () => Lifelog;
-  createLog: (params: CreatParams) => Promise<AxiosResponse>;
-  createLogByContext: (context: string) => Promise<AxiosResponse>;
-  finishLog: (log: Lifelog) => Promise<AxiosResponse>;
-  updateLog: (params: UpdateParams) => Promise<AxiosResponse>;
-  deleteLog: (id: number) => Promise<AxiosResponse>;
+  createLog: (
+    params: CreatParams,
+    defaultErrorMessage?: string
+  ) => Promise<AxiosResponse>;
+  createLogByContext: (
+    context: string,
+    defaultErrorMessage?: string
+  ) => Promise<AxiosResponse>;
+  finishLog: (
+    log: Lifelog,
+    defaultErrorMessage?: string
+  ) => Promise<AxiosResponse>;
+  updateLog: (
+    params: UpdateParams,
+    defaultErrorMessage?: string
+  ) => Promise<AxiosResponse>;
+  deleteLog: (
+    id: number,
+    defaultErrorMessage?: string
+  ) => Promise<AxiosResponse>;
   clear: () => void;
 };
 
-const LifelogContext = createContext<LifelogContextType | undefined>(undefined);
-
-export const useLifelog = (): LifelogContextType => {
-  const context = useContext(LifelogContext);
-  if (!context) {
-    throw new Error('useUser must be used within a UserProvider');
-  }
-  return context;
-};
+const LifelogContext = createContext({} as LifelogContextType);
+export const useLifelog = () => useContext(LifelogContext);
 
 export type LifelogProviderProps = {
   children: ReactNode;
 };
 
 export default function LifelogProvider({ children }: LifelogProviderProps) {
-  const [logs, setLogs] = useState<Lifelog[]>([]);
+  const [lifelogs, _setLifelogs] = useState<Lifelog[]>([]);
+  const setLifelogs = (logs: Lifelog[]) => {
+    _setLifelogs(sortLog(logs));
+  };
+  const addLifelogs = (logs: Lifelog[]) => setLifelogs([...lifelogs, ...logs]);
+
   const [searchWord, setSearchWord] = useState('');
   const [page, setPage] = useState(0);
+  const [isTerminated, setIsTerminated] = useState(false);
   const { getHeaders, setHeaders } = useSession();
-  const { clearUser } = useUser();
-  const { blank: newLifelog, sort: sortLog } = lifelogUtil();
+  const { user, clearUser } = useUser();
 
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
     setHeaders(response);
     return response;
   };
-  const errorInterceptor = (error: AxiosError): Promise<never> => {
-    if (error.response?.status === 401) clearUser();
-    return Promise.reject(error);
-  };
-  const api = lifelog(getHeaders, responseInterceptor, errorInterceptor);
 
-  const loadLogs = async () => {
+  const errorInterceptorBuilder = (defaultErrorMessage?: string) => {
+    return (error: AxiosError) => {
+      switch (error.response?.status) {
+        case 401:
+          clearUser();
+          notify.error(COMMON.MESSAGE.ERROR.EXPIRED);
+          break;
+        case 500:
+        case 501:
+        case 502:
+        case 503:
+          notify.error(COMMON.MESSAGE.ERROR.STATUS_5XX);
+          break;
+        default:
+          notify.error(defaultErrorMessage || COMMON.MESSAGE.ERROR.GENERAL);
+      }
+      Sentry.addBreadcrumb({
+        message: 'lifelogs api request error.',
+        data: error,
+      });
+      return Promise.reject(error);
+    };
+  };
+
+  const api = (defaultErrorMessage?: string) => {
+    if (getHeaders().uid !== user.email) {
+      clear();
+      window.location.reload();
+      throw 'Invalid Token';
+    }
+
+    return lifelog(
+      getHeaders,
+      responseInterceptor,
+      errorInterceptorBuilder(defaultErrorMessage)
+    );
+  };
+
+  const loadLogs = async (defaultErrorMessage?: string) => {
     const nextPage = page + 1;
-    const r = await api.index(nextPage, searchWord);
-    if (r.data.length > 0) {
-      appendLogs(r.data);
+    const r = await api(defaultErrorMessage).index(nextPage, searchWord);
+    setIsTerminated(r.data?.length === 0);
+    const res = validateLifelogResponse(r.data);
+    if (res.validData.length > 0) {
+      addLifelogs(convertResponseData(res.validData));
       setPage(nextPage);
     }
+    r.data = res;
     return r;
   };
 
-  const searchLogs = async (word: string) => {
+  const searchLogs = async (word: string, defaultErrorMessage?: string) => {
     setSearchWord(word);
-    const r = await api.index(1, word);
-    setLogs(r.data);
+    const r = await api(defaultErrorMessage).index(1, word);
+    setIsTerminated(r.data?.length === 0);
+    const res = validateLifelogResponse(r.data);
+    setLifelogs(convertResponseData(res.validData));
     setPage(1);
     return r;
   };
 
-  const appendLogs = (lifelogs: Lifelog[]) => {
-    setLogs([...logs, ...lifelogs]);
-  };
-
   const newLog = newLifelog;
 
-  const createLog = async (params: CreatParams) => {
-    const r = await api.create(params);
-    setLogs(sortLog([r.data, ...logs]));
+  const createLog = async (
+    params: CreatParams,
+    defaultErrorMessage?: string
+  ) => {
+    const r = await api(defaultErrorMessage).create(params);
+    const res = validateLifelogResponse(r.data);
+    addLifelogs(convertResponseData(res.validData));
     return r;
   };
 
-  const createLogByContext = (context: string) => {
-    const params = {
-      action: context,
-      detail: '',
-      startedAt: days().format(DATETIME_FULL),
-    };
-
-    // 正規表現で全角半角の空白を検出
-    const regex = /[\s\u3000]/;
-    const index = context.search(regex);
-    if (index !== -1) {
-      params.action = context.slice(0, index);
-      params.detail = context.slice(index + 1);
-    }
-    return createLog(params);
+  const createLogByContext = (
+    context: string,
+    defaultErrorMessage?: string
+  ) => {
+    return createLog(buildCreateParamsByContext(context), defaultErrorMessage);
   };
 
-  const updateLog = async (params: UpdateParams) => {
-    const r = await api.update(params);
-    const i = logs.findIndex((log) => {
-      return log.id === r.data.id;
-    });
+  const updateLog = async (
+    params: UpdateParams,
+    defaultErrorMessage?: string
+  ) => {
+    const r = await api(defaultErrorMessage).update(params);
+    const updatedLogs = [...lifelogs];
+    const res = validateLifelogResponse(r.data);
+    const _log = convertResponseData(res.validData)[0];
+    const i = updatedLogs.findIndex((log) => log.id === _log.id);
     if (i >= 0) {
-      logs[i] = r.data;
-      setLogs(sortLog(logs));
-    } else {
-      setLogs(sortLog([r.data, ...logs]));
-    }
+      updatedLogs[i] = _log;
+    } else updatedLogs.unshift(_log);
+    setLifelogs(updatedLogs);
     return r;
   };
 
-  const finishLog = (log: Lifelog) => {
+  const finishLog = (log: Lifelog, defaultErrorMessage?: string) => {
     const params: UpdateParams = { ...log };
     params.finishedAt = days().format(DATETIME_FULL);
-    return updateLog(params);
+    return updateLog(params, defaultErrorMessage);
   };
 
-  const deleteLog = async (id: number) => {
-    const r = await api.destroy(id);
-    setLogs(
-      logs.filter((log) => {
-        if (log.id !== id) return log;
-      })
-    );
+  const deleteLog = async (id: number, defaultErrorMessage?: string) => {
+    const r = await api(defaultErrorMessage).destroy(id);
+    setLifelogs(lifelogs.filter((log) => log.id !== id));
     return r;
   };
 
   const clear = () => {
-    setLogs([]);
+    _setLifelogs([]);
+    setIsTerminated(false);
     setPage(0);
     setSearchWord('');
   };
@@ -150,9 +212,11 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   return (
     <LifelogContext.Provider
       value={{
-        logs,
+        lifelogs,
         loadLogs,
         searchLogs,
+        searchWord,
+        isTerminated,
         newLog,
         createLog,
         createLogByContext,

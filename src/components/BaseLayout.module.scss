@@ -1,9 +1,8 @@
-@import "@blueprintjs/core/lib/scss/variables";
-
-$AppMaxWidth: 1280px;
+@import "src/variables";
 
 .baseContainer {
   max-width: $AppMaxWidth;
   padding: 20px;
   margin: 0 auto;
+  height: 100%;
 }

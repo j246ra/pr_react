@@ -5,8 +5,6 @@ export type BaseLayoutProps = {
   children: ReactNode;
 };
 
-const BaseLayout: React.FC<BaseLayoutProps> = ({ children }) => {
+export default function BaseLayout({ children }: BaseLayoutProps) {
   return <div className={styles.baseContainer}>{children}</div>;
-};
-
-export default BaseLayout;
+}

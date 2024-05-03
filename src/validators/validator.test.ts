@@ -8,19 +8,19 @@ describe('Validators', () => {
       const { result, textPresenceValidator } = validator();
       textPresenceValidator('正常系テスト', name);
       expect(result.isInvalid).toBe(false);
-      expect(result.message).toHaveLength(0);
+      expect(result.messages).toHaveLength(0);
     });
     it('undefined の場合エラー', () => {
       const { result, textPresenceValidator } = validator();
       textPresenceValidator(undefined, name);
       expect(result.isInvalid).toBe(true);
-      expect(result.message).toContain(errorMessage);
+      expect(result.messages).toContain(errorMessage);
     });
     it('空白の場合エラー', () => {
       const { result, textPresenceValidator } = validator();
       textPresenceValidator('', name);
       expect(result.isInvalid).toBe(true);
-      expect(result.message).toContain(errorMessage);
+      expect(result.messages).toContain(errorMessage);
     });
   });
 
@@ -33,7 +33,7 @@ describe('Validators', () => {
           const { result, emailFormatValidator } = validator();
           emailFormatValidator(emailAddress);
           expect(result.isInvalid).toBe(false);
-          expect(result.message).toHaveLength(0);
+          expect(result.messages).toHaveLength(0);
         });
       };
       const validEmailAddresses = [
@@ -54,7 +54,7 @@ describe('Validators', () => {
           const { result, emailFormatValidator } = validator();
           emailFormatValidator(emailAddress);
           expect(result.isInvalid).toBe(true);
-          expect(result.message).toContain(errorMessage);
+          expect(result.messages).toContain(errorMessage);
         });
       };
       const inValidEmailAddresses = [
@@ -75,14 +75,14 @@ describe('Validators', () => {
       const { result, passwordLengthValidator } = validator();
       passwordLengthValidator('pAssw0rd!');
       expect(result.isInvalid).toBe(false);
-      expect(result.message).toHaveLength(0);
+      expect(result.messages).toHaveLength(0);
     });
     it('文字列長エラー', () => {
       const inValidLengthChecker = (password: string) => {
         const { result, passwordLengthValidator } = validator();
         passwordLengthValidator(password);
         expect(result.isInvalid).toBe(true);
-        expect(result.message).toContain(errorMessage);
+        expect(result.messages).toContain(errorMessage);
       };
       ['', 'pass', '1234567890'.repeat(12) + '123456789'].forEach(
         (password) => {

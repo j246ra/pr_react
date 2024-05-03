@@ -1,19 +1,12 @@
 import React, { useState } from 'react';
 import { Alert, Button, Intent } from '@blueprintjs/core';
-import { useAuth } from '@providers/AuthApiProvider';
-import notify from '@lib/toast';
-import { useUser } from '@providers/UserProvider';
-import { useSession } from '@providers/SessionProvider';
-import { useNavigate } from 'react-router-dom';
 import { ACCOUNT_DELETE } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
+import useAccount from '@src/hooks/useAccount';
 
-const AccountDelete: React.FC = () => {
+export default function AccountDelete() {
   const [isOpen, setIsOpen] = useState(false);
-  const { authApi: api } = useAuth();
-  const { clearUser } = useUser();
-  const { removeHeaders } = useSession();
-  const navigate = useNavigate();
+  const { remove: accountDelete } = useAccount();
   const handleOpenAlert = () => {
     setIsOpen(true);
   };
@@ -24,15 +17,8 @@ const AccountDelete: React.FC = () => {
 
   const handleAccountDelete: React.MouseEventHandler<HTMLElement> = (e) => {
     e?.preventDefault();
-    api
-      .deleteUser()
-      .then(() => notify.success(ACCOUNT_DELETE.MESSAGE.SUCCESS))
-      .finally(() => {
-        clearUser();
-        removeHeaders();
-        handleCloseAlert();
-        navigate('/login');
-      });
+    accountDelete();
+    handleCloseAlert();
   };
 
   return (
@@ -60,6 +46,4 @@ const AccountDelete: React.FC = () => {
       </Alert>
     </>
   );
-};
-
-export default AccountDelete;
+}

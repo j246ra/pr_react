@@ -16,7 +16,7 @@ const lifelogs = (page = 1) => {
       ...lifelog(),
       id: i,
       startedAt: datetime,
-      finishedAt: undefined,
+      finishedAt: null,
     };
     list.push(log);
   }
@@ -74,5 +74,15 @@ export const lifelogMocks = () => {
     };
   };
 
-  return { all, loading };
+  const empty = () => {
+    return {
+      handlers: [
+        rest.get(apiHost(ENDPOINT), (req, res, ctx) => {
+          return res(ctx.status(200));
+        }),
+      ],
+    };
+  };
+
+  return { all, loading, empty };
 };

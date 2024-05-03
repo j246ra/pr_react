@@ -11,7 +11,9 @@ console.error = (...args) => {
     args[0].includes(
       'Warning: An update to %s inside a test was not wrapped in'
     ) &&
-    args[1] === 'Blueprint5.Icon'
+    ['Blueprint5.DatePicker3', 'Blueprint5.Icon', '_DateInput'].includes(
+      args[1]
+    )
   ) {
     return;
   }

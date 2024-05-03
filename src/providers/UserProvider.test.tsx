@@ -68,14 +68,14 @@ describe('UserProvider', () => {
     expect(result.current.user.email).toEqual('');
   });
 
-  describe('isLogin ログイン状態検証', () => {
+  describe('isLoggedIn ログイン状態検証', () => {
     it('email と access-token が 存在する時はログイン状態', () => {
       mockUseSession().hasToken = jest.fn().mockReturnValue(true);
       const { result } = renderHook(() => useUser(), { wrapper });
       const email = 'test1@example.com';
       act(() => result.current.createUser(email));
       expect(result.current.user.email).toEqual(email);
-      act(() => expect(result.current.isLogin()).toBeTruthy());
+      act(() => expect(result.current.isLoggedIn()).toBeTruthy());
     });
     it('email が ブランクの時は未ログイン状態', () => {
       mockUseSession().hasToken = jest.fn().mockReturnValue(true);
@@ -83,7 +83,7 @@ describe('UserProvider', () => {
       const email = '';
       act(() => result.current.createUser(email));
       expect(result.current.user.email).toEqual(email);
-      act(() => expect(result.current.isLogin()).toBeFalsy());
+      act(() => expect(result.current.isLoggedIn()).toBeFalsy());
     });
     it('access-token が存在しない場合は未ログイン状態', () => {
       mockUseSession().hasToken = jest.fn().mockReturnValue(false);
@@ -91,7 +91,7 @@ describe('UserProvider', () => {
       const email = 'test1@example.com';
       act(() => result.current.createUser(email));
       expect(result.current.user.email).toEqual(email);
-      act(() => expect(result.current.isLogin()).toBeFalsy());
+      act(() => expect(result.current.isLoggedIn()).toBeFalsy());
     });
     it('email が ブランクで access-token が存在しない場合は未ログイン状態', () => {
       mockUseSession().hasToken = jest.fn().mockReturnValue(false);
@@ -99,7 +99,7 @@ describe('UserProvider', () => {
       const email = '';
       act(() => result.current.createUser(email));
       expect(result.current.user.email).toEqual(email);
-      act(() => expect(result.current.isLogin()).toBeFalsy());
+      act(() => expect(result.current.isLoggedIn()).toBeFalsy());
     });
   });
 });

@@ -1,5 +1,16 @@
 import CONST from '@lib/consts/common';
 
+export const AUTHENTICATED_ONLY = {
+  MESSAGE: {
+    ERROR: 'ログインしてください。',
+  } as const,
+  FALLBACK_PATH: CONST.ROUTES.LOGIN,
+};
+
+export const UNAUTHENTICATED_ONLY = {
+  FALLBACK_PATH: CONST.ROUTES.LIFELOGS,
+};
+
 export const EMAIL_INPUT = {
   LABEL: 'メールアドレス',
   PLACEHOLDER: 'メールアドレスを入力',
@@ -24,6 +35,7 @@ export const PASSWORD_FORGET = {
 export const ACCOUNT_DELETE = {
   MESSAGE: {
     SUCCESS: 'アカウントを削除しました。',
+    ERROR: 'アカウントの削除に失敗しました。',
   } as const,
   BUTTON: {
     DELETE: 'アカウント削除',
@@ -37,9 +49,11 @@ export const ACCOUNT_DELETE = {
 
 export const ACCOUNT_UPDATE = {
   MESSAGE: {
+    SUCCESS: 'アカウントを更新しました。',
     ERROR: 'アカウントの更新に失敗しました。',
   } as const,
   PASSWORD_CONFIRM: {
+    ID: 'password-confirm-input',
     LABEL: 'パスワード（確認用）',
     PLACEHOLDER: '新しいパスワードを入力',
   },
@@ -63,6 +77,14 @@ export const LOGIN = {
     PASSWORD_FORGET: PASSWORD_FORGET.GUIDANCE,
     SIGN_UP: '新規登録',
   } as const,
+};
+
+export const LOGOUT = {
+  MESSAGE: {
+    SUCCESS: 'ログアウトしました。',
+    ERROR:
+      'ログアウトに失敗しました。しばらくしてから再度ログアウトしてください。',
+  },
 };
 
 export const PASSWORD_INPUT = {
@@ -95,6 +117,7 @@ export const RESET_MAIL_SUCCESS = {
 export const SIGN_UP = {
   MESSAGE: {
     SUCCESS: 'アカウント作成に成功しました',
+    ERROR: 'アカウント作成に失敗しました。',
   } as const,
   BUTTON: {
     SUBMIT: '登録',
@@ -117,12 +140,14 @@ export const HEADER = {
 export const LIFELOGS = {
   MESSAGE: {
     SUCCESS: '行動を記録しました。',
-    ERROR: 'ログインしてください。',
   },
 };
 
 export const CONTEXT_INPUT = {
   PLACEHOLDER: '行動を入力(空白以降は詳細として記録されます)',
+  MESSAGE: {
+    ERROR: 'データの更新に失敗しました。',
+  },
 };
 
 export const DATETIME_INPUT = {
@@ -160,6 +185,15 @@ export const LIFELOG_LIST_HEADER = {
   OPERATION: '操作',
 };
 
+export const LIFELOG_LIST = {
+  MESSAGE: {
+    ERROR: 'データ取得に失敗しました。',
+    INVALID_DATA: '一部、データ取得に失敗しました。',
+    NO_DATA:
+      'ライフログが１件も記録されていませんね。\nどんどん行動を記録していきましょう！！',
+  },
+};
+
 export const SEARCH_INPUT = {
   PLACEHOLDER: '検索（行動、詳細）',
 };
@@ -178,6 +212,7 @@ export const LIFELOG_DETAIL_DIALOG = {
 export const LIFELOG_EDIT_DIALOG = {
   MESSAGE: {
     SUCCESS: '行動を保存しました。',
+    ERROR: 'ダータの更新に失敗しました。',
   } as const,
   ACTION: {
     LABEL: '行動内容',
@@ -195,7 +230,11 @@ export const LIFELOG_EDIT_DIALOG = {
     LABEL: '終了日時',
     PLACEHOLDER: '終了日時',
   } as const,
-  BUTTON: '保存',
+  BUTTONS: {
+    SAVE: '保存',
+    FINISH: '完了時間を設定',
+    DELETE: '削除',
+  },
 };
 
 export const NOTFOUND = {
@@ -203,9 +242,12 @@ export const NOTFOUND = {
 };
 
 export const COMPONENT = {
+  CERTIFIED: AUTHENTICATED_ONLY,
+  UNAUTHENTICATED_ONLY,
   ACCOUNT_DELETE,
   ACCOUNT_UPDATE,
   LOGIN,
+  LOGOUT,
   PASSWORD_INPUT,
   PASSWORD_EDIT,
   PASSWORD_FORGET,
@@ -217,6 +259,7 @@ export const COMPONENT = {
   CONTEXT_INPUT,
   DATETIME_INPUT,
   LIFELOG_LIST_HEADER,
+  LIFELOG_LIST,
   SEARCH_INPUT,
   LIFELOG_DETAIL_DIALOG,
   LIFELOG_EDIT_DIALOG,

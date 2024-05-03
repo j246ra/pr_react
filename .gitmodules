@@ -1,0 +1,3 @@
+[submodule "openapi"]
+	path = openapi
+	url = https://github.com/j246ra/rog-openapi.git

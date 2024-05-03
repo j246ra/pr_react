@@ -7,7 +7,6 @@ import '@src/App.scss';
 import { BrowserRouter } from 'react-router-dom';
 import SessionProvider from '../src/providers/SessionProvider';
 import UserProvider from '../src/providers/UserProvider';
-import AuthApiProvider from '../src/providers/AuthApiProvider';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import LifelogProvider from '../src/providers/LifelogProvider';
 import { cookieDecorator } from 'storybook-addon-cookie';
@@ -22,11 +21,9 @@ export const decorators = [
       <BrowserRouter>
         <SessionProvider>
           <UserProvider>
-            <AuthApiProvider>
-              <LifelogProvider>
-                <Story />
-              </LifelogProvider>
-            </AuthApiProvider>
+            <LifelogProvider>
+              <Story />
+            </LifelogProvider>
           </UserProvider>
         </SessionProvider>
       </BrowserRouter>

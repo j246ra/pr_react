@@ -1,9 +1,9 @@
 import { Meta } from '@storybook/react';
-import ContextInput from './ContextInput';
+import ContextInputForm from './ContextInputForm';
 
 export default {
   title: 'Lifelog/Presentational/ContextInput',
-  component: ContextInput,
+  component: ContextInputForm,
 } as Meta;
 
 export const Default = {

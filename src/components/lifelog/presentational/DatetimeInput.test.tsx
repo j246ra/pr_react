@@ -50,13 +50,13 @@ describe('DatetimeInput', () => {
   it('datepicker 表示検証', async () => {
     render(<DatetimeInput {...props} />);
 
-    expect(screen.queryAllByTitle('日曜日')).toHaveLength(0);
+    expect(screen.queryAllByLabelText('日曜日')).toHaveLength(0);
     const input = screen.queryByPlaceholderText(
       props.placeholder
     ) as HTMLInputElement;
     act(() => userEvent.click(input));
     await waitFor(() => {
-      expect(screen.queryAllByTitle('日曜日')).toHaveLength(1);
+      expect(screen.queryAllByLabelText('日曜日')).toHaveLength(1);
     });
   });
 });

@@ -12,7 +12,7 @@ type PasswordInputProps = {
   testId?: string;
 };
 
-export const PasswordInput = ({
+export default function PasswordInput({
   value,
   onChange,
   id = 'password-input',
@@ -20,20 +20,22 @@ export const PasswordInput = ({
   label = PASSWORD_INPUT.LABEL,
   placeholder = PASSWORD_INPUT.PLACEHOLDER,
   testId = id,
-}: PasswordInputProps) => (
-  <FormGroup
-    label={label}
-    labelFor={id}
-    labelInfo={required ? PASSWORD_INPUT.REQUIRED : ''}
-  >
-    <InputGroup
-      id={id}
-      data-testid={testId}
-      placeholder={placeholder}
-      type="password"
-      value={value}
-      onChange={onChange}
-      required={required}
-    />
-  </FormGroup>
-);
+}: PasswordInputProps) {
+  return (
+    <FormGroup
+      label={label}
+      labelFor={id}
+      labelInfo={required ? PASSWORD_INPUT.REQUIRED : ''}
+    >
+      <InputGroup
+        id={id}
+        data-testid={testId}
+        placeholder={placeholder}
+        type="password"
+        value={value}
+        onChange={onChange}
+        required={required}
+      />
+    </FormGroup>
+  );
+}

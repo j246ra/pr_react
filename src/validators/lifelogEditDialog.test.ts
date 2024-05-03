@@ -8,7 +8,7 @@ describe('lifelogEditDialogValidator', () => {
   it('すべて正しく入力されている場合は正常であること', () => {
     const result = lifelogEditDialogValidator(lifelog());
     expect(result.isInvalid).toBe(false);
-    expect(result.message).toHaveLength(0);
+    expect(result.messages).toHaveLength(0);
   });
   it('行動内容が空白の場合エラーであること', () => {
     const result = lifelogEditDialogValidator({
@@ -16,8 +16,8 @@ describe('lifelogEditDialogValidator', () => {
       startedAt: days().toISOString(),
     });
     expect(result.isInvalid).toBe(true);
-    expect(result.message).toHaveLength(1);
-    expect(result.message).toContain(
+    expect(result.messages).toHaveLength(1);
+    expect(result.messages).toContain(
       INVALID_MESSAGES.TEXT_PRESENCE(LIFELOG_EDIT_DIALOG.ACTION.LABEL)
     );
   });
@@ -26,8 +26,8 @@ describe('lifelogEditDialogValidator', () => {
       startedAt: days().toISOString(),
     });
     expect(result.isInvalid).toBe(true);
-    expect(result.message).toHaveLength(1);
-    expect(result.message).toContain(
+    expect(result.messages).toHaveLength(1);
+    expect(result.messages).toContain(
       INVALID_MESSAGES.TEXT_PRESENCE(LIFELOG_EDIT_DIALOG.ACTION.LABEL)
     );
   });
@@ -37,8 +37,8 @@ describe('lifelogEditDialogValidator', () => {
       finishedAt: '',
     });
     expect(result.isInvalid).toBe(true);
-    expect(result.message).toHaveLength(1);
-    expect(result.message).toContain(
+    expect(result.messages).toHaveLength(1);
+    expect(result.messages).toContain(
       INVALID_MESSAGES.TEXT_PRESENCE(LIFELOG_EDIT_DIALOG.STARTED_AT.LABEL)
     );
   });
@@ -47,19 +47,19 @@ describe('lifelogEditDialogValidator', () => {
       action: 'Action',
     });
     expect(result.isInvalid).toBe(true);
-    expect(result.message).toHaveLength(1);
-    expect(result.message).toContain(
+    expect(result.messages).toHaveLength(1);
+    expect(result.messages).toContain(
       INVALID_MESSAGES.TEXT_PRESENCE(LIFELOG_EDIT_DIALOG.STARTED_AT.LABEL)
     );
   });
   it('すべての必須項目が未入力の場合は全てエラーであること', () => {
     const result = lifelogEditDialogValidator({});
     expect(result.isInvalid).toBe(true);
-    expect(result.message).toHaveLength(2);
-    expect(result.message).toContain(
+    expect(result.messages).toHaveLength(2);
+    expect(result.messages).toContain(
       INVALID_MESSAGES.TEXT_PRESENCE(LIFELOG_EDIT_DIALOG.ACTION.LABEL)
     );
-    expect(result.message).toContain(
+    expect(result.messages).toContain(
       INVALID_MESSAGES.TEXT_PRESENCE(LIFELOG_EDIT_DIALOG.STARTED_AT.LABEL)
     );
   });

@@ -1,5 +1,5 @@
 import { Meta } from '@storybook/react';
-import { PasswordInput } from './PasswordInput';
+import PasswordInput from './PasswordInput';
 
 export default {
   title: 'Session/Presentational/PasswordInput',

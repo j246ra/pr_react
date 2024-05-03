@@ -19,12 +19,11 @@ export const useLifelogDetailDialog = () =>
 type LifelogDetailDialogProvider = {
   children: ReactNode;
 };
-export const LifelogDetailDialogProvider = ({
+export default function LifelogDetailDialogProvider({
   children,
-}: LifelogDetailDialogProvider) => {
-  const { blank: newLog } = lifelogUtil();
+}: LifelogDetailDialogProvider) {
   const [isOpenDetailDialog, setIsOpenDetailDialog] = useState(false);
-  const [detailLog, setDetailLog] = useState<Lifelog>(newLog());
+  const [detailLog, setDetailLog] = useState<Lifelog>(lifelogUtil.blank());
 
   const openDetailDialog = (log: Lifelog) => {
     if (isOpenDetailDialog) return;
@@ -48,6 +47,4 @@ export const LifelogDetailDialogProvider = ({
       {children}
     </LifelogDetailDialogContext.Provider>
   );
-};
-
-export default LifelogDetailDialogProvider;
+}

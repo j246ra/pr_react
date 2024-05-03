@@ -85,6 +85,8 @@ const hasJsxRuntime = (() => {
   }
 })();
 
+const { sentryWebpackPlugin } = require('@sentry/webpack-plugin');
+
 // This is the production and development configuration.
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
 module.exports = function (webpackEnv) {
@@ -754,6 +756,11 @@ module.exports = function (webpackEnv) {
             },
           },
         }),
+      sentryWebpackPlugin({
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+        org: 'nishim',
+        project: 'javascript-react',
+      }),
     ].filter(Boolean),
     // Turn off performance processing because we utilize
     // our own hints via the FileSizeReporter

@@ -1,0 +1,10 @@
+.base {
+  display: table;
+  margin: 0 auto;
+  height: 100%;
+
+  .container {
+    display: table-cell;
+    vertical-align: middle;
+  }
+}

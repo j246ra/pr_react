@@ -3,7 +3,7 @@ import { VALIDATOR } from '@lib/consts/common';
 
 export type Result = {
   isInvalid: boolean;
-  message: string[];
+  messages: string[];
 };
 
 export const INVALID_MESSAGES = {
@@ -16,13 +16,13 @@ export default function validator() {
 
   const result: Result = {
     isInvalid: false,
-    message: [],
+    messages: [],
   };
 
   const addError = (message: string) => {
     notify.error(message);
     result.isInvalid = true;
-    result.message.push(message);
+    result.messages.push(message);
   };
 
   const textPresenceValidator = (value: string | undefined, name: string) => {

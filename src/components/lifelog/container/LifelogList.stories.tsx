@@ -1,7 +1,5 @@
 import { Meta } from '@storybook/react';
 import LifelogList from './LifelogList';
-import Header from '@src/components/Header';
-import { Toaster } from 'react-hot-toast';
 import BaseLayout from '@src/components/BaseLayout';
 import { lifelogMocks } from '@lib/storybook/lifelog';
 
@@ -11,8 +9,6 @@ export default {
   decorators: [
     (Story) => (
       <div className={'App'}>
-        <Toaster />
-        <Header />
         <BaseLayout>
           <Story />
         </BaseLayout>
@@ -21,7 +17,7 @@ export default {
   ],
 } as Meta;
 
-const { all, loading } = lifelogMocks();
+const { all, loading, empty } = lifelogMocks();
 
 export const Default: Meta<typeof LifelogList> = () => <LifelogList />;
 Default.parameters = {
@@ -31,4 +27,9 @@ Default.parameters = {
 export const Loading: Meta<typeof LifelogList> = () => <LifelogList />;
 Loading.parameters = {
   msw: loading(),
+};
+
+export const Empty: Meta<typeof LifelogList> = () => <LifelogList />;
+Empty.parameters = {
+  msw: empty(),
 };

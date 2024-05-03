@@ -2,7 +2,7 @@ import React from 'react';
 import { H3 } from '@blueprintjs/core';
 import { NOTFOUND } from '@lib/consts/component';
 
-const NotFound = () => {
+export default function NotFound() {
   return (
     <H3
       style={{
@@ -16,6 +16,4 @@ const NotFound = () => {
       {NOTFOUND.CONTEXT}
     </H3>
   );
-};
-
-export default NotFound;
+}

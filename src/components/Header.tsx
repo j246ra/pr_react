@@ -10,54 +10,48 @@ import {
   Intent,
 } from '@blueprintjs/core';
 import { useUser } from '@providers/UserProvider';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@providers/AuthApiProvider';
-import { useSession } from '@providers/SessionProvider';
+import { Link, useNavigate } from 'react-router-dom';
 import SearchInput from '@lifelog/presentational/SearchInput';
-import { useLifelog } from '@providers/LifelogProvider';
 import styles from './Header.module.scss';
 import { HEADER } from '@lib/consts/component';
 import { IconNames } from '@blueprintjs/icons';
 import { HEADER_TEST_ID as TEST_ID } from '@lib/consts/testId';
+import { ROUTES } from '@lib/consts/common';
+import useAccount from '@src/hooks/useAccount';
 
-const Header = () => {
-  const { removeHeaders } = useSession();
+export default function Header() {
   const navigate = useNavigate();
-  const { isLogin, clearUser } = useUser();
-  const { authApi } = useAuth();
-  const { clear: clearLifelog } = useLifelog();
+  const { isLoggedIn } = useUser();
+  const { logout } = useAccount();
 
   const handleLogout = () => {
-    authApi.signOut().finally(() => {
-      clearUser();
-      clearLifelog();
-      removeHeaders();
-      navigate('/login');
-    });
+    logout();
   };
+
+  const handleAccountUpdate = () => navigate(ROUTES.ACCOUNT_UPDATE);
 
   return (
     <Navbar fixedToTop={true}>
       <div className={styles.base}>
         <Navbar.Group align={Alignment.LEFT}>
           <Navbar.Heading>
-            <a href="/app">Lifelog</a>
+            <Link to={'/'}>Lifelog</Link>
           </Navbar.Heading>
         </Navbar.Group>
         <Navbar.Group align={Alignment.RIGHT}>
-          <SearchInput isShow={isLogin()} />
+          <SearchInput isShown={isLoggedIn()} />
           <Navbar.Divider />
           <Popover
             content={
               <Menu>
                 <MenuItem
                   disabled={true}
-                  icon="plus"
+                  icon={IconNames.PLUS}
                   text={HEADER.MENU.CREATE_LOG}
                 />
                 <MenuItem
                   disabled={true}
-                  icon="search"
+                  icon={IconNames.SEARCH}
                   text={HEADER.MENU.SEARCH}
                 />
                 <MenuDivider />
@@ -71,15 +65,15 @@ const Header = () => {
                     data-testid={TEST_ID.EDIT_ACCOUNT}
                     icon={IconNames.EDIT}
                     text={HEADER.MENU.EDIT_ACCOUNT}
-                    href={'/app/update_account'}
-                    disabled={!isLogin()}
+                    onClick={handleAccountUpdate}
+                    disabled={!isLoggedIn()}
                   />
                   <MenuItem
                     data-testid={TEST_ID.LOGOUT}
                     icon={IconNames.LOG_OUT}
                     text={HEADER.MENU.LOG_OUT}
                     onClick={handleLogout}
-                    disabled={!isLogin()}
+                    disabled={!isLoggedIn()}
                   />
                 </MenuItem>
               </Menu>
@@ -96,6 +90,4 @@ const Header = () => {
       </div>
     </Navbar>
   );
-};
-
-export default Header;
+}

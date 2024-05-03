@@ -1,50 +1,32 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { useUser } from '@providers/UserProvider';
-import { useLifelog } from '@providers/LifelogProvider';
 import Lifelogs from '@lifelog/Lifelogs';
-import { BrowserRouter as Router } from 'react-router-dom';
-import userEvent from '@testing-library/user-event';
 
-jest.mock('@providers/UserProvider');
-jest.mock('@providers/LifelogProvider');
-jest.mock('@lifelog/container/LifelogDetailDialog');
-jest.mock('@lifelog/container/LifelogEditDialog');
+jest.mock('@lifelog/container/LifelogDetailDialog', () => () => (
+  <div>{LIFELOG_DETAIL_DIALOG}</div>
+));
+jest.mock('@lifelog/container/LifelogEditDialog', () => () => (
+  <div>{LIFELOG_EDIT_DIALOG}</div>
+));
+jest.mock('@lifelog/container/ContextInput', () => () => (
+  <div>{CONTEXT_INPUT}</div>
+));
 jest.mock('@lifelog/container/LifelogList', () => () => (
-  <div>Lifelog List Stub</div>
+  <div>{LIFELOG_LIST}</div>
 ));
 
-const mockUseUser = useUser as jest.MockedFunction<any>;
-const mockUseLifelog = useLifelog as jest.MockedFunction<any>;
+const LIFELOG_DETAIL_DIALOG = 'LifelogDetailDialog Test';
+const LIFELOG_EDIT_DIALOG = 'LifelogEditDialog Test';
+const LIFELOG_LIST = 'LifelogList Test';
+const CONTEXT_INPUT = 'ContextInput Test';
 
 describe('Lifelogs component.', () => {
-  beforeEach(() => {
-    mockUseUser.mockReturnValue({
-      isLogin: jest.fn().mockReturnValue(true),
-    });
-    mockUseLifelog.mockReturnValue({
-      createLogByContext: jest.fn().mockResolvedValue({ status: 200 }),
-    });
-  });
-  it('ContextInput component', () => {
-    const { getByText } = render(
-      <Router>
-        <Lifelogs />
-      </Router>
-    );
-    expect(getByText('Lifelog List Stub')).toBeInTheDocument();
-  });
-  it('CreateLifelog', () => {
-    const { findAllByRole } = render(
-      <Router>
-        <Lifelogs />
-      </Router>
-    );
-    findAllByRole('button').then((elements) => {
-      const button = elements.pop();
-      expect(button).not.toBeUndefined();
-      if (button !== undefined) userEvent.click(button);
-      expect(mockUseLifelog).toBeCalledTimes(1);
-    });
+  it('子コンポーネントが表示される', () => {
+    const { getByText, container } = render(<Lifelogs />);
+    expect(getByText(LIFELOG_DETAIL_DIALOG)).toBeInTheDocument();
+    expect(getByText(LIFELOG_EDIT_DIALOG)).toBeInTheDocument();
+    expect(getByText(LIFELOG_LIST)).toBeInTheDocument();
+    expect(getByText(CONTEXT_INPUT)).toBeInTheDocument();
+    expect(container.childElementCount).toEqual(4);
   });
 });

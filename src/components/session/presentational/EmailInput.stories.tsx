@@ -1,5 +1,5 @@
 import { Meta } from '@storybook/react';
-import { EmailInput } from './EmailInput';
+import EmailInput from './EmailInput';
 
 export default {
   title: 'Session/Presentational/EmailInput',

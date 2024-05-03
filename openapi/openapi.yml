@@ -1,0 +1,371 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Lifelog
+  description: react-lifelog用 REST API情報
+servers:
+  - url: 'http://localhost:4010'
+    description: Swagger
+  - url: 'http://localhost:3000'
+    description: Local(Rails)
+paths:
+  /v1/auth:
+    post:
+      summary: アカウント作成
+      tags:
+        - 認証
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: アカウント作成成功
+          headers:
+            access-token:
+              $ref: '#/components/headers/access-token'
+            client:
+              $ref: '#/components/headers/client'
+            expiry:
+              $ref: '#/components/headers/expiry'
+            uid:
+              $ref: '#/components/headers/uid'
+        '422':
+          description: アカウント作成失敗
+    put:
+      summary: アカウント情報の更新
+      tags:
+        - 認証
+      parameters:
+        - $ref: '#/components/parameters/AccessToken'
+        - $ref: '#/components/parameters/Client'
+        - $ref: '#/components/parameters/Uid'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: アカウント情報更新成功
+        '404':
+          description: アカウントが存在しない
+        '422':
+          description: アカウント情報更新失敗
+    delete:
+      summary: アカウント削除
+      tags:
+        - 認証
+      parameters:
+        - $ref: '#/components/parameters/AccessToken'
+        - $ref: '#/components/parameters/Client'
+        - $ref: '#/components/parameters/Uid'
+      responses:
+        '200':
+          description: アカウント削除成功
+        '404':
+          description: 削除するアカウントが存在しない
+  /v1/auth/sign_in:
+    post:
+      summary: サインイン
+      tags:
+        - 認証
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: サインイン成功
+          headers:
+            access-token:
+              $ref: '#/components/headers/access-token'
+            client:
+              $ref: '#/components/headers/client'
+            expiry:
+              $ref: '#/components/headers/expiry'
+            uid:
+              $ref: '#/components/headers/uid'
+        '401':
+          description: 認証失敗
+  /v1/auth/sign_out:
+    delete:
+      summary: サインアウト
+      tags:
+        - 認証
+      parameters:
+        - $ref: '#/components/parameters/AccessToken'
+        - $ref: '#/components/parameters/Client'
+        - $ref: '#/components/parameters/Uid'
+      responses:
+        '200':
+          description: サインアウト成功
+        '404':
+          description: サインアウト失敗
+  /v1/auth/password:
+    post:
+      summary: パスワードリセットメール送信
+      tags:
+        - 認証
+        - パスワードリセット
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                redirect_url:
+                  type: string
+      responses:
+        '200':
+          description: パスワードリセットメール送信成功
+        '400':
+          description: メール送信失敗
+        '404':
+          description: メール送信失敗
+    put:
+      summary: パスワードリセット
+      tags:
+        - 認証
+        - パスワードリセット
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                password_confirmation:
+                  type: string
+      responses:
+        '200':
+          description: パスワードリセット成功
+        '401':
+          description: 認証エラー
+        '422':
+          description: パスワードリセット失敗
+  /v1/auth/password/edit:
+    get:
+      summary: パスワード変更ページの表示
+      tags:
+        - 認証
+      responses:
+        '200':
+          description: ページ表示成功
+        '404':
+          description: ページ表示失敗
+  /v1/auth/validate_token:
+    get:
+      summary: トークンの検証
+      tags:
+        - 認証
+      responses:
+        '200':
+          description: トークン有効
+        '401':
+          description: トークン無効
+  /v1/lifelogs:
+    get:
+      summary: ライフログ情報を取得する
+      tags:
+        - ライフログ
+      parameters:
+        - $ref: '#/components/parameters/AccessToken'
+        - $ref: '#/components/parameters/Client'
+        - $ref: '#/components/parameters/Uid'
+        - name: page
+          in: query
+          description: ページ番号
+          required: false
+          schema:
+            type: number
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lifelogs'
+        '400':
+          $ref: '#/components/responses/Common400'
+        '401':
+          $ref: '#/components/responses/Common400'
+        '404':
+          $ref: '#/components/responses/Common400'
+        '500':
+          $ref: '#/components/responses/Common500'
+      operationId: get-v1-lifelogs
+      x-internal: false
+    post:
+      summary: 新規ライフログを作成する
+      tags:
+        - ライフログ
+      parameters:
+        - $ref: '#/components/parameters/AccessToken'
+        - $ref: '#/components/parameters/Client'
+        - $ref: '#/components/parameters/Uid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                action:
+                  type: string
+                  description: ライフログの行動
+                detail:
+                  type: string
+                  description: ライフログの詳細
+                started_at:
+                  type: string
+              required:
+                - started_at
+        required: true
+      responses:
+        '200':
+          description: ライフログが作成されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lifelog'
+        '400':
+          $ref: '#/components/responses/Common400'
+        '401':
+          $ref: '#/components/responses/Common400'
+        '500':
+          $ref: '#/components/responses/Common500'
+      operationId: post-v1-lifelogs
+components:
+  responses:
+    Common400:
+      description: 不正なリクエスト
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Common401:
+      description: 認証エラー
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Common404:
+      description: 宛先不明
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Common500:
+      description: サーバー内部エラー
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+    Lifelog:
+      title: ライフログ
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        action:
+          type: string
+        detail:
+          type: string
+        started_at:
+          type: string
+        finished_at:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    Lifelogs:
+      title: ライフログリスト
+      type: array
+      items:
+        $ref: '#/components/schemas/Lifelog'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  headers:
+    access-token:
+      schema:
+        type: string
+    client:
+      schema:
+        type: string
+    expiry:
+      schema:
+        type: string
+    uid:
+      schema:
+        type: string
+  parameters:
+    AccessToken:
+      in: header
+      name: access-token
+      required: true
+      schema:
+        type: string
+    TokenType:
+      in: header
+      name: token-type
+      required: true
+      schema:
+        type: string
+    Client:
+      in: header
+      name: client
+      required: true
+      schema:
+        type: string
+    Expiry:
+      in: header
+      name: expiry
+      required: true
+      schema:
+        type: string
+    Uid:
+      in: header
+      name: uid
+      required: true
+      schema:
+        type: string
