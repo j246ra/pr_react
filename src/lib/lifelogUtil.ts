@@ -15,6 +15,15 @@ export const blank = (): Lifelog => {
   };
 };
 
+export const add = (logs: Lifelog[], addLogs: Lifelog[]) => {
+  for(const addLog of addLogs){
+    const index = logs.findIndex((log) => log.id === addLog.id);
+    if(index >= 0) logs[index] = addLog;
+    else logs.unshift(addLog);
+  }
+  return logs;
+};
+
 export const sort = (logs: Lifelog[]) => {
   const sortedLogs = logs.sort((a, b) =>
     days(b.startedAt).diff(days(a.startedAt))
@@ -69,6 +78,7 @@ export const buildCreateParamsByContext = (context: string) => {
 
 export const lifelogUtil = {
   blank,
+  add,
   sort,
   buildCreateParamsByContext,
 };

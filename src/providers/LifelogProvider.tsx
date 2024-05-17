@@ -7,6 +7,7 @@ import {
   blank as newLifelog,
   buildCreateParamsByContext,
   sort as sortLog,
+  add,
 } from '@lib/lifelogUtil';
 import { days, DATETIME_FULL } from '@lib/dateUtil';
 import LifelogEditDialogProvider from '@providers/LifelogEditDialogProvider';
@@ -81,7 +82,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   const setLifelogs = (logs: Lifelog[]) => {
     _setLifelogs(sortLog(logs));
   };
-  const addLifelogs = (logs: Lifelog[]) => setLifelogs([...lifelogs, ...logs]);
+  const addLifelogs = (logs: Lifelog[]) => setLifelogs(add(lifelogs, logs));
 
   const [searchWord, setSearchWord] = useState('');
   const [page, setPage] = useState(0);
