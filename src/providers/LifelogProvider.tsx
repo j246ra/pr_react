@@ -121,6 +121,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   const api = (defaultErrorMessage?: string) => {
     if (getHeaders().uid !== user.email) {
       clear();
+      setIsTerminated(true); // リロードされるまでのリクエストを抑制
       window.location.reload();
       throw 'Invalid Token';
     }
