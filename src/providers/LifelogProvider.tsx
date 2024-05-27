@@ -18,7 +18,7 @@ import {
 } from '@lib/api/lifelogResponse';
 import * as Sentry from '@sentry/react';
 import notify from '@lib/toast';
-import { COMMON } from '@lib/consts/common';
+import { COMMON, API } from '@lib/consts/common';
 
 export type BaseLifelog = {
   id: number;
@@ -124,7 +124,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
       clear();
       setIsTerminated(true); // リロードされるまでのリクエストを抑制
       window.location.reload();
-      throw 'Invalid Token';
+      throw new Error(API.MESSAGE.ERROR.INVALID_TOKEN);
     }
 
     return lifelog(
