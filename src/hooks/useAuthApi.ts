@@ -1,14 +1,16 @@
 import { useSession } from '@providers/SessionProvider';
 import { useUser } from '@providers/UserProvider';
 import { AxiosError, AxiosResponse } from 'axios';
-import notify from '@lib/toast';
 import { COMMON } from '@lib/consts/common';
 import session from '@lib/api/session';
 
 type Data = {
-  errors: {
-    fullMessages: [string];
-  };
+  errors: [string];
+};
+
+export type AuthApiErrorResponse = {
+  status: number | undefined;
+  messages: string[];
 };
 
 const useAuthApi = () => {
@@ -21,18 +23,25 @@ const useAuthApi = () => {
       updateUser(response.headers['uid']);
     return response;
   };
-  const errorInterceptor = (error: AxiosError): Promise<never> => {
+  const errorInterceptor = (
+    error: AxiosError
+  ): Promise<AuthApiErrorResponse> => {
+    const response: AuthApiErrorResponse = {
+      status: undefined,
+      messages: [],
+    };
     if (error.response === undefined) {
-      notify.error(`${COMMON.MESSAGE.ERROR.GENERAL}(${error.message})`);
+      response.messages.push(
+        `${COMMON.MESSAGE.ERROR.GENERAL}(${error.message})`
+      );
     } else {
+      response.status = error.response.status;
       const data = error.response.data as Data;
-      if (data?.errors.fullMessages !== undefined) {
-        data.errors.fullMessages.forEach((message: string) => {
-          notify.error(message);
-        });
+      if (data?.errors !== undefined) {
+        response.messages.push(...data.errors);
       }
     }
-    return Promise.reject(error);
+    return Promise.reject(response);
   };
 
   return session(getHeaders, responseInterceptor, errorInterceptor);

@@ -44,6 +44,11 @@ export const API = {
   LIFELOG: {
     ENDPOINT: '/lifelogs',
   } as const,
+  MESSAGE: {
+    ERROR: {
+      INVALID_TOKEN: 'Invalid Token',
+    },
+  },
 };
 
 export const DATE_UTIL = {

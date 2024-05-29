@@ -13,24 +13,12 @@ export type ConfigValueType =
   | 'object'
   | 'array'
   | 'unknown';
-
 export type ConfigValue = [ConfigValueType, boolean];
 
 type ConfigObject = {
   key: string;
   expectedType: ConfigValueType;
   isNullable: boolean;
-};
-
-const convertConfigObject = (
-  configValues: Record<string, ConfigValue>
-): ConfigObject[] => {
-  const configObjects: ConfigObject[] = [];
-  for (const [key, config] of Object.entries(configValues)) {
-    const [expectedType, isNullable] = config;
-    configObjects.push({ key, expectedType, isNullable });
-  }
-  return configObjects;
 };
 
 export const buildTypeGuard = <T>(
@@ -41,7 +29,13 @@ export const buildTypeGuard = <T>(
     const invalidData: DataWithErrors[] = [];
     if (!data) return { validData, invalidData };
 
-    const configObjects = convertConfigObject(typeGuardConfigurations);
+    const configObjects: ConfigObject[] = Object.entries(
+      typeGuardConfigurations
+    ).map(([key, [expectedType, isNullable]]) => ({
+      key,
+      expectedType,
+      isNullable,
+    }));
     const items = Array.isArray(data) ? data : [data];
     for (const item of items) {
       const errors: string[] = [];

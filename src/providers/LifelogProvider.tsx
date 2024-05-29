@@ -7,6 +7,7 @@ import {
   blank as newLifelog,
   buildCreateParamsByContext,
   sort as sortLog,
+  add,
 } from '@lib/lifelogUtil';
 import { days, DATETIME_FULL } from '@lib/dateUtil';
 import LifelogEditDialogProvider from '@providers/LifelogEditDialogProvider';
@@ -17,7 +18,7 @@ import {
 } from '@lib/api/lifelogResponse';
 import * as Sentry from '@sentry/react';
 import notify from '@lib/toast';
-import { COMMON } from '@lib/consts/common';
+import { COMMON, API } from '@lib/consts/common';
 
 export type BaseLifelog = {
   id: number;
@@ -81,7 +82,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   const setLifelogs = (logs: Lifelog[]) => {
     _setLifelogs(sortLog(logs));
   };
-  const addLifelogs = (logs: Lifelog[]) => setLifelogs([...lifelogs, ...logs]);
+  const addLifelogs = (logs: Lifelog[]) => setLifelogs(add(lifelogs, logs));
 
   const [searchWord, setSearchWord] = useState('');
   const [page, setPage] = useState(0);
@@ -121,8 +122,9 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   const api = (defaultErrorMessage?: string) => {
     if (getHeaders().uid !== user.email) {
       clear();
+      setIsTerminated(true); // リロードされるまでのリクエストを抑制
       window.location.reload();
-      throw 'Invalid Token';
+      throw new Error(API.MESSAGE.ERROR.INVALID_TOKEN);
     }
 
     return lifelog(

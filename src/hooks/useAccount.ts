@@ -25,6 +25,11 @@ const useAccount = () => {
   const navigate = useNavigate();
   const api = useAuthApi();
 
+  const errorNotification = (messages: string[], defaultMessage: string) => {
+    if (messages.length === 0) notify.error(defaultMessage);
+    else messages.map((message) => notify.error(message));
+  };
+
   const login = (email: string, password: string) => {
     createUser(email);
     api
@@ -33,11 +38,7 @@ const useAccount = () => {
         notify.success(LOGIN.MESSAGE.SUCCESS);
         navigate(ROUTES.LIFELOGS);
       })
-      .catch((e) => {
-        if (e.response.status === 401)
-          notify.error(LOGIN.MESSAGE.ERROR.STATUS_401);
-        else notify.error(LOGIN.MESSAGE.ERROR.NORMAL);
-      });
+      .catch((r) => errorNotification(r.messages, LOGIN.MESSAGE.ERROR.NORMAL));
   };
 
   const logout = () => {
@@ -50,8 +51,8 @@ const useAccount = () => {
         navigate(ROUTES.LOGIN);
         notify.success(LOGOUT.MESSAGE.SUCCESS);
       })
-      .catch(() => {
-        notify.error(LOGOUT.MESSAGE.ERROR);
+      .catch((r) => {
+        errorNotification(r.messages, LOGOUT.MESSAGE.ERROR);
       });
   };
 
@@ -68,8 +69,8 @@ const useAccount = () => {
         notify.success(ACCOUNT_UPDATE.MESSAGE.SUCCESS);
         navigate('/');
       })
-      .catch(() => {
-        notify.error(ACCOUNT_UPDATE.MESSAGE.ERROR);
+      .catch((r) => {
+        errorNotification(r.messages, ACCOUNT_UPDATE.MESSAGE.ERROR);
       });
   };
 
@@ -81,8 +82,8 @@ const useAccount = () => {
         notify.success(PASSWORD_EDIT.MESSAGE.SUCCESS);
         navigate('/');
       })
-      .catch(() => {
-        notify.error(PASSWORD_EDIT.MESSAGE.ERROR);
+      .catch((r) => {
+        errorNotification(r.messages, PASSWORD_EDIT.MESSAGE.ERROR);
       });
   };
 
@@ -93,12 +94,12 @@ const useAccount = () => {
         notify.success(PASSWORD_FORGET.MESSAGE.SUCCESS);
         navigate(ROUTES.RESET_MAIL_SEND_SUCCESS);
       })
-      .catch((e) => {
-        if (e.response?.status === 404) {
+      .catch((r) => {
+        if (r.status === 404) {
           notify.success(PASSWORD_FORGET.MESSAGE.SUCCESS);
           navigate(ROUTES.RESET_MAIL_SEND_SUCCESS);
         } else {
-          notify.error(PASSWORD_FORGET.MESSAGE.ERROR);
+          errorNotification(r.messages, PASSWORD_FORGET.MESSAGE.ERROR);
         }
       });
   };
@@ -111,8 +112,8 @@ const useAccount = () => {
         notify.success(SIGN_UP.MESSAGE.SUCCESS);
         navigate(ROUTES.LIFELOGS);
       })
-      .catch(() => {
-        notify.error(SIGN_UP.MESSAGE.ERROR);
+      .catch((r) => {
+        errorNotification(r.messages, SIGN_UP.MESSAGE.ERROR);
         clearUser();
         removeHeaders();
       });
@@ -127,7 +128,9 @@ const useAccount = () => {
         navigate(ROUTES.LOGIN);
         notify.success(ACCOUNT_DELETE.MESSAGE.SUCCESS);
       })
-      .catch(() => notify.error(ACCOUNT_DELETE.MESSAGE.ERROR));
+      .catch((r) =>
+        errorNotification(r.messages, ACCOUNT_DELETE.MESSAGE.ERROR)
+      );
   };
 
   return {

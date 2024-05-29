@@ -11,7 +11,7 @@ import { lifelog } from '@lib/faker/lifelog';
 import { AxiosError } from 'axios';
 import { DATETIME_FULL, days } from '@lib/dateUtil';
 import lifelogApiMocks from '@src/tests/lifelogApiMocks';
-import { COMMON, LIFELOG_API_MOCKS } from '@lib/consts/common';
+import { COMMON, LIFELOG_API_MOCKS, API } from '@lib/consts/common';
 import notify from '@lib/toast';
 
 let mockSetHeaders: jest.SpyInstance<unknown>;
@@ -24,6 +24,12 @@ const {
   update: restUpdate,
   destroy: restDelete,
 } = lifelogApiMocks();
+
+const setUpMyLocation = () => {
+  const { location } = window;
+  delete (window as any).location;
+  window.location = { ...location, reload: () => {} };
+};
 
 describe('LifelogProvider', () => {
   beforeEach(() => {
@@ -588,6 +594,23 @@ describe('LifelogProvider', () => {
           expect(result.current.lifelogs).toHaveLength(0);
           expect(result.current.isTerminated).toEqual(false);
           expect(result.current.searchWord).toEqual('');
+        });
+      });
+    });
+
+    describe('sessionとuserのemail検証', () => {
+      beforeEach(() => {
+        mockUseUser().user.email = 'yamada@example.com';
+        setUpMyLocation();
+      });
+      it('一致しない場合はuserを初期化してリロードする', () => {
+        const { result } = renderHook(() => useLifelog(), { wrapper });
+
+        expect(result.current.lifelogs).toHaveLength(0);
+        act(() => {
+          expect(result.current.loadLogs('error message')).rejects.toThrow(
+            API.MESSAGE.ERROR.INVALID_TOKEN
+          );
         });
       });
     });
