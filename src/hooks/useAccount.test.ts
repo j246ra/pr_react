@@ -62,11 +62,10 @@ describe('useAccount', () => {
       });
     });
     describe('失敗した場合', () => {
-      it('認証エラーの場合にメッセージを通知している', async () => {
+      it('エラーメッセージがあればそれを通知している', async () => {
         mockUseAuthApi().signIn.mockRejectedValue({
-          response: {
-            status: 401,
-          },
+          status: 401,
+          messages: ['error message'],
         });
         const { result } = renderHook(useAccount);
         result.current.login(...params);
@@ -74,17 +73,14 @@ describe('useAccount', () => {
           expect(mockUseAuthApi().signIn).toHaveBeenCalledTimes(1);
           expect(mockUseAuthApi().signIn).toHaveBeenCalledWith(...params);
           expect(mockNotify.error).toHaveBeenCalledTimes(1);
-          expect(mockNotify.error).toHaveBeenCalledWith(
-            LOGIN.MESSAGE.ERROR.STATUS_401
-          );
+          expect(mockNotify.error).toHaveBeenCalledWith('error message');
           expect(mockNavigator).not.toHaveBeenCalled();
         });
       });
-      it('それ以外のエラーの場合にメッセージを通知している', async () => {
+      it('エラーメッセージがない場合はデフォルトメッセージを通知している', async () => {
         mockUseAuthApi().signIn.mockRejectedValue({
-          response: {
-            status: 500,
-          },
+          status: 500,
+          messages: [],
         });
         const { result } = renderHook(useAccount);
         result.current.login(...params);
@@ -116,7 +112,7 @@ describe('useAccount', () => {
       });
     });
     it('リクエスト失敗時', async () => {
-      mockUseAuthApi().signOut.mockRejectedValue({ response: { status: 500 } });
+      mockUseAuthApi().signOut.mockRejectedValue({ status: 500, messages: [] });
       const { result } = renderHook(useAccount);
       result.current.logout();
       await waitFor(() => {
@@ -151,7 +147,8 @@ describe('useAccount', () => {
     });
     it('リクエスト失敗時', async () => {
       mockUseAuthApi().updateUser.mockRejectedValue({
-        response: { status: 500 },
+        status: 500,
+        messages: [],
       });
       const { result } = renderHook(useAccount);
       result.current.update(...params);
@@ -199,7 +196,8 @@ describe('useAccount', () => {
     });
     it('リクエスト失敗時', async () => {
       mockUseAuthApi().passwordReset.mockRejectedValue({
-        response: { status: 500 },
+        status: 500,
+        messages: [],
       });
       const { result } = renderHook(useAccount);
       result.current.passwordChange(password, password);
@@ -251,7 +249,8 @@ describe('useAccount', () => {
     describe('リクエスト失敗時', () => {
       it('Not Found(404) の場合、成功メッセージを表示する', async () => {
         mockUseAuthApi().passwordForget.mockRejectedValue({
-          response: { status: 404 },
+          status: 404,
+          messages: ['error message'],
         });
         const { result } = renderHook(useAccount);
         result.current.passwordForget(email);
@@ -267,7 +266,8 @@ describe('useAccount', () => {
       });
       it('404 以外のエラーの場合はエラーメッセージを表示する', async () => {
         mockUseAuthApi().passwordForget.mockRejectedValue({
-          response: { status: 500 },
+          status: 500,
+          messages: ['error message'],
         });
         const { result } = renderHook(useAccount);
         result.current.passwordForget(email);
@@ -275,9 +275,7 @@ describe('useAccount', () => {
           expect(mockUseAuthApi().passwordForget).toHaveBeenCalledTimes(1);
           expect(mockUseAuthApi().passwordForget).toHaveBeenCalledWith(email);
           expect(mockNotify.error).toHaveBeenCalledTimes(1);
-          expect(mockNotify.error).toHaveBeenCalledWith(
-            PASSWORD_FORGET.MESSAGE.ERROR
-          );
+          expect(mockNotify.error).toHaveBeenCalledWith('error message');
         });
       });
     });
@@ -301,7 +299,7 @@ describe('useAccount', () => {
       });
     });
     it('リクエスト失敗時', async () => {
-      mockUseAuthApi().signUp.mockRejectedValue({ response: { status: 500 } });
+      mockUseAuthApi().signUp.mockRejectedValue({ status: 500, messages: [] });
       const { result } = renderHook(useAccount);
       result.current.signUp(email, password);
       await waitFor(() => {
@@ -343,7 +341,8 @@ describe('useAccount', () => {
     });
     it('リクエスト失敗時', async () => {
       mockUseAuthApi().deleteUser.mockRejectedValue({
-        response: { status: 500 },
+        status: 500,
+        messages: [],
       });
       const { result } = renderHook(useAccount);
       result.current.remove();

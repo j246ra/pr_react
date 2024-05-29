@@ -12,11 +12,9 @@ import Defs from '@lib/consts';
 import { baseUrl } from '@lib/api/client';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import useAuthApi from '@src/hooks/useAuthApi';
-import { AxiosError } from 'axios';
 
 let mockUser = { email: 'def@example.com' };
 
-const MESSAGE = Defs.COMMON.MESSAGE;
 const URL = `${baseUrl}/${Defs.API.VERSION}${Defs.API.SESSION.ENDPOINT.SIGN_IN}`;
 
 describe('useAuthApi', () => {
@@ -90,7 +88,7 @@ describe('useAuthApi', () => {
         return compose(
           context.status(400),
           context.json({
-            errors: { fullMessages: ['error message 1', 'error message 2'] },
+            errors: ['error message 1', 'error message 2'],
           })
         );
       };
@@ -103,10 +101,10 @@ describe('useAuthApi', () => {
         const { result } = renderHook(useAuthApi);
         const res = result.current.signIn(mockUser.email, 'password');
         await waitFor(() => {
-          expect(res).rejects.toThrow(AxiosError);
-          expect(notifySpy).toHaveBeenCalled();
-          expect(notifySpy).toHaveBeenCalledWith('error message 1');
-          expect(notifySpy).toHaveBeenCalledWith('error message 2');
+          expect(res).rejects.toEqual({
+            status: 400,
+            messages: ['error message 1', 'error message 2'],
+          });
         });
       });
     });
@@ -123,12 +121,12 @@ describe('useAuthApi', () => {
         const { result } = renderHook(useAuthApi);
         const res = result.current.signIn(mockUser.email, 'password');
         await waitFor(() => {
-          expect(res).rejects.toThrow(AxiosError);
+          expect(res).rejects.toHaveProperty('status', undefined);
           expect(mockUseSession().setHeaders).not.toHaveBeenCalled();
-          expect(notifySpy).toHaveBeenCalled();
-          expect(notifySpy).toHaveBeenCalledWith(
-            expect.stringMatching(MESSAGE.ERROR.GENERAL)
-          );
+          // expect(notifySpy).toHaveBeenCalled();
+          // expect(notifySpy).toHaveBeenCalledWith(
+          //   expect.stringMatching(MESSAGE.ERROR.GENERAL)
+          // );
         });
       });
     });

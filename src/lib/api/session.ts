@@ -2,9 +2,10 @@ import { AxiosResponse, AxiosError } from 'axios';
 import createClient from './client';
 import { Headers } from '@providers/SessionProvider';
 import Defs from '@lib/consts';
+import { AuthApiErrorResponse } from '@src/hooks/useAuthApi';
 
 type ResponseInterceptor = (response: AxiosResponse) => AxiosResponse;
-type ErrorInterceptor = (error: AxiosError) => Promise<never>;
+type ErrorInterceptor = (error: AxiosError) => Promise<AuthApiErrorResponse>;
 
 export type UserParams = {
   email?: string;
