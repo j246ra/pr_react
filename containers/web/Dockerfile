@@ -25,7 +25,7 @@ ENV GENERATE_SOURCEMAP=false
 COPY . $APP_ROOT
 RUN yarn build
 
-FROM nginx:1.25.2-alpine-slim as nginx
+FROM nginx:1.26.1-alpine-slim as nginx
 
 COPY ./containers/web/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=assets /app/build /usr/share/nginx/html
