@@ -16,7 +16,6 @@ import { mockNavigator } from '@src/tests/common';
 import { ROUTES } from '@lib/consts/common';
 import { useLifelog } from '@providers/LifelogProvider';
 import { INVALID_MESSAGES } from '@validators/validator';
-import { expect } from '@storybook/jest';
 
 jest.mock('@src/hooks/useAuthApi');
 const mockUseAuthApi = useAuthApi as jest.MockedFunction<any>;
