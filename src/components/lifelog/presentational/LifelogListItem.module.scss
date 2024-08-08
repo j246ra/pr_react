@@ -16,7 +16,9 @@ table tbody {
 
   td.tdAction {
     @include appLinkText();
-    color: $pt-link-color;
+    & {
+      color: $pt-link-color;
+    }
     &:hover {
       text-decoration: none;
     }
@@ -32,7 +34,9 @@ table tbody {
 
   .action {
     @include appLinkText();
-    color: $pt-link-color;
+    & {
+      color: $pt-link-color;
+    }
     &:hover {
       text-decoration: none;
     }

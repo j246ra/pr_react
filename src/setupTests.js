@@ -11,9 +11,14 @@ console.error = (...args) => {
     args[0].includes(
       'Warning: An update to %s inside a test was not wrapped in'
     ) &&
-    ['Blueprint5.DatePicker3', 'Blueprint5.Icon', '_DateInput'].includes(
-      args[1]
-    )
+    ['Blueprint5.Icon', '_DateInput'].includes(args[1])
+  ) {
+    return;
+  }
+  if (
+    args[0].includes(
+      'Warning: %s: Support for defaultProps will be removed from memo components in a future major release.'
+    ) && ['_DateInput']
   ) {
     return;
   }
