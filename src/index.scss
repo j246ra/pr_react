@@ -3,18 +3,20 @@
 @use '@blueprintjs/datetime/lib/css/blueprint-datetime';
 @use '@blueprintjs/datetime2/lib/css/blueprint-datetime2';
 @use '@blueprintjs/select/lib/css/blueprint-select';
-@use "@blueprintjs/core/lib/scss/variables";
-@use "appVariables";
+@use "@blueprintjs/core/lib/scss/variables" as *;
+@forward "@blueprintjs/core/lib/scss/variables";
+@use "variables" as app;
+@forward "variables";
 
 html {
   height: 100%;
 
   body {
     margin: 0;
-    padding: variables.$pt-navbar-height 0 0;
+    padding: $pt-navbar-height 0 0;
     height: 100%;
     box-sizing: border-box;
-    font-family: appVariables.$AppFontFamily;
+    font-family: app.$AppFontFamily;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
@@ -38,7 +40,18 @@ code {
   height: 100%;
 
   .navbar-height {
-    padding: variables.$pt-navbar-height 0 0;
+    padding: $pt-navbar-height 0 0;
     height: 100%;
+  }
+}
+
+@mixin appLinkText {
+  cursor: pointer;
+  color: $pt-link-color;
+  font-weight: bold;
+  text-decoration-line: none;
+
+  &:hover {
+    text-decoration-line: underline;
   }
 }

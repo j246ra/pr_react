@@ -1,10 +1,10 @@
-@use "../../../appVariables";
+@use "~src/index" as *;
 
 .baseTable {
   width: 80%;
   margin: 0 auto;
 
-  @media (max-width: appVariables.$SpMaxWidth) {
+  @media (max-width: $SpMaxWidth) {
     width: 100%;
   }
 }
@@ -14,5 +14,5 @@
 }
 
 pre.nonIdeaState {
-  font-family: appVariables.$AppFontFamily;
+  font-family: $AppFontFamily;
 }

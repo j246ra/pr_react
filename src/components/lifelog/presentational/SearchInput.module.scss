@@ -1,10 +1,10 @@
-@use "../../../appVariables";
+@use "~src/index" as *;
 
 .container {
   width: var(--container-width, auto);
 }
 
-@media (max-width: appVariables.$SpMaxWidth) {
+@media (max-width: $SpMaxWidth) {
   .container {
     width: auto;
   }

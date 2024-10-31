@@ -1,16 +1,5 @@
-@use "@blueprintjs/core/lib/scss/variables";
+@use "index" as *;
 
 .App {
   height: 100%;
-}
-
-@mixin appLinkText {
-  cursor: pointer;
-  color: variables.$pt-link-color;
-  font-weight: bold;
-  text-decoration-line: none;
-
-  &:hover {
-    text-decoration-line: underline;
-  }
 }
