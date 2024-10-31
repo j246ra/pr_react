@@ -1,7 +1,7 @@
-@import 'src/App';
+@use 'src/appVariables';
 
 .base {
-  max-width: $AppMaxWidth;
+  max-width: appVariables.$AppMaxWidth;
   margin: 0 auto;
   padding: 0 20px;
 }
