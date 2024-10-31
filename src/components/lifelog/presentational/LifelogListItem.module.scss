@@ -1,4 +1,5 @@
-@import "src/App";
+@use "@blueprintjs/core/lib/scss/variables";
+@use "src/App";
 
 table tbody {
   .trItem {
@@ -7,7 +8,7 @@ table tbody {
 
   .trItem td {
     vertical-align: middle;
-    border-bottom: 1px solid $pt-divider-black;
+    border-bottom: 1px solid variables.$pt-divider-black;
   }
 
   tr:first-child.trItem td {
@@ -15,9 +16,9 @@ table tbody {
   }
 
   td.tdAction {
-    @include appLinkText();
+    @include App.appLinkText();
     & {
-      color: $pt-link-color;
+      color: variables.$pt-link-color;
     }
     &:hover {
       text-decoration: none;
@@ -33,9 +34,9 @@ table tbody {
   }
 
   .action {
-    @include appLinkText();
+    @include App.appLinkText();
     & {
-      color: $pt-link-color;
+      color: variables.$pt-link-color;
     }
     &:hover {
       text-decoration: none;
@@ -68,7 +69,7 @@ table tbody {
 
     td {
       vertical-align: middle;
-      border-bottom: 1px solid $pt-divider-black;
+      border-bottom: 1px solid variables.$pt-divider-black;
       padding: 3px;
     }
   }
