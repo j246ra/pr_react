@@ -1,5 +1,5 @@
-@use "@blueprintjs/core/lib/scss/variables";
-@use "src/App";
+@use "@src/variables" as *;
+@use '@src/mixins';
 
 table tbody {
   .trItem {
@@ -8,7 +8,7 @@ table tbody {
 
   .trItem td {
     vertical-align: middle;
-    border-bottom: 1px solid variables.$pt-divider-black;
+    border-bottom: 1px solid $pt-divider-black;
   }
 
   tr:first-child.trItem td {
@@ -16,9 +16,9 @@ table tbody {
   }
 
   td.tdAction {
-    @include App.appLinkText();
+    @include mixins.appLinkText();
     & {
-      color: variables.$pt-link-color;
+      color: $pt-link-color;
     }
     &:hover {
       text-decoration: none;
@@ -34,9 +34,9 @@ table tbody {
   }
 
   .action {
-    @include App.appLinkText();
+    @include mixins.appLinkText();
     & {
-      color: variables.$pt-link-color;
+      color: $pt-link-color;
     }
     &:hover {
       text-decoration: none;
@@ -69,7 +69,7 @@ table tbody {
 
     td {
       vertical-align: middle;
-      border-bottom: 1px solid variables.$pt-divider-black;
+      border-bottom: 1px solid $pt-divider-black;
       padding: 3px;
     }
   }

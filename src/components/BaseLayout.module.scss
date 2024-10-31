@@ -1,7 +1,7 @@
-@use "../appVariables";
+@use "@src/variables" as *;
 
 .baseContainer {
-  max-width: appVariables.$AppMaxWidth;
+  max-width: $AppMaxWidth;
   padding: 20px;
   margin: 0 auto;
   height: 100%;
