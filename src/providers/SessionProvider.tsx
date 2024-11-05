@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode, useContext } from 'react';
-import { useCookies } from 'react-cookie/cjs';
+import { useCookies } from 'react-cookie';
 import { CookiesProvider } from 'react-cookie';
 import { AxiosResponse } from 'axios';
 import { expires } from '@lib/dateUtil';
