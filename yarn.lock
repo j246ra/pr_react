@@ -6748,7 +6748,7 @@
   resolved "https://registry.yarnpkg.com/@storybook/react-dom-shim/-/react-dom-shim-7.6.20.tgz#20b902663474b731c22b211ec29c7fd0e86b4b7f"
   integrity sha512-SRvPDr9VWcS24ByQOVmbfZ655y5LvjXRlsF1I6Pr9YZybLfYbu3L5IicfEHT4A8lMdghzgbPFVQaJez46DTrkg==
 
-"@storybook/react-webpack5@^7.6.3":
+"@storybook/react-webpack5@7.6.20":
   version "7.6.20"
   resolved "https://registry.yarnpkg.com/@storybook/react-webpack5/-/react-webpack5-7.6.20.tgz#812e798cfff142c870ea12347b6a2ba2c270502d"
   integrity sha512-xaLtadKczfUdpyPMk/e49qGnRpjMDtTwFq4RqkS7q+Z+EO72kTCUPGtK3jJXyv70pp/qbzM5OfjFLjXjMezvYw==
@@ -16469,7 +16469,7 @@ storybook-addon-cookie@^3.1.0:
   resolved "https://registry.yarnpkg.com/storybook-addon-cookie/-/storybook-addon-cookie-3.2.0.tgz#1f97adf6b9b38fde4e0e540e098652b38edd12a1"
   integrity sha512-m98yfGNDbNHkvRsQVVQe+RiasoxU1c0u8SA2svuT+VfofAv3b55xZzDSnZ6Yn0h7zY9wmpRaJ4Twx+H4ryvkWQ==
 
-storybook@^7.6.3:
+storybook@7.6.20:
   version "7.6.20"
   resolved "https://registry.yarnpkg.com/storybook/-/storybook-7.6.20.tgz#6204ff0c28471536a1a64cb16d1c97872dd33f95"
   integrity sha512-Wt04pPTO71pwmRmsgkyZhNo4Bvdb/1pBAMsIFb9nQLykEdzzpXjvingxFFvdOG4nIowzwgxD+CLlyRqVJqnATw==
