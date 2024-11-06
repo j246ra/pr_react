@@ -1,19 +1,18 @@
 @use '@blueprintjs/core/lib/css/blueprint';
-@use '@blueprintjs/icons/lib/css/blueprint-icons';
 @use '@blueprintjs/datetime/lib/css/blueprint-datetime';
 @use '@blueprintjs/datetime2/lib/css/blueprint-datetime2';
 @use '@blueprintjs/select/lib/css/blueprint-select';
-@use "variables" as *;
+@use "variables" as val;
 
 html {
   height: 100%;
 
   body {
     margin: 0;
-    padding: $pt-navbar-height 0 0;
+    padding: val.$pt-navbar-height 0 0;
     height: 100%;
     box-sizing: border-box;
-    font-family: $AppFontFamily;
+    font-family: val.$AppFontFamily;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
@@ -37,7 +36,7 @@ code {
   height: 100%;
 
   .navbar-height {
-    padding: $pt-navbar-height 0 0;
+    padding: val.$pt-navbar-height 0 0;
     height: 100%;
   }
 }
