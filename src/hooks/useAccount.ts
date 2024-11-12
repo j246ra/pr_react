@@ -124,6 +124,7 @@ const useAccount = () => {
       .deleteUser()
       .then(() => {
         clearUser();
+        clearLifelog();
         removeHeaders();
         navigate(ROUTES.LOGIN);
         notify.success(ACCOUNT_DELETE.MESSAGE.SUCCESS);
