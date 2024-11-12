@@ -25,7 +25,7 @@ export const add = (logs: Lifelog[], addLogs: Lifelog[]) => {
 };
 
 export const sort = (logs: Lifelog[]) => {
-  const sortedLogs = logs.sort((a, b) =>
+  const sortedLogs = [...logs].sort((a, b) =>
     days(b.startedAt).diff(days(a.startedAt))
   );
 
