@@ -11,7 +11,7 @@ import {
 } from '@lib/consts/component';
 import { ROUTES } from '@lib/consts/common';
 import { useNavigate } from 'react-router-dom';
-import { useSession } from '@providers/SessionProvider';
+import { Headers, useSession } from '@providers/SessionProvider';
 import accountUpdateValidator from '@validators/accountUpdate';
 import passwordEditValidator from '@validators/passwordEdit';
 import signUpValidator from '@validators/signUp';
@@ -20,7 +20,8 @@ import { useLifelog } from '@providers/LifelogProvider';
 
 const useAccount = () => {
   const { createUser, clearUser } = useUser();
-  const { removeHeaders } = useSession();
+  const { setHeaders, removeHeaders } = useSession();
+
   const { clear: clearLifelog } = useLifelog();
   const navigate = useNavigate();
   const api = useAuthApi();
@@ -74,11 +75,12 @@ const useAccount = () => {
       });
   };
 
-  const passwordChange = (password: string, passwordConfirmation: string) => {
+  const passwordChange = (password: string, passwordConfirmation: string, headers: Headers) => {
     if (passwordEditValidator(password, passwordConfirmation).isInvalid) return;
     api
-      .passwordReset(password, passwordConfirmation)
+      .passwordReset(password, passwordConfirmation, headers)
       .then(() => {
+        setHeaders(headers);
         notify.success(PASSWORD_EDIT.MESSAGE.SUCCESS);
         navigate('/');
       })

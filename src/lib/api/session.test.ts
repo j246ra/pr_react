@@ -117,10 +117,15 @@ describe('session APIの呼び出し検証', () => {
   });
 
   it('passwordReset', async () => {
+    const newHeaders = {
+      'access-token': 'new_token',
+      'uid': 'new_uid',
+      'client': 'new_client',
+    }
     const password = 'password';
     const passwordConfirmation = 'password';
     const { passwordReset } = session(headers);
-    await passwordReset(password, passwordConfirmation);
+    await passwordReset(password, passwordConfirmation, newHeaders);
 
     expect(mockCreateClient().put).toHaveBeenCalledWith(
       ENDPOINT.PASSWORD_RESET,
@@ -128,7 +133,7 @@ describe('session APIの呼び出し検証', () => {
         password: password,
         password_confirmation: passwordConfirmation,
       },
-      { headers: headers() }
+      { headers: newHeaders },
     );
   });
 });
