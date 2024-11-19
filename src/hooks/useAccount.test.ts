@@ -28,6 +28,7 @@ describe('useAccount', () => {
   beforeEach(() => {
     mockUseSession.mockReturnValue({
       removeHeaders: jest.fn(),
+      setHeaders: jest.fn(),
     });
     mockUseUser.mockReturnValue({
       createUser: jest.fn(),
@@ -175,15 +176,17 @@ describe('useAccount', () => {
   });
 
   describe('passwordChange', () => {
+    const headers = {'access-token': 'token123', uid: 'uid123', client: 'client123'};
     const password = 'password-0123';
     it('リクエスト成功時', async () => {
       const { result } = renderHook(useAccount);
-      result.current.passwordChange(password, password);
+      result.current.passwordChange(password, password, headers);
       await waitFor(() => {
         expect(mockUseAuthApi().passwordReset).toHaveBeenCalledTimes(1);
         expect(mockUseAuthApi().passwordReset).toHaveBeenCalledWith(
           password,
-          password
+          password,
+          headers
         );
         expect(mockNotify.success).toHaveBeenCalledTimes(1);
         expect(mockNotify.success).toHaveBeenCalledWith(
@@ -199,12 +202,13 @@ describe('useAccount', () => {
         messages: [],
       });
       const { result } = renderHook(useAccount);
-      result.current.passwordChange(password, password);
+      result.current.passwordChange(password, password, headers);
       await waitFor(() => {
         expect(mockUseAuthApi().passwordReset).toHaveBeenCalledTimes(1);
         expect(mockUseAuthApi().passwordReset).toHaveBeenCalledWith(
           password,
-          password
+          password,
+          headers
         );
         expect(mockNotify.error).toHaveBeenCalledTimes(1);
         expect(mockNotify.error).toHaveBeenCalledWith(
@@ -216,7 +220,7 @@ describe('useAccount', () => {
     });
     it('バリデーションエラー時', async () => {
       const { result } = renderHook(useAccount);
-      result.current.passwordChange(password, 'password-9999');
+      result.current.passwordChange(password, 'password-9999', headers);
       await waitFor(() => {
         expect(mockNotify.error).toHaveBeenCalledTimes(1);
         expect(mockNotify.error).toHaveBeenCalledWith(

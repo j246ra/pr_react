@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Button, Intent } from '@blueprintjs/core';
 import SessionCard from '@session/presentational/SessionCard';
 import PasswordInput from '@session/presentational/PasswordInput';
@@ -7,17 +7,26 @@ import { IconNames } from '@blueprintjs/icons';
 import SessionForm from '@session/presentational/SessionForm';
 import SessionLayout from '@session/SessionLayout';
 import useAccount from '@src/hooks/useAccount';
-import useSearchParamsForHeaders from '@src/hooks/useSearchParamsForHeaders';
+import { useSearchParams } from 'react-router-dom';
+import { Headers } from '@providers/SessionProvider';
 
 export default function PasswordEdit() {
-  useSearchParamsForHeaders();
   const { passwordChange } = useAccount();
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const [params] = useSearchParams();
+  const [headers, setHeaders] = useState<Headers>({})
+  useEffect(() => {
+    setHeaders({
+      'access-token': params.get('access-token') || undefined,
+      client: params.get('client') || undefined,
+      uid: params.get('uid') || undefined,
+    })
+  }, [params]);
 
   const handlePasswordConfirmation = (e: FormEvent) => {
     e.preventDefault();
-    passwordChange(password, passwordConfirmation);
+    passwordChange(password, passwordConfirmation, headers);
   };
 
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) =>
