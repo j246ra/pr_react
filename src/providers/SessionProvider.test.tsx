@@ -24,6 +24,8 @@ describe('SessionProvider', () => {
     });
     const headers = result.current.getHeaders();
     expect(headers.uid).toEqual('UID-1111');
+    expect(headers['access-token']).toBeUndefined();
+    expect(headers.client).toBeUndefined();
   });
 
   describe('setHeaders 検証', () => {
