@@ -46,6 +46,7 @@ if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
 // Tools like Cloud9 rely on this.
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
+const APP_PATH = process.env.APP_PATH || '';
 
 if (process.env.HOST) {
   console.log(
@@ -88,7 +89,7 @@ checkBrowsers(paths.appPath, isInteractive)
       protocol,
       HOST,
       port,
-      paths.publicUrlOrPath.slice(0, -1)
+      paths.publicUrlOrPath.slice(0, -1) + APP_PATH,
     );
     // Create a webpack compiler that is configured with custom messages.
     const compiler = createCompiler({
