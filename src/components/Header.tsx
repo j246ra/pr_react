@@ -10,7 +10,7 @@ import {
   Intent,
 } from '@blueprintjs/core';
 import { useUser } from '@providers/UserProvider';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import SearchInput from '@lifelog/presentational/SearchInput';
 import styles from './Header.module.scss';
 import { HEADER } from '@lib/consts/component';
