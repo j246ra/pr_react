@@ -11,6 +11,7 @@ const initToken = {
   uid: 'uid',
   'access-token': 'access-token',
   client: 'client',
+  'session-id': 'session-id',
 } as Headers;
 
 describe('SessionProvider', () => {
