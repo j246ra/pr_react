@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router';
 import PasswordEdit from './PasswordEdit';
 import { useSession } from '@providers/SessionProvider';
 import { PASSWORD_EDIT } from '@lib/consts/component';

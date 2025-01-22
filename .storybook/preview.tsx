@@ -4,7 +4,7 @@ import '@blueprintjs/datetime/lib/css/blueprint-datetime.css';
 import '@blueprintjs/select/lib/css/blueprint-select.css';
 import '@src/index.scss';
 import '@src/App.scss';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router';
 import SessionProvider from '../src/providers/SessionProvider';
 import UserProvider from '../src/providers/UserProvider';
 import { initialize, mswDecorator } from 'msw-storybook-addon';

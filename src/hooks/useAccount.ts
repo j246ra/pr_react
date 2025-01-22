@@ -10,7 +10,7 @@ import {
   SIGN_UP,
 } from '@lib/consts/component';
 import { ROUTES } from '@lib/consts/common';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { Headers, useSession } from '@providers/SessionProvider';
 import accountUpdateValidator from '@validators/accountUpdate';
 import passwordEditValidator from '@validators/passwordEdit';

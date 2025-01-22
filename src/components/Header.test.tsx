@@ -4,7 +4,7 @@ import { mockUseUser } from '@src/tests/baseProviders';
 import userEvent from '@testing-library/user-event';
 import { HEADER_TEST_ID as TEST_ID } from '@lib/consts/testId';
 import { SEARCH_INPUT } from '@lib/consts/component';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router';
 import { mockNavigator } from '@src/tests/common';
 import { ROUTES } from '@lib/consts/common';
 import useAccount from '@src/hooks/useAccount';
