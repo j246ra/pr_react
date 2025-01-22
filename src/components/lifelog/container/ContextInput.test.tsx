@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import ContextInput from './ContextInput';
 import { useLifelog } from '@providers/LifelogProvider';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router';
 import { CONTEXT_INPUT } from '@lib/consts/component';
 
 jest.mock('@providers/LifelogProvider');

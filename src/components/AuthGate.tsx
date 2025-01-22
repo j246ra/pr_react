@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useUser } from '@providers/UserProvider';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import notify from '@lib/toast';
 import { EmptyComponent } from '@src/components/EmptyComponent';
 export type AuthGateProps = {

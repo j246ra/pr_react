@@ -1,7 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.scss';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router';
 import UserProvider from './providers/UserProvider';
 import SessionProvider from './providers/SessionProvider';
 import LifelogProvider from '@providers/LifelogProvider';
