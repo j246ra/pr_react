@@ -36,9 +36,7 @@ export default function SessionProvider({ children }: SessionProviderProps) {
 
   const hasToken = (): boolean => {
     const cookie = { ...(cookies.token as Headers) };
-    return !(
-      cookie['access-token'] === undefined || cookie['access-token'] === ''
-    );
+    return cookie['access-token'] !== undefined && cookie['access-token'] !== ''
   };
 
   const initializeByUid = (uid: string): void => {

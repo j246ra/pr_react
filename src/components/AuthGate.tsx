@@ -15,7 +15,7 @@ function AuthGate({
   fallbackPath,
   fallbackMessage,
 }: AuthGateProps) {
-  const { isLoggedIn } = useUser();
+  const { user, isLoggedIn, checkAuthenticated } = useUser();
   const navigate = useNavigate();
   const pass = passingCondition(isLoggedIn());
   useEffect(() => {
@@ -24,6 +24,11 @@ function AuthGate({
       navigate(fallbackPath);
     }
   }, [pass]);
+  useEffect(() => {
+    if (user.sessionId === undefined || user.sessionId === '' ) {
+      checkAuthenticated();
+    }
+  }, [user.sessionId]);
   return pass ? children : <EmptyComponent />;
 }
 export default AuthGate;
