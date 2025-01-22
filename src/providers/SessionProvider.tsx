@@ -20,6 +20,7 @@ export type Headers = {
   'access-token'?: string;
   uid?: string;
   client?: string;
+  'session-id'?: string;
 };
 
 export type SessionProviderProps = {
@@ -51,6 +52,7 @@ export default function SessionProvider({ children }: SessionProviderProps) {
       'access-token': cookie['access-token'],
       uid: cookie.uid,
       client: cookie.client,
+      'session-id': cookie['session-id'],
     };
   };
 
@@ -61,6 +63,7 @@ export default function SessionProvider({ children }: SessionProviderProps) {
         'access-token': r.headers['access-token'],
         uid: r.headers.uid,
         client: r.headers.client,
+        'session-id': r.headers['session-id'],
       };
     } else {
       headersToSet = r;
