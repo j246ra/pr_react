@@ -37,7 +37,6 @@ const useAccount = () => {
       .signIn(email, password)
       .then(() => {
         notify.success(LOGIN.MESSAGE.SUCCESS);
-        navigate(ROUTES.LIFELOGS);
       })
       .catch((r) => errorNotification(r.messages, LOGIN.MESSAGE.ERROR.NORMAL));
   };
@@ -49,7 +48,6 @@ const useAccount = () => {
         clearUser();
         clearLifelog();
         removeHeaders();
-        navigate(ROUTES.LOGIN);
         notify.success(LOGOUT.MESSAGE.SUCCESS);
       })
       .catch((r) => {

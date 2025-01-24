@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useUser } from '@providers/UserProvider';
 import { useNavigate } from 'react-router';
-import notify from '@lib/toast';
+// import notify from '@lib/toast';
 import { EmptyComponent } from '@src/components/EmptyComponent';
 export type AuthGateProps = {
   children: React.ReactNode;
@@ -13,22 +13,20 @@ function AuthGate({
   children,
   passingCondition,
   fallbackPath,
-  fallbackMessage,
+  // fallbackMessage,
 }: AuthGateProps) {
-  const { user, isLoggedIn, checkAuthenticated } = useUser();
+  const { user, checkAuthenticated } = useUser();
   const navigate = useNavigate();
-  const pass = passingCondition(isLoggedIn());
-  useEffect(() => {
-    if (!pass) {
-      notify.error(fallbackMessage);
-      navigate(fallbackPath);
-    }
-  }, [pass]);
+  const pass = passingCondition((user.sessionId !== '' && user.sessionId !== undefined));
   useEffect(() => {
     if (user.sessionId === undefined || user.sessionId === '' ) {
       checkAuthenticated();
     }
-  }, [user.sessionId]);
+    if (!pass) {
+      // notify.error(fallbackMessage);
+      navigate(fallbackPath);
+    }
+  }, [user]);
   return pass ? children : <EmptyComponent />;
 }
 export default AuthGate;

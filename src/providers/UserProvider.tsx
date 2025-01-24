@@ -11,6 +11,7 @@ export type UserContextType = {
   user: User;
   createUser: (email: string) => void;
   updateUser: (email: string) => void;
+  updateSessionId: (sessionId: string) => void;
   clearUser: () => void;
   isLoggedIn: () => boolean;
   checkAuthenticated: () => void;
@@ -24,10 +25,10 @@ export type UserProviderProps = {
 };
 
 export default function UserProvider({ children }: UserProviderProps) {
-  const { initializeByUid, getHeaders, hasToken } = useSession();
+  const { initializeByUid, getHeaders } = useSession();
   const [user, setUser] = useState<User>({
-    email: getHeaders()?.uid || '',
-    sessionId: getHeaders()['session-id'] || '',
+    email: '',
+    sessionId: '',
   });
   const api = session(getHeaders)
 
@@ -40,23 +41,32 @@ export default function UserProvider({ children }: UserProviderProps) {
     setUser({ ...user, email });
   };
 
+  const updateSessionId = (sessionId: string) => {
+    setUser({ ...user, sessionId });
+  }
+
   const clearUser = () => {
     setUser({ email: '', sessionId: '' });
   };
 
   const isLoggedIn = (): boolean => {
-    return user.email !== '' && hasToken();
+    return (user.sessionId !== '' || user.sessionId !== undefined);
   };
 
   const checkAuthenticated = () => {
     api.validate().then((r) => {
-      if (r.status == 200) {
-        // TODO responseInterceptor に実装
-        setUser({...user, sessionId: r.headers['session-id']})
-      }else{
-        // TODO errorInterceptor に実装
-        throw new Error()
+      switch (r.status) {
+        case 401:
+          clearUser();
+          break;
+        case 200:
+          setUser({email: r.data['email'], sessionId: r.headers['session-id']});
+          break;
+        default:
+          throw new Error(r.statusText);
       }
+    }).catch((err) => {
+      console.log(err.message);
     })
   }
 
@@ -66,6 +76,7 @@ export default function UserProvider({ children }: UserProviderProps) {
         user,
         createUser,
         updateUser,
+        updateSessionId,
         clearUser,
         isLoggedIn,
         checkAuthenticated,

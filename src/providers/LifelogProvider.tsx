@@ -92,6 +92,13 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
 
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
     setHeaders(response);
+    const h = response.headers;
+    if (user.sessionId !== '' && user.sessionId !== h['session-id']){
+      clear();
+      setIsTerminated(true); // リロードされるまでのリクエストを抑制
+      window.location.reload();
+      throw new Error(API.MESSAGE.ERROR.INVALID_TOKEN);
+    }
     return response;
   };
 
@@ -120,13 +127,6 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   };
 
   const api = (defaultErrorMessage?: string) => {
-    if (getHeaders().uid !== user.email) {
-      clear();
-      setIsTerminated(true); // リロードされるまでのリクエストを抑制
-      window.location.reload();
-      throw new Error(API.MESSAGE.ERROR.INVALID_TOKEN);
-    }
-
     return lifelog(
       getHeaders,
       responseInterceptor,

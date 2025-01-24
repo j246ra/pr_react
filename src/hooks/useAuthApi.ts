@@ -1,7 +1,7 @@
 import { useSession } from '@providers/SessionProvider';
 import { useUser } from '@providers/UserProvider';
 import { AxiosError, AxiosResponse } from 'axios';
-import { COMMON } from '@lib/consts/common';
+import { API, COMMON } from '@lib/consts/common';
 import session from '@lib/api/session';
 
 type Data = {
@@ -15,12 +15,16 @@ export type AuthApiErrorResponse = {
 
 const useAuthApi = () => {
   const { getHeaders, setHeaders } = useSession();
-  const { user, updateUser } = useUser();
+  const { user, updateUser, updateSessionId } = useUser();
 
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
     setHeaders(response);
-    if (user.email !== response.headers['uid'])
+    if(user.sessionId === '' || user.sessionId === undefined) {
+      updateSessionId(response.headers['session-id']);
       updateUser(response.headers['uid']);
+    } else if( response.headers['session-id'] !== undefined && user.sessionId !== response.headers['session-id']){
+      throw new Error(API.MESSAGE.ERROR.INVALID_TOKEN);
+    }
     return response;
   };
   const errorInterceptor = (
