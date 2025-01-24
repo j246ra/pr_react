@@ -50,7 +50,7 @@ export default function UserProvider({ children }: UserProviderProps) {
   };
 
   const isLoggedIn = (): boolean => {
-    return (user.sessionId !== '' || user.sessionId !== undefined);
+    return (user.sessionId !== '' && user.sessionId !== undefined);
   };
 
   const checkAuthenticated = () => {

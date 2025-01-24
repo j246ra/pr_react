@@ -26,6 +26,7 @@ describe('useAuthApi', () => {
     mockUseUser.mockReturnValue({
       user: mockUser,
       updateUser: jest.fn(),
+      updateSessionId: jest.fn(),
     });
   });
   const createServer = (r: ResponseTransformer<DefaultBodyType, any>) => {
@@ -38,12 +39,14 @@ describe('useAuthApi', () => {
 
   describe('正常系', () => {
     const responseUid = 'test1@example.com';
+    const responseSessionId = 'session-id';
     const response = (): ResponseTransformer<DefaultBodyType, any> => {
       return compose(
         context.status(200),
         context.set('access-token', 'token'),
         context.set('uid', responseUid),
-        context.set('client', 'client')
+        context.set('client', 'client'),
+        context.set('session-id', responseSessionId),
       );
     };
     const server = createServer(response());
@@ -59,10 +62,12 @@ describe('useAuthApi', () => {
       await waitFor(() => {
         expect(mockUseSession().setHeaders).toHaveBeenCalled();
         expect(mockUseUser().updateUser).toHaveBeenCalled();
+        expect(mockUseUser().updateSessionId).toHaveBeenCalled();
       });
     });
     it('既存のユーザーの場合は updateUser は呼び出されない', async () => {
       mockUseUser().user.email = responseUid;
+      mockUseUser().user.sessionId = responseSessionId;
       const { result } = renderHook(useAuthApi);
       const { signIn } = result.current;
       act(() => {

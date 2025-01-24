@@ -23,6 +23,8 @@ const useAuthApi = () => {
       updateSessionId(response.headers['session-id']);
       updateUser(response.headers['uid']);
     } else if( response.headers['session-id'] !== undefined && user.sessionId !== response.headers['session-id']){
+      console.log(user.sessionId);
+      console.log(response.headers['session-id']);
       throw new Error(API.MESSAGE.ERROR.INVALID_TOKEN);
     }
     return response;

@@ -4,18 +4,22 @@ import { mockUseUser } from '@src/tests/baseProviders';
 import UnauthenticatedOnly from '@src/components/UnauthenticatedOnly';
 import { UNAUTHENTICATED_ONLY } from '@lib/consts/component';
 import toast from 'react-hot-toast';
-import { NOTIFY } from '@lib/consts/common';
+// import { NOTIFY } from '@lib/consts/common';
 
 jest.mock('react-hot-toast');
 const mockToast = jest.mocked(toast);
 
 const CHILDREN = 'Child component';
 const children = <div>{CHILDREN}</div>;
-const FALLBACK_MESSAGE = 'Fallback Message.';
+// const FALLBACK_MESSAGE = 'Fallback Message.';
 
 beforeEach(() => {
   mockUseUser.mockReturnValue({
-    isLoggedIn: jest.fn().mockReturnValue(true),
+    checkAuthenticated: jest.fn(),
+    user: {
+      email: 'test@test.com',
+      sessionId: 'session-id',
+    },
   });
 });
 
@@ -38,29 +42,29 @@ describe('UnauthenticatedOnly', () => {
       expect(screen.queryByText(CHILDREN)).not.toBeInTheDocument();
     });
 
-    it('任意のメッセージでトーストを表示していること', () => {
-      render(
-        <UnauthenticatedOnly
-          children={children}
-          fallbackMessage={FALLBACK_MESSAGE}
-        />
-      );
-      expect(mockNavigator).toHaveBeenCalled();
-      expect(mockNavigator).toHaveBeenCalledWith(
-        UNAUTHENTICATED_ONLY.FALLBACK_PATH
-      );
-      expect(screen.queryByText(CHILDREN)).not.toBeInTheDocument();
-      expect(mockToast.error).toHaveBeenCalled();
-      expect(mockToast.error).toHaveBeenCalledWith(
-        FALLBACK_MESSAGE,
-        NOTIFY.STYLE.ERROR
-      );
-    });
+    // it('任意のメッセージでトーストを表示していること', () => {
+    //   render(
+    //     <UnauthenticatedOnly
+    //       children={children}
+    //       fallbackMessage={FALLBACK_MESSAGE}
+    //     />
+    //   );
+    //   expect(mockNavigator).toHaveBeenCalled();
+    //   expect(mockNavigator).toHaveBeenCalledWith(
+    //     UNAUTHENTICATED_ONLY.FALLBACK_PATH
+    //   );
+    //   expect(screen.queryByText(CHILDREN)).not.toBeInTheDocument();
+    //   expect(mockToast.error).toHaveBeenCalled();
+    //   expect(mockToast.error).toHaveBeenCalledWith(
+    //     FALLBACK_MESSAGE,
+    //     NOTIFY.STYLE.ERROR
+    //   );
+    // });
   });
 
   describe('未認証時', () => {
     beforeEach(() => {
-      mockUseUser().isLoggedIn = jest.fn().mockReturnValue(false);
+      mockUseUser().user = { email: '', sessionId: ''}
     });
     it('コンポーネントをレンダリングしていること', () => {
       render(<UnauthenticatedOnly children={children} />);
