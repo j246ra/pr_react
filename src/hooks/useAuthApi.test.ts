@@ -24,9 +24,9 @@ describe('useAuthApi', () => {
       setHeaders: jest.fn(),
     });
     mockUseUser.mockReturnValue({
-      user: mockUser,
-      updateUser: jest.fn(),
-      updateSessionId: jest.fn(),
+      saveUser: jest.fn(),
+      sessionIdIsBlank: jest.fn().mockReturnValue(true),
+      validSessionId: jest.fn().mockReturnValue(false),
     });
   });
   const createServer = (r: ResponseTransformer<DefaultBodyType, any>) => {
@@ -46,14 +46,14 @@ describe('useAuthApi', () => {
         context.set('access-token', 'token'),
         context.set('uid', responseUid),
         context.set('client', 'client'),
-        context.set('session-id', responseSessionId),
+        context.set('session-id', responseSessionId)
       );
     };
     const server = createServer(response());
     beforeAll(() => server.listen());
     afterEach(() => server.resetHandlers());
     afterAll(() => server.close());
-    it('新しいユーザーの場合は updateUser が呼び出される', async () => {
+    it('新しいユーザーの場合は saveUser が呼び出される', async () => {
       const { result } = renderHook(useAuthApi);
       const { signIn } = result.current;
       act(() => {
@@ -61,13 +61,11 @@ describe('useAuthApi', () => {
       });
       await waitFor(() => {
         expect(mockUseSession().setHeaders).toHaveBeenCalled();
-        expect(mockUseUser().updateUser).toHaveBeenCalled();
-        expect(mockUseUser().updateSessionId).toHaveBeenCalled();
+        expect(mockUseUser().saveUser).toHaveBeenCalled();
       });
     });
-    it('既存のユーザーの場合は updateUser は呼び出されない', async () => {
-      mockUseUser().user.email = responseUid;
-      mockUseUser().user.sessionId = responseSessionId;
+    it('既存のユーザーの場合は saveUser は呼び出されない', async () => {
+      mockUseUser().sessionIdIsBlank = jest.fn().mockReturnValue(false);
       const { result } = renderHook(useAuthApi);
       const { signIn } = result.current;
       act(() => {
@@ -75,7 +73,7 @@ describe('useAuthApi', () => {
       });
       await waitFor(() => {
         expect(mockUseSession().setHeaders).toHaveBeenCalled();
-        expect(mockUseUser().updateUser).not.toHaveBeenCalled();
+        expect(mockUseUser().saveUser).not.toHaveBeenCalled();
       });
     });
   });

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useUser } from '@providers/UserProvider';
 import { useNavigate } from 'react-router';
-// import notify from '@lib/toast';
+import notify from '@lib/toast';
 import { EmptyComponent } from '@src/components/EmptyComponent';
 export type AuthGateProps = {
   children: React.ReactNode;
@@ -13,17 +13,19 @@ function AuthGate({
   children,
   passingCondition,
   fallbackPath,
-  // fallbackMessage,
+  fallbackMessage,
 }: AuthGateProps) {
   const { user, checkAuthenticated } = useUser();
   const navigate = useNavigate();
-  const pass = passingCondition((user.sessionId !== '' && user.sessionId !== undefined));
+  const pass = passingCondition(
+    user.sessionId !== '' && user.sessionId !== undefined
+  );
   useEffect(() => {
-    if (user.sessionId === undefined || user.sessionId === '' ) {
+    if (user.sessionId === undefined || user.sessionId === '') {
       checkAuthenticated();
     }
     if (!pass) {
-      // notify.error(fallbackMessage);
+      if (fallbackPath) notify.error(fallbackMessage);
       navigate(fallbackPath);
     }
   }, [user]);

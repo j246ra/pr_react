@@ -7,13 +7,21 @@ export type User = {
   sessionId: string;
 };
 
+const blankUser = (): User => {
+  return {
+    email: '',
+    sessionId: '',
+  };
+};
+
 export type UserContextType = {
   user: User;
   createUser: (email: string) => void;
-  updateUser: (email: string) => void;
-  updateSessionId: (sessionId: string) => void;
+  saveUser: (user: Partial<User>) => void;
   clearUser: () => void;
   isLoggedIn: () => boolean;
+  validSessionId: (validSessionId: string) => boolean;
+  sessionIdIsBlank: () => boolean;
   checkAuthenticated: () => void;
 };
 
@@ -26,59 +34,68 @@ export type UserProviderProps = {
 
 export default function UserProvider({ children }: UserProviderProps) {
   const { initializeByUid, getHeaders } = useSession();
-  const [user, setUser] = useState<User>({
-    email: '',
-    sessionId: '',
-  });
-  const api = session(getHeaders)
+  const [user, setUser] = useState<User>(blankUser());
+  const api = session(getHeaders);
 
   const createUser = (email: string) => {
-    setUser({ ...user, email });
+    setUser({ ...blankUser(), email });
     initializeByUid(email);
   };
 
-  const updateUser = (email: string) => {
-    setUser({ ...user, email });
+  const saveUser = (userData: Partial<User>) => {
+    setUser({ ...user, ...userData });
   };
 
-  const updateSessionId = (sessionId: string) => {
-    setUser({ ...user, sessionId });
-  }
-
   const clearUser = () => {
-    setUser({ email: '', sessionId: '' });
+    setUser(blankUser());
   };
 
   const isLoggedIn = (): boolean => {
-    return (user.sessionId !== '' && user.sessionId !== undefined);
+    return !sessionIdIsBlank();
+  };
+
+  const validSessionId = (validSessionId: string) => {
+    if (validSessionId === undefined) return false;
+    return user.sessionId === validSessionId;
+  };
+
+  const sessionIdIsBlank = () => {
+    return user.sessionId === '' || user.sessionId === undefined;
   };
 
   const checkAuthenticated = () => {
-    api.validate().then((r) => {
-      switch (r.status) {
-        case 401:
-          clearUser();
-          break;
-        case 200:
-          setUser({email: r.data['email'], sessionId: r.headers['session-id']});
-          break;
-        default:
-          throw new Error(r.statusText);
-      }
-    }).catch((err) => {
-      console.log(err.message);
-    })
-  }
+    api
+      .validate()
+      .then((r) => {
+        switch (r.status) {
+          case 401:
+            clearUser();
+            break;
+          case 200:
+            setUser({
+              email: r.data['email'],
+              sessionId: r.headers['session-id'],
+            });
+            break;
+          default:
+            throw new Error(r.statusText);
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  };
 
   return (
     <UserContext.Provider
       value={{
         user,
         createUser,
-        updateUser,
-        updateSessionId,
+        saveUser,
         clearUser,
         isLoggedIn,
+        validSessionId,
+        sessionIdIsBlank,
         checkAuthenticated,
       }}
     >

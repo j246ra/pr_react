@@ -15,16 +15,16 @@ export type AuthApiErrorResponse = {
 
 const useAuthApi = () => {
   const { getHeaders, setHeaders } = useSession();
-  const { user, updateUser, updateSessionId } = useUser();
+  const { saveUser, validSessionId, sessionIdIsBlank } = useUser();
 
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
     setHeaders(response);
-    if(user.sessionId === '' || user.sessionId === undefined) {
-      updateSessionId(response.headers['session-id']);
-      updateUser(response.headers['uid']);
-    } else if( response.headers['session-id'] !== undefined && user.sessionId !== response.headers['session-id']){
-      console.log(user.sessionId);
-      console.log(response.headers['session-id']);
+    if (sessionIdIsBlank()) {
+      saveUser({
+        email: response.headers['uid'],
+        sessionId: response.headers['session-id'],
+      });
+    } else if (validSessionId(response.headers['session-id'])) {
       throw new Error(API.MESSAGE.ERROR.INVALID_TOKEN);
     }
     return response;
