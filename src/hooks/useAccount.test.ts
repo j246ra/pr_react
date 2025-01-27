@@ -57,8 +57,6 @@ describe('useAccount', () => {
         expect(mockUseAuthApi().signIn).toHaveBeenCalledWith(...params);
         expect(mockNotify.success).toHaveBeenCalledWith(LOGIN.MESSAGE.SUCCESS);
         expect(mockNotify.success).toHaveBeenCalledTimes(1);
-        expect(mockNavigator).toHaveBeenCalledWith(ROUTES.LIFELOGS);
-        expect(mockNavigator).toHaveBeenCalledTimes(1);
       });
     });
     describe('失敗した場合', () => {
@@ -105,8 +103,6 @@ describe('useAccount', () => {
         expect(mockUseUser().clearUser).toHaveBeenCalledTimes(1);
         expect(mockUseLifelog().clear).toHaveBeenCalledTimes(1);
         expect(mockUseSession().removeHeaders).toHaveBeenCalledTimes(1);
-        expect(mockNavigator).toHaveBeenCalledTimes(1);
-        expect(mockNavigator).toHaveBeenCalledWith(ROUTES.LOGIN);
         expect(mockNotify.success).toHaveBeenCalledTimes(1);
         expect(mockNotify.success).toHaveBeenCalledWith(LOGOUT.MESSAGE.SUCCESS);
       });

@@ -15,14 +15,12 @@ const FALLBACK_MESSAGE = 'Fallback Message.';
 
 beforeEach(() => {
   mockUseUser.mockReturnValue({
-    isLoggedIn: jest.fn().mockReturnValue(true),
+    checkAuthenticated: jest.fn(),
+    sessionIdIsBlank: jest.fn().mockReturnValue(false),
   });
 });
 
 describe('AuthGate', () => {
-  beforeEach(() => {
-    mockUseUser().isLoggedIn = jest.fn().mockReturnValue(true);
-  });
   describe('通過条件を満たしているとき', () => {
     it('コンポーネントをレンダリングしていること', () => {
       render(
@@ -40,6 +38,7 @@ describe('AuthGate', () => {
   });
 
   describe('通過条件を満たしていないとき', () => {
+    mockUseUser.sessionIdIsBlank = jest.fn().mockReturnValue(true);
     it('リダイレクトされていること', () => {
       render(
         <AuthGate

@@ -15,7 +15,8 @@ const FALLBACK_MESSAGE = 'Fallback Message.';
 
 beforeEach(() => {
   mockUseUser.mockReturnValue({
-    isLoggedIn: jest.fn().mockReturnValue(true),
+    checkAuthenticated: jest.fn(),
+    sessionIdIsBlank: jest.fn().mockReturnValue(false),
   });
 });
 
@@ -60,7 +61,7 @@ describe('UnauthenticatedOnly', () => {
 
   describe('未認証時', () => {
     beforeEach(() => {
-      mockUseUser().isLoggedIn = jest.fn().mockReturnValue(false);
+      mockUseUser().sessionIdIsBlank.mockReturnValue(true);
     });
     it('コンポーネントをレンダリングしていること', () => {
       render(<UnauthenticatedOnly children={children} />);
