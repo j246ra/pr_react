@@ -15,17 +15,13 @@ function AuthGate({
   fallbackPath,
   fallbackMessage,
 }: AuthGateProps) {
-  const { user, checkAuthenticated } = useUser();
+  const { user, checkAuthenticated, sessionIdIsBlank } = useUser();
   const navigate = useNavigate();
-  const pass = passingCondition(
-    user.sessionId !== '' && user.sessionId !== undefined
-  );
+  const pass = passingCondition(!sessionIdIsBlank());
   useEffect(() => {
-    if (user.sessionId === undefined || user.sessionId === '') {
-      checkAuthenticated();
-    }
+    if (sessionIdIsBlank()) checkAuthenticated();
     if (!pass) {
-      if (fallbackPath) notify.error(fallbackMessage);
+      if (fallbackMessage) notify.error(fallbackMessage);
       navigate(fallbackPath);
     }
   }, [user]);

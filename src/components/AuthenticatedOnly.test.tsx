@@ -15,9 +15,7 @@ const mockToast = jest.mocked(toast);
 beforeEach(() => {
   mockUseUser.mockReturnValue({
     checkAuthenticated: jest.fn(),
-    user: {
-      sessionId: '',
-    },
+    sessionIdIsBlank: jest.fn().mockReturnValue(true),
   });
 });
 
@@ -54,7 +52,7 @@ describe('Certified', () => {
 
   describe('認証済みの時', () => {
     beforeEach(() => {
-      mockUseUser().user.sessionId = 'session-id';
+      mockUseUser().sessionIdIsBlank.mockReturnValue(false);
     });
     it('コンポーネントをレンダリングしていること', () => {
       render(<AuthenticatedOnly children={children} />);

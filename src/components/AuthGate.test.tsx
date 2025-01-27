@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { mockNavigator } from '@src/tests/common';
 import { mockUseUser } from '@src/tests/baseProviders';
-// import { NOTIFY } from '@lib/consts/common';
+import { NOTIFY } from '@lib/consts/common';
 import AuthGate from '@src/components/AuthGate';
 import toast from 'react-hot-toast';
 
@@ -15,21 +15,12 @@ const FALLBACK_MESSAGE = 'Fallback Message.';
 
 beforeEach(() => {
   mockUseUser.mockReturnValue({
-    changeAuthenticated: jest.fn(),
-    user: {
-      email: 'test@test.com',
-      sessionId: 'session-id',
-    }
+    checkAuthenticated: jest.fn(),
+    sessionIdIsBlank: jest.fn().mockReturnValue(false),
   });
 });
 
 describe('AuthGate', () => {
-  beforeEach(() => {
-    mockUseUser().user = {
-      email: 'test@test.com',
-      sessionId: 'session-id',
-    }
-  });
   describe('通過条件を満たしているとき', () => {
     it('コンポーネントをレンダリングしていること', () => {
       render(
@@ -47,7 +38,7 @@ describe('AuthGate', () => {
   });
 
   describe('通過条件を満たしていないとき', () => {
-    mockUseUser.user = {};
+    mockUseUser.sessionIdIsBlank = jest.fn().mockReturnValue(true);
     it('リダイレクトされていること', () => {
       render(
         <AuthGate
@@ -59,41 +50,41 @@ describe('AuthGate', () => {
       );
       expect(mockNavigator).toHaveBeenCalled();
       expect(mockNavigator).toHaveBeenCalledWith(FALLBACK_PATH);
-      // expect(mockToast.error).toHaveBeenCalled();
-      // expect(mockToast.error).toHaveBeenCalledWith(
-      //   FALLBACK_MESSAGE,
-      //   NOTIFY.STYLE.ERROR
-      // );
+      expect(mockToast.error).toHaveBeenCalled();
+      expect(mockToast.error).toHaveBeenCalledWith(
+        FALLBACK_MESSAGE,
+        NOTIFY.STYLE.ERROR
+      );
       expect(screen.queryByText(CHILDREN)).not.toBeInTheDocument();
     });
 
-    // it('fallbackMessage が空白の場合、トーストは非表示', () => {
-    //   render(
-    //     <AuthGate
-    //       children={children}
-    //       passingCondition={(isLoggedIn: boolean) => !isLoggedIn}
-    //       fallbackPath={FALLBACK_PATH}
-    //       fallbackMessage={''}
-    //     />
-    //   );
-    //   expect(mockNavigator).toHaveBeenCalled();
-    //   expect(mockNavigator).toHaveBeenCalledWith(FALLBACK_PATH);
-    //   expect(mockToast.error).not.toHaveBeenCalled();
-    //   expect(screen.queryByText(CHILDREN)).not.toBeInTheDocument();
-    // });
-    //
-    // it('fallbackMessage が undefinedの場合、トーストは非表示', () => {
-    //   render(
-    //     <AuthGate
-    //       children={children}
-    //       passingCondition={(isLoggedIn: boolean) => !isLoggedIn}
-    //       fallbackPath={FALLBACK_PATH}
-    //     />
-    //   );
-    //   expect(mockNavigator).toHaveBeenCalled();
-    //   expect(mockNavigator).toHaveBeenCalledWith(FALLBACK_PATH);
-    //   expect(mockToast.error).not.toHaveBeenCalled();
-    //   expect(screen.queryByText(CHILDREN)).not.toBeInTheDocument();
-    // });
+    it('fallbackMessage が空白の場合、トーストは非表示', () => {
+      render(
+        <AuthGate
+          children={children}
+          passingCondition={(isLoggedIn: boolean) => !isLoggedIn}
+          fallbackPath={FALLBACK_PATH}
+          fallbackMessage={''}
+        />
+      );
+      expect(mockNavigator).toHaveBeenCalled();
+      expect(mockNavigator).toHaveBeenCalledWith(FALLBACK_PATH);
+      expect(mockToast.error).not.toHaveBeenCalled();
+      expect(screen.queryByText(CHILDREN)).not.toBeInTheDocument();
+    });
+
+    it('fallbackMessage が undefinedの場合、トーストは非表示', () => {
+      render(
+        <AuthGate
+          children={children}
+          passingCondition={(isLoggedIn: boolean) => !isLoggedIn}
+          fallbackPath={FALLBACK_PATH}
+        />
+      );
+      expect(mockNavigator).toHaveBeenCalled();
+      expect(mockNavigator).toHaveBeenCalledWith(FALLBACK_PATH);
+      expect(mockToast.error).not.toHaveBeenCalled();
+      expect(screen.queryByText(CHILDREN)).not.toBeInTheDocument();
+    });
   });
 });
