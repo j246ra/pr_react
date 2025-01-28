@@ -4,6 +4,8 @@ import session from '@lib/api/session';
 import notify from '@lib/toast';
 import { API, COMMON } from '@lib/consts/common';
 import { AxiosError, AxiosResponse } from 'axios';
+import toast from '@lib/toast';
+import { LOGIN } from '@lib/consts/component';
 
 export type User = {
   email: string;
@@ -94,18 +96,23 @@ export default function UserProvider({ children }: UserProviderProps) {
 
   const checkAuthenticated = () => {
     if (user.sessionId !== null) return;
-    api.validate().then((r) => {
-      setHeaders(r);
-      if (sessionIdIsBlank()) {
-        saveUser({
-          email: r.headers['uid'],
-          sessionId: r.headers['session-id'],
-        });
-      } else if (validSessionId(r.headers['session-id'])) {
-        throw new Error(API.MESSAGE.ERROR.INVALID_TOKEN);
-      }
-      return r;
-    });
+    api
+      .validate()
+      .then((r) => {
+        setHeaders(r);
+        if (sessionIdIsBlank()) {
+          saveUser({
+            email: r.headers['uid'],
+            sessionId: r.headers['session-id'],
+          });
+        } else if (validSessionId(r.headers['session-id'])) {
+          throw new Error(API.MESSAGE.ERROR.INVALID_TOKEN);
+        }
+        return r;
+      })
+      .catch(() => {
+        toast.info(LOGIN.MESSAGE.ERROR.NEED_LOGIN);
+      });
   };
 
   return (

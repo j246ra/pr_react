@@ -68,6 +68,7 @@ export const LOGIN = {
     ERROR: {
       STATUS_401: '認証に失敗しました。IDとパスワードをご確認ください。',
       NORMAL: '認証に失敗しました。',
+      NEED_LOGIN: 'IDとパスワードを入力してログインしてください。',
     } as const,
   } as const,
   BUTTON: {
