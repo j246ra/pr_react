@@ -1,16 +1,21 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 import { useSession } from './SessionProvider';
 import session from '@lib/api/session';
+import notify from '@lib/toast';
+import { API, COMMON } from '@lib/consts/common';
+import { AxiosError, AxiosResponse } from 'axios';
+import toast from '@lib/toast';
+import { LOGIN } from '@lib/consts/component';
 
 export type User = {
   email: string;
-  sessionId: string;
+  sessionId: string | null;
 };
 
-const blankUser = (): User => {
+const defaultUser = (): User => {
   return {
     email: '',
-    sessionId: '',
+    sessionId: null,
   };
 };
 
@@ -33,12 +38,34 @@ export type UserProviderProps = {
 };
 
 export default function UserProvider({ children }: UserProviderProps) {
-  const { initializeByUid, getHeaders } = useSession();
-  const [user, setUser] = useState<User>(blankUser());
-  const api = session(getHeaders);
+  const { initializeByUid, getHeaders, setHeaders } = useSession();
+  const [user, setUser] = useState<User>(defaultUser());
+
+  const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
+    return response;
+  };
+  const errorInterceptor = (defaultErrorMessage?: string) => {
+    return (error: AxiosError) => {
+      switch (error.response?.status) {
+        case 401:
+          clearUser();
+          break;
+        case 500:
+        case 501:
+        case 502:
+        case 503:
+          notify.error(COMMON.MESSAGE.ERROR.STATUS_5XX);
+          break;
+        default:
+          notify.error(defaultErrorMessage || COMMON.MESSAGE.ERROR.GENERAL);
+      }
+      return Promise.reject(error);
+    };
+  };
+  const api = session(getHeaders, responseInterceptor, errorInterceptor());
 
   const createUser = (email: string) => {
-    setUser({ ...blankUser(), email });
+    setUser({ email, sessionId: '' });
     initializeByUid(email);
   };
 
@@ -47,7 +74,7 @@ export default function UserProvider({ children }: UserProviderProps) {
   };
 
   const clearUser = () => {
-    setUser(blankUser());
+    setUser({ ...defaultUser(), sessionId: '' });
   };
 
   const isLoggedIn = (): boolean => {
@@ -60,29 +87,31 @@ export default function UserProvider({ children }: UserProviderProps) {
   };
 
   const sessionIdIsBlank = () => {
-    return user.sessionId === '' || user.sessionId === undefined;
+    return (
+      user.sessionId === '' ||
+      user.sessionId === undefined ||
+      user.sessionId === null
+    );
   };
 
   const checkAuthenticated = () => {
+    if (user.sessionId !== null) return;
     api
       .validate()
       .then((r) => {
-        switch (r.status) {
-          case 401:
-            clearUser();
-            break;
-          case 200:
-            setUser({
-              email: r.data['email'],
-              sessionId: r.headers['session-id'],
-            });
-            break;
-          default:
-            throw new Error(r.statusText);
+        setHeaders(r);
+        if (sessionIdIsBlank()) {
+          saveUser({
+            email: r.headers['uid'],
+            sessionId: r.headers['session-id'],
+          });
+        } else if (validSessionId(r.headers['session-id'])) {
+          throw new Error(API.MESSAGE.ERROR.INVALID_TOKEN);
         }
+        return r;
       })
-      .catch((err) => {
-        throw new Error(err);
+      .catch(() => {
+        toast.info(LOGIN.MESSAGE.ERROR.NEED_LOGIN);
       });
   };
 

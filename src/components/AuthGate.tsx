@@ -19,7 +19,7 @@ function AuthGate({
   const navigate = useNavigate();
   const pass = passingCondition(!sessionIdIsBlank());
   useEffect(() => {
-    if (sessionIdIsBlank()) checkAuthenticated();
+    checkAuthenticated();
     if (!pass) {
       if (fallbackMessage) notify.error(fallbackMessage);
       navigate(fallbackPath);

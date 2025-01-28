@@ -4,6 +4,7 @@ import { NOTIFY as CONST } from '@lib/consts/common';
 export type Notify = {
   error: (message?: string) => void;
   success: (message?: string) => void;
+  info: (message?: string) => void;
 };
 
 const notify: Notify = {
@@ -13,6 +14,8 @@ const notify: Notify = {
   success: (message?: string) => {
     if (message) toast.success(message);
   },
+  info: (message?: string) => {
+    if (message) toast(message, { icon: 'ℹ️' });
+  },
 };
-
 export default notify;
