@@ -21,8 +21,8 @@ const useAuthApi = () => {
     setHeaders(response);
     if (sessionIdIsBlank()) {
       saveUser({
-        email: response.headers['uid'],
-        sessionId: response.headers['session-id'],
+        email: response.headers['uid'] || '',
+        sessionId: response.headers['session-id'] || '',
       });
     } else if (validSessionId(response.headers['session-id'])) {
       throw new Error(API.MESSAGE.ERROR.INVALID_TOKEN);

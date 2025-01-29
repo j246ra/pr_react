@@ -102,8 +102,8 @@ export default function UserProvider({ children }: UserProviderProps) {
         setHeaders(r);
         if (sessionIdIsBlank()) {
           saveUser({
-            email: r.headers['uid'],
-            sessionId: r.headers['session-id'],
+            email: r.headers['uid'] || '',
+            sessionId: r.headers['session-id'] || '',
           });
         } else if (validSessionId(r.headers['session-id'])) {
           throw new Error(API.MESSAGE.ERROR.INVALID_TOKEN);
