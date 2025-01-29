@@ -600,18 +600,16 @@ describe('LifelogProvider', () => {
 
     describe('sessionとuserのemail検証', () => {
       beforeEach(() => {
-        mockUseUser().user.email = 'yamada@example.com';
+        mockUseUser().user.sessionId = 'XxSession-IDxX';
         setUpMyLocation();
       });
       it('一致しない場合はuserを初期化してリロードする', () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });
 
         expect(result.current.lifelogs).toHaveLength(0);
-        act(() => {
-          expect(result.current.loadLogs('error message')).rejects.toThrow(
-            API.MESSAGE.ERROR.INVALID_TOKEN
-          );
-        });
+        expect(
+          act(() => result.current.loadLogs('error message'))
+        ).rejects.toThrow(API.MESSAGE.ERROR.INVALID_TOKEN);
       });
     });
   });

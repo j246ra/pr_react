@@ -37,7 +37,7 @@ describe('LifelogList component', () => {
     });
     mockUseUser.mockReturnValue({
       clearUser: jest.fn(),
-      updateUser: jest.fn(),
+      saveUser: jest.fn(),
     });
     mockUseLifelog.mockReturnValue({
       lifelogs: mockLogs,

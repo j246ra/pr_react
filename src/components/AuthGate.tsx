@@ -15,15 +15,16 @@ function AuthGate({
   fallbackPath,
   fallbackMessage,
 }: AuthGateProps) {
-  const { isLoggedIn } = useUser();
+  const { user, checkAuthenticated, sessionIdIsBlank } = useUser();
   const navigate = useNavigate();
-  const pass = passingCondition(isLoggedIn());
+  const pass = passingCondition(!sessionIdIsBlank());
   useEffect(() => {
+    checkAuthenticated();
     if (!pass) {
-      notify.error(fallbackMessage);
+      if (fallbackMessage) notify.error(fallbackMessage);
       navigate(fallbackPath);
     }
-  }, [pass]);
+  }, [user]);
   return pass ? children : <EmptyComponent />;
 }
 export default AuthGate;

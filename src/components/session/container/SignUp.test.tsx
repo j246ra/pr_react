@@ -23,7 +23,7 @@ describe('SignUp component', () => {
     mockUseUser.mockReturnValue({
       user: { email: 'junkichii@gmail.com' },
       createUser: jest.fn(),
-      updateUser: jest.fn(),
+      saveUser: jest.fn(),
       clearUser: jest.fn(),
       isLogin: jest.fn(),
     });
