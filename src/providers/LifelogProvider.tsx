@@ -88,12 +88,12 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   const [page, setPage] = useState(0);
   const [isTerminated, setIsTerminated] = useState(false);
   const { getHeaders, setHeaders } = useSession();
-  const { user, clearUser } = useUser();
+  const { user, clearUser, sessionIdIsBlank } = useUser();
 
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
     setHeaders(response);
     const h = response.headers;
-    if (user.sessionId !== '' && user.sessionId !== h['session-id']){
+    if (!sessionIdIsBlank() && user.sessionId !== h['session-id']) {
       clear();
       setIsTerminated(true); // リロードされるまでのリクエストを抑制
       window.location.reload();

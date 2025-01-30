@@ -44,6 +44,7 @@ describe('LifelogProvider', () => {
     mockUseUser.mockReturnValue({
       user: { email: 'test@example.com' },
       clearUser: mockClearUser,
+      sessionIdIsBlank: jest.fn().mockReturnValue(false),
     });
     notifySpy = jest.spyOn(notify, 'error');
   });
