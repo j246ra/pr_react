@@ -2,21 +2,14 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router';
 import PasswordEdit from './PasswordEdit';
-import { useSession } from '@providers/SessionProvider';
 import { PASSWORD_EDIT } from '@lib/consts/component';
 import useAccount from '@src/hooks/useAccount';
 
-jest.mock('@providers/SessionProvider');
-const mockUseSession = useSession as jest.MockedFunction<any>;
 jest.mock('@src/hooks/useAccount');
 const mockUseAccount = useAccount as jest.MockedFunction<any>;
 
 describe('PasswordEdit component', () => {
   beforeEach(() => {
-    mockUseSession.mockReturnValue({
-      setHeaders: jest.fn(),
-    });
-
     mockUseAccount.mockReturnValue({
       passwordChange: jest.fn(),
     });

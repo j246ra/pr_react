@@ -28,7 +28,6 @@ describe('useAccount', () => {
   beforeEach(() => {
     mockUseSession.mockReturnValue({
       removeHeaders: jest.fn(),
-      setHeaders: jest.fn(),
     });
     mockUseUser.mockReturnValue({
       createUser: jest.fn(),

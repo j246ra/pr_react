@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
-import { useSession } from './SessionProvider';
+import { Headers, useSession } from './SessionProvider';
 import session from '@lib/api/session';
 import notify from '@lib/toast';
 import { API, COMMON } from '@lib/consts/common';
@@ -21,6 +21,7 @@ const defaultUser = (): User => {
 
 export type UserContextType = {
   user: User;
+  getHeaders: () => Headers;
   createUser: (email: string) => void;
   saveUser: (user: Partial<User>) => void;
   clearUser: () => void;
@@ -38,7 +39,7 @@ export type UserProviderProps = {
 };
 
 export default function UserProvider({ children }: UserProviderProps) {
-  const { initializeByUid, getHeaders, setHeaders } = useSession();
+  const { getHeaders: cookieHeaders } = useSession();
   const [user, setUser] = useState<User>(defaultUser());
 
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
@@ -62,11 +63,21 @@ export default function UserProvider({ children }: UserProviderProps) {
       return Promise.reject(error);
     };
   };
+
+  const getHeaders = (): Headers => {
+    const cookie = cookieHeaders() as Headers;
+    return {
+      'access-token': cookie['access-token'],
+      uid: cookie.uid,
+      client: cookie.client,
+      'session-id': user.sessionId || undefined,
+    };
+  };
+
   const api = session(getHeaders, responseInterceptor, errorInterceptor());
 
   const createUser = (email: string) => {
     setUser({ email, sessionId: '' });
-    initializeByUid(email);
   };
 
   const saveUser = (userData: Partial<User>) => {
@@ -99,7 +110,6 @@ export default function UserProvider({ children }: UserProviderProps) {
     api
       .validate()
       .then((r) => {
-        setHeaders(r);
         if (sessionIdIsBlank()) {
           saveUser({
             email: r.headers['uid'] || '',
@@ -119,6 +129,7 @@ export default function UserProvider({ children }: UserProviderProps) {
     <UserContext.Provider
       value={{
         user,
+        getHeaders,
         createUser,
         saveUser,
         clearUser,

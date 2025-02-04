@@ -1,5 +1,4 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
-import { useSession } from '@providers/SessionProvider';
 import { useUser } from '@providers/UserProvider';
 import { AxiosError, AxiosResponse } from 'axios';
 import lifelog, { CreatParams, UpdateParams } from '@lib/api/lifelog';
@@ -87,11 +86,9 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   const [searchWord, setSearchWord] = useState('');
   const [page, setPage] = useState(0);
   const [isTerminated, setIsTerminated] = useState(false);
-  const { getHeaders, setHeaders } = useSession();
-  const { user, clearUser, sessionIdIsBlank } = useUser();
+  const { user, getHeaders, clearUser, sessionIdIsBlank } = useUser();
 
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
-    setHeaders(response);
     const h = response.headers;
     if (!sessionIdIsBlank() && user.sessionId !== h['session-id']) {
       clear();

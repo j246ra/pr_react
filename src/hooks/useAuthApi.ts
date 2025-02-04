@@ -14,11 +14,10 @@ export type AuthApiErrorResponse = {
 };
 
 const useAuthApi = () => {
-  const { getHeaders, setHeaders } = useSession();
+  const { getHeaders } = useSession();
   const { saveUser, validSessionId, sessionIdIsBlank } = useUser();
 
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
-    setHeaders(response);
     if (sessionIdIsBlank()) {
       saveUser({
         email: response.headers['uid'] || '',
