@@ -16,9 +16,9 @@ export const blank = (): Lifelog => {
 };
 
 export const add = (logs: Lifelog[], addLogs: Lifelog[]) => {
-  for(const addLog of addLogs){
+  for (const addLog of addLogs) {
     const index = logs.findIndex((log) => log.id === addLog.id);
-    if(index >= 0) logs[index] = addLog;
+    if (index >= 0) logs[index] = addLog;
     else logs.unshift(addLog);
   }
   return logs;

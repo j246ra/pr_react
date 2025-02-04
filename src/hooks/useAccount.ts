@@ -73,7 +73,11 @@ const useAccount = () => {
       });
   };
 
-  const passwordChange = (password: string, passwordConfirmation: string, headers: Headers) => {
+  const passwordChange = (
+    password: string,
+    passwordConfirmation: string,
+    headers: Headers
+  ) => {
     if (passwordEditValidator(password, passwordConfirmation).isInvalid) return;
     api
       .passwordReset(password, passwordConfirmation, headers)

@@ -62,7 +62,7 @@ describe('PasswordEdit component', () => {
       expect(mockUseAccount().passwordChange).toHaveBeenCalledWith(
         'newpassword',
         'newpassword',
-        {'access-token': undefined, uid: undefined, client: undefined },
+        { 'access-token': undefined, uid: undefined, client: undefined }
       );
     });
   });
