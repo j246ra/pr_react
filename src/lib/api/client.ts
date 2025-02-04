@@ -16,6 +16,7 @@ export const createClient = () => {
   return applyCaseMiddleware(
     axios.create({
       baseURL: `${baseUrl}/${API.VERSION}`,
+      withCredentials: true,
     }),
     options
   );
