@@ -15,13 +15,13 @@ export default function PasswordEdit() {
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [params] = useSearchParams();
-  const [headers, setHeaders] = useState<Headers>({})
+  const [headers, setHeaders] = useState<Headers>({});
   useEffect(() => {
     setHeaders({
       'access-token': params.get('access-token') || undefined,
       client: params.get('client') || undefined,
       uid: params.get('uid') || undefined,
-    })
+    });
   }, [params]);
 
   const handlePasswordConfirmation = (e: FormEvent) => {

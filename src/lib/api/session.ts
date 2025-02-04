@@ -38,7 +38,11 @@ export default function session(
       email,
       redirect_url: `${Defs.COMMON.APP_URL.HOST_URL}${Defs.COMMON.APP_URL.BASE_DIR}/password_edit`,
     });
-  const passwordReset = (password: string, passwordConfirmation: string, headers: Headers) =>
+  const passwordReset = (
+    password: string,
+    passwordConfirmation: string,
+    headers: Headers
+  ) =>
     client.put(
       ENDPOINT.PASSWORD_RESET,
       { password, password_confirmation: passwordConfirmation },

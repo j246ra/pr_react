@@ -4,32 +4,32 @@ import { days } from '@lib/dateUtil';
 import { checkTimeWithinRange } from '@src/tests/jestHelper';
 
 describe('lifelogUtil', () => {
-  describe('add', ()=>{
+  describe('add', () => {
     const { add } = lifelogUtil;
     it('Lifelog 配列が追加されていること', () => {
       const logs = lifelogs(5);
       const addLogs = lifelogs(5, 5);
       const mergedLogs = add(logs, addLogs);
       expect(mergedLogs.length).toEqual(10);
-    })
+    });
 
-    it('idが重複する場合は上書きしていること',() => {
+    it('idが重複する場合は上書きしていること', () => {
       const logs = lifelogs(5);
       const addLogs = lifelogs(1, 5);
       addLogs[0].id = logs[1].id;
       const mergedLogs = add(logs, addLogs);
       expect(mergedLogs.length).toEqual(5);
       expect(mergedLogs[1]).toEqual(addLogs[0]);
-    })
+    });
 
     it('0 件の場合でも正常に処理されていること', () => {
       const logs = lifelogs(5);
-      const mergedLogs = add(logs,[]);
+      const mergedLogs = add(logs, []);
       expect(mergedLogs.length).toEqual(5);
       expect(mergedLogs).toEqual(logs);
     });
   });
-  
+
   describe('sort', () => {
     const { sort } = lifelogUtil;
     it('Lifelog 配列を startedAt で降順に並べ替える', () => {

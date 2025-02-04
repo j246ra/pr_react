@@ -20,7 +20,7 @@ import { useLifelog } from '@providers/LifelogProvider';
 
 const useAccount = () => {
   const { createUser, clearUser } = useUser();
-  const { setHeaders, removeHeaders } = useSession();
+  const { removeHeaders } = useSession();
 
   const { clear: clearLifelog } = useLifelog();
   const navigate = useNavigate();
@@ -73,12 +73,15 @@ const useAccount = () => {
       });
   };
 
-  const passwordChange = (password: string, passwordConfirmation: string, headers: Headers) => {
+  const passwordChange = (
+    password: string,
+    passwordConfirmation: string,
+    headers: Headers
+  ) => {
     if (passwordEditValidator(password, passwordConfirmation).isInvalid) return;
     api
       .passwordReset(password, passwordConfirmation, headers)
       .then(() => {
-        setHeaders(headers);
         notify.success(PASSWORD_EDIT.MESSAGE.SUCCESS);
         navigate('/');
       })

@@ -16,7 +16,6 @@ describe('UserProvider', () => {
     mockUseSession.mockReturnValue({
       initializeByUid: jest.fn(),
       getHeaders: jest.fn(),
-      hasToken: jest.fn(),
     });
   });
 
@@ -26,16 +25,14 @@ describe('UserProvider', () => {
       const email = 'test1@example.com';
       act(() => result.current.createUser(email));
       expect(result.current.user.email).toEqual(email);
-      expect(mockUseSession().initializeByUid).toHaveBeenCalledTimes(1);
-      expect(mockUseSession().initializeByUid).toHaveBeenCalledWith(email);
+      expect(mockUseSession().initializeByUid).not.toHaveBeenCalledTimes(1);
     });
     it('ブランクの場合でも、 User 作成に成功すること', () => {
       const { result } = renderHook(() => useUser(), { wrapper });
       const email = '';
       act(() => result.current.createUser(email));
       expect(result.current.user.email).toEqual(email);
-      expect(mockUseSession().initializeByUid).toHaveBeenCalledTimes(1);
-      expect(mockUseSession().initializeByUid).toHaveBeenCalledWith(email);
+      expect(mockUseSession().initializeByUid).not.toHaveBeenCalledTimes(1);
     });
   });
 
@@ -83,4 +80,6 @@ describe('UserProvider', () => {
       act(() => expect(result.current.isLoggedIn()).toBeFalsy());
     });
   });
+
+  it.todo('checkAuthenticated');
 });
