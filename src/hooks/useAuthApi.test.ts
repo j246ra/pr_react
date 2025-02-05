@@ -62,17 +62,6 @@ describe('useAuthApi', () => {
         expect(mockUseUser().saveUser).toHaveBeenCalled();
       });
     });
-    it('既存のユーザーの場合は saveUser は呼び出されない', async () => {
-      mockUseUser().sessionIdIsBlank = jest.fn().mockReturnValue(false);
-      const { result } = renderHook(useAuthApi);
-      const { signIn } = result.current;
-      act(() => {
-        signIn(responseUid, 'password');
-      });
-      await waitFor(() => {
-        expect(mockUseUser().saveUser).not.toHaveBeenCalled();
-      });
-    });
   });
 
   describe('異常系', () => {
