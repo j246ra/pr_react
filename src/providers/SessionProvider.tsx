@@ -27,7 +27,8 @@ const defaultOptions = {
 };
 
 export default function SessionProvider({ children }: SessionProviderProps) {
-  const [cookies, removeCookie] = useCookies(['token']);
+  // eslint-disable-next-line
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
 
   const getHeaders = (): Headers => {
     const cookie = { ...(cookies.token as Headers) };
@@ -39,7 +40,7 @@ export default function SessionProvider({ children }: SessionProviderProps) {
     };
   };
 
-  const removeHeaders = (): void => removeCookie('token', {});
+  const removeHeaders = (): void => removeCookie('token');
 
   return (
     <CookiesProvider defaultSetOptions={defaultOptions}>

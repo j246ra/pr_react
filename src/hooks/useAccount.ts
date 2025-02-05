@@ -15,7 +15,7 @@ import { Headers, useSession } from '@providers/SessionProvider';
 import accountUpdateValidator from '@validators/accountUpdate';
 import passwordEditValidator from '@validators/passwordEdit';
 import signUpValidator from '@validators/signUp';
-import useAuthApi from '@src/hooks/useAuthApi';
+import useAuthApi, { AuthApiErrorResponse } from '@src/hooks/useAuthApi';
 import { useLifelog } from '@providers/LifelogProvider';
 
 const useAccount = () => {
@@ -26,9 +26,16 @@ const useAccount = () => {
   const navigate = useNavigate();
   const api = useAuthApi();
 
-  const errorNotification = (messages: string[], defaultMessage: string) => {
-    if (messages.length === 0) notify.error(defaultMessage);
-    else messages.map((message) => notify.error(message));
+  const errorNotification = (
+    e: AuthApiErrorResponse | Error,
+    defaultMessage: string
+  ) => {
+    if ((e as AuthApiErrorResponse).messages) {
+      const messages = (e as AuthApiErrorResponse).messages;
+      if (messages.length === 0) notify.error(defaultMessage);
+      else messages.map((message) => notify.error(message));
+    } else if ((e as Error).message) notify.error((e as Error).message);
+    else notify.error(defaultMessage);
   };
 
   const login = (email: string, password: string) => {
@@ -38,7 +45,7 @@ const useAccount = () => {
       .then(() => {
         notify.success(LOGIN.MESSAGE.SUCCESS);
       })
-      .catch((r) => errorNotification(r.messages, LOGIN.MESSAGE.ERROR.NORMAL));
+      .catch((r) => errorNotification(r, LOGIN.MESSAGE.ERROR.NORMAL));
   };
 
   const logout = () => {
@@ -51,7 +58,7 @@ const useAccount = () => {
         notify.success(LOGOUT.MESSAGE.SUCCESS);
       })
       .catch((r) => {
-        errorNotification(r.messages, LOGOUT.MESSAGE.ERROR);
+        errorNotification(r, LOGOUT.MESSAGE.ERROR);
       });
   };
 
@@ -69,7 +76,7 @@ const useAccount = () => {
         navigate('/');
       })
       .catch((r) => {
-        errorNotification(r.messages, ACCOUNT_UPDATE.MESSAGE.ERROR);
+        errorNotification(r, ACCOUNT_UPDATE.MESSAGE.ERROR);
       });
   };
 
@@ -86,7 +93,7 @@ const useAccount = () => {
         navigate('/');
       })
       .catch((r) => {
-        errorNotification(r.messages, PASSWORD_EDIT.MESSAGE.ERROR);
+        errorNotification(r, PASSWORD_EDIT.MESSAGE.ERROR);
       });
   };
 
@@ -102,7 +109,7 @@ const useAccount = () => {
           notify.success(PASSWORD_FORGET.MESSAGE.SUCCESS);
           navigate(ROUTES.RESET_MAIL_SEND_SUCCESS);
         } else {
-          errorNotification(r.messages, PASSWORD_FORGET.MESSAGE.ERROR);
+          errorNotification(r, PASSWORD_FORGET.MESSAGE.ERROR);
         }
       });
   };
@@ -116,7 +123,7 @@ const useAccount = () => {
         navigate(ROUTES.LIFELOGS);
       })
       .catch((r) => {
-        errorNotification(r.messages, SIGN_UP.MESSAGE.ERROR);
+        errorNotification(r, SIGN_UP.MESSAGE.ERROR);
         clearUser();
         removeHeaders();
       });
@@ -132,9 +139,7 @@ const useAccount = () => {
         navigate(ROUTES.LOGIN);
         notify.success(ACCOUNT_DELETE.MESSAGE.SUCCESS);
       })
-      .catch((r) =>
-        errorNotification(r.messages, ACCOUNT_DELETE.MESSAGE.ERROR)
-      );
+      .catch((r) => errorNotification(r, ACCOUNT_DELETE.MESSAGE.ERROR));
   };
 
   return {

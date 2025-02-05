@@ -62,7 +62,7 @@ describe('useAccount', () => {
       it('エラーメッセージがあればそれを通知している', async () => {
         mockUseAuthApi().signIn.mockRejectedValue({
           status: 401,
-          messages: ['error message'],
+          message: 'error message',
         });
         const { result } = renderHook(useAccount);
         result.current.login(...params);
@@ -71,6 +71,22 @@ describe('useAccount', () => {
           expect(mockUseAuthApi().signIn).toHaveBeenCalledWith(...params);
           expect(mockNotify.error).toHaveBeenCalledTimes(1);
           expect(mockNotify.error).toHaveBeenCalledWith('error message');
+          expect(mockNavigator).not.toHaveBeenCalled();
+        });
+      });
+      it('エラーメッセージが複数あればすべて通知している', async () => {
+        mockUseAuthApi().signIn.mockRejectedValue({
+          status: 401,
+          messages: ['error message 1', 'error message 2'],
+        });
+        const { result } = renderHook(useAccount);
+        result.current.login(...params);
+        await waitFor(() => {
+          expect(mockUseAuthApi().signIn).toHaveBeenCalledTimes(1);
+          expect(mockUseAuthApi().signIn).toHaveBeenCalledWith(...params);
+          expect(mockNotify.error).toHaveBeenCalledTimes(2);
+          expect(mockNotify.error).toHaveBeenCalledWith('error message 1');
+          expect(mockNotify.error).toHaveBeenCalledWith('error message 2');
           expect(mockNavigator).not.toHaveBeenCalled();
         });
       });
