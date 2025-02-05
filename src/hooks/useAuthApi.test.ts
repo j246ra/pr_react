@@ -1,6 +1,5 @@
 import { mockUseSession, mockUseUser } from '@src/tests/baseProviders';
 import { setupServer } from 'msw/node';
-import notify from '@lib/toast';
 import {
   compose,
   context,
@@ -12,10 +11,11 @@ import Defs from '@lib/consts';
 import { baseUrl } from '@lib/api/client';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import useAuthApi from '@src/hooks/useAuthApi';
+import { COMMON } from '@lib/consts/common';
 
-let mockUser = { email: 'def@example.com' };
+let mockUser = { email: 'def@example.com', sessionId: '' };
 
-const URL = `${baseUrl}/${Defs.API.VERSION}${Defs.API.SESSION.ENDPOINT.SIGN_IN}`;
+const URL = `${baseUrl}/${Defs.API.VERSION}${Defs.API.SESSION.ENDPOINT.USER}`;
 
 describe('useAuthApi', () => {
   beforeEach(() => {
@@ -30,21 +30,17 @@ describe('useAuthApi', () => {
   });
   const createServer = (r: ResponseTransformer<DefaultBodyType, any>) => {
     return setupServer(
-      rest.post(URL, (req, res) => {
+      rest.put(URL, (req, res) => {
         return res(r);
       })
     );
   };
 
   describe('正常系', () => {
-    const responseUid = 'test1@example.com';
     const responseSessionId = 'session-id';
     const response = (): ResponseTransformer<DefaultBodyType, any> => {
       return compose(
         context.status(200),
-        context.set('access-token', 'token'),
-        context.set('uid', responseUid),
-        context.set('client', 'client'),
         context.set('session-id', responseSessionId)
       );
     };
@@ -52,11 +48,23 @@ describe('useAuthApi', () => {
     beforeAll(() => server.listen());
     afterEach(() => server.resetHandlers());
     afterAll(() => server.close());
+    it('既存ユーザーの場合は validSessionId が呼び出される', async () => {
+      mockUseUser().sessionIdIsBlank.mockReturnValue(false);
+      mockUseUser().validSessionId.mockReturnValue(true);
+      const { result } = renderHook(useAuthApi);
+      const { updateUser } = result.current;
+      act(() => {
+        updateUser({ email: 'test@example.com', password: 'password' });
+      });
+      await waitFor(() => {
+        expect(mockUseUser().validSessionId).toHaveBeenCalled();
+      });
+    });
     it('新しいユーザーの場合は saveUser が呼び出される', async () => {
       const { result } = renderHook(useAuthApi);
-      const { signIn } = result.current;
+      const { updateUser } = result.current;
       act(() => {
-        signIn('email', 'password');
+        updateUser({ email: 'email', password: 'password' });
       });
       await waitFor(() => {
         expect(mockUseUser().saveUser).toHaveBeenCalled();
@@ -65,13 +73,6 @@ describe('useAuthApi', () => {
   });
 
   describe('異常系', () => {
-    let notifySpy: jest.SpyInstance<unknown>;
-    beforeEach(() => {
-      notifySpy = jest.spyOn(notify, 'error');
-    });
-    afterEach(() => {
-      notifySpy.mockRestore();
-    });
     describe('response が存在する場合', () => {
       const response = (): ResponseTransformer<DefaultBodyType, any> => {
         return compose(
@@ -88,7 +89,10 @@ describe('useAuthApi', () => {
 
       it('メッセージが通知されている', async () => {
         const { result } = renderHook(useAuthApi);
-        const res = result.current.signIn(mockUser.email, 'password');
+        const res = result.current.updateUser({
+          email: mockUser.email,
+          password: 'password',
+        });
         await waitFor(() => {
           expect(res).rejects.toEqual({
             status: 400,
@@ -99,8 +103,8 @@ describe('useAuthApi', () => {
     });
     describe('response が存在しない場合', () => {
       const server = setupServer(
-        rest.post(URL, (req, res) => {
-          return res.networkError('Failed to connect.');
+        rest.put(URL, (req, res) => {
+          return res.networkError('');
         })
       );
       beforeAll(() => server.listen());
@@ -108,13 +112,14 @@ describe('useAuthApi', () => {
       afterAll(() => server.close());
       it('固定エラーメッセージが通知されている', async () => {
         const { result } = renderHook(useAuthApi);
-        const res = result.current.signIn(mockUser.email, 'password');
+        const res = result.current.updateUser({
+          email: mockUser.email,
+          password: 'password',
+        });
         await waitFor(() => {
-          expect(res).rejects.toHaveProperty('status', undefined);
-          // expect(notifySpy).toHaveBeenCalled();
-          // expect(notifySpy).toHaveBeenCalledWith(
-          //   expect.stringMatching(MESSAGE.ERROR.GENERAL)
-          // );
+          expect(res).rejects.toHaveProperty('messages', [
+            `${COMMON.MESSAGE.ERROR.GENERAL}(Network Error)`,
+          ]);
         });
       });
     });
