@@ -1,7 +1,7 @@
 import { useSession } from '@providers/SessionProvider';
 import { useUser } from '@providers/UserProvider';
 import { AxiosError, AxiosResponse } from 'axios';
-import { API, COMMON } from '@lib/consts/common';
+import { API, COMMON, CONST } from '@lib/consts/common';
 import session from '@lib/api/session';
 
 type Data = {
@@ -14,17 +14,27 @@ export type AuthApiErrorResponse = {
 };
 
 const useAuthApi = () => {
-  const { getHeaders, setHeaders } = useSession();
+  const { getHeaders } = useSession();
   const { saveUser, validSessionId, sessionIdIsBlank } = useUser();
 
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
-    setHeaders(response);
+    switch (response.config.url) {
+      case CONST.API.SESSION.ENDPOINT.SIGN_OUT:
+      case CONST.API.SESSION.ENDPOINT.PASSWORD_RESET:
+        return response;
+      case CONST.API.SESSION.ENDPOINT.USER:
+        if (
+          response.config.method === 'delete' ||
+          response.config.method === 'DELETE'
+        )
+          return response;
+    }
     if (sessionIdIsBlank()) {
       saveUser({
         email: response.headers['uid'] || '',
         sessionId: response.headers['session-id'] || '',
       });
-    } else if (validSessionId(response.headers['session-id'])) {
+    } else if (!validSessionId(response.headers['session-id'])) {
       throw new Error(API.MESSAGE.ERROR.INVALID_TOKEN);
     }
     return response;

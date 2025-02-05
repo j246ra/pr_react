@@ -28,7 +28,6 @@ describe('useAccount', () => {
   beforeEach(() => {
     mockUseSession.mockReturnValue({
       removeHeaders: jest.fn(),
-      setHeaders: jest.fn(),
     });
     mockUseUser.mockReturnValue({
       createUser: jest.fn(),
@@ -172,7 +171,11 @@ describe('useAccount', () => {
   });
 
   describe('passwordChange', () => {
-    const headers = {'access-token': 'token123', uid: 'uid123', client: 'client123'};
+    const headers = {
+      'access-token': 'token123',
+      uid: 'uid123',
+      client: 'client123',
+    };
     const password = 'password-0123';
     it('リクエスト成功時', async () => {
       const { result } = renderHook(useAccount);

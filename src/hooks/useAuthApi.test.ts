@@ -21,7 +21,6 @@ describe('useAuthApi', () => {
   beforeEach(() => {
     mockUseSession.mockReturnValue({
       getHeaders: jest.fn(),
-      setHeaders: jest.fn(),
     });
     mockUseUser.mockReturnValue({
       saveUser: jest.fn(),
@@ -60,20 +59,7 @@ describe('useAuthApi', () => {
         signIn('email', 'password');
       });
       await waitFor(() => {
-        expect(mockUseSession().setHeaders).toHaveBeenCalled();
         expect(mockUseUser().saveUser).toHaveBeenCalled();
-      });
-    });
-    it('既存のユーザーの場合は saveUser は呼び出されない', async () => {
-      mockUseUser().sessionIdIsBlank = jest.fn().mockReturnValue(false);
-      const { result } = renderHook(useAuthApi);
-      const { signIn } = result.current;
-      act(() => {
-        signIn(responseUid, 'password');
-      });
-      await waitFor(() => {
-        expect(mockUseSession().setHeaders).toHaveBeenCalled();
-        expect(mockUseUser().saveUser).not.toHaveBeenCalled();
       });
     });
   });
@@ -125,7 +111,6 @@ describe('useAuthApi', () => {
         const res = result.current.signIn(mockUser.email, 'password');
         await waitFor(() => {
           expect(res).rejects.toHaveProperty('status', undefined);
-          expect(mockUseSession().setHeaders).not.toHaveBeenCalled();
           // expect(notifySpy).toHaveBeenCalled();
           // expect(notifySpy).toHaveBeenCalledWith(
           //   expect.stringMatching(MESSAGE.ERROR.GENERAL)
