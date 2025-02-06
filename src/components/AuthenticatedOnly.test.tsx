@@ -5,17 +5,23 @@ import AuthenticatedOnly from '@src/components/AuthenticatedOnly';
 import toast from 'react-hot-toast';
 import { AUTHENTICATED_ONLY } from '@lib/consts/component';
 import { NOTIFY } from '@lib/consts/common';
+import useAccount from '@src/hooks/useAccount';
 
 const CHILDREN = 'Child component';
 const children = <div>{CHILDREN}</div>;
+
+jest.mock('@src/hooks/useAccount');
+const mockUseAccount = useAccount as jest.MockedFunction<any>;
 
 jest.mock('react-hot-toast');
 const mockToast = jest.mocked(toast);
 
 beforeEach(() => {
   mockUseUser.mockReturnValue({
-    checkAuthenticated: jest.fn(),
     sessionIdIsBlank: jest.fn().mockReturnValue(true),
+  });
+  mockUseAccount.mockReturnValue({
+    checkAuthenticated: jest.fn(),
   });
 });
 
