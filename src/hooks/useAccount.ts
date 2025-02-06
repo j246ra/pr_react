@@ -17,9 +17,10 @@ import passwordEditValidator from '@validators/passwordEdit';
 import signUpValidator from '@validators/signUp';
 import useAuthApi, { AuthApiErrorResponse } from '@src/hooks/useAuthApi';
 import { useLifelog } from '@providers/LifelogProvider';
+import toast from '@lib/toast';
 
 const useAccount = () => {
-  const { createUser, clearUser } = useUser();
+  const { user, createUser, clearUser } = useUser();
   const { removeHeaders } = useSession();
 
   const { clear: clearLifelog } = useLifelog();
@@ -142,6 +143,13 @@ const useAccount = () => {
       .catch((r) => errorNotification(r, ACCOUNT_DELETE.MESSAGE.ERROR));
   };
 
+  const checkAuthenticated = () => {
+    if (user.sessionId !== null) return;
+    api.validate().catch(() => {
+      toast.info(LOGIN.MESSAGE.ERROR.NEED_LOGIN);
+    });
+  };
+
   return {
     login,
     logout,
@@ -150,6 +158,7 @@ const useAccount = () => {
     passwordForget,
     signUp,
     remove,
+    checkAuthenticated,
   };
 };
 
