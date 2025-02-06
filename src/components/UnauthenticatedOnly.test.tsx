@@ -5,6 +5,10 @@ import UnauthenticatedOnly from '@src/components/UnauthenticatedOnly';
 import { UNAUTHENTICATED_ONLY } from '@lib/consts/component';
 import toast from 'react-hot-toast';
 import { NOTIFY } from '@lib/consts/common';
+import useAccount from '@src/hooks/useAccount';
+
+jest.mock('@src/hooks/useAccount');
+const mockUseAccount = useAccount as jest.MockedFunction<any>;
 
 jest.mock('react-hot-toast');
 const mockToast = jest.mocked(toast);
@@ -15,8 +19,10 @@ const FALLBACK_MESSAGE = 'Fallback Message.';
 
 beforeEach(() => {
   mockUseUser.mockReturnValue({
-    checkAuthenticated: jest.fn(),
     sessionIdIsBlank: jest.fn().mockReturnValue(false),
+  });
+  mockUseAccount.mockReturnValue({
+    checkAuthenticated: jest.fn(),
   });
 });
 

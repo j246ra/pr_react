@@ -80,6 +80,4 @@ describe('UserProvider', () => {
       act(() => expect(result.current.isLoggedIn()).toBeFalsy());
     });
   });
-
-  it.todo('checkAuthenticated');
 });

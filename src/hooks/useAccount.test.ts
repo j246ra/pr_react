@@ -30,6 +30,7 @@ describe('useAccount', () => {
       removeHeaders: jest.fn(),
     });
     mockUseUser.mockReturnValue({
+      user: { email: 'test@test.com', sessionId: null },
       createUser: jest.fn(),
       clearUser: jest.fn(),
     });
@@ -41,6 +42,7 @@ describe('useAccount', () => {
       passwordForget: jest.fn().mockResolvedValue({ status: 200 }),
       signUp: jest.fn().mockResolvedValue({ status: 200 }),
       deleteUser: jest.fn().mockResolvedValue({ status: 200 }),
+      validate: jest.fn().mockResolvedValue({ status: 200 }),
     });
     mockUseLifelog.mockReturnValue({
       clear: jest.fn(),
@@ -373,6 +375,42 @@ describe('useAccount', () => {
         expect(mockUseUser().clearUser).not.toHaveBeenCalled();
         expect(mockUseSession().removeHeaders).not.toHaveBeenCalled();
         expect(mockNavigator).not.toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('checkAuthenticated', () => {
+    it('リクエスト成功時', async () => {
+      const { result } = renderHook(useAccount);
+      result.current.checkAuthenticated();
+      await waitFor(() => {
+        expect(mockUseAuthApi().validate).toHaveBeenCalledTimes(1);
+      });
+    });
+    it('リクエスト失敗時', async () => {
+      mockUseAuthApi().validate.mockRejectedValue({
+        status: 500,
+        messages: [],
+      });
+      const { result } = renderHook(useAccount);
+      result.current.checkAuthenticated();
+      await waitFor(() => {
+        expect(mockUseAuthApi().validate).toHaveBeenCalledTimes(1);
+      });
+      expect(mockNotify.info).toHaveBeenCalledTimes(1);
+      expect(mockNotify.info).toHaveBeenCalledWith(
+        LOGIN.MESSAGE.ERROR.NEED_LOGIN
+      );
+    });
+    it('user.sessionIdがnull以外のときは呼び出さない', async () => {
+      mockUseUser().user = {
+        email: 'jun@example.com',
+        sessionId: 'session-id',
+      };
+      const { result } = renderHook(useAccount);
+      result.current.checkAuthenticated();
+      await waitFor(() => {
+        expect(mockUseAuthApi().validate).not.toHaveBeenCalled();
       });
     });
   });
