@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
-import { Headers, useSession } from './SessionProvider';
+import { Headers } from '@lib/api/client';
 
 export type User = {
   email: string;
@@ -32,15 +32,10 @@ export type UserProviderProps = {
 };
 
 export default function UserProvider({ children }: UserProviderProps) {
-  const { getHeaders: cookieHeaders } = useSession();
   const [user, setUser] = useState<User>(defaultUser());
 
   const getHeaders = (): Headers => {
-    const cookie = cookieHeaders() as Headers;
     return {
-      'access-token': cookie['access-token'],
-      uid: cookie.uid,
-      client: cookie.client,
       'session-id': user.sessionId || undefined,
     };
   };

@@ -1,4 +1,4 @@
-import { mockUseSession, mockUseUser } from '@src/tests/baseProviders';
+import { mockUseUser } from '@src/tests/baseProviders';
 import { setupServer } from 'msw/node';
 import {
   compose,
@@ -19,10 +19,8 @@ const URL = `${baseUrl}/${Defs.API.VERSION}${Defs.API.SESSION.ENDPOINT.USER}`;
 
 describe('useAuthApi', () => {
   beforeEach(() => {
-    mockUseSession.mockReturnValue({
-      getHeaders: jest.fn(),
-    });
     mockUseUser.mockReturnValue({
+      getHeaders: jest.fn(),
       saveUser: jest.fn(),
       sessionIdIsBlank: jest.fn().mockReturnValue(true),
       validSessionId: jest.fn().mockReturnValue(false),

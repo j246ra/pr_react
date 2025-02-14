@@ -6,18 +6,10 @@ import UserProvider, {
 
 jest.unmock('@providers/UserProvider');
 
-import { mockUseSession } from '@src/tests/baseProviders';
-
 describe('UserProvider', () => {
   const wrapper = ({ children }: UserProviderProps) => (
     <UserProvider>{children}</UserProvider>
   );
-  beforeEach(() => {
-    mockUseSession.mockReturnValue({
-      initializeByUid: jest.fn(),
-      getHeaders: jest.fn(),
-    });
-  });
 
   describe('createUser 検証', () => {
     it('通常の email 場合、User 作成に成功すること', () => {
@@ -25,14 +17,12 @@ describe('UserProvider', () => {
       const email = 'test1@example.com';
       act(() => result.current.createUser(email));
       expect(result.current.user.email).toEqual(email);
-      expect(mockUseSession().initializeByUid).not.toHaveBeenCalledTimes(1);
     });
     it('ブランクの場合でも、 User 作成に成功すること', () => {
       const { result } = renderHook(() => useUser(), { wrapper });
       const email = '';
       act(() => result.current.createUser(email));
       expect(result.current.user.email).toEqual(email);
-      expect(mockUseSession().initializeByUid).not.toHaveBeenCalledTimes(1);
     });
   });
 

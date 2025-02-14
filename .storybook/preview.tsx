@@ -5,7 +5,6 @@ import '@blueprintjs/select/lib/css/blueprint-select.css';
 import '@src/index.scss';
 import '@src/App.scss';
 import { BrowserRouter } from 'react-router';
-import SessionProvider from '../src/providers/SessionProvider';
 import UserProvider from '../src/providers/UserProvider';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import LifelogProvider from '../src/providers/LifelogProvider';
@@ -19,13 +18,11 @@ export const decorators = [
   (Story: any) => (
     <div className={'navbar-height'}>
       <BrowserRouter>
-        <SessionProvider>
-          <UserProvider>
-            <LifelogProvider>
-              <Story />
-            </LifelogProvider>
-          </UserProvider>
-        </SessionProvider>
+        <UserProvider>
+          <LifelogProvider>
+            <Story />
+          </LifelogProvider>
+        </UserProvider>
       </BrowserRouter>
     </div>
   ),
