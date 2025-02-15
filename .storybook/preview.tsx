@@ -8,12 +8,10 @@ import { BrowserRouter } from 'react-router';
 import UserProvider from '../src/providers/UserProvider';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import LifelogProvider from '../src/providers/LifelogProvider';
-import { cookieDecorator } from 'storybook-addon-cookie';
 
 // Initialize MSW
 initialize();
 export const decorators = [
-  cookieDecorator,
   mswDecorator,
   (Story: any) => (
     <div className={'navbar-height'}>
@@ -35,13 +33,6 @@ const preview: Preview = {
       matchers: {
         color: /(background|color)$/i,
         date: /Date$/,
-      },
-    },
-    cookie: {
-      token: {
-        'access-token': 'token',
-        uid: 'sb@example.com',
-        client: 'client',
       },
     },
   },
