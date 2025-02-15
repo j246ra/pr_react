@@ -11,17 +11,16 @@ import {
 } from '@lib/consts/component';
 import { ROUTES } from '@lib/consts/common';
 import { useNavigate } from 'react-router';
-import { Headers, useSession } from '@providers/SessionProvider';
 import accountUpdateValidator from '@validators/accountUpdate';
 import passwordEditValidator from '@validators/passwordEdit';
 import signUpValidator from '@validators/signUp';
 import useAuthApi, { AuthApiErrorResponse } from '@src/hooks/useAuthApi';
 import { useLifelog } from '@providers/LifelogProvider';
 import toast from '@lib/toast';
+import { Headers } from '@lib/api/client';
 
 const useAccount = () => {
   const { user, createUser, clearUser } = useUser();
-  const { removeHeaders } = useSession();
 
   const { clear: clearLifelog } = useLifelog();
   const navigate = useNavigate();
@@ -55,7 +54,6 @@ const useAccount = () => {
       .then(() => {
         clearUser();
         clearLifelog();
-        removeHeaders();
         notify.success(LOGOUT.MESSAGE.SUCCESS);
       })
       .catch((r) => {
@@ -126,7 +124,6 @@ const useAccount = () => {
       .catch((r) => {
         errorNotification(r, SIGN_UP.MESSAGE.ERROR);
         clearUser();
-        removeHeaders();
       });
   };
 
@@ -136,7 +133,6 @@ const useAccount = () => {
       .then(() => {
         clearUser();
         clearLifelog();
-        removeHeaders();
         navigate(ROUTES.LOGIN);
         notify.success(ACCOUNT_DELETE.MESSAGE.SUCCESS);
       })

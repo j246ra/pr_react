@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router';
 import SignUp from './SignUp';
-import { mockUseSession, mockUseUser } from '@src/tests/baseProviders';
+import { mockUseUser } from '@src/tests/baseProviders';
 import {
   EMAIL_INPUT,
   PASSWORD_FORGET,
@@ -26,9 +26,6 @@ describe('SignUp component', () => {
       saveUser: jest.fn(),
       clearUser: jest.fn(),
       isLogin: jest.fn(),
-    });
-    mockUseSession.mockReturnValue({
-      removeToken: jest.fn(),
     });
     mockUseAccount.mockReturnValue({
       signUp: jest.fn().mockResolvedValue({ status: 200 }),

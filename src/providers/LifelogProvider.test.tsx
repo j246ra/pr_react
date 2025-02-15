@@ -5,7 +5,7 @@ import LifelogProvider, {
   LifelogProviderProps,
   useLifelog,
 } from '@providers/LifelogProvider';
-import { mockUseSession, mockUseUser } from '@src/tests/baseProviders';
+import { mockUseUser } from '@src/tests/baseProviders';
 import { setupServer } from 'msw/node';
 import { lifelog } from '@lib/faker/lifelog';
 import { AxiosError } from 'axios';
@@ -33,11 +33,6 @@ const setUpMyLocation = () => {
 describe('LifelogProvider', () => {
   beforeEach(() => {
     mockClearUser = jest.fn();
-    mockUseSession.mockReturnValue({
-      getHeaders: jest.fn().mockReturnValue({
-        uid: 'test@example.com',
-      }),
-    });
     mockUseUser.mockReturnValue({
       user: { email: 'test@example.com' },
       clearUser: mockClearUser,

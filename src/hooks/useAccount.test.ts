@@ -1,4 +1,4 @@
-import { mockUseSession, mockUseUser } from '@src/tests/baseProviders';
+import { mockUseUser } from '@src/tests/baseProviders';
 import { renderHook, waitFor } from '@testing-library/react';
 import useAccount from '@src/hooks/useAccount';
 import useAuthApi from '@src/hooks/useAuthApi';
@@ -26,9 +26,6 @@ const mockUseLifelog = useLifelog as jest.MockedFunction<any>;
 
 describe('useAccount', () => {
   beforeEach(() => {
-    mockUseSession.mockReturnValue({
-      removeHeaders: jest.fn(),
-    });
     mockUseUser.mockReturnValue({
       user: { email: 'test@test.com', sessionId: null },
       createUser: jest.fn(),
@@ -119,7 +116,6 @@ describe('useAccount', () => {
       await waitFor(() => {
         expect(mockUseUser().clearUser).toHaveBeenCalledTimes(1);
         expect(mockUseLifelog().clear).toHaveBeenCalledTimes(1);
-        expect(mockUseSession().removeHeaders).toHaveBeenCalledTimes(1);
         expect(mockNotify.success).toHaveBeenCalledTimes(1);
         expect(mockNotify.success).toHaveBeenCalledWith(LOGOUT.MESSAGE.SUCCESS);
       });
@@ -131,7 +127,6 @@ describe('useAccount', () => {
       await waitFor(() => {
         expect(mockUseUser().clearUser).not.toHaveBeenCalled();
         expect(mockUseLifelog().clear).not.toHaveBeenCalled();
-        expect(mockUseSession().removeHeaders).not.toHaveBeenCalled();
         expect(mockNavigator).not.toHaveBeenCalled();
         expect(mockNotify.error).toHaveBeenCalledTimes(1);
         expect(mockNotify.error).toHaveBeenCalledWith(LOGOUT.MESSAGE.ERROR);
@@ -328,7 +323,6 @@ describe('useAccount', () => {
         expect(mockNotify.error).toHaveBeenCalledTimes(1);
         expect(mockNotify.error).toHaveBeenCalledWith(SIGN_UP.MESSAGE.ERROR);
         expect(mockUseUser().clearUser).toHaveBeenCalledTimes(1);
-        expect(mockUseSession().removeHeaders).toHaveBeenCalledTimes(1);
       });
     });
     it('バリデーションエラー時', async () => {
@@ -354,7 +348,6 @@ describe('useAccount', () => {
           ACCOUNT_DELETE.MESSAGE.SUCCESS
         );
         expect(mockUseUser().clearUser).toHaveBeenCalledTimes(1);
-        expect(mockUseSession().removeHeaders).toHaveBeenCalledTimes(1);
         expect(mockNavigator).toHaveBeenCalledTimes(1);
         expect(mockNavigator).toHaveBeenCalledWith(ROUTES.LOGIN);
       });
@@ -373,7 +366,6 @@ describe('useAccount', () => {
           ACCOUNT_DELETE.MESSAGE.ERROR
         );
         expect(mockUseUser().clearUser).not.toHaveBeenCalled();
-        expect(mockUseSession().removeHeaders).not.toHaveBeenCalled();
         expect(mockNavigator).not.toHaveBeenCalled();
       });
     });
