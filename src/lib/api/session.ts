@@ -1,6 +1,5 @@
 import { AxiosResponse, AxiosError } from 'axios';
-import createClient from './client';
-import { Headers } from '@providers/SessionProvider';
+import createClient, { Headers } from './client';
 import Defs from '@lib/consts';
 import { AuthApiErrorResponse } from '@src/hooks/useAuthApi';
 

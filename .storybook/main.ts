@@ -33,7 +33,6 @@ const config: StorybookConfig = {
         ],
       },
     },
-    'storybook-addon-cookie',
   ],
   framework: {
     name: '@storybook/react-webpack5',

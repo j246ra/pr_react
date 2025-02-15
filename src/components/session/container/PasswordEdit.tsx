@@ -8,7 +8,7 @@ import SessionForm from '@session/presentational/SessionForm';
 import SessionLayout from '@session/SessionLayout';
 import useAccount from '@src/hooks/useAccount';
 import { useSearchParams } from 'react-router';
-import { Headers } from '@providers/SessionProvider';
+import { Headers } from '@lib/api/client';
 
 export default function PasswordEdit() {
   const { passwordChange } = useAccount();

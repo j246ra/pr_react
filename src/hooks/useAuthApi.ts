@@ -1,4 +1,3 @@
-import { useSession } from '@providers/SessionProvider';
 import { useUser } from '@providers/UserProvider';
 import { AxiosError, AxiosResponse } from 'axios';
 import { API, COMMON, CONST } from '@lib/consts/common';
@@ -14,8 +13,7 @@ export type AuthApiErrorResponse = {
 };
 
 const useAuthApi = () => {
-  const { getHeaders } = useSession();
-  const { saveUser, validSessionId, sessionIdIsBlank } = useUser();
+  const { getHeaders, saveUser, validSessionId, sessionIdIsBlank } = useUser();
 
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
     switch (response.config.url) {
