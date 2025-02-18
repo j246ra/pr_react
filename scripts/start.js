@@ -47,6 +47,7 @@ if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 const APP_PATH = process.env.APP_PATH || '';
+const OPEN_BROWSER = process.env.OPEN_BROWSER !== 'false';
 
 if (process.env.HOST) {
   console.log(
@@ -128,8 +129,10 @@ checkBrowsers(paths.appPath, isInteractive)
         );
       }
 
-      console.log(chalk.cyan('Starting the development server...\n'));
-      openBrowser(urls.localUrlForBrowser);
+      if (OPEN_BROWSER) {
+        console.log(chalk.cyan('Starting the development server...\n'));
+        openBrowser(urls.localUrlForBrowser);
+      }
     });
 
     ['SIGINT', 'SIGTERM'].forEach(function (sig) {
