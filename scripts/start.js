@@ -7,7 +7,7 @@ process.env.NODE_ENV = 'development';
 // Makes the script crash on unhandled rejections instead of silently
 // ignoring them. In the future, promise rejections that are not handled will
 // terminate the Node.js process with a non-zero exit code.
-process.on('unhandledRejection', err => {
+process.on('unhandledRejection', (err) => {
   throw err;
 });
 
@@ -47,6 +47,7 @@ if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 const APP_PATH = process.env.APP_PATH || '';
+const OPEN_BROWSER = process.env.OPEN_BROWSER !== 'false';
 
 if (process.env.HOST) {
   console.log(
@@ -74,7 +75,7 @@ checkBrowsers(paths.appPath, isInteractive)
     // run on a different port. `choosePort()` Promise resolves to the next free port.
     return choosePort(HOST, DEFAULT_PORT);
   })
-  .then(port => {
+  .then((port) => {
     if (port == null) {
       // We have not found a port.
       return;
@@ -89,7 +90,7 @@ checkBrowsers(paths.appPath, isInteractive)
       protocol,
       HOST,
       port,
-      paths.publicUrlOrPath.slice(0, -1) + APP_PATH,
+      paths.publicUrlOrPath.slice(0, -1) + APP_PATH
     );
     // Create a webpack compiler that is configured with custom messages.
     const compiler = createCompiler({
@@ -129,7 +130,7 @@ checkBrowsers(paths.appPath, isInteractive)
       }
 
       console.log(chalk.cyan('Starting the development server...\n'));
-      openBrowser(urls.localUrlForBrowser);
+      if (OPEN_BROWSER) openBrowser(urls.localUrlForBrowser);
     });
 
     ['SIGINT', 'SIGTERM'].forEach(function (sig) {
@@ -147,7 +148,7 @@ checkBrowsers(paths.appPath, isInteractive)
       });
     }
   })
-  .catch(err => {
+  .catch((err) => {
     if (err && err.message) {
       console.log(err.message);
     }
