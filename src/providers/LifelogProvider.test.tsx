@@ -13,6 +13,8 @@ import { DATETIME_FULL, days } from '@lib/dateUtil';
 import lifelogApiMocks from '@src/tests/lifelogApiMocks';
 import { COMMON, LIFELOG_API_MOCKS, API } from '@lib/consts/common';
 import notify from '@lib/toast';
+import { http, HttpResponse } from 'msw';
+import { apiHost } from '@lib/storybook/util';
 
 let mockClearUser: jest.SpyInstance<unknown>;
 let notifySpy: jest.SpyInstance<unknown>;
@@ -34,12 +36,11 @@ describe('LifelogProvider', () => {
   beforeEach(() => {
     mockClearUser = jest.fn();
     mockUseUser.mockReturnValue({
-      user: { email: 'test@example.com' },
+      user: { email: 'test@example.com', sessionId: 'session-id' },
       clearUser: mockClearUser,
       sessionIdIsBlank: jest.fn().mockReturnValue(false),
       getHeaders: jest.fn().mockReturnValue({
-        uid: 'test@example.com',
-        sessionId: 'session-id',
+        'session-id': 'session-id',
       }),
     });
     notifySpy = jest.spyOn(notify, 'error');
@@ -581,15 +582,20 @@ describe('LifelogProvider', () => {
       });
     });
 
-    // TODO:msw2導入時に修正
-    xdescribe('sessionとuserのsessionId検証', () => {
+    describe('sessionとuserのsessionId検証', () => {
       beforeEach(() => {
-        mockUseUser().user.sessionId = 'XxSession-IDxX';
         setUpMyLocation();
       });
       it('一致しない場合はuserを初期化してリロードする', () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });
-
+        server.use(
+          http.get(apiHost(API.LIFELOG.ENDPOINT), () => {
+            return new HttpResponse(null, {
+              status: 200,
+              headers: { 'session-id': 'XxSession-IDxX' },
+            });
+          })
+        );
         expect(result.current.lifelogs).toHaveLength(0);
         expect(
           act(() => result.current.loadLogs('error message'))
