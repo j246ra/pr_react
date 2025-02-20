@@ -28,9 +28,10 @@ const lifelogs = (page = 1) => {
 };
 
 const indexHandler = () => {
-  return http.get(apiHost(ENDPOINT), ({ params }) => {
-    if (params.page !== '3')
-      return HttpResponse.json(lifelogs(Number(params.page)), { status: 200 });
+  return http.get(apiHost(ENDPOINT), ({ request }) => {
+    const page = new URL(request.url).searchParams.get('page');
+    if (page !== '3')
+      return HttpResponse.json(lifelogs(Number(page)), { status: 200 });
     else return new HttpResponse(null, { status: 200 });
   });
 };
@@ -71,7 +72,7 @@ export const lifelogMocks = () => {
     return {
       handlers: [
         http.get(apiHost(ENDPOINT), async ({}) => {
-          await delay(1000 * 60 * 60 * 24);
+          await delay(1000 * 5);
           return new HttpResponse(null, { status: 200 });
         }),
       ],

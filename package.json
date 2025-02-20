@@ -207,7 +207,7 @@
     "jest-fixed-jsdom": "^0.0.9",
     "jest-watch-typeahead": "^2.2.2",
     "msw": "^2.7.0",
-    "msw-storybook-addon": "^1.10.0",
+    "msw-storybook-addon": "^2.0.4",
     "prettier": "^2.8.8",
     "storybook": "7.6.20"
   },
