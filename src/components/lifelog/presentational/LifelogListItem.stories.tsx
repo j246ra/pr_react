@@ -1,3 +1,4 @@
+import React from 'react';
 import { Meta } from '@storybook/react';
 import LifelogListItem from './LifelogListItem';
 import BaseLayout from '@src/components/BaseLayout';

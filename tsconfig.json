@@ -27,8 +27,9 @@
       ],
       "@lifelog/*": [
         "./src/components/lifelog/*"
-      ]}
-    },
+      ]},
+    "esModuleInterop": true,
+  },
   "include": [
     "./src/**/*"
   ],
