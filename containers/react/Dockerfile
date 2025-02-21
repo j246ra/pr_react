@@ -1,4 +1,4 @@
-FROM node:20.8.1-bookworm-slim as base
+FROM node:20.18.3-bookworm-slim as base
 
 RUN apt-get update -qq && apt-get install -yq --no-install-recommends\
     git\
