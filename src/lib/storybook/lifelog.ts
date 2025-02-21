@@ -1,9 +1,13 @@
-import { rest } from 'msw';
+import { delay, http, HttpResponse } from 'msw';
 import { apiHost } from '@lib/storybook/util';
 import { Lifelog } from '@providers/LifelogProvider';
 import { days, DATETIME_FULL } from '@lib/dateUtil';
 import { lifelog } from '@lib/faker/lifelog';
 import { API } from '@lib/consts/common';
+
+type CreateRequestBody = {
+  data: Lifelog;
+};
 
 const ENDPOINT = API.LIFELOG.ENDPOINT;
 
@@ -24,31 +28,31 @@ const lifelogs = (page = 1) => {
 };
 
 const indexHandler = () => {
-  return rest.get(apiHost(ENDPOINT), (req, res, ctx) => {
-    const page = req.url.searchParams.get('page');
+  return http.get(apiHost(ENDPOINT), ({ request }) => {
+    const page = new URL(request.url).searchParams.get('page');
     if (page !== '3')
-      return res(ctx.status(200), ctx.json(lifelogs(Number(page))));
-    else return res(ctx.status(200));
+      return HttpResponse.json(lifelogs(Number(page)), { status: 200 });
+    else return new HttpResponse(null, { status: 200 });
   });
 };
 
 const createHandler = () => {
-  return rest.post(apiHost(ENDPOINT), async (req, res, ctx) => {
-    const data = await req.json().then((body) => body.data);
-    return res(ctx.status(200), ctx.json(data));
+  return http.post(apiHost(ENDPOINT), async ({ request }) => {
+    const body = (await request.json()) as CreateRequestBody;
+    return HttpResponse.json(lifelog(body.data), { status: 200 });
   });
 };
 
 const updateHandler = () => {
-  return rest.put(apiHost(`${ENDPOINT}/:id`), async (req, res, ctx) => {
-    const data = await req.json().then((body) => body.data);
-    return res(ctx.status(200), ctx.json(data));
+  return http.put(apiHost(`${ENDPOINT}/:id`), async ({ request }) => {
+    const body = (await request.json()) as CreateRequestBody;
+    return HttpResponse.json(lifelog(body.data), { status: 200 });
   });
 };
 
 const deleteHandler = () => {
-  return rest.delete(apiHost(`${ENDPOINT}/:id`), (req, res, ctx) => {
-    return res(ctx.status(200));
+  return http.delete(apiHost(`${ENDPOINT}/:id`), ({}) => {
+    return new HttpResponse(null, { status: 200 });
   });
 };
 
@@ -67,8 +71,9 @@ export const lifelogMocks = () => {
   const loading = () => {
     return {
       handlers: [
-        rest.get(apiHost(ENDPOINT), (req, res, ctx) => {
-          return res(ctx.delay(1000 * 60 * 60 * 24), ctx.status(200));
+        http.get(apiHost(ENDPOINT), async ({}) => {
+          await delay(1000 * 5);
+          return new HttpResponse(null, { status: 200 });
         }),
       ],
     };
@@ -77,8 +82,8 @@ export const lifelogMocks = () => {
   const empty = () => {
     return {
       handlers: [
-        rest.get(apiHost(ENDPOINT), (req, res, ctx) => {
-          return res(ctx.status(200));
+        http.get(apiHost(ENDPOINT), ({}) => {
+          return new HttpResponse(null, { status: 200 });
         }),
       ],
     };

@@ -1,3 +1,4 @@
+import React from 'react';
 import { Meta } from '@storybook/react';
 import BaseLayout from './BaseLayout';
 import Header from './Header';

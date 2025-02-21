@@ -1,12 +1,6 @@
 import { mockUseUser } from '@src/tests/baseProviders';
 import { setupServer } from 'msw/node';
-import {
-  compose,
-  context,
-  DefaultBodyType,
-  ResponseTransformer,
-  rest,
-} from 'msw';
+import { http, HttpResponse } from 'msw';
 import Defs from '@lib/consts';
 import { baseUrl } from '@lib/api/client';
 import { act, renderHook, waitFor } from '@testing-library/react';
@@ -26,26 +20,21 @@ describe('useAuthApi', () => {
       validSessionId: jest.fn().mockReturnValue(false),
     });
   });
-  const createServer = (r: ResponseTransformer<DefaultBodyType, any>) => {
-    return setupServer(
-      rest.put(URL, (req, res) => {
-        return res(r);
-      })
-    );
-  };
 
   describe('正常系', () => {
     const responseSessionId = 'session-id';
-    const response = (): ResponseTransformer<DefaultBodyType, any> => {
-      return compose(
-        context.status(200),
-        context.set('session-id', responseSessionId)
-      );
-    };
-    const server = createServer(response());
-    beforeAll(() => server.listen());
-    afterEach(() => server.resetHandlers());
+    const server = setupServer(
+      http.put(URL, () => {
+        return new HttpResponse(null, {
+          status: 200,
+          headers: { 'session-id': responseSessionId },
+        });
+      })
+    );
+    beforeAll(() => server.listen({ onUnhandledRequest: 'bypass' }));
+    beforeEach(() => server.resetHandlers());
     afterAll(() => server.close());
+
     it('既存ユーザーの場合は validSessionId が呼び出される', async () => {
       mockUseUser().sessionIdIsBlank.mockReturnValue(false);
       mockUseUser().validSessionId.mockReturnValue(true);
@@ -72,17 +61,18 @@ describe('useAuthApi', () => {
 
   describe('異常系', () => {
     describe('response が存在する場合', () => {
-      const response = (): ResponseTransformer<DefaultBodyType, any> => {
-        return compose(
-          context.status(400),
-          context.json({
-            errors: ['error message 1', 'error message 2'],
-          })
-        );
-      };
-      const server = createServer(response());
-      beforeAll(() => server.listen());
-      afterEach(() => server.resetHandlers());
+      const server = setupServer(
+        http.put(URL, () => {
+          HttpResponse.json(
+            {
+              errors: ['error message 1', 'error message 2'],
+            },
+            { status: 400 }
+          );
+        })
+      );
+      beforeAll(() => server.listen({ onUnhandledRequest: 'bypass' }));
+      beforeEach(() => server.resetHandlers());
       afterAll(() => server.close());
 
       it('メッセージが通知されている', async () => {
@@ -101,11 +91,11 @@ describe('useAuthApi', () => {
     });
     describe('response が存在しない場合', () => {
       const server = setupServer(
-        rest.put(URL, (req, res) => {
-          return res.networkError('');
+        http.put(URL, () => {
+          return HttpResponse.error();
         })
       );
-      beforeAll(() => server.listen());
+      beforeAll(() => server.listen({ onUnhandledRequest: 'bypass' }));
       afterEach(() => server.resetHandlers());
       afterAll(() => server.close());
       it('固定エラーメッセージが通知されている', async () => {
