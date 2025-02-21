@@ -5,6 +5,7 @@ import paths from '../config/paths';
 const config: StorybookConfig = {
   staticDirs: ['../public'],
   stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)'],
+
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
@@ -33,14 +34,16 @@ const config: StorybookConfig = {
         ],
       },
     },
+    '@storybook/addon-webpack5-compiler-babel',
   ],
+
   framework: {
     name: '@storybook/react-webpack5',
     options: {},
   },
-  docs: {
-    autodocs: 'tag',
-  },
+
+  docs: {},
+
   webpackFinal: async (config) => {
     config.resolve ??= {};
     config.resolve.alias = {
@@ -53,6 +56,10 @@ const config: StorybookConfig = {
       '@lifelog': path.resolve(paths.appSrc, 'components/lifelog'),
     };
     return config;
+  },
+
+  typescript: {
+    reactDocgen: 'react-docgen-typescript',
   },
 };
 export default config;
