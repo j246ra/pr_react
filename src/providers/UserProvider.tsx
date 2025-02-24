@@ -24,7 +24,7 @@ export type UserContextType = {
   sessionIdIsBlank: () => boolean;
 };
 
-const UserContext = createContext({} as UserContextType);
+export const UserContext = createContext({} as UserContextType);
 export const useUser = () => useContext(UserContext);
 
 export type UserProviderProps = {
