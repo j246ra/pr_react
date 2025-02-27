@@ -72,7 +72,6 @@
     "typescript": "^5.0.4",
     "web-vitals": "^2.1.0",
     "webpack": "^5.94.0",
-    "webpack-dev-server": "^5.1.0",
     "webpack-manifest-plugin": "^4.0.2",
     "workbox-webpack-plugin": "^7.3.0"
   },
@@ -209,7 +208,8 @@
     "msw": "^2.7.0",
     "msw-storybook-addon": "^2.0.4",
     "prettier": "^2.8.8",
-    "storybook": "^8.5.8"
+    "storybook": "^8.5.8",
+    "webpack-dev-server": "^5.2.0"
   },
   "msw": {
     "workerDirectory": "public"
