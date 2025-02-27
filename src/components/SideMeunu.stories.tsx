@@ -1,13 +1,13 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
-import Header from './Header';
-import { signOutHandler } from '@lib/storybook/session';
+import SideMenu from '@src/components/SideMenu';
 import { UserContext } from '@providers/UserProvider';
 import { userContextValues } from '@lib/storybook/contextValues';
+import { signOutHandler } from '@lib/storybook/session';
 
 export default {
-  title: 'Layout/Header',
-  component: Header,
+  title: 'Layout/SideMenu',
+  component: SideMenu,
   decorators: [
     (Story, { args }) => (
       <UserContext.Provider
