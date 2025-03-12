@@ -12,27 +12,15 @@ import { days, DATETIME_FULL } from '@lib/dateUtil';
 import LifelogEditDialogProvider from '@providers/LifelogEditDialogProvider';
 import LifelogDetailDialogProvider from '@providers/LifelogDetailDialogProvider';
 import {
-  convertResponseData,
+  BaseLifelog,
   validateLifelogResponse,
+  convertResponseData,
 } from '@lib/api/lifelogResponse';
 import * as Sentry from '@sentry/react';
 import notify from '@lib/toast';
 import { COMMON, API } from '@lib/consts/common';
 
-export type BaseLifelog = {
-  id: number;
-  userId: number;
-  action: string;
-  detail?: string | null;
-  startedAt: string;
-  finishedAt?: string | null;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type Lifelog = Omit<BaseLifelog, 'detail' | 'finishedAt'> & {
-  detail: string | null;
-  finishedAt: string | null;
+export type Lifelog = BaseLifelog & {
   isDateChanged: boolean;
 };
 
