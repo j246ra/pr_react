@@ -25,4 +25,4 @@ FROM base as storybook
 
 EXPOSE 6006
 
-CMD ["sh", "-c", "yarn install && yarn storybook"]
+CMD ["sh", "-c", "yarn install && yarn storybook --no-open"]
