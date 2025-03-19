@@ -16,6 +16,8 @@ import { mockNavigator } from '@src/tests/common';
 import { ROUTES } from '@lib/consts/common';
 import { useLifelog } from '@providers/LifelogProvider';
 import { INVALID_MESSAGES } from '@validators/validator';
+import { ErrorBoundary } from 'react-error-boundary';
+import { ReactNode } from 'react';
 
 jest.mock('@src/hooks/useAuthApi');
 const mockUseAuthApi = useAuthApi as jest.MockedFunction<any>;
@@ -23,6 +25,12 @@ jest.mock('@lib/toast');
 const mockNotify = jest.mocked(notify);
 jest.mock('@providers/LifelogProvider');
 const mockUseLifelog = useLifelog as jest.MockedFunction<any>;
+
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <ErrorBoundary FallbackComponent={() => <div>Error occurred!</div>}>
+    {children}
+  </ErrorBoundary>
+);
 
 describe('useAccount', () => {
   beforeEach(() => {
@@ -48,7 +56,7 @@ describe('useAccount', () => {
   describe('login リクエストが', () => {
     const params: [string, string] = ['test@example.com', 'password'];
     it('成功した場合はメッセージを通知している', async () => {
-      const { result } = renderHook(useAccount);
+      const { result } = renderHook(() => useAccount(), { wrapper });
       result.current.login(...params);
       await waitFor(() => {
         expect(mockUseAuthApi().signIn).toHaveBeenCalledTimes(1);
@@ -63,7 +71,7 @@ describe('useAccount', () => {
           status: 401,
           message: 'error message',
         });
-        const { result } = renderHook(useAccount);
+        const { result } = renderHook(() => useAccount(), { wrapper });
         result.current.login(...params);
         await waitFor(() => {
           expect(mockUseAuthApi().signIn).toHaveBeenCalledTimes(1);
@@ -78,7 +86,7 @@ describe('useAccount', () => {
           status: 401,
           messages: ['error message 1', 'error message 2'],
         });
-        const { result } = renderHook(useAccount);
+        const { result } = renderHook(() => useAccount(), { wrapper });
         result.current.login(...params);
         await waitFor(() => {
           expect(mockUseAuthApi().signIn).toHaveBeenCalledTimes(1);
@@ -94,7 +102,7 @@ describe('useAccount', () => {
           status: 500,
           messages: [],
         });
-        const { result } = renderHook(useAccount);
+        const { result } = renderHook(() => useAccount(), { wrapper });
         result.current.login(...params);
         await waitFor(() => {
           expect(mockUseAuthApi().signIn).toHaveBeenCalledTimes(1);
@@ -111,7 +119,7 @@ describe('useAccount', () => {
 
   describe('logout ', () => {
     it('リクエスト成功時', async () => {
-      const { result } = renderHook(useAccount);
+      const { result } = renderHook(() => useAccount(), { wrapper });
       result.current.logout();
       await waitFor(() => {
         expect(mockUseUser().clearUser).toHaveBeenCalledTimes(1);
@@ -122,7 +130,7 @@ describe('useAccount', () => {
     });
     it('リクエスト失敗時', async () => {
       mockUseAuthApi().signOut.mockRejectedValue({ status: 500, messages: [] });
-      const { result } = renderHook(useAccount);
+      const { result } = renderHook(() => useAccount(), { wrapper });
       result.current.logout();
       await waitFor(() => {
         expect(mockUseUser().clearUser).not.toHaveBeenCalled();
@@ -141,7 +149,7 @@ describe('useAccount', () => {
       'password01',
     ];
     it('リクエスト成功時', async () => {
-      const { result } = renderHook(useAccount);
+      const { result } = renderHook(() => useAccount(), { wrapper });
       result.current.update(...params);
       await waitFor(() => {
         expect(mockUseAuthApi().updateUser).toHaveBeenCalled();
@@ -158,7 +166,7 @@ describe('useAccount', () => {
         status: 500,
         messages: [],
       });
-      const { result } = renderHook(useAccount);
+      const { result } = renderHook(() => useAccount(), { wrapper });
       result.current.update(...params);
       await waitFor(() => {
         expect(mockUseAuthApi().updateUser).toHaveBeenCalled();
@@ -171,7 +179,7 @@ describe('useAccount', () => {
     });
     it('バリデーションエラー時', async () => {
       params[2] = 'password-666';
-      const { result } = renderHook(useAccount);
+      const { result } = renderHook(() => useAccount(), { wrapper });
       result.current.update(...params);
       await waitFor(() => {
         expect(mockUseAuthApi().updateUser).not.toHaveBeenCalled();
@@ -191,7 +199,7 @@ describe('useAccount', () => {
     };
     const password = 'password-0123';
     it('リクエスト成功時', async () => {
-      const { result } = renderHook(useAccount);
+      const { result } = renderHook(() => useAccount(), { wrapper });
       result.current.passwordChange(password, password, headers);
       await waitFor(() => {
         expect(mockUseAuthApi().passwordReset).toHaveBeenCalledTimes(1);
@@ -213,7 +221,7 @@ describe('useAccount', () => {
         status: 500,
         messages: [],
       });
-      const { result } = renderHook(useAccount);
+      const { result } = renderHook(() => useAccount(), { wrapper });
       result.current.passwordChange(password, password, headers);
       await waitFor(() => {
         expect(mockUseAuthApi().passwordReset).toHaveBeenCalledTimes(1);
@@ -231,7 +239,7 @@ describe('useAccount', () => {
       });
     });
     it('バリデーションエラー時', async () => {
-      const { result } = renderHook(useAccount);
+      const { result } = renderHook(() => useAccount(), { wrapper });
       result.current.passwordChange(password, 'password-9999', headers);
       await waitFor(() => {
         expect(mockNotify.error).toHaveBeenCalledTimes(1);
@@ -246,7 +254,7 @@ describe('useAccount', () => {
   describe('passwordForget', () => {
     const email = 'test@example.com';
     it('リクエスト成功時', async () => {
-      const { result } = renderHook(useAccount);
+      const { result } = renderHook(() => useAccount(), { wrapper });
       result.current.passwordForget(email);
       await waitFor(() => {
         expect(mockUseAuthApi().passwordForget).toHaveBeenCalledTimes(1);
@@ -267,7 +275,7 @@ describe('useAccount', () => {
           status: 404,
           messages: ['error message'],
         });
-        const { result } = renderHook(useAccount);
+        const { result } = renderHook(() => useAccount(), { wrapper });
         result.current.passwordForget(email);
         await waitFor(() => {
           expect(mockUseAuthApi().passwordForget).toHaveBeenCalledWith(email);
@@ -284,7 +292,7 @@ describe('useAccount', () => {
           status: 500,
           messages: ['error message'],
         });
-        const { result } = renderHook(useAccount);
+        const { result } = renderHook(() => useAccount(), { wrapper });
         result.current.passwordForget(email);
         await waitFor(() => {
           expect(mockUseAuthApi().passwordForget).toHaveBeenCalledTimes(1);
@@ -300,7 +308,7 @@ describe('useAccount', () => {
     const email = 'test@example.com';
     const password = 'password-7777';
     it('リクエスト成功時', async () => {
-      const { result } = renderHook(useAccount);
+      const { result } = renderHook(() => useAccount(), { wrapper });
       result.current.signUp(email, password);
       await waitFor(() => {
         expect(mockUseAuthApi().signUp).toHaveBeenCalledTimes(1);
@@ -315,7 +323,7 @@ describe('useAccount', () => {
     });
     it('リクエスト失敗時', async () => {
       mockUseAuthApi().signUp.mockRejectedValue({ status: 500, messages: [] });
-      const { result } = renderHook(useAccount);
+      const { result } = renderHook(() => useAccount(), { wrapper });
       result.current.signUp(email, password);
       await waitFor(() => {
         expect(mockUseAuthApi().signUp).toHaveBeenCalledTimes(1);
@@ -326,7 +334,7 @@ describe('useAccount', () => {
       });
     });
     it('バリデーションエラー時', async () => {
-      const { result } = renderHook(useAccount);
+      const { result } = renderHook(() => useAccount(), { wrapper });
       result.current.signUp(email, 'a');
       await waitFor(() => {
         expect(mockUseAuthApi().signUp).not.toHaveBeenCalled();
@@ -339,7 +347,7 @@ describe('useAccount', () => {
 
   describe('remove', () => {
     it('リクエスト成功時', async () => {
-      const { result } = renderHook(useAccount);
+      const { result } = renderHook(() => useAccount(), { wrapper });
       result.current.remove();
       await waitFor(() => {
         expect(mockUseAuthApi().deleteUser).toHaveBeenCalledTimes(1);
@@ -357,7 +365,7 @@ describe('useAccount', () => {
         status: 500,
         messages: [],
       });
-      const { result } = renderHook(useAccount);
+      const { result } = renderHook(() => useAccount(), { wrapper });
       result.current.remove();
       await waitFor(() => {
         expect(mockUseAuthApi().deleteUser).toHaveBeenCalledTimes(1);
@@ -373,7 +381,7 @@ describe('useAccount', () => {
 
   describe('checkAuthenticated', () => {
     it('リクエスト成功時', async () => {
-      const { result } = renderHook(useAccount);
+      const { result } = renderHook(() => useAccount(), { wrapper });
       result.current.checkAuthenticated();
       await waitFor(() => {
         expect(mockUseAuthApi().validate).toHaveBeenCalledTimes(1);
@@ -384,7 +392,7 @@ describe('useAccount', () => {
         status: 500,
         messages: [],
       });
-      const { result } = renderHook(useAccount);
+      const { result } = renderHook(() => useAccount(), { wrapper });
       result.current.checkAuthenticated();
       await waitFor(() => {
         expect(mockUseAuthApi().validate).toHaveBeenCalledTimes(1);
@@ -399,7 +407,7 @@ describe('useAccount', () => {
         email: 'jun@example.com',
         sessionId: 'session-id',
       };
-      const { result } = renderHook(useAccount);
+      const { result } = renderHook(() => useAccount(), { wrapper });
       result.current.checkAuthenticated();
       await waitFor(() => {
         expect(mockUseAuthApi().validate).not.toHaveBeenCalled();

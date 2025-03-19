@@ -18,7 +18,9 @@ import {
 } from '@lib/api/lifelogResponse';
 import * as Sentry from '@sentry/react';
 import notify from '@lib/toast';
-import { COMMON, API } from '@lib/consts/common';
+import { COMMON, CONST } from '@lib/consts/common';
+import { InvalidTokenError } from '@src/errors/InvalidTokenError';
+import { useErrorBoundary } from 'react-error-boundary';
 
 export type Lifelog = BaseLifelog & {
   isDateChanged: boolean;
@@ -76,13 +78,13 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   const [isTerminated, setIsTerminated] = useState(false);
   const { user, getHeaders, clearUser, sessionIdIsBlank } = useUser();
 
+  const { showBoundary } = useErrorBoundary();
+
   const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
     const h = response.headers;
     if (!sessionIdIsBlank() && user.sessionId !== h['session-id']) {
       clear();
-      setIsTerminated(true); // リロードされるまでのリクエストを抑制
-      window.location.reload();
-      throw new Error(API.MESSAGE.ERROR.INVALID_TOKEN);
+      throw new InvalidTokenError(CONST.COMMON.MESSAGE.ERROR.SESSION_CONFLICT);
     }
     return response;
   };
@@ -92,8 +94,7 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
       switch (error.response?.status) {
         case 401:
           clearUser();
-          notify.error(COMMON.MESSAGE.ERROR.EXPIRED);
-          break;
+          throw new InvalidTokenError(CONST.COMMON.MESSAGE.ERROR.EXPIRED);
         case 500:
         case 501:
         case 502:
@@ -111,6 +112,11 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     };
   };
 
+  const errorDispatch = (e: unknown) => {
+    if (e instanceof InvalidTokenError) showBoundary(e);
+    return Promise.reject(e);
+  };
+
   const api = (defaultErrorMessage?: string) => {
     return lifelog(
       getHeaders,
@@ -121,7 +127,9 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
 
   const loadLogs = async (defaultErrorMessage?: string) => {
     const nextPage = page + 1;
-    const r = await api(defaultErrorMessage).index(nextPage, searchWord);
+    const r = await api(defaultErrorMessage)
+      .index(nextPage, searchWord)
+      .catch((e) => errorDispatch(e));
     setIsTerminated(r.data?.length === 0);
     const res = validateLifelogResponse(r.data);
     if (res.validData.length > 0) {
@@ -134,7 +142,9 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
 
   const searchLogs = async (word: string, defaultErrorMessage?: string) => {
     setSearchWord(word);
-    const r = await api(defaultErrorMessage).index(1, word);
+    const r = await api(defaultErrorMessage)
+      .index(1, word)
+      .catch((e) => errorDispatch(e));
     setIsTerminated(r.data?.length === 0);
     const res = validateLifelogResponse(r.data);
     setLifelogs(convertResponseData(res.validData));
@@ -148,7 +158,9 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     params: CreatParams,
     defaultErrorMessage?: string
   ) => {
-    const r = await api(defaultErrorMessage).create(params);
+    const r = await api(defaultErrorMessage)
+      .create(params)
+      .catch((e) => errorDispatch(e));
     const res = validateLifelogResponse(r.data);
     addLifelogs(convertResponseData(res.validData));
     return r;
@@ -165,7 +177,9 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
     params: UpdateParams,
     defaultErrorMessage?: string
   ) => {
-    const r = await api(defaultErrorMessage).update(params);
+    const r = await api(defaultErrorMessage)
+      .update(params)
+      .catch((e) => errorDispatch(e));
     const updatedLogs = [...lifelogs];
     const res = validateLifelogResponse(r.data);
     const _log = convertResponseData(res.validData)[0];
@@ -184,7 +198,9 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
   };
 
   const deleteLog = async (id: number, defaultErrorMessage?: string) => {
-    const r = await api(defaultErrorMessage).destroy(id);
+    const r = await api(defaultErrorMessage)
+      .destroy(id)
+      .catch((e) => errorDispatch(e));
     setLifelogs(lifelogs.filter((log) => log.id !== id));
     return r;
   };

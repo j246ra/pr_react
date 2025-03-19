@@ -18,6 +18,8 @@ import useAuthApi, { AuthApiErrorResponse } from '@src/hooks/useAuthApi';
 import { useLifelog } from '@providers/LifelogProvider';
 import toast from '@lib/toast';
 import { Headers } from '@lib/api/client';
+import { useErrorBoundary } from 'react-error-boundary';
+import { InvalidTokenError } from '@src/errors/InvalidTokenError';
 
 const useAccount = () => {
   const { user, createUser, clearUser } = useUser();
@@ -25,6 +27,12 @@ const useAccount = () => {
   const { clear: clearLifelog } = useLifelog();
   const navigate = useNavigate();
   const api = useAuthApi();
+
+  const { showBoundary } = useErrorBoundary();
+
+  const errorDispatch = (e: unknown) => {
+    if (e instanceof InvalidTokenError) showBoundary(e);
+  };
 
   const errorNotification = (
     e: AuthApiErrorResponse | Error,
@@ -45,7 +53,10 @@ const useAccount = () => {
       .then(() => {
         notify.success(LOGIN.MESSAGE.SUCCESS);
       })
-      .catch((r) => errorNotification(r, LOGIN.MESSAGE.ERROR.NORMAL));
+      .catch((e) => {
+        errorDispatch(e);
+        errorNotification(e, LOGIN.MESSAGE.ERROR.NORMAL);
+      });
   };
 
   const logout = () => {
@@ -74,8 +85,9 @@ const useAccount = () => {
         notify.success(ACCOUNT_UPDATE.MESSAGE.SUCCESS);
         navigate('/');
       })
-      .catch((r) => {
-        errorNotification(r, ACCOUNT_UPDATE.MESSAGE.ERROR);
+      .catch((e) => {
+        errorDispatch(e);
+        errorNotification(e, ACCOUNT_UPDATE.MESSAGE.ERROR);
       });
   };
 
