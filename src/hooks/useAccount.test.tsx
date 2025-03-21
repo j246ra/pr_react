@@ -13,11 +13,12 @@ import {
   SIGN_UP,
 } from '@lib/consts/component';
 import { mockNavigator } from '@src/tests/common';
-import { ROUTES } from '@lib/consts/common';
+import { CONST, ROUTES } from '@lib/consts/common';
 import { useLifelog } from '@providers/LifelogProvider';
 import { INVALID_MESSAGES } from '@validators/validator';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ReactNode } from 'react';
+import { InvalidTokenError } from '@src/errors/InvalidTokenError';
 
 jest.mock('@src/hooks/useAuthApi');
 const mockUseAuthApi = useAuthApi as jest.MockedFunction<any>;
@@ -178,15 +179,28 @@ describe('useAccount', () => {
       });
     });
     it('バリデーションエラー時', async () => {
-      params[2] = 'password-666';
+      const invalidParams: [string, string, string] = [...params];
+      invalidParams[2] = 'password-666';
       const { result } = renderHook(() => useAccount(), { wrapper });
-      result.current.update(...params);
+      result.current.update(...invalidParams);
       await waitFor(() => {
         expect(mockUseAuthApi().updateUser).not.toHaveBeenCalled();
         expect(mockNotify.error).toHaveBeenCalledTimes(1);
         expect(mockNotify.error).toHaveBeenCalledWith(
           INVALID_MESSAGES.PASSWORD_NO_MATCH
         );
+      });
+    });
+    it('InvalidTokenError時', async () => {
+      mockUseAuthApi().updateUser.mockRejectedValue(
+        new InvalidTokenError(CONST.COMMON.MESSAGE.ERROR.SESSION_CONFLICT)
+      );
+      const { result } = renderHook(() => useAccount(), { wrapper });
+      result.current.update(...params);
+      await waitFor(() => {
+        expect(mockUseAuthApi().updateUser).toHaveBeenCalled();
+        expect(mockNavigator).not.toHaveBeenCalled();
+        expect(mockNotify.error).not.toHaveBeenCalled();
       });
     });
   });
