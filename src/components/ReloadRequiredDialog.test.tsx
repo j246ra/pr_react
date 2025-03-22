@@ -1,14 +1,9 @@
 import { render, screen } from '@testing-library/react';
-import { ErrorAlert } from '@src/components/ErrorAlert';
+import ReloadRequiredDialog from '@src/components/ReloadRequiredDialog';
 
 describe('ErrorAlert', () => {
   it('正しく表示されていること', () => {
-    render(
-      <ErrorAlert
-        error={{ message: 'error message.' }}
-        resetErrorBoundary={() => {}}
-      />
-    );
+    render(<ReloadRequiredDialog message={'error message.'} />);
     const el = screen.getByText('error message.');
     expect(el).toHaveTextContent('error message.');
   });

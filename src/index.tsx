@@ -7,7 +7,7 @@ import LifelogProvider from '@providers/LifelogProvider';
 import { COMMON } from '@lib/consts/common';
 import App from '@src/App';
 import initSentry from '@lib/sentry';
-import { ErrorAlert } from '@src/components/ErrorAlert';
+import { AppErrorFallback } from '@src/components/AppErrorFallback';
 import { ErrorBoundary } from 'react-error-boundary';
 
 initSentry();
@@ -20,7 +20,7 @@ const root = createRoot(container);
 
 root.render(
   <BrowserRouter basename={COMMON.APP_URL.BASE_DIR}>
-    <ErrorBoundary FallbackComponent={ErrorAlert}>
+    <ErrorBoundary FallbackComponent={AppErrorFallback}>
       <UserProvider>
         <LifelogProvider>
           <App />
