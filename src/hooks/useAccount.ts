@@ -9,7 +9,7 @@ import {
   PASSWORD_FORGET,
   SIGN_UP,
 } from '@lib/consts/component';
-import { ROUTES } from '@lib/consts/common';
+import { CONST, ROUTES } from '@lib/consts/common';
 import { useNavigate } from 'react-router';
 import accountUpdateValidator from '@validators/accountUpdate';
 import passwordEditValidator from '@validators/passwordEdit';
@@ -30,8 +30,15 @@ const useAccount = () => {
 
   const { showBoundary } = useErrorBoundary();
 
-  const errorDispatch = (e: unknown) => {
-    if (e instanceof InvalidTokenError) showBoundary(e);
+  const errorDispatch = (e: AuthApiErrorResponse) => {
+    if (e.status === 401) {
+      if (e.messages[0] === 'Invalid session_id')
+        showBoundary(
+          new InvalidTokenError(CONST.COMMON.MESSAGE.ERROR.SESSION_CONFLICT)
+        );
+      else
+        showBoundary(new InvalidTokenError(CONST.COMMON.MESSAGE.ERROR.EXPIRED));
+    }
   };
 
   const errorNotification = (
@@ -54,7 +61,6 @@ const useAccount = () => {
         notify.success(LOGIN.MESSAGE.SUCCESS);
       })
       .catch((e) => {
-        errorDispatch(e);
         errorNotification(e, LOGIN.MESSAGE.ERROR.NORMAL);
       });
   };

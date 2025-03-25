@@ -94,7 +94,11 @@ export default function LifelogProvider({ children }: LifelogProviderProps) {
       switch (error.response?.status) {
         case 401:
           clearUser();
-          throw new InvalidTokenError(CONST.COMMON.MESSAGE.ERROR.EXPIRED);
+          if (error.response?.data === 'Invalid session_id')
+            throw new InvalidTokenError(
+              CONST.COMMON.MESSAGE.ERROR.SESSION_CONFLICT
+            );
+          else throw new InvalidTokenError(CONST.COMMON.MESSAGE.ERROR.EXPIRED);
         case 500:
         case 501:
         case 502:

@@ -51,9 +51,11 @@ const useAuthApi = () => {
       );
     } else {
       response.status = error.response.status;
-      const data = error.response.data as Data;
-      if (data?.errors !== undefined) {
-        response.messages.push(...data.errors);
+      if (typeof error.response.data === 'string') {
+        response.messages.push(error.response.data);
+      } else {
+        const data = error.response.data as Data;
+        if (data?.errors !== undefined) response.messages.push(...data.errors);
       }
     }
     return Promise.reject(response);
