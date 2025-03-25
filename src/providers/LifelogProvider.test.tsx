@@ -11,10 +11,12 @@ import { lifelog } from '@lib/faker/lifelog';
 import { AxiosError } from 'axios';
 import { DATETIME_FULL, days } from '@lib/dateUtil';
 import lifelogApiMocks from '@src/tests/lifelogApiMocks';
-import { COMMON, LIFELOG_API_MOCKS, API } from '@lib/consts/common';
+import { COMMON, LIFELOG_API_MOCKS, API, CONST } from '@lib/consts/common';
 import notify from '@lib/toast';
 import { http, HttpResponse } from 'msw';
 import { apiHost } from '@lib/storybook/util';
+import { ErrorBoundary } from 'react-error-boundary';
+import { InvalidTokenError } from '@src/errors/InvalidTokenError';
 
 let mockClearUser: jest.SpyInstance<unknown>;
 let notifySpy: jest.SpyInstance<unknown>;
@@ -25,12 +27,6 @@ const {
   update: restUpdate,
   destroy: restDelete,
 } = lifelogApiMocks();
-
-const setUpMyLocation = () => {
-  const { location } = window;
-  delete (window as any).location;
-  window.location = { ...location, reload: () => {} };
-};
 
 describe('LifelogProvider', () => {
   beforeEach(() => {
@@ -51,16 +47,20 @@ describe('LifelogProvider', () => {
 
   it('子要素がレンダリングされる', () => {
     const { getByTestId } = render(
-      <LifelogProvider>
-        <div data-testid={'child'} />
-      </LifelogProvider>
+      <ErrorBoundary FallbackComponent={() => <div>Error occurred!</div>}>
+        <LifelogProvider>
+          <div data-testid={'child'} />
+        </LifelogProvider>
+      </ErrorBoundary>
     );
     expect(getByTestId('child')).toBeInTheDocument();
   });
 
   describe('Api検証', () => {
     const wrapper = ({ children }: LifelogProviderProps) => (
-      <LifelogProvider>{children}</LifelogProvider>
+      <ErrorBoundary FallbackComponent={() => <div>Error occurred!</div>}>
+        <LifelogProvider>{children}</LifelogProvider>
+      </ErrorBoundary>
     );
 
     const server = setupServer(
@@ -80,13 +80,15 @@ describe('LifelogProvider', () => {
 
         expect(result.current.lifelogs).toHaveLength(0);
         act(() => {
-          expect(result.current.loadLogs()).rejects.toBeInstanceOf(AxiosError);
+          expect(result.current.loadLogs()).rejects.toBeInstanceOf(
+            InvalidTokenError
+          );
         });
 
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(0);
           expect(mockClearUser).toHaveBeenCalled();
-          expect(notifySpy).toHaveBeenCalledWith(COMMON.MESSAGE.ERROR.EXPIRED);
+          expect(notifySpy).not.toHaveBeenCalled();
         });
       });
 
@@ -583,10 +585,7 @@ describe('LifelogProvider', () => {
     });
 
     describe('sessionとuserのsessionId検証', () => {
-      beforeEach(() => {
-        setUpMyLocation();
-      });
-      it('一致しない場合はuserを初期化してリロードする', () => {
+      it('一致しない場合はuserを初期化して InvalidTokenError をスローする', () => {
         const { result } = renderHook(() => useLifelog(), { wrapper });
         server.use(
           http.get(apiHost(API.LIFELOG.ENDPOINT), () => {
@@ -597,9 +596,9 @@ describe('LifelogProvider', () => {
           })
         );
         expect(result.current.lifelogs).toHaveLength(0);
-        expect(
-          act(() => result.current.loadLogs('error message'))
-        ).rejects.toThrow(API.MESSAGE.ERROR.INVALID_TOKEN);
+        expect(act(() => result.current.loadLogs())).rejects.toThrow(
+          new InvalidTokenError(CONST.COMMON.MESSAGE.ERROR.SESSION_CONFLICT)
+        );
       });
     });
   });

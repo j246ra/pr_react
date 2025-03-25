@@ -9,7 +9,7 @@ import {
   PASSWORD_FORGET,
   SIGN_UP,
 } from '@lib/consts/component';
-import { ROUTES } from '@lib/consts/common';
+import { CONST, ROUTES } from '@lib/consts/common';
 import { useNavigate } from 'react-router';
 import accountUpdateValidator from '@validators/accountUpdate';
 import passwordEditValidator from '@validators/passwordEdit';
@@ -18,6 +18,8 @@ import useAuthApi, { AuthApiErrorResponse } from '@src/hooks/useAuthApi';
 import { useLifelog } from '@providers/LifelogProvider';
 import toast from '@lib/toast';
 import { Headers } from '@lib/api/client';
+import { useErrorBoundary } from 'react-error-boundary';
+import { InvalidTokenError } from '@src/errors/InvalidTokenError';
 
 const useAccount = () => {
   const { user, createUser, clearUser } = useUser();
@@ -26,15 +28,29 @@ const useAccount = () => {
   const navigate = useNavigate();
   const api = useAuthApi();
 
+  const { showBoundary } = useErrorBoundary();
+
+  const errorDispatch = (e: AuthApiErrorResponse) => {
+    if (e.status === 401) {
+      if (e.messages[0] === 'Invalid session_id')
+        showBoundary(
+          new InvalidTokenError(CONST.COMMON.MESSAGE.ERROR.SESSION_CONFLICT)
+        );
+      else
+        showBoundary(new InvalidTokenError(CONST.COMMON.MESSAGE.ERROR.EXPIRED));
+    }
+  };
+
   const errorNotification = (
     e: AuthApiErrorResponse | Error,
     defaultMessage: string
   ) => {
-    if ((e as AuthApiErrorResponse).messages) {
-      const messages = (e as AuthApiErrorResponse).messages;
-      if (messages.length === 0) notify.error(defaultMessage);
-      else messages.map((message) => notify.error(message));
-    } else if ((e as Error).message) notify.error((e as Error).message);
+    if ('messages' in e && Array.isArray(e.messages)) {
+      if (e.messages.length === 0) notify.error(defaultMessage);
+      else e.messages.forEach((message) => notify.error(message));
+      return;
+    }
+    if ('message' in e && e.message) notify.error(e.message);
     else notify.error(defaultMessage);
   };
 
@@ -45,7 +61,9 @@ const useAccount = () => {
       .then(() => {
         notify.success(LOGIN.MESSAGE.SUCCESS);
       })
-      .catch((r) => errorNotification(r, LOGIN.MESSAGE.ERROR.NORMAL));
+      .catch((e) => {
+        errorNotification(e, LOGIN.MESSAGE.ERROR.NORMAL);
+      });
   };
 
   const logout = () => {
@@ -74,8 +92,9 @@ const useAccount = () => {
         notify.success(ACCOUNT_UPDATE.MESSAGE.SUCCESS);
         navigate('/');
       })
-      .catch((r) => {
-        errorNotification(r, ACCOUNT_UPDATE.MESSAGE.ERROR);
+      .catch((e) => {
+        errorDispatch(e);
+        errorNotification(e, ACCOUNT_UPDATE.MESSAGE.ERROR);
       });
   };
 

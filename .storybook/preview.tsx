@@ -9,6 +9,7 @@ import { BrowserRouter } from 'react-router';
 import UserProvider from '../src/providers/UserProvider';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 import LifelogProvider from '../src/providers/LifelogProvider';
+import { ErrorBoundary } from 'react-error-boundary';
 
 // Initialize MSW
 initialize();
@@ -18,11 +19,13 @@ const preview: Preview = {
     (Story: any) => (
       <div className={'navbar-height'}>
         <BrowserRouter>
-          <UserProvider>
-            <LifelogProvider>
-              <Story />
-            </LifelogProvider>
-          </UserProvider>
+          <ErrorBoundary FallbackComponent={() => <div>Error occurred!</div>}>
+            <UserProvider>
+              <LifelogProvider>
+                <Story />
+              </LifelogProvider>
+            </UserProvider>
+          </ErrorBoundary>
         </BrowserRouter>
       </div>
     ),

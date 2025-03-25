@@ -1,7 +1,8 @@
 import { useUser } from '@providers/UserProvider';
 import { AxiosError, AxiosResponse } from 'axios';
-import { API, COMMON, CONST } from '@lib/consts/common';
+import { COMMON, CONST } from '@lib/consts/common';
 import session from '@lib/api/session';
+import { InvalidTokenError } from '@src/errors/InvalidTokenError';
 
 type Data = {
   errors: [string];
@@ -33,7 +34,7 @@ const useAuthApi = () => {
         sessionId: response.headers['session-id'] || '',
       });
     } else if (!validSessionId(response.headers['session-id'])) {
-      throw new Error(API.MESSAGE.ERROR.INVALID_TOKEN);
+      throw new InvalidTokenError(CONST.COMMON.MESSAGE.ERROR.SESSION_CONFLICT);
     }
     return response;
   };
@@ -50,9 +51,11 @@ const useAuthApi = () => {
       );
     } else {
       response.status = error.response.status;
-      const data = error.response.data as Data;
-      if (data?.errors !== undefined) {
-        response.messages.push(...data.errors);
+      if (typeof error.response.data === 'string') {
+        response.messages.push(error.response.data);
+      } else {
+        const data = error.response.data as Data;
+        if (data?.errors !== undefined) response.messages.push(...data.errors);
       }
     }
     return Promise.reject(response);
