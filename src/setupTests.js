@@ -22,5 +22,12 @@ console.error = (...args) => {
   ) {
     return;
   }
+  if (
+    args[0].includes(
+      'The above error occurred in the <LifelogProvider> component:'
+    )
+  ) {
+    return;
+  }
   originalConsoleError(...args);
 };

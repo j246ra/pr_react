@@ -22,6 +22,8 @@ export const COMMON = {
     ERROR: {
       GENERAL: '想定外のエラーが発生しました',
       EXPIRED: '認証期限切れの為、再度ログインしてください。',
+      SESSION_CONFLICT:
+        '別のタブまたはウィンドウで別のアカウントにログインしました。ページをリロードして、現在のアカウントの状態を更新してください。',
       STATUS_5XX: 'サーバーエラーの為、一時的に情報が取得できません。',
     } as const,
   } as const,

@@ -5,7 +5,8 @@ import Defs from '@lib/consts';
 import { baseUrl } from '@lib/api/client';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import useAuthApi from '@src/hooks/useAuthApi';
-import { COMMON } from '@lib/consts/common';
+import { COMMON, CONST } from '@lib/consts/common';
+import { InvalidTokenError } from '@src/errors/InvalidTokenError';
 
 let mockUser = { email: 'def@example.com', sessionId: '' };
 
@@ -109,6 +110,38 @@ describe('useAuthApi', () => {
             `${COMMON.MESSAGE.ERROR.GENERAL}(Network Error)`,
           ]);
         });
+      });
+    });
+    describe('session-idが一致しない場合', () => {
+      const responseSessionId = 'session-id';
+      const server = setupServer(
+        http.put(URL, () => {
+          return new HttpResponse(null, {
+            status: 200,
+            headers: { 'session-id': responseSessionId },
+          });
+        })
+      );
+      beforeAll(() => server.listen({ onUnhandledRequest: 'bypass' }));
+      afterEach(() => server.resetHandlers());
+      afterAll(() => server.close());
+      it('InvalidTokenErrorをthrowしている', async () => {
+        mockUseUser().sessionIdIsBlank.mockReturnValue(false);
+        mockUseUser().validSessionId.mockReturnValue(false);
+        const { result } = renderHook(useAuthApi);
+        await act(async () => {
+          await expect(
+            result.current.updateUser({
+              email: mockUser.email,
+              password: 'password',
+            })
+          ).rejects.toThrow(
+            new InvalidTokenError(CONST.COMMON.MESSAGE.ERROR.SESSION_CONFLICT)
+          );
+        });
+        expect(mockUseUser().validSessionId).toHaveBeenCalledWith(
+          responseSessionId
+        );
       });
     });
   });
