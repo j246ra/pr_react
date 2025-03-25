@@ -45,11 +45,12 @@ const useAccount = () => {
     e: AuthApiErrorResponse | Error,
     defaultMessage: string
   ) => {
-    if ((e as AuthApiErrorResponse).messages) {
-      const messages = (e as AuthApiErrorResponse).messages;
-      if (messages.length === 0) notify.error(defaultMessage);
-      else messages.map((message) => notify.error(message));
-    } else if ((e as Error).message) notify.error((e as Error).message);
+    if ('messages' in e && Array.isArray(e.messages)) {
+      if (e.messages.length === 0) notify.error(defaultMessage);
+      else e.messages.forEach((message) => notify.error(message));
+      return;
+    }
+    if ('message' in e && e.message) notify.error(e.message);
     else notify.error(defaultMessage);
   };
 
