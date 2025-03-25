@@ -5,16 +5,19 @@ import LifelogProvider, {
   LifelogProviderProps,
   useLifelog,
 } from '@providers/LifelogProvider';
-import { mockUseSession, mockUseUser } from '@src/tests/baseProviders';
+import { mockUseUser } from '@src/tests/baseProviders';
 import { setupServer } from 'msw/node';
 import { lifelog } from '@lib/faker/lifelog';
 import { AxiosError } from 'axios';
 import { DATETIME_FULL, days } from '@lib/dateUtil';
 import lifelogApiMocks from '@src/tests/lifelogApiMocks';
-import { COMMON, LIFELOG_API_MOCKS } from '@lib/consts/common';
+import { COMMON, LIFELOG_API_MOCKS, API, CONST } from '@lib/consts/common';
 import notify from '@lib/toast';
+import { http, HttpResponse } from 'msw';
+import { apiHost } from '@lib/storybook/util';
+import { ErrorBoundary } from 'react-error-boundary';
+import { InvalidTokenError } from '@src/errors/InvalidTokenError';
 
-let mockSetHeaders: jest.SpyInstance<unknown>;
 let mockClearUser: jest.SpyInstance<unknown>;
 let notifySpy: jest.SpyInstance<unknown>;
 
@@ -27,37 +30,37 @@ const {
 
 describe('LifelogProvider', () => {
   beforeEach(() => {
-    mockSetHeaders = jest.fn();
     mockClearUser = jest.fn();
-    mockUseSession.mockReturnValue({
-      getHeaders: jest.fn().mockReturnValue({
-        uid: 'test@example.com',
-      }),
-      setHeaders: mockSetHeaders,
-    });
     mockUseUser.mockReturnValue({
-      user: { email: 'test@example.com' },
+      user: { email: 'test@example.com', sessionId: 'session-id' },
       clearUser: mockClearUser,
+      sessionIdIsBlank: jest.fn().mockReturnValue(false),
+      getHeaders: jest.fn().mockReturnValue({
+        'session-id': 'session-id',
+      }),
     });
     notifySpy = jest.spyOn(notify, 'error');
   });
   afterEach(() => {
-    mockSetHeaders.mockClear();
     notifySpy.mockClear();
   });
 
   it('子要素がレンダリングされる', () => {
     const { getByTestId } = render(
-      <LifelogProvider>
-        <div data-testid={'child'} />
-      </LifelogProvider>
+      <ErrorBoundary FallbackComponent={() => <div>Error occurred!</div>}>
+        <LifelogProvider>
+          <div data-testid={'child'} />
+        </LifelogProvider>
+      </ErrorBoundary>
     );
     expect(getByTestId('child')).toBeInTheDocument();
   });
 
   describe('Api検証', () => {
     const wrapper = ({ children }: LifelogProviderProps) => (
-      <LifelogProvider>{children}</LifelogProvider>
+      <ErrorBoundary FallbackComponent={() => <div>Error occurred!</div>}>
+        <LifelogProvider>{children}</LifelogProvider>
+      </ErrorBoundary>
     );
 
     const server = setupServer(
@@ -71,32 +74,21 @@ describe('LifelogProvider', () => {
     afterAll(() => server.close());
 
     describe('Axios Interceptor with loadLogs().', () => {
-      it('status 200 の場合、setHeaders() にてセッション情報を更新する', async () => {
-        const { result } = renderHook(() => useLifelog(), { wrapper });
-
-        expect(result.current.lifelogs).toHaveLength(0);
-        act(() => {
-          result.current.loadLogs('error message');
-        });
-        await waitFor(() => {
-          expect(result.current.lifelogs).toHaveLength(10);
-          expect(mockSetHeaders).toHaveBeenCalled();
-        });
-      });
-
       it('status 401 の場合、clearUser() にてセッションを初期化する', async () => {
         server.use(restIndex({ status: 401 }));
         const { result } = renderHook(() => useLifelog(), { wrapper });
 
         expect(result.current.lifelogs).toHaveLength(0);
         act(() => {
-          expect(result.current.loadLogs()).rejects.toBeInstanceOf(AxiosError);
+          expect(result.current.loadLogs()).rejects.toBeInstanceOf(
+            InvalidTokenError
+          );
         });
 
         await waitFor(() => {
           expect(result.current.lifelogs).toHaveLength(0);
           expect(mockClearUser).toHaveBeenCalled();
-          expect(notifySpy).toHaveBeenCalledWith(COMMON.MESSAGE.ERROR.EXPIRED);
+          expect(notifySpy).not.toHaveBeenCalled();
         });
       });
 
@@ -589,6 +581,24 @@ describe('LifelogProvider', () => {
           expect(result.current.isTerminated).toEqual(false);
           expect(result.current.searchWord).toEqual('');
         });
+      });
+    });
+
+    describe('sessionとuserのsessionId検証', () => {
+      it('一致しない場合はuserを初期化して InvalidTokenError をスローする', () => {
+        const { result } = renderHook(() => useLifelog(), { wrapper });
+        server.use(
+          http.get(apiHost(API.LIFELOG.ENDPOINT), () => {
+            return new HttpResponse(null, {
+              status: 200,
+              headers: { 'session-id': 'XxSession-IDxX' },
+            });
+          })
+        );
+        expect(result.current.lifelogs).toHaveLength(0);
+        expect(act(() => result.current.loadLogs())).rejects.toThrow(
+          new InvalidTokenError(CONST.COMMON.MESSAGE.ERROR.SESSION_CONFLICT)
+        );
       });
     });
   });

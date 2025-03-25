@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import SessionOtherLinks from '@session/presentational/SessionOtherLinks';
 import { SESSION_OTHER_LINKS_TEST_ID as TEST_ID } from '@lib/consts/testId';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router';
 
 describe('SessionOtherLinks', () => {
   it('PasswordForgetLink enabled.', () => {

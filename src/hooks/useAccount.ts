@@ -9,21 +9,50 @@ import {
   PASSWORD_FORGET,
   SIGN_UP,
 } from '@lib/consts/component';
-import { ROUTES } from '@lib/consts/common';
-import { useNavigate } from 'react-router-dom';
-import { useSession } from '@providers/SessionProvider';
+import { CONST, ROUTES } from '@lib/consts/common';
+import { useNavigate } from 'react-router';
 import accountUpdateValidator from '@validators/accountUpdate';
 import passwordEditValidator from '@validators/passwordEdit';
 import signUpValidator from '@validators/signUp';
-import useAuthApi from '@src/hooks/useAuthApi';
+import useAuthApi, { AuthApiErrorResponse } from '@src/hooks/useAuthApi';
 import { useLifelog } from '@providers/LifelogProvider';
+import toast from '@lib/toast';
+import { Headers } from '@lib/api/client';
+import { useErrorBoundary } from 'react-error-boundary';
+import { InvalidTokenError } from '@src/errors/InvalidTokenError';
 
 const useAccount = () => {
-  const { createUser, clearUser } = useUser();
-  const { removeHeaders } = useSession();
+  const { user, createUser, clearUser } = useUser();
+
   const { clear: clearLifelog } = useLifelog();
   const navigate = useNavigate();
   const api = useAuthApi();
+
+  const { showBoundary } = useErrorBoundary();
+
+  const errorDispatch = (e: AuthApiErrorResponse) => {
+    if (e.status === 401) {
+      if (e.messages[0] === 'Invalid session_id')
+        showBoundary(
+          new InvalidTokenError(CONST.COMMON.MESSAGE.ERROR.SESSION_CONFLICT)
+        );
+      else
+        showBoundary(new InvalidTokenError(CONST.COMMON.MESSAGE.ERROR.EXPIRED));
+    }
+  };
+
+  const errorNotification = (
+    e: AuthApiErrorResponse | Error,
+    defaultMessage: string
+  ) => {
+    if ('messages' in e && Array.isArray(e.messages)) {
+      if (e.messages.length === 0) notify.error(defaultMessage);
+      else e.messages.forEach((message) => notify.error(message));
+      return;
+    }
+    if ('message' in e && e.message) notify.error(e.message);
+    else notify.error(defaultMessage);
+  };
 
   const login = (email: string, password: string) => {
     createUser(email);
@@ -31,12 +60,9 @@ const useAccount = () => {
       .signIn(email, password)
       .then(() => {
         notify.success(LOGIN.MESSAGE.SUCCESS);
-        navigate(ROUTES.LIFELOGS);
       })
       .catch((e) => {
-        if (e.response.status === 401)
-          notify.error(LOGIN.MESSAGE.ERROR.STATUS_401);
-        else notify.error(LOGIN.MESSAGE.ERROR.NORMAL);
+        errorNotification(e, LOGIN.MESSAGE.ERROR.NORMAL);
       });
   };
 
@@ -46,12 +72,10 @@ const useAccount = () => {
       .then(() => {
         clearUser();
         clearLifelog();
-        removeHeaders();
-        navigate(ROUTES.LOGIN);
         notify.success(LOGOUT.MESSAGE.SUCCESS);
       })
-      .catch(() => {
-        notify.error(LOGOUT.MESSAGE.ERROR);
+      .catch((r) => {
+        errorNotification(r, LOGOUT.MESSAGE.ERROR);
       });
   };
 
@@ -68,21 +92,26 @@ const useAccount = () => {
         notify.success(ACCOUNT_UPDATE.MESSAGE.SUCCESS);
         navigate('/');
       })
-      .catch(() => {
-        notify.error(ACCOUNT_UPDATE.MESSAGE.ERROR);
+      .catch((e) => {
+        errorDispatch(e);
+        errorNotification(e, ACCOUNT_UPDATE.MESSAGE.ERROR);
       });
   };
 
-  const passwordChange = (password: string, passwordConfirmation: string) => {
+  const passwordChange = (
+    password: string,
+    passwordConfirmation: string,
+    headers: Headers
+  ) => {
     if (passwordEditValidator(password, passwordConfirmation).isInvalid) return;
     api
-      .passwordReset(password, passwordConfirmation)
+      .passwordReset(password, passwordConfirmation, headers)
       .then(() => {
         notify.success(PASSWORD_EDIT.MESSAGE.SUCCESS);
         navigate('/');
       })
-      .catch(() => {
-        notify.error(PASSWORD_EDIT.MESSAGE.ERROR);
+      .catch((r) => {
+        errorNotification(r, PASSWORD_EDIT.MESSAGE.ERROR);
       });
   };
 
@@ -93,12 +122,12 @@ const useAccount = () => {
         notify.success(PASSWORD_FORGET.MESSAGE.SUCCESS);
         navigate(ROUTES.RESET_MAIL_SEND_SUCCESS);
       })
-      .catch((e) => {
-        if (e.response?.status === 404) {
+      .catch((r) => {
+        if (r.status === 404) {
           notify.success(PASSWORD_FORGET.MESSAGE.SUCCESS);
           navigate(ROUTES.RESET_MAIL_SEND_SUCCESS);
         } else {
-          notify.error(PASSWORD_FORGET.MESSAGE.ERROR);
+          errorNotification(r, PASSWORD_FORGET.MESSAGE.ERROR);
         }
       });
   };
@@ -111,10 +140,9 @@ const useAccount = () => {
         notify.success(SIGN_UP.MESSAGE.SUCCESS);
         navigate(ROUTES.LIFELOGS);
       })
-      .catch(() => {
-        notify.error(SIGN_UP.MESSAGE.ERROR);
+      .catch((r) => {
+        errorNotification(r, SIGN_UP.MESSAGE.ERROR);
         clearUser();
-        removeHeaders();
       });
   };
 
@@ -123,11 +151,18 @@ const useAccount = () => {
       .deleteUser()
       .then(() => {
         clearUser();
-        removeHeaders();
+        clearLifelog();
         navigate(ROUTES.LOGIN);
         notify.success(ACCOUNT_DELETE.MESSAGE.SUCCESS);
       })
-      .catch(() => notify.error(ACCOUNT_DELETE.MESSAGE.ERROR));
+      .catch((r) => errorNotification(r, ACCOUNT_DELETE.MESSAGE.ERROR));
+  };
+
+  const checkAuthenticated = () => {
+    if (user.sessionId !== null) return;
+    api.validate().catch(() => {
+      toast.info(LOGIN.MESSAGE.ERROR.NEED_LOGIN);
+    });
   };
 
   return {
@@ -138,6 +173,7 @@ const useAccount = () => {
     passwordForget,
     signUp,
     remove,
+    checkAuthenticated,
   };
 };
 

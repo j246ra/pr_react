@@ -38,4 +38,11 @@ describe('toast', () => {
       expect(mockToast.success).not.toHaveBeenCalled();
     });
   });
+  describe('info', () => {
+    it('メッセージが表示されている', () => {
+      notify.info('インフォ');
+      expect(mockToast).toHaveBeenCalled();
+      expect(mockToast).toHaveBeenCalledWith('インフォ', { icon: 'ℹ️' });
+    });
+  });
 });

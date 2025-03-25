@@ -5,7 +5,7 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-} from 'react-router-dom';
+} from 'react-router';
 import Login from './Login';
 import PasswordForget from '@session/container/PasswordForget';
 import { EMAIL_INPUT, LOGIN, PASSWORD_INPUT } from '@lib/consts/component';

@@ -1,6 +1,6 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import createClient from '@lib/api/client';
-import { Headers } from '@providers/SessionProvider';
+import { Headers } from '@lib/api/client';
 import { API } from '@lib/consts/common';
 
 type ResponseInterceptor = (response: AxiosResponse) => AxiosResponse;

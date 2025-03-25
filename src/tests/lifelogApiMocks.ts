@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { Lifelog } from '@providers/LifelogProvider';
 import { lifelog, lifelogs, OptionalLifelog } from '@lib/faker/lifelog';
 import { apiHost } from '@lib/storybook/util';
@@ -15,56 +15,76 @@ type RestCreateOptions = {
   status?: number;
 };
 
+type CreateRequestBody = {
+  data: Lifelog;
+};
+
 const lifelogApiMocks = () => {
   const index = ({
     maxPage = 2,
     length = 10,
     status = 200,
   }: RestIndexOptions = {}) => {
-    return rest.get(apiHost(API.LIFELOG.ENDPOINT), (req, res, ctx) => {
+    return http.get(apiHost(API.LIFELOG.ENDPOINT), ({ request }) => {
+      const searchParams = new URL(request.url).searchParams;
       switch (status) {
         case 200:
-          const page = Number(req.url.searchParams.get('page'));
+          const page = Number(searchParams.get('page') || '1');
           const offset = length * (page - 1);
           let logs: Lifelog[] = [];
-          let word = req.url.searchParams.get('word');
           if (
-            word !== LIFELOG_API_MOCKS.PARAMS.WORD.NO_DATA &&
+            searchParams.get('word') !==
+              LIFELOG_API_MOCKS.PARAMS.WORD.NO_DATA &&
             page <= maxPage
           ) {
             logs = lifelogs(length, offset);
           }
-          return res(ctx.status(status), ctx.json(logs));
+          return HttpResponse.json(logs, {
+            status,
+            headers: { 'session-id': request.headers.get('session-id') || '' },
+          });
         case null:
-          return res.networkError('network error.');
+          return HttpResponse.error();
         default:
-          return res(ctx.status(status));
+          return new HttpResponse(null, {
+            status,
+            headers: { 'session-id': request.headers.get('session-id') || '' },
+          });
       }
     });
   };
 
   const create = ({ status = 200 }: RestCreateOptions = {}) => {
-    return rest.post(apiHost(API.LIFELOG.ENDPOINT), async (req, res, ctx) => {
-      const data = await req.json().then((body) => body.data);
-      return res(ctx.status(status), ctx.json(lifelog(data)));
+    return http.post(apiHost(API.LIFELOG.ENDPOINT), async ({ request }) => {
+      const body = (await request.json()) as CreateRequestBody;
+      return HttpResponse.json(lifelog(body.data), {
+        status,
+        headers: { 'session-id': request.headers.get('session-id') || '' },
+      });
     });
   };
 
   const update = (status = 200) => {
-    return rest.put(
+    return http.put(
       apiHost(`${API.LIFELOG.ENDPOINT}/:id`),
-      async (req, res, ctx) => {
-        const data = await req.json().then((body) => body.data);
-        return res(ctx.status(status), ctx.json(data));
+      async ({ request }) => {
+        const body = (await request.json()) as CreateRequestBody;
+        return HttpResponse.json(body.data, {
+          status,
+          headers: { 'session-id': request.headers.get('session-id') || '' },
+        });
       }
     );
   };
 
   const destroy = (status = 200) => {
-    return rest.delete(
+    return http.delete(
       apiHost(`${API.LIFELOG.ENDPOINT}/:id`),
-      (_req, res, ctx) => {
-        return res(ctx.status(status));
+      ({ request }) => {
+        return new HttpResponse(null, {
+          status,
+          headers: { 'session-id': request.headers.get('session-id') || '' },
+        });
       }
     );
   };

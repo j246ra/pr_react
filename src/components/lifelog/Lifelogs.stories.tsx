@@ -1,6 +1,6 @@
+import React from 'react';
 import { Meta } from '@storybook/react';
 import Lifelogs from './Lifelogs';
-import { Story } from '@storybook/blocks';
 import { Toaster } from 'react-hot-toast';
 import Header from '@src/components/Header';
 import BaseLayout from '@src/components/BaseLayout';

@@ -1,6 +1,6 @@
 import { Meta } from '@storybook/react';
 import SearchInput from './SearchInput';
-import { lifelogMocks } from '../../../lib/storybook/lifelog';
+import { lifelogMocks } from '@lib/storybook/lifelog';
 
 export default {
   title: 'Lifelog/Presentational/SearchInput',
@@ -11,7 +11,7 @@ const { all } = lifelogMocks();
 
 export const Default = {
   args: {
-    isShow: true,
+    isShown: true,
   },
   parameters: {
     msw: all(),

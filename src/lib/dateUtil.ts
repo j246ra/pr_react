@@ -13,8 +13,6 @@ export const MAX_ACTION_MINUTES = CONST.MAX_ACTION_MINUTES;
 
 export const days = dayjs;
 
-export const expires = () => dayjs().add(1, 'weeks').toDate();
-
 export const daysDisplay = (datetime?: string | null) =>
   datetime ? dayjs(datetime).format(DISPLAY_DATETIME) : '';
 

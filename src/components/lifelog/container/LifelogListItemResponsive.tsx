@@ -1,3 +1,4 @@
+import React from 'react';
 import LifelogListItem from '@lifelog/presentational/LifelogListItem';
 import LifelogListItemSp from '@lifelog/presentational/LifelogListItemSp';
 import useMediaQuery, { mediaQuery } from '@src/hooks/useMediaQuery';

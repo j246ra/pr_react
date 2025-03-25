@@ -18,13 +18,14 @@ export type AuthenticatedOnlyProps = Pick<
 function AuthenticatedOnly({
   children,
   fallbackPath = AUTHENTICATED_ONLY.FALLBACK_PATH,
+  fallbackMessage,
 }: AuthenticatedOnlyProps) {
   return (
     <AuthGate
       children={children}
       passingCondition={(isLoggedIn) => isLoggedIn}
       fallbackPath={fallbackPath}
-      fallbackMessage={AUTHENTICATED_ONLY.MESSAGE.ERROR}
+      fallbackMessage={fallbackMessage}
     />
   );
 }

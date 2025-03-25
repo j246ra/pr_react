@@ -1,4 +1,4 @@
-FROM node:20.8.1-bookworm-slim as assets
+FROM node:20.18.3-bookworm-slim as assets
 
 RUN apt-get update -qq && apt-get install -yq --no-install-recommends\
     ca-certificates
@@ -25,7 +25,7 @@ ENV GENERATE_SOURCEMAP=false
 COPY . $APP_ROOT
 RUN yarn build
 
-FROM nginx:1.25.2-alpine-slim as nginx
+FROM nginx:1.26.1-alpine-slim as nginx
 
 COPY ./containers/web/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=assets /app/build /usr/share/nginx/html

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { LOGIN } from '@lib/consts/component';
 import styles from './SessionOtherLinks.module.scss';
 import { SESSION_OTHER_LINKS_TEST_ID as TEST_ID } from '@lib/consts/testId';

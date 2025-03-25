@@ -1,3 +1,4 @@
+import React from 'react';
 import { Meta } from '@storybook/react';
 import SessionLayout from '@session/SessionLayout';
 import SessionCard from '@session/presentational/SessionCard';

@@ -1,4 +1,4 @@
-@import 'src/App';
+@use '@src/variables' as *;
 
 .base {
   max-width: $AppMaxWidth;

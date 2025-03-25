@@ -16,8 +16,6 @@ export default function SearchInput({
   isShown,
   width = 260,
 }: SearchInputProps) {
-  if (!isShown) return <EmptyComponent />;
-
   const { searchLogs, searchWord } = useLifelog();
   const [word, setWord] = useState(searchWord);
   const [isComposing, setIsComposing] = useState(false);
@@ -48,6 +46,8 @@ export default function SearchInput({
       onClick={handleSearch}
     ></Button>
   );
+
+  if (!isShown) return <EmptyComponent />;
 
   return (
     <div

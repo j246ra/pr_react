@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.scss';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router';
 import Header from './components/Header';
 import { Toaster } from 'react-hot-toast';
 import BaseLayout from './components/BaseLayout';

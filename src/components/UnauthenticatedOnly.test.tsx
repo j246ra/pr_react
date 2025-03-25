@@ -5,6 +5,10 @@ import UnauthenticatedOnly from '@src/components/UnauthenticatedOnly';
 import { UNAUTHENTICATED_ONLY } from '@lib/consts/component';
 import toast from 'react-hot-toast';
 import { NOTIFY } from '@lib/consts/common';
+import useAccount from '@src/hooks/useAccount';
+
+jest.mock('@src/hooks/useAccount');
+const mockUseAccount = useAccount as jest.MockedFunction<any>;
 
 jest.mock('react-hot-toast');
 const mockToast = jest.mocked(toast);
@@ -15,7 +19,10 @@ const FALLBACK_MESSAGE = 'Fallback Message.';
 
 beforeEach(() => {
   mockUseUser.mockReturnValue({
-    isLoggedIn: jest.fn().mockReturnValue(true),
+    sessionIdIsBlank: jest.fn().mockReturnValue(false),
+  });
+  mockUseAccount.mockReturnValue({
+    checkAuthenticated: jest.fn(),
   });
 });
 
@@ -60,7 +67,7 @@ describe('UnauthenticatedOnly', () => {
 
   describe('未認証時', () => {
     beforeEach(() => {
-      mockUseUser().isLoggedIn = jest.fn().mockReturnValue(false);
+      mockUseUser().sessionIdIsBlank.mockReturnValue(true);
     });
     it('コンポーネントをレンダリングしていること', () => {
       render(<UnauthenticatedOnly children={children} />);

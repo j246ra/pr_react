@@ -53,7 +53,10 @@ describe('lifelogResponse', () => {
           expect(invalidData.length).toEqual(1);
           expect(validData.length).toEqual(0);
           expect(invalidData[0].data).toEqual(data);
-          expect(invalidData[0].errors).toEqual(['Invalid userId [12345]']);
+          expect(invalidData[0].errors).toEqual({
+            _errors: [],
+            userId: { _errors: ['Expected number, received string'] },
+          });
         });
       });
       describe('複数の項目にエラーが存在する場合', () => {
@@ -73,7 +76,7 @@ describe('lifelogResponse', () => {
           expect(invalidData.length).toEqual(1);
           expect(validData.length).toEqual(2);
           const _invalid = invalidData[0];
-          expect(_invalid.errors.length).toEqual(8);
+          expect(Object.keys(_invalid.errors).length).toEqual(9);
         });
       });
       describe('null 許可項目が null の場合', () => {
@@ -83,6 +86,18 @@ describe('lifelogResponse', () => {
           expect(invalidData.length).toEqual(0);
           expect(validData.length).toEqual(1);
           expect(validData[0]).toEqual(data);
+        });
+      });
+      describe('根本的にデータ型が異なる場合', () => {
+        it('適切にエラーが出力されている', () => {
+          const data = 1234;
+          const { validData, invalidData } = validateLifelogResponse(data);
+          expect(invalidData.length).toEqual(1);
+          expect(validData.length).toEqual(0);
+          expect(invalidData[0].data).toEqual(data);
+          expect(invalidData[0].errors).toEqual({
+            _errors: ['Expected object, received number'],
+          });
         });
       });
     });

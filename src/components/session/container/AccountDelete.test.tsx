@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router';
 import AccountDelete from './AccountDelete';
 import { ACCOUNT_DELETE } from '@lib/consts/component';
 import useAccount from '@src/hooks/useAccount';

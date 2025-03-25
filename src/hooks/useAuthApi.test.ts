@@ -1,135 +1,147 @@
-import { mockUseSession, mockUseUser } from '@src/tests/baseProviders';
+import { mockUseUser } from '@src/tests/baseProviders';
 import { setupServer } from 'msw/node';
-import notify from '@lib/toast';
-import {
-  compose,
-  context,
-  DefaultBodyType,
-  ResponseTransformer,
-  rest,
-} from 'msw';
+import { http, HttpResponse } from 'msw';
 import Defs from '@lib/consts';
 import { baseUrl } from '@lib/api/client';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import useAuthApi from '@src/hooks/useAuthApi';
-import { AxiosError } from 'axios';
+import { COMMON, CONST } from '@lib/consts/common';
+import { InvalidTokenError } from '@src/errors/InvalidTokenError';
 
-let mockUser = { email: 'def@example.com' };
+let mockUser = { email: 'def@example.com', sessionId: '' };
 
-const MESSAGE = Defs.COMMON.MESSAGE;
-const URL = `${baseUrl}/${Defs.API.VERSION}${Defs.API.SESSION.ENDPOINT.SIGN_IN}`;
+const URL = `${baseUrl}/${Defs.API.VERSION}${Defs.API.SESSION.ENDPOINT.USER}`;
 
 describe('useAuthApi', () => {
   beforeEach(() => {
-    mockUseSession.mockReturnValue({
-      getHeaders: jest.fn(),
-      setHeaders: jest.fn(),
-    });
     mockUseUser.mockReturnValue({
-      user: mockUser,
-      updateUser: jest.fn(),
+      getHeaders: jest.fn(),
+      saveUser: jest.fn(),
+      sessionIdIsBlank: jest.fn().mockReturnValue(true),
+      validSessionId: jest.fn().mockReturnValue(false),
     });
   });
-  const createServer = (r: ResponseTransformer<DefaultBodyType, any>) => {
-    return setupServer(
-      rest.post(URL, (req, res) => {
-        return res(r);
-      })
-    );
-  };
 
   describe('正常系', () => {
-    const responseUid = 'test1@example.com';
-    const response = (): ResponseTransformer<DefaultBodyType, any> => {
-      return compose(
-        context.status(200),
-        context.set('access-token', 'token'),
-        context.set('uid', responseUid),
-        context.set('client', 'client')
-      );
-    };
-    const server = createServer(response());
-    beforeAll(() => server.listen());
-    afterEach(() => server.resetHandlers());
+    const responseSessionId = 'session-id';
+    const server = setupServer(
+      http.put(URL, () => {
+        return new HttpResponse(null, {
+          status: 200,
+          headers: { 'session-id': responseSessionId },
+        });
+      })
+    );
+    beforeAll(() => server.listen({ onUnhandledRequest: 'bypass' }));
+    beforeEach(() => server.resetHandlers());
     afterAll(() => server.close());
-    it('新しいユーザーの場合は updateUser が呼び出される', async () => {
+
+    it('既存ユーザーの場合は validSessionId が呼び出される', async () => {
+      mockUseUser().sessionIdIsBlank.mockReturnValue(false);
+      mockUseUser().validSessionId.mockReturnValue(true);
       const { result } = renderHook(useAuthApi);
-      const { signIn } = result.current;
+      const { updateUser } = result.current;
       act(() => {
-        signIn('email', 'password');
+        updateUser({ email: 'test@example.com', password: 'password' });
       });
       await waitFor(() => {
-        expect(mockUseSession().setHeaders).toHaveBeenCalled();
-        expect(mockUseUser().updateUser).toHaveBeenCalled();
+        expect(mockUseUser().validSessionId).toHaveBeenCalled();
       });
     });
-    it('既存のユーザーの場合は updateUser は呼び出されない', async () => {
-      mockUseUser().user.email = responseUid;
+    it('新しいユーザーの場合は saveUser が呼び出される', async () => {
       const { result } = renderHook(useAuthApi);
-      const { signIn } = result.current;
+      const { updateUser } = result.current;
       act(() => {
-        signIn(responseUid, 'password');
+        updateUser({ email: 'email', password: 'password' });
       });
       await waitFor(() => {
-        expect(mockUseSession().setHeaders).toHaveBeenCalled();
-        expect(mockUseUser().updateUser).not.toHaveBeenCalled();
+        expect(mockUseUser().saveUser).toHaveBeenCalled();
       });
     });
   });
 
   describe('異常系', () => {
-    let notifySpy: jest.SpyInstance<unknown>;
-    beforeEach(() => {
-      notifySpy = jest.spyOn(notify, 'error');
-    });
-    afterEach(() => {
-      notifySpy.mockRestore();
-    });
     describe('response が存在する場合', () => {
-      const response = (): ResponseTransformer<DefaultBodyType, any> => {
-        return compose(
-          context.status(400),
-          context.json({
-            errors: { fullMessages: ['error message 1', 'error message 2'] },
-          })
-        );
-      };
-      const server = createServer(response());
-      beforeAll(() => server.listen());
-      afterEach(() => server.resetHandlers());
+      const server = setupServer(
+        http.put(URL, () => {
+          HttpResponse.json(
+            {
+              errors: ['error message 1', 'error message 2'],
+            },
+            { status: 400 }
+          );
+        })
+      );
+      beforeAll(() => server.listen({ onUnhandledRequest: 'bypass' }));
+      beforeEach(() => server.resetHandlers());
       afterAll(() => server.close());
 
       it('メッセージが通知されている', async () => {
         const { result } = renderHook(useAuthApi);
-        const res = result.current.signIn(mockUser.email, 'password');
+        const res = result.current.updateUser({
+          email: mockUser.email,
+          password: 'password',
+        });
         await waitFor(() => {
-          expect(res).rejects.toThrow(AxiosError);
-          expect(notifySpy).toHaveBeenCalled();
-          expect(notifySpy).toHaveBeenCalledWith('error message 1');
-          expect(notifySpy).toHaveBeenCalledWith('error message 2');
+          expect(res).rejects.toEqual({
+            status: 400,
+            messages: ['error message 1', 'error message 2'],
+          });
         });
       });
     });
     describe('response が存在しない場合', () => {
       const server = setupServer(
-        rest.post(URL, (req, res) => {
-          return res.networkError('Failed to connect.');
+        http.put(URL, () => {
+          return HttpResponse.error();
         })
       );
-      beforeAll(() => server.listen());
+      beforeAll(() => server.listen({ onUnhandledRequest: 'bypass' }));
       afterEach(() => server.resetHandlers());
       afterAll(() => server.close());
       it('固定エラーメッセージが通知されている', async () => {
         const { result } = renderHook(useAuthApi);
-        const res = result.current.signIn(mockUser.email, 'password');
+        const res = result.current.updateUser({
+          email: mockUser.email,
+          password: 'password',
+        });
         await waitFor(() => {
-          expect(res).rejects.toThrow(AxiosError);
-          expect(mockUseSession().setHeaders).not.toHaveBeenCalled();
-          expect(notifySpy).toHaveBeenCalled();
-          expect(notifySpy).toHaveBeenCalledWith(
-            expect.stringMatching(MESSAGE.ERROR.GENERAL)
+          expect(res).rejects.toHaveProperty('messages', [
+            `${COMMON.MESSAGE.ERROR.GENERAL}(Network Error)`,
+          ]);
+        });
+      });
+    });
+    describe('session-idが一致しない場合', () => {
+      const responseSessionId = 'session-id';
+      const server = setupServer(
+        http.put(URL, () => {
+          return new HttpResponse(null, {
+            status: 200,
+            headers: { 'session-id': responseSessionId },
+          });
+        })
+      );
+      beforeAll(() => server.listen({ onUnhandledRequest: 'bypass' }));
+      afterEach(() => server.resetHandlers());
+      afterAll(() => server.close());
+      it('InvalidTokenErrorをthrowしている', async () => {
+        mockUseUser().sessionIdIsBlank.mockReturnValue(false);
+        mockUseUser().validSessionId.mockReturnValue(false);
+        const { result } = renderHook(useAuthApi);
+        await act(async () => {
+          await expect(
+            result.current.updateUser({
+              email: mockUser.email,
+              password: 'password',
+            })
+          ).rejects.toThrow(
+            new InvalidTokenError(CONST.COMMON.MESSAGE.ERROR.SESSION_CONFLICT)
           );
         });
+        expect(mockUseUser().validSessionId).toHaveBeenCalledWith(
+          responseSessionId
+        );
       });
     });
   });

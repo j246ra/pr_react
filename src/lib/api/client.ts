@@ -2,6 +2,13 @@ import applyCaseMiddleware from 'axios-case-converter';
 import axios from 'axios';
 import { API } from '@lib/consts/common';
 
+export type Headers = {
+  'access-token'?: string;
+  uid?: string;
+  client?: string;
+  'session-id'?: string;
+};
+
 type Options = {
   ignoreHeaders: boolean;
 };
@@ -16,6 +23,7 @@ export const createClient = () => {
   return applyCaseMiddleware(
     axios.create({
       baseURL: `${baseUrl}/${API.VERSION}`,
+      withCredentials: true,
     }),
     options
   );

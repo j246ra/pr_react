@@ -1,10 +1,10 @@
 import { AxiosResponse, AxiosError } from 'axios';
-import createClient from './client';
-import { Headers } from '@providers/SessionProvider';
+import createClient, { Headers } from './client';
 import Defs from '@lib/consts';
+import { AuthApiErrorResponse } from '@src/hooks/useAuthApi';
 
 type ResponseInterceptor = (response: AxiosResponse) => AxiosResponse;
-type ErrorInterceptor = (error: AxiosError) => Promise<never>;
+type ErrorInterceptor = (error: AxiosError) => Promise<AuthApiErrorResponse>;
 
 export type UserParams = {
   email?: string;
@@ -37,11 +37,15 @@ export default function session(
       email,
       redirect_url: `${Defs.COMMON.APP_URL.HOST_URL}${Defs.COMMON.APP_URL.BASE_DIR}/password_edit`,
     });
-  const passwordReset = (password: string, passwordConfirmation: string) =>
+  const passwordReset = (
+    password: string,
+    passwordConfirmation: string,
+    headers: Headers
+  ) =>
     client.put(
       ENDPOINT.PASSWORD_RESET,
       { password, password_confirmation: passwordConfirmation },
-      { headers: headers() }
+      { headers: headers }
     );
 
   return {

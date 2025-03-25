@@ -24,6 +24,7 @@ yarn-debug.log*
 yarn-error.log*
 
 .idea
+.vscode
 
 # Sentry Config File
 .sentryclirc

@@ -1,0 +1,12 @@
+@use "variables" as *;
+
+@mixin appLinkText {
+  cursor: pointer;
+  color: $pt-link-color;
+  font-weight: bold;
+  text-decoration-line: none;
+
+  &:hover {
+    text-decoration-line: underline;
+  }
+}
