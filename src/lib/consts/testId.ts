@@ -1,3 +1,32 @@
+/**
+ * 📌 このファイルの目的
+ * コンポーネントテスト用のdata-testidを集中的に管理します。
+ * テストIDは自動生成され、一定のルールに基づいています。
+ *
+ * 🚩 ルール
+ * - オブジェクトのキー名は必ず大文字のスネークケースで書く（例: TD_ACTION）。
+ * - 生成されるテストIDは「コンポーネント名 + 項目名」で構成される（PascalCase）。
+ *
+ * 🛠 追加方法
+ * 1. テストしたいコンポーネント用のオブジェクトを定義します（空文字でOK）。
+ * 2. applyPrefixedValues関数に渡すことで、自動で値が生成されます。
+ *
+ * 🧪 例:
+ * export const EXAMPLE_COMPONENT_TEST_ID = {
+ *   BUTTON_SAVE: '',
+ *   INPUT_NAME: '',
+ * };
+ * applyPrefixedValues({ EXAMPLE_COMPONENT_TEST_ID });
+ *
+ * 上記の結果：
+ * EXAMPLE_COMPONENT_TEST_ID.BUTTON_SAVE → 'ExampleComponentButtonSave'
+ * EXAMPLE_COMPONENT_TEST_ID.INPUT_NAME → 'ExampleComponentInputName'
+ *
+ * 🔖 利用方法 (テストコード内):
+ * screen.getByTestId(TEST_IDS.EXAMPLE_COMPONENT.BUTTON_SAVE);
+ *
+ * IDEのコード補完やデバッグ時の視認性向上のため、現在の仕組みを採用しています。
+ */
 import { snakeToPascal } from '@lib/stringUtil';
 
 export const applyPrefixedValues = <
