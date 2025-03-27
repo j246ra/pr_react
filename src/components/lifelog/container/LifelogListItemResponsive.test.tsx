@@ -25,9 +25,8 @@ describe('LifelogListItemResponsive', () => {
     expect(screen.queryAllByTestId(tdStartedAtTestIdRegex)).toHaveLength(0);
   });
   it('isSp が false の場合は LifelogListItem を表示している', () => {
-    const logs = lifelogs(10);
     matchMediaObject({ matches: false });
-    render(wrapper(<LifelogListItemResponsive lifelogs={logs} />));
+    render(wrapper(<LifelogListItemResponsive lifelogs={lifelogs(10)} />));
     expect(screen.queryAllByTestId(SP_TEST_ID.TR)).toHaveLength(0);
     expect(screen.getAllByTestId(tdStartedAtTestIdRegex)).toHaveLength(10);
   });
