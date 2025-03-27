@@ -24,17 +24,22 @@ describe('LifelogListItemResponsive', () => {
       10
     );
     expect(
-      screen.queryAllByTestId(LIFELOG_LIST_ITEM_TEST_ID.TD_STARTED_AT)
+      screen.queryAllByTestId(
+        new RegExp(`^${LIFELOG_LIST_ITEM_TEST_ID.TD_STARTED_AT}`)
+      )
     ).toHaveLength(0);
   });
   it('isSp が false の場合は LifelogListItem を表示している', () => {
+    const logs = lifelogs(10);
     matchMediaObject({ matches: false });
-    render(wrapper(<LifelogListItemResponsive lifelogs={lifelogs(10)} />));
+    render(wrapper(<LifelogListItemResponsive lifelogs={logs} />));
     expect(
       screen.queryAllByTestId(LIFELOG_LIST_ITEM_SP_TEST_ID.TR)
     ).toHaveLength(0);
     expect(
-      screen.getAllByTestId(LIFELOG_LIST_ITEM_TEST_ID.TD_STARTED_AT)
+      screen.getAllByTestId(
+        new RegExp(`^${LIFELOG_LIST_ITEM_TEST_ID.TD_STARTED_AT}`)
+      )
     ).toHaveLength(10);
   });
 });
