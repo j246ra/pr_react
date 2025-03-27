@@ -26,7 +26,10 @@ export function LifelogListItem({
 
   return (
     <tr className={styles.trItem}>
-      <td data-testid={TEST_ID.TD_STARTED_AT} className={classNameTdStartedAT}>
+      <td
+        data-testid={TEST_ID.TD_STARTED_AT + log.id}
+        className={classNameTdStartedAT}
+      >
         <Tooltip content={startedDatetime} placement={top} compact={true}>
           {displayDatetime + displayActionTime}
         </Tooltip>

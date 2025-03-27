@@ -70,9 +70,9 @@ describe('LifelogListItem', () => {
       expect(
         screen.getByText(new RegExp(` \\(${elapsedMinutes}\\)$`))
       ).toBeInTheDocument();
-      expect(screen.getByTestId(TEST_ID.TD_STARTED_AT)).toHaveClass(
-        styles.bold
-      );
+      expect(
+        screen.getByTestId(TEST_ID.TD_STARTED_AT + mockLog.id)
+      ).toHaveClass(styles.bold);
     });
   });
 
@@ -86,7 +86,9 @@ describe('LifelogListItem', () => {
     render(lifelogListItemComponent(mockLog));
 
     expect(screen.getByText(/ \(999\+\)$/)).toBeInTheDocument();
-    expect(screen.getByTestId(TEST_ID.TD_STARTED_AT)).toHaveClass(styles.bold);
+    expect(screen.getByTestId(TEST_ID.TD_STARTED_AT + mockLog.id)).toHaveClass(
+      styles.bold
+    );
   });
 
   it('イベントハンドラが正しく呼び出される', () => {
